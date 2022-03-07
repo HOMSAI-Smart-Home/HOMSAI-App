@@ -43,6 +43,7 @@ dependencies:
   sqflite: ^2.0.2
   http: ^0.13.4
   flutter_localized_locales: ^2.0.3
+  flutter_native_splash: ^2.1.0
 
 dev_dependencies:
   flutter_test:
@@ -60,6 +61,9 @@ dev_dependencies:
 
 # The following section is specific to Flutter.
 flutter:
+  assets:
+    - assets/
+
   generate: true
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
@@ -111,3 +115,7 @@ flutter:
           weight: 500
         - asset: fonts/helvetica_now_text/HelveticaNowText-Regular.ttf
           weight: 400
+
+flutter_native_splash:
+  background_image: assets/icons/splash/background.png
+  image: assets/icons/splash/logo.png

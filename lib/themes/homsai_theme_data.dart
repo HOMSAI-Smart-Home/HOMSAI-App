@@ -37,18 +37,16 @@ class HomsaiThemeData {
   }
 
   static const ColorScheme lightColorScheme = ColorScheme(
-    primary: Color(0xFFB93C5D),
-    primaryContainer: Color(0xFF117378),
+    primary: Color(0xFF56BB76),
     secondary: Color(0xFFEFF3F3),
-    secondaryContainer: Color(0xFFFAFBFB),
-    background: Color(0xFFE6EBEB),
-    surface: Color(0xFFFAFBFB),
-    onBackground: Colors.white,
-    error: _lightFillColor,
-    onError: _lightFillColor,
-    onPrimary: _lightFillColor,
+    background: Color(0xFF202020),
+    surface: Color(0xFF2C2C2C),
+    onBackground: Color(0xFFF2F2F2),
+    error: Color(0xFFA94A15),
+    onError: Color(0xFFF03829),
+    onPrimary: Color(0xFF202020),
     onSecondary: Color(0xFF322942),
-    onSurface: Color(0xFF241E30),
+    onSurface: Color(0xFFF2F2F2),
     brightness: Brightness.light,
   );
 
@@ -56,10 +54,8 @@ class HomsaiThemeData {
   static const _medium = FontWeight.w500;
   static const _semiBold = FontWeight.w600;
   static const _bold = FontWeight.w700;
-  static const _extraBold = FontWeight.w800;
-  static const _black = FontWeight.w900;
 
-  static const TextTheme _textTheme = TextTheme(
+  static final TextTheme _textTheme = const TextTheme(
     headline4: TextStyle(
         fontFamily: "HelveticaNowText", fontWeight: _bold, fontSize: 20.0),
     caption: TextStyle(
@@ -80,5 +76,7 @@ class HomsaiThemeData {
         fontFamily: "HelveticaNowText", fontWeight: _bold, fontSize: 16.0),
     button: TextStyle(
         fontFamily: "HelveticaNowText", fontWeight: _semiBold, fontSize: 14.0),
-  );
+  ).apply(
+      bodyColor: const Color(0xFFF2F2F2),
+      displayColor: const Color(0xFFF2F2F2));
 }
