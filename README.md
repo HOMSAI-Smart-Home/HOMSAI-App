@@ -1,16 +1,58 @@
-# homsai
+# Innover App
 
-A new Flutter project.
+Innover Flutter application
 
-## Getting Started
+## Used libraries
 
-This project is a starting point for a Flutter application.
+- charts_flutter: Material Design data/charts visualization library
+- flutter_svg: Dart-native SVG rendering library
+- intl: used for internationalization and localization facilities such as date/number formatting and parsing
+- sqflite: used to persist and query data on the local device
+- flutter_localizations: used to support localization
+- http: used to consume HTTP resources
+- get_it: service locator used to implement dependency injection
+- shared_preferences: used to provide a persistent store for simple data
 
-A few resources to get you started if this is your first Flutter project:
+## Linting
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+To run Flutter code analysis
+```
+flutter analyze
+```
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+There is no automatic linting automatic fix.
+You can simply look at linting errors in the Android Studio Dart Analysis section.
+
+## Build
+
+To build the release apk
+```
+flutter build apk --target {{path of Main.dart}} --release
+```
+
+### Pre-commit hook integration
+This will perform the lint on every commit and will abort it in case of errors
+
+In the root of the project run
+```
+cp pre-commit-hook .git/hooks/pre-commit
+```
+
+Then give permission with command
+```
+chmod +x .git/hooks/pre-commit
+```
+
+### Prepare-commit-msg hook integration
+This will automatically prepend JIRA Ticket ID (branch name) on commit message
+
+In the root of the project run
+```
+cp prepare-commit-msg .git/hooks/prepare-commit-msg
+```
+
+Then give permission with command
+```
+chmod +x .git/hooks/prepare-commit-msg
+```
+

@@ -1,29 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
+import 'package:flutter_localized_locales/flutter_localized_locales.dart';
+import 'package:get_it/get_it.dart';
+import 'package:homsai/crossconcern/utilities/properties/constants.dart';
 
-void main() {
-  runApp(const MyApp());
+final getIt = GetIt.instance;
+
+void setup() {
+  // It enables to reassign an implementation of an interface, for example in Unit tests
+  getIt.allowReassignment = true;
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
 
-  // This widget is the root of your application.
+  // Initialize singletons
+  setup();
+
+  runApp(const HomsaiApp());
+}
+
+class HomsaiApp extends StatelessWidget {
+  const HomsaiApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      debugShowCheckedModeBanner: true,
+      title: appName,
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.blue,
       ),
+      localizationsDelegates: const [
+        ...HomsaiLocalizations.localizationsDelegates,
+        LocaleNamesLocalizationsDelegate()
+      ],
+      supportedLocales: HomsaiLocalizations.supportedLocales,
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
@@ -95,8 +107,8 @@ class _MyHomePageState extends State<MyHomePage> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'You have clicked the button this many times:',
+            Text(
+              HomsaiLocalizations.of(context)!.helloWorld,
             ),
             Text(
               '$_counter',
