@@ -2,5 +2,13 @@
     "helloWorld": "Hello World!",
     "@helloWorld": {
       "description": "The conventional newborn programmer greeting"
+    },
+    "emailAddress": "Email address",
+    "@emailAddress": {
+      "description": "A label for a textfield for the user to input their email"
+    },
+    "password": "Password",
+    "@password": {
+      "description": "A label for a textfield for the user to input their password"
     }
 }

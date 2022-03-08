@@ -14,7 +14,7 @@ class HomsaiThemeData {
       colorScheme: colorScheme,
       textTheme: _textTheme,
       // Matches manifest.json colors and background color.
-      primaryColor: const Color(0xFF030303),
+      primaryColor: const Color(0xFF202020),
       appBarTheme: AppBarTheme(
         backgroundColor: colorScheme.background,
         elevation: 0,
@@ -38,7 +38,7 @@ class HomsaiThemeData {
 
   static const ColorScheme lightColorScheme = ColorScheme(
     primary: Color(0xFF56BB76),
-    secondary: Color(0xFFEFF3F3),
+    secondary: Color(0xFFF2F2F2),
     background: Color(0xFF202020),
     surface: Color(0xFF2C2C2C),
     onBackground: Color(0xFFF2F2F2),
@@ -50,6 +50,7 @@ class HomsaiThemeData {
     brightness: Brightness.light,
   );
 
+  static const _thin = FontWeight.w300;
   static const _regular = FontWeight.w400;
   static const _medium = FontWeight.w500;
   static const _semiBold = FontWeight.w600;
@@ -69,7 +70,7 @@ class HomsaiThemeData {
     bodyText1: TextStyle(
         fontFamily: "HelveticaNowText", fontWeight: _regular, fontSize: 14.0),
     subtitle2: TextStyle(
-        fontFamily: "HelveticaNowText", fontWeight: _medium, fontSize: 14.0),
+        fontFamily: "HelveticaNowText", fontWeight: _thin, fontSize: 16.0),
     bodyText2: TextStyle(
         fontFamily: "HelveticaNowText", fontWeight: _regular, fontSize: 16.0),
     headline6: TextStyle(
@@ -77,6 +78,7 @@ class HomsaiThemeData {
     button: TextStyle(
         fontFamily: "HelveticaNowText", fontWeight: _semiBold, fontSize: 14.0),
   ).apply(
-      bodyColor: const Color(0xFFF2F2F2),
-      displayColor: const Color(0xFFF2F2F2));
+    bodyColor: const Color(0xFFF2F2F2),
+    displayColor: const Color(0xFFF2F2F2),
+  );
 }
