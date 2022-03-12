@@ -44,6 +44,7 @@ dependencies:
   http: ^0.13.4
   flutter_localized_locales: ^2.0.3
   flutter_native_splash: ^2.1.0
+  rive: ^0.8.1
 
 dev_dependencies:
   flutter_test:
@@ -69,6 +70,8 @@ flutter:
 
   assets:
     - assets/
+    - assets/animations/
+    - assets/animations/visibility.riv
     - assets/icons/
     - assets/icons/banner.svg
     - assets/icons/logo.svg

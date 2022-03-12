@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
+import 'package:rive/rive.dart';
 
 class EmailAddressTextField extends StatelessWidget {
   const EmailAddressTextField({
@@ -58,6 +59,27 @@ class PasswordTextField extends StatefulWidget {
 class _PasswordTextField extends State<PasswordTextField> {
   bool isPasswordSecure = true;
 
+  void _toggleVisibility() => setState(() {
+        isPasswordSecure = !isPasswordSecure;
+        _visibility?.value = isPasswordSecure;
+      });
+
+  SMIInput<bool>? _visibility;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  void _onVisibilityInit(Artboard artboard) {
+    final controller = StateMachineController.fromArtboard(artboard, 'toggle');
+    if (controller != null) {
+      artboard.addController(controller);
+      _visibility = controller.findInput<bool>('visibile');
+      _visibility?.value = true;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return TextFormField(
@@ -77,15 +99,11 @@ class _PasswordTextField extends State<PasswordTextField> {
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 6.0),
             child: IconButton(
-              icon: Icon(
-                isPasswordSecure ? Icons.visibility : Icons.visibility_off,
-                color: Theme.of(context).colorScheme.background,
+              icon: RiveAnimation.asset(
+                "assets/animations/visibility.riv",
+                onInit: _onVisibilityInit,
               ),
-              onPressed: () {
-                setState(() {
-                  isPasswordSecure = !isPasswordSecure;
-                });
-              },
+              onPressed: _toggleVisibility,
             ),
           ),
         ),

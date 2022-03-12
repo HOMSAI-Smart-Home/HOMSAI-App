@@ -13,6 +13,7 @@ Innover Flutter application
 - get_it: service locator used to implement dependency injection
 - shared_preferences: used to provide a persistent store for simple data
 - flutter_native_splash: automatically generates iOS, Android, and Web-native code for customizing this native splash screen background color and splash image.
+- rive: used to handle .riv animation file.
 
 ## Linting
 
