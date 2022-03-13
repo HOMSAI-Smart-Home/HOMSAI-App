@@ -1,16 +1,18 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-class CheckboxHomsai extends StatefulWidget {
-  const CheckboxHomsai({
+class CheckboxText extends StatefulWidget {
+  final Widget? child;
+
+  const CheckboxText({
     Key? key,
+    this.child,
   }) : super(key: key);
 
   @override
-  State<CheckboxHomsai> createState() => _CheckboxHomsai();
+  State<CheckboxText> createState() => _CheckboxText();
 }
 
-class _CheckboxHomsai extends State<CheckboxHomsai> {
+class _CheckboxText extends State<CheckboxText> {
   bool? isChecked = false;
 
   @override
@@ -36,25 +38,7 @@ class _CheckboxHomsai extends State<CheckboxHomsai> {
           ),
         ),
         const SizedBox(width: 16),
-        Flexible(
-          child: RichText(
-            text: TextSpan(
-              style: Theme.of(context).textTheme.subtitle2,
-              children: <TextSpan>[
-                const TextSpan(
-                  text: "Ho letto e accetto i termini ",
-                ),
-                TextSpan(
-                  text: 'Termini e Condizioni',
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                  recognizer: TapGestureRecognizer()..onTap = () {},
-                ),
-              ],
-            ),
-          ),
-        ),
+        if (widget.child != null) widget.child!
       ],
     );
   }

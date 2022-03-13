@@ -1,5 +1,21 @@
 {
     "helloWorld": "Ciao Mondo!",
     "emailAddress": "Indirizzo email",
-    "password": "Password"
+    "password": "Password",
+    "register": "Registrati",
+    "login": "Login",
+
+
+    "registerTitle1": "rendi\nla tua casa \n",
+    "registerTitle2": "davvero\n",
+    "registerTitle3": "intelligente",
+    "termsAgreements1": "Ho letto e accetto i termini ",
+    "termsAgreements2": "Termini e Condizioni",
+    "alradySignUp": "Hai già un account?",
+    "registerToLogin": "Effettua l'accesso",
+
+
+    "loginTitle1": "bentornato\na ",
+    "loginTitle2": "casa\n",
+    "notSignUp": "First time on Homsai?"
 }

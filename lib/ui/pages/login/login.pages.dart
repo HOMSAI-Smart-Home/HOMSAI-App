@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:homsai/ui/widget/textfield.widget.dart';
+import 'package:homsai/ui/pages/register/register.routes.dart'
+    as register_routes;
+import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -49,11 +52,11 @@ class _Body extends StatelessWidget {
                     text: TextSpan(
                       style: Theme.of(context).textTheme.headline4,
                       children: <TextSpan>[
-                        const TextSpan(
-                          text: "bentornato\na",
+                        TextSpan(
+                          text: HomsaiLocalizations.of(context)!.loginTitle1,
                         ),
                         TextSpan(
-                          text: 'casa\n',
+                          text: HomsaiLocalizations.of(context)!.loginTitle2,
                           style: TextStyle(
                             color: Theme.of(context).colorScheme.primary,
                           ),
@@ -92,22 +95,23 @@ class _Body extends StatelessWidget {
                       ),
                     ),
                     onPressed: () {},
-                    child: const Text('Entra'),
+                    child: Text(HomsaiLocalizations.of(context)!.login),
                   ),
                   const SizedBox(
                     height: 64, // offset
                   ),
                   const Spacer(),
-                  const Text("Prima volta su Homsai"),
+                  Text(HomsaiLocalizations.of(context)!.notSignUp),
                   TextButton(
                     style: TextButton.styleFrom(
                       primary: Theme.of(context).colorScheme.primary,
                       textStyle: Theme.of(context).textTheme.headline6,
                     ),
                     onPressed: () {
-                      Navigator.pushReplacementNamed(context, "RegisterPage");
+                      Navigator.pushReplacementNamed(
+                          context, register_routes.defaultRoute);
                     },
-                    child: const Text("Registrati"),
+                    child: Text(HomsaiLocalizations.of(context)!.register),
                   ),
                   const SizedBox(height: 20),
                 ],

@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -5,6 +6,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:homsai/ui/widget/checkbox.widget.dart';
 import 'package:homsai/ui/widget/shadow.widget.dart';
 import 'package:homsai/ui/widget/textfield.widget.dart';
+import 'package:homsai/ui/pages/login/login.routes.dart' as login_routes;
+import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -53,17 +56,17 @@ class _Body extends StatelessWidget {
                     text: TextSpan(
                       style: Theme.of(context).textTheme.headline4,
                       children: <TextSpan>[
-                        const TextSpan(
-                          text: "rendi\nla tua casa \n",
+                        TextSpan(
+                          text: HomsaiLocalizations.of(context)!.registerTitle1,
                         ),
                         TextSpan(
-                          text: 'davvero\n',
+                          text: HomsaiLocalizations.of(context)!.registerTitle2,
                           style: TextStyle(
                             color: Theme.of(context).colorScheme.background,
                           ),
                         ),
-                        const TextSpan(
-                          text: "intelligente",
+                        TextSpan(
+                          text: HomsaiLocalizations.of(context)!.registerTitle3,
                         ),
                       ],
                     ),
@@ -95,7 +98,29 @@ class _Body extends StatelessWidget {
                   const SizedBox(height: 16),
                   const PasswordTextField(),
                   const SizedBox(height: 16),
-                  const CheckboxHomsai(),
+                  CheckboxText(
+                    child: Flexible(
+                      child: RichText(
+                        text: TextSpan(
+                          style: Theme.of(context).textTheme.subtitle2,
+                          children: <TextSpan>[
+                            TextSpan(
+                              text: HomsaiLocalizations.of(context)!
+                                  .termsAgreements1,
+                            ),
+                            TextSpan(
+                              text: HomsaiLocalizations.of(context)!
+                                  .termsAgreements2,
+                              style: TextStyle(
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
+                              recognizer: TapGestureRecognizer()..onTap = () {},
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
                   const SizedBox(height: 16),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
@@ -109,22 +134,24 @@ class _Body extends StatelessWidget {
                       ),
                     ),
                     onPressed: () {},
-                    child: const Text('Registrati'),
+                    child: Text(HomsaiLocalizations.of(context)!.register),
                   ),
                   const SizedBox(
                     height: 128, // offset
                   ),
                   const Spacer(),
-                  const Text("Hai già un account?"),
+                  Text(HomsaiLocalizations.of(context)!.alradySignUp),
                   TextButton(
                     style: TextButton.styleFrom(
                       primary: Theme.of(context).colorScheme.primary,
                       textStyle: Theme.of(context).textTheme.headline6,
                     ),
                     onPressed: () {
-                      Navigator.pushReplacementNamed(context, "LoginPage");
+                      Navigator.pushReplacementNamed(
+                          context, login_routes.defaultRoute);
                     },
-                    child: const Text("Effettua l'accesso"),
+                    child:
+                        Text(HomsaiLocalizations.of(context)!.registerToLogin),
                   ),
                   const SizedBox(height: 20),
                 ],

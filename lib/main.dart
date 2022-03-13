@@ -3,6 +3,7 @@ import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
 import 'package:flutter_localized_locales/flutter_localized_locales.dart';
 import 'package:get_it/get_it.dart';
 import 'package:homsai/crossconcern/utilities/properties/constants.util.dart';
+import 'package:homsai/routes.dart';
 import 'package:homsai/themes/homsai_theme_data.dart';
 import 'package:homsai/ui/pages/login/login.pages.dart';
 import 'package:homsai/ui/pages/register/register.pages.dart';
@@ -37,11 +38,8 @@ class HomsaiApp extends StatelessWidget {
         LocaleNamesLocalizationsDelegate()
       ],
       supportedLocales: HomsaiLocalizations.supportedLocales,
-      initialRoute: 'RegisterPage',
-      routes: {
-        'RegisterPage': (context) => const RegisterPage(),
-        'LoginPage': (context) => const LoginPage(),
-      },
+      initialRoute: '/register',
+      onGenerateRoute: RouteConfiguration.onGenerateRoute,
     );
   }
 }

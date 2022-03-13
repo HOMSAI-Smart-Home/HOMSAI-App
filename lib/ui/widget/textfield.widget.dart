@@ -75,7 +75,7 @@ class _PasswordTextField extends State<PasswordTextField> {
     final controller = StateMachineController.fromArtboard(artboard, 'toggle');
     if (controller != null) {
       artboard.addController(controller);
-      _visibility = controller.findInput<bool>('visibile');
+      _visibility = controller.findInput<bool>('visible');
       _visibility?.value = true;
     }
   }

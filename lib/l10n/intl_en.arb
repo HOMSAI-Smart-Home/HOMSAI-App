@@ -10,5 +10,57 @@
     "password": "Password",
     "@password": {
       "description": "A label for a textfield for the user to input their password"
+    },
+    "register": "Register",
+    "@password": {
+      "description": "A label for a button for the user to submit to register"
+    },
+    "login": "Login",
+    "@login": {
+      "description": "A label for a button for the user to submit to login"
+    },
+
+
+    "registerTitle1": "make\nyour home\n",
+    "@registerTitle1": {
+      "description": "A label for the register page title header"
+    },
+    "registerTitle2": "truly\n",
+    "@registerTitle2": {
+      "description": "A label for the register page title header"
+    },
+    "registerTitle3": "smart",
+    "@registerTitle3": {
+      "description": "A label for the register page title header"
+    },
+    "termsAgreements1": "I have read and accept the ",
+    "@termsAgreements1": {
+      "description": "A label for the user to accept Terms and Agreements"
+    },
+    "termsAgreements2": "Terms and Agreements",
+    "@termsAgreements2": {
+      "description": "A label for the user to accept Terms and Agreements"
+    },
+    "alradySignUp": "Do you have already an account?",
+    "@alradySignUp": {
+      "description": "A label for a text for the user"
+    },
+    "registerToLogin": "Sign In",
+    "@registerToLogin": {
+      "description": "A label for a button for the user to go to login page"
+    },
+
+
+    "loginTitle1": "welcome\n",
+    "@loginTitle1": {
+      "description": "A label for the login page title header"
+    },
+    "loginTitle2": "home\n",
+    "@loginTitle2": {
+      "description": "A label for the login page title header"
+    },
+    "notSignUp": "First time on Homsai?",
+    "@notSignUp": {
+      "description": "A label for a text for the user"
     }
 }
