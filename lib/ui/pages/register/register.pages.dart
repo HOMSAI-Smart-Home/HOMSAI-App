@@ -4,6 +4,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:homsai/ui/widget/credentials_form/credentials_form.widget.dart';
 import 'package:homsai/ui/widget/shadow.widget.dart';
+import 'package:homsai/ui/pages/scan/homeassistantscan.routes.dart'
+    as has_routes;
 import 'package:homsai/ui/pages/login/login.routes.dart' as login_routes;
 import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
 
@@ -109,8 +111,10 @@ class _Body extends StatelessWidget {
                       textStyle: Theme.of(context).textTheme.headline6,
                     ),
                     onPressed: () {
-                      Navigator.pushReplacementNamed(
-                          context, login_routes.defaultRoute);
+                      Navigator.pushNamed(context, has_routes.defaultRoute);
+                      // TODO: Uncomment later
+                      // Navigator.pushReplacementNamed(
+                      //    context, login_routes.defaultRoute);
                     },
                     child:
                         Text(HomsaiLocalizations.of(context)!.registerToLogin),

@@ -36,7 +36,7 @@ class HomsaiApp extends StatelessWidget {
         LocaleNamesLocalizationsDelegate()
       ],
       supportedLocales: HomsaiLocalizations.supportedLocales,
-      initialRoute: '/register',
+      initialRoute: RouteConfiguration.initialRoute,
       onGenerateRoute: RouteConfiguration.onGenerateRoute,
     );
   }
