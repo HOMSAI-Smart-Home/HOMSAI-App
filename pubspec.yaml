@@ -45,6 +45,11 @@ dependencies:
   flutter_localized_locales: ^2.0.3
   flutter_native_splash: ^2.1.0
   rive: ^0.8.1
+  rxdart: ^0.27.3
+  bloc: ^8.0.3
+  flutter_bloc: ^8.0.1
+  equatable: ^2.0.3
+  formz: ^0.4.1
 
 dev_dependencies:
   flutter_test:

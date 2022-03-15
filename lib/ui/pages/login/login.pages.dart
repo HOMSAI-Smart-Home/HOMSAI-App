@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:homsai/ui/widget/textfield.widget.dart';
+import 'package:homsai/ui/widget/credentials_form/credentials_form.widget.dart';
 import 'package:homsai/ui/pages/register/register.routes.dart'
     as register_routes;
 import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
@@ -79,26 +79,8 @@ class _Body extends StatelessWidget {
               child: Column(
                 children: <Widget>[
                   const Spacer(),
-                  const EmailAddressTextField(),
-                  const SizedBox(height: 16),
-                  const PasswordTextField(),
-                  const SizedBox(height: 16),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: const Size.fromHeight(48),
-                      primary: Theme.of(context).colorScheme.primary,
-                      onSurface: Theme.of(context).colorScheme.onBackground,
-                      textStyle: Theme.of(context).textTheme.headline6,
-                      elevation: 5.0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                    ),
-                    onPressed: () {},
-                    child: Text(HomsaiLocalizations.of(context)!.login),
-                  ),
-                  const SizedBox(
-                    height: 64, // offset
+                  CredentialsForm(
+                    submitLabel: HomsaiLocalizations.of(context)!.login,
                   ),
                   const Spacer(),
                   Text(HomsaiLocalizations.of(context)!.notSignUp),

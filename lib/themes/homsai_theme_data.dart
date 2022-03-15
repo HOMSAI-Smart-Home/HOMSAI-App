@@ -14,6 +14,7 @@ class HomsaiThemeData {
       colorScheme: colorScheme,
       textTheme: _textTheme,
       primaryColor: const Color(0xFF202020),
+      disabledColor: const Color(0xFF202020),
       appBarTheme: AppBarTheme(
         backgroundColor: colorScheme.background,
         elevation: 0,
@@ -59,23 +60,23 @@ class HomsaiThemeData {
     headline4: TextStyle(
         fontFamily: "JoyrideExtended", fontWeight: _bold, fontSize: 22.0),
     caption: TextStyle(
-        fontFamily: "HelveticaNowText", fontWeight: _semiBold, fontSize: 18.0),
+        fontFamily: "HelveticaNowText", fontWeight: _semiBold, fontSize: 16.0),
     headline5: TextStyle(
-        fontFamily: "HelveticaNowText", fontWeight: _medium, fontSize: 18.0),
+        fontFamily: "HelveticaNowText", fontWeight: _medium, fontSize: 16.0),
     subtitle1: TextStyle(
-        fontFamily: "HelveticaNowText", fontWeight: _medium, fontSize: 18.0),
+        fontFamily: "HelveticaNowText", fontWeight: _medium, fontSize: 16.0),
     overline: TextStyle(
         fontFamily: "HelveticaNowText", fontWeight: _medium, fontSize: 12.0),
     bodyText1: TextStyle(
         fontFamily: "HelveticaNowText", fontWeight: _regular, fontSize: 14.0),
     subtitle2: TextStyle(
-        fontFamily: "HelveticaNowText", fontWeight: _thin, fontSize: 18.0),
+        fontFamily: "HelveticaNowText", fontWeight: _thin, fontSize: 16.0),
     bodyText2: TextStyle(
-        fontFamily: "HelveticaNowText", fontWeight: _regular, fontSize: 18.0),
+        fontFamily: "HelveticaNowText", fontWeight: _regular, fontSize: 16.0),
     headline6: TextStyle(
-        fontFamily: "HelveticaNowText", fontWeight: _bold, fontSize: 18.0),
+        fontFamily: "HelveticaNowText", fontWeight: _bold, fontSize: 16.0),
     button: TextStyle(
-        fontFamily: "HelveticaNowText", fontWeight: _semiBold, fontSize: 18.0),
+        fontFamily: "HelveticaNowText", fontWeight: _semiBold, fontSize: 16.0),
   ).apply(
     bodyColor: const Color(0xFFF2F2F2),
     displayColor: const Color(0xFFF2F2F2),

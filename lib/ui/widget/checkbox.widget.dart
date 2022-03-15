@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 
 class CheckboxText extends StatefulWidget {
   final Widget? child;
+  final void Function(bool?) onChanged;
 
   const CheckboxText({
     Key? key,
     this.child,
+    required this.onChanged,
   }) : super(key: key);
 
   @override
@@ -28,6 +30,7 @@ class _CheckboxText extends State<CheckboxText> {
               setState(() {
                 this.isChecked = isChecked;
               });
+              widget.onChanged(isChecked);
             },
             activeColor: Theme.of(context).colorScheme.primary,
             side: BorderSide(

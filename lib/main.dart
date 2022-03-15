@@ -5,8 +5,6 @@ import 'package:get_it/get_it.dart';
 import 'package:homsai/crossconcern/utilities/properties/constants.util.dart';
 import 'package:homsai/routes.dart';
 import 'package:homsai/themes/homsai_theme_data.dart';
-import 'package:homsai/ui/pages/login/login.pages.dart';
-import 'package:homsai/ui/pages/register/register.pages.dart';
 
 final getIt = GetIt.instance;
 
