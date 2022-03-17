@@ -4,7 +4,7 @@ import 'package:flutter_localized_locales/flutter_localized_locales.dart';
 import 'package:get_it/get_it.dart';
 import 'package:homsai/crossconcern/utilities/properties/constants.util.dart';
 import 'package:homsai/routes.dart';
-import 'package:homsai/themes/homsai_theme_data.dart';
+import 'package:homsai/themes/app.theme.dart';
 
 final getIt = GetIt.instance;
 

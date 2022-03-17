@@ -32,11 +32,6 @@ class _CheckboxText extends State<CheckboxText> {
               });
               widget.onChanged(isChecked);
             },
-            activeColor: Theme.of(context).colorScheme.primary,
-            side: BorderSide(
-              color: Theme.of(context).colorScheme.secondary,
-              width: 1,
-            ),
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
           ),
         ),

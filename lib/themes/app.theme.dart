@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:homsai/themes/button.theme.dart';
+import 'package:homsai/themes/card.theme.dart';
+import 'package:homsai/themes/checkbox.theme.dart';
+import 'package:homsai/themes/colors.theme.dart';
+import 'package:homsai/themes/input_decoration.theme.dart';
 
 class HomsaiThemeData {
   static const _lightFillColor = Colors.black;
@@ -13,14 +18,34 @@ class HomsaiThemeData {
     return ThemeData(
       colorScheme: colorScheme,
       textTheme: _textTheme,
-      primaryColor: const Color(0xFF202020),
-      disabledColor: const Color(0xFF202020),
+      primaryColor: HomsaiColors.primaryBlack,
+      disabledColor: HomsaiColors.primaryBlack,
       appBarTheme: AppBarTheme(
         backgroundColor: colorScheme.background,
         elevation: 0,
         iconTheme: IconThemeData(color: colorScheme.primary),
       ),
-      iconTheme: IconThemeData(color: colorScheme.onPrimary),
+      inputDecorationTheme: HomsaiInputDecorationTheme.defaultTheme(
+        colorScheme,
+        _textTheme,
+      ),
+      checkboxTheme: HomsaiCheckboxTheme.defaultTheme(colorScheme),
+      cardTheme: HomsaiCardTheme.defaultTheme(colorScheme),
+      textButtonTheme: HomsaiButtonsTheme.defaultTextTheme(
+        colorScheme,
+        _textTheme,
+      ),
+      elevatedButtonTheme: HomsaiButtonsTheme.defaultElevatedTheme(
+        colorScheme,
+        _textTheme,
+      ),
+      outlinedButtonTheme: HomsaiButtonsTheme.defaultOutlinedTheme(
+        colorScheme,
+        _textTheme,
+      ),
+      iconTheme: IconThemeData(color: colorScheme.onBackground),
+      unselectedWidgetColor: colorScheme.onBackground,
+      toggleableActiveColor: HomsaiColors.primaryGreen,
       canvasColor: colorScheme.background,
       scaffoldBackgroundColor: colorScheme.background,
       highlightColor: Colors.transparent,
@@ -36,17 +61,17 @@ class HomsaiThemeData {
     );
   }
 
-  static const ColorScheme lightColorScheme = ColorScheme(
-    primary: Color(0xFF56BB76),
-    secondary: Color(0xFFF2F2F2),
-    background: Color(0xFF202020),
-    surface: Color(0xFF2C2C2C),
-    onBackground: Color(0xFFF2F2F2),
-    error: Color(0xFFA94A15),
-    onError: Color(0xFFF03829),
-    onPrimary: Color(0xFF202020),
-    onSecondary: Color(0xFF322942),
-    onSurface: Color(0xFFF2F2F2),
+  static ColorScheme lightColorScheme = ColorScheme(
+    primary: HomsaiColors.primaryGreen,
+    secondary: HomsaiColors.secondaryGreen,
+    background: HomsaiColors.primaryBlack,
+    surface: HomsaiColors.secondaryBlack,
+    onBackground: HomsaiColors.primaryWhite,
+    error: HomsaiColors.primaryRed,
+    onError: HomsaiColors.primaryWhite,
+    onPrimary: HomsaiColors.primaryBlack,
+    onSecondary: HomsaiColors.secondaryBlack,
+    onSurface: HomsaiColors.primaryWhite,
     brightness: Brightness.light,
   );
 
@@ -62,9 +87,9 @@ class HomsaiThemeData {
     caption: TextStyle(
         fontFamily: "HelveticaNowText", fontWeight: _semiBold, fontSize: 16.0),
     headline5: TextStyle(
-        fontFamily: "HelveticaNowText", fontWeight: _medium, fontSize: 16.0),
+        fontFamily: "HelveticaNowText", fontWeight: _medium, fontSize: 22.0),
     subtitle1: TextStyle(
-        fontFamily: "HelveticaNowText", fontWeight: _medium, fontSize: 16.0),
+        fontFamily: "HelveticaNowText", fontWeight: _thin, fontSize: 14.0),
     overline: TextStyle(
         fontFamily: "HelveticaNowText", fontWeight: _medium, fontSize: 12.0),
     bodyText1: TextStyle(
@@ -78,7 +103,7 @@ class HomsaiThemeData {
     button: TextStyle(
         fontFamily: "HelveticaNowText", fontWeight: _semiBold, fontSize: 16.0),
   ).apply(
-    bodyColor: const Color(0xFFF2F2F2),
-    displayColor: const Color(0xFFF2F2F2),
+    bodyColor: HomsaiColors.primaryWhite,
+    displayColor: HomsaiColors.primaryWhite,
   );
 }

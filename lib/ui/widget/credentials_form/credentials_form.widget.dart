@@ -152,19 +152,6 @@ class SubmitButton extends StatelessWidget {
       buildWhen: (previous, current) => previous.status != current.status,
       builder: (context, state) {
         return ElevatedButton(
-          style: ElevatedButton.styleFrom(
-              minimumSize: const Size.fromHeight(48),
-              primary: Theme.of(context).colorScheme.primary,
-              onSurface: Theme.of(context).colorScheme.primary,
-              textStyle: Theme.of(context)
-                  .textTheme
-                  .headline6
-                  ?.copyWith(color: Theme.of(context).colorScheme.background),
-              elevation: 5.0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              padding: const EdgeInsets.all(8)),
           onPressed: state.status.isValid
               ? () => context.read<CredentialsFormBloc>().add(FormSubmitted())
               : null,

@@ -76,10 +76,8 @@ flutter:
   assets:
     - assets/
     - assets/animations/
-    - assets/animations/visibility.riv
+    - assets/animations/
     - assets/icons/
-    - assets/icons/banner.svg
-    - assets/icons/logo.svg
 
   fonts:
     - family: HelveticaNowText

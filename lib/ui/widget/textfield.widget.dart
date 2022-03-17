@@ -30,18 +30,7 @@ class EmailAddressTextField extends StatelessWidget {
             color: Theme.of(context).colorScheme.onBackground,
           ),
           labelText: HomsaiLocalizations.of(context)!.emailAddress,
-          labelStyle: TextStyle(
-            color: Theme.of(context).colorScheme.onBackground,
-          ),
           errorText: state.email.invalid ? 'invalid email' : null,
-          errorMaxLines: 2,
-          errorStyle: Theme.of(context)
-              .textTheme
-              .subtitle2
-              ?.copyWith(color: const Color(0xFFFF0000)),
-          border: _normalTextBorder(context),
-          focusedErrorBorder: _normalTextBorder(context),
-          errorBorder: _normalTextBorder(context),
         ),
         style: Theme.of(context).textTheme.subtitle2,
       );
@@ -96,18 +85,8 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
           suffixIcon: VisibilityIcon(
             onPressed: _toggleVisibility,
           ),
-          border: _normalTextBorder(context),
-          focusedBorder: _normalTextBorder(context),
-          focusedErrorBorder: _normalTextBorder(context),
-          errorBorder: _normalTextBorder(context),
           errorText: state.password.invalid ? 'invalid password' : null,
-          errorMaxLines: 2,
-          errorStyle: Theme.of(context)
-              .textTheme
-              .subtitle2
-              ?.copyWith(color: const Color(0xFFFF0000)),
           labelText: HomsaiLocalizations.of(context)!.password,
-          labelStyle: Theme.of(context).textTheme.subtitle2,
         ),
         style: Theme.of(context).textTheme.bodyMedium,
       );
@@ -168,18 +147,4 @@ class _VisibilityIconState extends State<VisibilityIcon> {
       ),
     );
   }
-}
-
-OutlineInputBorder _normalTextBorder(BuildContext context) {
-  return _textBorder(Theme.of(context).colorScheme.onBackground);
-}
-
-OutlineInputBorder _textBorder(Color color) {
-  return OutlineInputBorder(
-    borderRadius: const BorderRadius.all(Radius.circular(5)),
-    borderSide: BorderSide(
-      width: 1,
-      color: color,
-    ),
-  );
 }
