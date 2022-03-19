@@ -6,8 +6,8 @@ import 'package:homsai/ui/pages/register/register.pages.dart';
 import 'package:homsai/ui/pages/register/register.routes.dart'
     as register_routes;
 import 'package:homsai/ui/pages/login/login.routes.dart' as login_routes;
-import 'package:homsai/ui/pages/scan/homeassistantscan.pages.dart';
-import 'package:homsai/ui/pages/scan/homeassistantscan.routes.dart'
+import 'package:homsai/ui/pages/scan/home_assistant_scan.pages.dart';
+import 'package:homsai/ui/pages/scan/home_assistant_scan.routes.dart'
     as has_routes;
 
 typedef PathWidgetBuilder = Widget Function(BuildContext, String?);
@@ -32,7 +32,10 @@ class Path {
 }
 
 class RouteConfiguration {
-  static const String initialRoute = register_routes.defaultRoute;
+  static const String initialRoute = has_routes.defaultRoute;
+  static const String login = login_routes.defaultRoute;
+  static const String register = register_routes.defaultRoute;
+  static const String homeAssistantScan = has_routes.defaultRoute;
 
   /// List of [Path] to for route matching. When a named route is pushed with
   /// [Navigator.pushNamed], the route name is matched with the [Path.pattern]
@@ -41,15 +44,15 @@ class RouteConfiguration {
   /// take priority.
   static List<Path> paths = [
     Path(
-      r'^' + login_routes.defaultRoute,
+      r'^' + login,
       (context, match) => const LoginPage(),
     ),
     Path(
-      r'^' + register_routes.defaultRoute,
+      r'^' + register,
       (context, match) => const RegisterPage(),
     ),
     Path(
-      r'^' + has_routes.defaultRoute,
+      r'^' + homeAssistantScan,
       (context, match) => const HomeAssistantScanPage(),
     ),
   ];

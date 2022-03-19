@@ -30,6 +30,9 @@ enum HomeAssistantScanStatus {
   scanningInProgress,
   scanningSuccess,
   scanningFailure,
+  authenticationInProgress,
+  authenticationSuccess,
+  authenticationFailure
 }
 
 const _urlSubmittableStatus = <HomeAssistantScanStatus>{
@@ -42,9 +45,16 @@ const _scannedCompleteStatus = <HomeAssistantScanStatus>{
   HomeAssistantScanStatus.scanningFailure,
 };
 
+const _authanticatingStatus = <HomeAssistantScanStatus>{
+  HomeAssistantScanStatus.authenticationInProgress,
+  HomeAssistantScanStatus.authenticationSuccess,
+  HomeAssistantScanStatus.authenticationFailure,
+};
+
 /// Useful extensions on [HomeAssistantScanStatus]
 extension HomeAssistantScanStatusX on HomeAssistantScanStatus {
-  bool get isManual => this == HomeAssistantScanStatus.manual;
+  bool get isManual =>
+      this == HomeAssistantScanStatus.manual || isAuthenticating;
 
   bool get isScanningInProgress =>
       this == HomeAssistantScanStatus.scanningInProgress;
@@ -56,4 +66,15 @@ extension HomeAssistantScanStatusX on HomeAssistantScanStatus {
   bool get isScanningComplete => _scannedCompleteStatus.contains(this);
 
   bool get canSubmitUrl => _urlSubmittableStatus.contains(this);
+
+  bool get isAuthenticating => _authanticatingStatus.contains(this);
+
+  bool get isAuthenticationInProgress =>
+      this == HomeAssistantScanStatus.authenticationInProgress;
+
+  bool get isAuthenticationSuccess =>
+      this == HomeAssistantScanStatus.authenticationSuccess;
+
+  bool get isAuthenticationFailure =>
+      this == HomeAssistantScanStatus.authenticationFailure;
 }

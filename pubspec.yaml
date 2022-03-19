@@ -50,6 +50,8 @@ dependencies:
   flutter_bloc: ^8.0.1
   equatable: ^2.0.3
   formz: ^0.4.1
+  flutter_web_auth: ^0.4.1
+  super_rich_text: ^1.0.0
 
 dev_dependencies:
   flutter_test:
@@ -102,3 +104,7 @@ flutter:
 flutter_native_splash:
   background_image: assets/icons/splash/background.png
   image: assets/icons/splash/logo.png
+  fullscreen: true
+
+  android_12:
+    

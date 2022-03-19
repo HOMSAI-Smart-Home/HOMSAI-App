@@ -19,6 +19,16 @@ Innover Flutter application
 - bloc: A dart package that helps implement the BLoC pattern.
 - flutter_bloc: Widgets that make it easy to integrate blocs and cubits into Flutter. Built to work with package:bloc.
 - equatable: Equatable overrides == and hashCode for you so you don't have to waste your time writing lots of boilerplate code.
+- super_rich_text: handles boilerplate for rich text when you need to make a part of the text with a different style
+
+## Localization files
+
+Flutter generates localizations files on when building the app.
+
+To generate Flutter localiztion files manually
+```
+flutter gen-l10n
+```
 
 ## Linting
 

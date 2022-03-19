@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:homsai/routes.dart';
 import 'package:homsai/themes/card.theme.dart';
 import 'package:homsai/themes/colors.theme.dart';
 import 'package:homsai/ui/pages/scan/bloc/home_assistant_scan.bloc.dart';
 import 'package:homsai/ui/widget/radio.widget.dart';
 import 'package:rive/rive.dart';
+import 'package:super_rich_text/super_rich_text.dart';
+import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
 
 class HomeAssistantScanPage extends StatefulWidget {
   const HomeAssistantScanPage({Key? key}) : super(key: key);
@@ -36,80 +39,81 @@ class _HomeAssistantScanPage extends State<HomeAssistantScanPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            const SizedBox(
-              height: 32,
-            ),
-            SvgPicture.asset(
-              "assets/icons/full_logo.svg",
-              height: 20,
-            ),
-            const SizedBox(
-              height: 32,
-            ),
-            Theme(
-              child: Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      const Icon(Icons.wifi_rounded),
-                      const SizedBox(
-                        width: 8,
-                      ),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.only(top: 2),
-                              child: Text(
-                                'Connettiti al WI-FI!',
-                                style: Theme.of(context).textTheme.headline6,
-                              ),
-                            ),
-                            const SizedBox(height: 9),
-                            Text(
-                              'Per individuare l’istanza locale di Home Assistant è necessario che lo smartphone sia connesso alla stessa Wi-Fi dell’hub domotico.',
-                              style: Theme.of(context).textTheme.subtitle1,
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                ),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              SvgPicture.asset("assets/icons/full_logo.svg", height: 20),
+              const SizedBox(height: 32),
+              _HomeAssistantScanDialog(),
+              const SizedBox(height: 40),
+              BlocProvider(
+                create: (_) => HomeAssistantScanBloc(),
+                child: const _SearchLocalInstance(),
               ),
-              data: HomsaiCardTheme.confirmTheme(Theme.of(context)),
-            ),
-            const SizedBox(
-              height: 40,
-            ),
-            BlocProvider(
-              create: (_) => HomeAssistantScanBloc(),
-              child: const SearchLocalInstance(),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
 }
 
-class SearchLocalInstance extends StatefulWidget {
-  const SearchLocalInstance({Key? key}) : super(key: key);
+class _HomeAssistantScanDialog extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Theme(
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              const Icon(Icons.wifi_rounded),
+              const SizedBox(
+                width: 8,
+              ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(top: 2),
+                      child: Text(
+                        HomsaiLocalizations.of(context)!
+                            .homeAssistantScanDialogTitle,
+                        style: Theme.of(context).textTheme.headline6,
+                      ),
+                    ),
+                    const SizedBox(height: 9),
+                    SuperRichText(
+                      text: HomsaiLocalizations.of(context)!
+                          .homeAssistantScanDialogMessage,
+                      style: Theme.of(context).textTheme.subtitle1,
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+      data: HomsaiCardTheme.confirmTheme(Theme.of(context)),
+    );
+  }
+}
+
+class _SearchLocalInstance extends StatefulWidget {
+  const _SearchLocalInstance({Key? key}) : super(key: key);
 
   @override
   _SearchLocalInstanceState createState() => _SearchLocalInstanceState();
 }
 
-class _SearchLocalInstanceState extends State<SearchLocalInstance> {
+class _SearchLocalInstanceState extends State<_SearchLocalInstance> {
   @override
   void initState() {
     super.initState();
@@ -123,7 +127,7 @@ class _SearchLocalInstanceState extends State<SearchLocalInstance> {
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         Text(
-          "Ricerca istanza locale",
+          HomsaiLocalizations.of(context)!.homeAssistantScanTitle,
           style: Theme.of(context).textTheme.headline5,
         ),
         const SizedBox(
@@ -139,8 +143,15 @@ class _SearchLocalInstanceState extends State<SearchLocalInstance> {
   }
 }
 
-class _SearchLocalInstanceContainer extends StatelessWidget {
-  late Widget child;
+class _SearchLocalInstanceContainer extends StatefulWidget {
+  @override
+  State<_SearchLocalInstanceContainer> createState() =>
+      _SearchLocalInstanceContainerState();
+}
+
+class _SearchLocalInstanceContainerState
+    extends State<_SearchLocalInstanceContainer> {
+  Widget? child;
 
   @override
   Widget build(BuildContext context) {
@@ -160,7 +171,7 @@ class _SearchLocalInstanceContainer extends StatelessWidget {
                   Tween<Offset>(begin: Offset(1.0, 0.0), end: Offset(0.0, 0.0))
                       .animate(animation);
 
-              if (child.key == this.child.key) {
+              if (child.key == this.child?.key) {
                 return ClipRect(
                   child: SlideTransition(
                     position: inAnimation,
@@ -201,6 +212,9 @@ class _SearchLocalInstanceContainer extends StatelessWidget {
         );
         break;
       default:
+        child ??= _SearchLocalIntanceScanning(
+          key: UniqueKey(),
+        );
     }
     return child;
   }
@@ -221,12 +235,15 @@ class _SearchLocalIntanceScanning extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 const _HourglassIcon(),
+                const SizedBox(height: 8),
                 AnimatedSwitcher(
                   duration: const Duration(milliseconds: 250),
                   child: Text(
                     state.status.isScanningFailure
-                        ? "Nessuna istanza locale trovata"
-                        : "Ricerca...",
+                        ? HomsaiLocalizations.of(context)!
+                            .homeAssistantScanningError
+                        : HomsaiLocalizations.of(context)!
+                            .homeAssistantScanningProgress,
                     key: ValueKey(state.status),
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: state.status.isScanningFailure
@@ -376,7 +393,10 @@ class _SearchLocalIntanceManual extends StatelessWidget {
         const SizedBox(
           height: 8,
         ),
-        const Text("Esempio: http://:192.168.x.x:8123")
+        SuperRichText(
+          text: HomsaiLocalizations.of(context)!.homeAssistantScanManualHint,
+          style: Theme.of(context).textTheme.subtitle1,
+        )
       ],
     );
   }
@@ -412,25 +432,28 @@ class _SearchLocalIntanceManualTextFieldState
   Widget build(BuildContext context) {
     return BlocBuilder<HomeAssistantScanBloc, HomeAssistantScanState>(
         builder: (context, state) {
-      return TextFormField(
-        restorationId: 'manual_url_text_field',
-        initialValue: state.selectedUrl.value,
-        focusNode: _urlFocusNode,
-        keyboardType: TextInputType.url,
-        onChanged: (value) {
-          context
-              .read<HomeAssistantScanBloc>()
-              .add(ManualUrlChanged(url: value));
-        },
-        decoration: InputDecoration(
-          prefixIcon: Icon(
-            Icons.link,
-            color: Theme.of(context).colorScheme.onBackground,
-          ),
-          labelText: "Inserisci Url",
-        ),
-        style: Theme.of(context).textTheme.subtitle2,
-      );
+      return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          child: TextFormField(
+            restorationId: 'manual_url_text_field',
+            initialValue: state.selectedUrl.value,
+            focusNode: _urlFocusNode,
+            keyboardType: TextInputType.url,
+            onChanged: (value) {
+              context
+                  .read<HomeAssistantScanBloc>()
+                  .add(ManualUrlChanged(url: value));
+            },
+            decoration: InputDecoration(
+              prefixIcon: Icon(
+                Icons.link,
+                color: Theme.of(context).colorScheme.onBackground,
+              ),
+              labelText:
+                  HomsaiLocalizations.of(context)!.homeAssistantScanManualLabel,
+            ),
+            style: Theme.of(context).textTheme.subtitle2,
+          ));
     });
   }
 }
@@ -457,28 +480,54 @@ class _SearchLocalIntanceButtons extends StatelessWidget {
 class _ContinueRetryButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeAssistantScanBloc, HomeAssistantScanState>(
-      buildWhen: (previous, current) =>
-          previous.status != current.status ||
-          previous.selectedUrl.value != current.selectedUrl.value,
-      builder: (context, state) {
-        return ElevatedButton(
-          onPressed: (state.status.canSubmitUrl && state.selectedUrl.valid)
-              ? () => context.read<HomeAssistantScanBloc>().add(UrlSubmitted())
-              : state.status.isScanningFailure
-                  ? () =>
-                      context.read<HomeAssistantScanBloc>().add(ScanPressed())
-                  : null,
-          child: AnimatedSwitcher(
-            duration: const Duration(milliseconds: 250),
-            child: Text(
-              state.status.isScanningFailure ? "Riprova" : "Avanti",
-              key: ValueKey(state.status.isScanningFailure),
-            ),
-          ),
-        );
+    return BlocListener<HomeAssistantScanBloc, HomeAssistantScanState>(
+      listenWhen: (previous, current) => previous.status != current.status,
+      listener: (context, state) {
+        if (state.status.isAuthenticating) print(state.status);
+        if (state.status.isAuthenticationSuccess) {
+          Navigator.popAndPushNamed(context, RouteConfiguration.login);
+        }
       },
+      child: BlocBuilder<HomeAssistantScanBloc, HomeAssistantScanState>(
+        buildWhen: (previous, current) =>
+            previous.status != current.status ||
+            previous.selectedUrl.value != current.selectedUrl.value,
+        builder: (context, state) {
+          return ElevatedButton(
+            onPressed: (state.status.canSubmitUrl && state.selectedUrl.valid)
+                ? () =>
+                    context.read<HomeAssistantScanBloc>().add(UrlSubmitted())
+                : state.status.isScanningFailure
+                    ? () =>
+                        context.read<HomeAssistantScanBloc>().add(ScanPressed())
+                    : null,
+            child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 250),
+              child: _buttonLabel(context, state.status),
+            ),
+          );
+        },
+      ),
     );
+  }
+
+  Widget _buttonLabel(BuildContext context, HomeAssistantScanStatus status) {
+    return status.isAuthenticationInProgress
+        ? Center(
+            key: ValueKey(status.isAuthenticationInProgress),
+            child: SizedBox(
+              width: 24,
+              height: 24,
+              child: CircularProgressIndicator(
+                color: Theme.of(context).colorScheme.background,
+              ),
+            ),
+          )
+        : Text(
+            status.isScanningFailure
+                ? HomsaiLocalizations.of(context)!.retry
+                : HomsaiLocalizations.of(context)!.next,
+            key: ValueKey(status.isScanningFailure));
   }
 }
 
@@ -499,7 +548,10 @@ class _ManualUrlButton extends StatelessWidget {
           child: AnimatedSwitcher(
             duration: const Duration(milliseconds: 250),
             child: Text(
-              state.status.isManual ? "Scansiona" : "Inserisci Url",
+              state.status.isManual
+                  ? HomsaiLocalizations.of(context)!.homeAssistantScanLabel
+                  : HomsaiLocalizations.of(context)!
+                      .homeAssistantScanManualLabel,
               key: ValueKey(state.status.isManual),
             ),
           ),

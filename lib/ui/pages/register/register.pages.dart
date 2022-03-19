@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:homsai/ui/widget/credentials_form/credentials_form.widget.dart';
 import 'package:homsai/ui/widget/shadow.widget.dart';
-import 'package:homsai/ui/pages/scan/homeassistantscan.routes.dart'
+import 'package:homsai/ui/pages/scan/home_assistant_scan.routes.dart'
     as has_routes;
 import 'package:homsai/ui/pages/login/login.routes.dart' as login_routes;
 import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
