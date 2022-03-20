@@ -9,6 +9,8 @@ import 'package:homsai/ui/pages/login/login.routes.dart' as login_routes;
 import 'package:homsai/ui/pages/scan/home_assistant_scan.pages.dart';
 import 'package:homsai/ui/pages/scan/home_assistant_scan.routes.dart'
     as has_routes;
+import 'package:homsai/ui/pages/add_implant/add_implant.routes.dart'
+    as add_implant_routes;
 
 typedef PathWidgetBuilder = Widget Function(BuildContext, String?);
 
@@ -36,6 +38,7 @@ class RouteConfiguration {
   static const String login = login_routes.defaultRoute;
   static const String register = register_routes.defaultRoute;
   static const String homeAssistantScan = has_routes.defaultRoute;
+  static const String addImplant = add_implant_routes.defaultRoute;
 
   /// List of [Path] to for route matching. When a named route is pushed with
   /// [Navigator.pushNamed], the route name is matched with the [Path.pattern]
@@ -53,6 +56,10 @@ class RouteConfiguration {
     ),
     Path(
       r'^' + homeAssistantScan,
+      (context, match) => const HomeAssistantScanPage(),
+    ),
+    Path(
+      r'^' + addImplant,
       (context, match) => const HomeAssistantScanPage(),
     ),
   ];

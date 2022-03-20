@@ -40,21 +40,23 @@ class _HomeAssistantScanPage extends State<HomeAssistantScanPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              SvgPicture.asset("assets/icons/full_logo.svg", height: 20),
-              const SizedBox(height: 32),
-              _HomeAssistantScanDialog(),
-              const SizedBox(height: 40),
-              BlocProvider(
-                create: (_) => HomeAssistantScanBloc(),
-                child: const _SearchLocalInstance(),
-              ),
-            ],
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                SvgPicture.asset("assets/icons/full_logo.svg", height: 20),
+                const SizedBox(height: 32),
+                _HomeAssistantScanDialog(),
+                const SizedBox(height: 40),
+                BlocProvider(
+                  create: (_) => HomeAssistantScanBloc(),
+                  child: const _SearchLocalInstance(),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -207,9 +209,11 @@ class _SearchLocalInstanceContainerState
         );
         break;
       case HomeAssistantScanStatus.manual:
-        child = _SearchLocalIntanceManual(
-          key: UniqueKey(),
-        );
+        if (child is! _SearchLocalIntanceManual) {
+          child = _SearchLocalIntanceManual(
+            key: UniqueKey(),
+          );
+        }
         break;
       default:
         child ??= _SearchLocalIntanceScanning(
@@ -396,6 +400,12 @@ class _SearchLocalIntanceManual extends StatelessWidget {
         SuperRichText(
           text: HomsaiLocalizations.of(context)!.homeAssistantScanManualHint,
           style: Theme.of(context).textTheme.subtitle1,
+          useGlobalMarkers: false,
+          othersMarkers: [
+            MarkerText(
+                marker: '*',
+                style: const TextStyle(fontWeight: FontWeight.bold))
+          ],
         )
       ],
     );
@@ -444,11 +454,19 @@ class _SearchLocalIntanceManualTextFieldState
                   .read<HomeAssistantScanBloc>()
                   .add(ManualUrlChanged(url: value));
             },
+            enabled: !state.status.isAuthenticationInProgress,
             decoration: InputDecoration(
               prefixIcon: Icon(
                 Icons.link,
                 color: Theme.of(context).colorScheme.onBackground,
               ),
+              errorText: state.status.isAuthenticationFailure
+                  ? HomsaiLocalizations.of(context)!
+                      .homeAssistantScanManualAuthError
+                  : state.selectedUrl.invalid
+                      ? HomsaiLocalizations.of(context)!
+                          .homeAssistantScanManualError
+                      : null,
               labelText:
                   HomsaiLocalizations.of(context)!.homeAssistantScanManualLabel,
             ),
@@ -483,9 +501,8 @@ class _ContinueRetryButton extends StatelessWidget {
     return BlocListener<HomeAssistantScanBloc, HomeAssistantScanState>(
       listenWhen: (previous, current) => previous.status != current.status,
       listener: (context, state) {
-        if (state.status.isAuthenticating) print(state.status);
         if (state.status.isAuthenticationSuccess) {
-          Navigator.popAndPushNamed(context, RouteConfiguration.login);
+          Navigator.popAndPushNamed(context, RouteConfiguration.addImplant);
         }
       },
       child: BlocBuilder<HomeAssistantScanBloc, HomeAssistantScanState>(

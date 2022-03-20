@@ -12,6 +12,6 @@ class Url extends FormzInput<String, UrlValidationError> {
 
   @override
   UrlValidationError? validator(String? value) {
-    return null; // _urlRegex.hasMatch(value ?? '') ? null : UrlValidationError.invalid;
+    return _urlRegex.hasMatch(value ?? '') ? null : UrlValidationError.invalid;
   }
 }

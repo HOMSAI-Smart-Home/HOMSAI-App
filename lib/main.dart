@@ -8,6 +8,10 @@ import 'package:get_it/get_it.dart';
 import 'package:homsai/business/interfaces/home_assistant.interface.dart';
 import 'package:homsai/business/repository/home_assistant.repository.dart';
 import 'package:homsai/crossconcern/utilities/properties/constants.util.dart';
+import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.dart';
+import 'package:homsai/datastore/local/apppreferences/app_preferences.repository.dart';
+import 'package:homsai/datastore/local/user/user_local.interface.dart';
+import 'package:homsai/datastore/local/user/user_local.repository.dart';
 import 'package:homsai/routes.dart';
 import 'package:homsai/themes/app.theme.dart';
 
@@ -18,6 +22,9 @@ void setup() {
   getIt.allowReassignment = true;
 
   // Local interfaces
+  getIt.registerLazySingleton<AppPreferencesInterface>(() => AppPreferences());
+  getIt.registerLazySingleton<UserLocalInterface>(() => UserLocalRepository());
+
   getIt.registerLazySingleton<HomeAssistantInterface>(
       () => HomeAssistantRepository());
 }
@@ -28,6 +35,11 @@ Future<void> main() async {
 
   // Initialize singletons
   setup();
+
+// Wait asynchronous AppPreferences initialization
+  final AppPreferencesInterface appPreferences =
+      getIt.get<AppPreferencesInterface>();
+  await appPreferences.initialize();
 
   Timer(const Duration(seconds: 3), () {
     FlutterNativeSplash.remove();

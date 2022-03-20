@@ -27,7 +27,9 @@
     "homeAssistantScanTitle": "Ricerca istanza locale",
     "homeAssistantScanningError": "Nessuna istanza locale trovata",
     "homeAssistantScanningProgress": "Ricerca...",
-    "homeAssistantScanManualHint": "*Esempio:* http://:192.168.x.x:8123",
+    "homeAssistantScanManualHint": "*Esempio:* http://192.168.x.x:8123",
     "homeAssistantScanManualLabel": "Inserisci Url",
-    "homeAssistantScanLabel": "Scansiona"
+    "homeAssistantScanLabel": "Scansiona",
+    "homeAssistantScanManualError": "Url invalido",
+    "homeAssistantScanManualAuthError": "Impossibile connettersi a Home Assistant"
 }

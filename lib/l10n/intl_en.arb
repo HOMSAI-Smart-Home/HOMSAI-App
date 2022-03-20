@@ -27,5 +27,7 @@
     "homeAssistantScanningProgress": "Scanning...",
     "homeAssistantScanManualHint": "*Example:* http://:192.168.x.x:8123",
     "homeAssistantScanManualLabel": "Enter Url",
-    "homeAssistantScanLabel": "Scan"
+    "homeAssistantScanLabel": "Scan",
+    "homeAssistantScanManualError": "Invalid url",
+    "homeAssistantScanManualAuthError": "Cannot connect to Home Assistant"
 }

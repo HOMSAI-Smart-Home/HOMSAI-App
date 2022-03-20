@@ -19,7 +19,10 @@ Innover Flutter application
 - bloc: A dart package that helps implement the BLoC pattern.
 - flutter_bloc: Widgets that make it easy to integrate blocs and cubits into Flutter. Built to work with package:bloc.
 - equatable: Equatable overrides == and hashCode for you so you don't have to waste your time writing lots of boilerplate code.
-- super_rich_text: handles boilerplate for rich text when you need to make a part of the text with a different style
+- super_rich_text: Handles boilerplate for rich text when you need to make a part of the text with a different font style
+- flutter_web_auth: used for handling web authentication like google auth
+- lan_scanner: allows discovering network devices in local network (LAN) via multi-threaded ICMP pings.
+- network_info_plus: allows Flutter apps to discover network info and configure themselves accordingly.
 
 ## Localization files
 

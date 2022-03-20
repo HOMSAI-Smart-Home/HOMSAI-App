@@ -7,6 +7,7 @@ class HomsaiInputDecorationTheme {
     return InputDecorationTheme(
       border: _normalTextBorder(colorScheme),
       focusedBorder: _normalTextBorder(colorScheme),
+      errorBorder: _errorTextBorder(colorScheme),
       errorMaxLines: 2,
       errorStyle: textTheme.subtitle2?.copyWith(color: HomsaiColors.primaryRed),
       labelStyle: textTheme.subtitle2,
@@ -15,6 +16,10 @@ class HomsaiInputDecorationTheme {
 
   static OutlineInputBorder _normalTextBorder(ColorScheme colorScheme) {
     return _textBorder(colorScheme.onBackground);
+  }
+
+  static OutlineInputBorder _errorTextBorder(ColorScheme colorScheme) {
+    return _textBorder(colorScheme.error);
   }
 
   static OutlineInputBorder _textBorder(Color color) {

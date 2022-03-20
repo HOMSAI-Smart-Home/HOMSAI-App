@@ -1,0 +1,1 @@
+class HostsNotFound implements Exception {}
