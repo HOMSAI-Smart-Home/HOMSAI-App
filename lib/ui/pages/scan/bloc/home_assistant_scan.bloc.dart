@@ -44,21 +44,16 @@ class HomeAssistantScanBloc
       status: HomeAssistantScanStatus.scanningInProgress,
     ));
 
-    scanSubscription = homeAssistantRepository
-        .startScan()
-        .then((possibleHosts) {
-          throwIf(possibleHosts.isEmpty, HostsNotFound);
+    await homeAssistantRepository.startScan().then((possibleHosts) {
+      throwIf(possibleHosts.isEmpty, HostsNotFound);
 
-          return emit(state.copyWith(
-            scannedUrls: possibleHosts,
-            status: HomeAssistantScanStatus.scanningSuccess,
-          ));
-        })
-        .catchError((error, stackTrace) => emit(
-              state.copyWith(status: HomeAssistantScanStatus.scanningFailure),
-            ))
-        .asStream()
-        .listen((_) {});
+      return emit(state.copyWith(
+        scannedUrls: possibleHosts,
+        status: HomeAssistantScanStatus.scanningSuccess,
+      ));
+    }).catchError((error, stackTrace) => emit(
+          state.copyWith(status: HomeAssistantScanStatus.scanningFailure),
+        ));
   }
 
   void _onManualUrlPressed(

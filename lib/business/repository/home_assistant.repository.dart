@@ -16,17 +16,9 @@ import 'package:rxdart/rxdart.dart';
 class HomeAssistantRepository implements HomeAssistantInterface {
   @override
   Future<HomeAssistantAuth> authenticate({required String url}) {
-    List<String> hostInfo = url.split("://");
+    Uri uriurl = Uri.parse(url);
 
-    int port = 8123;
-    if (hostInfo[1].split(':').length > 1) {
-      port = int.parse(hostInfo[1].split(':')[1]);
-      hostInfo[1] = hostInfo[1].split(':')[0];
-    }
-
-    Uri UriUrl = Uri(scheme: hostInfo[0], host: hostInfo[1], port: port);
-
-    return canConnectToHomeAssistant(url: UriUrl).then((host) {
+    return canConnectToHomeAssistant(url: uriurl).then((host) {
       throwIf(host == null, HostsNotFound());
       return authenticateHomeAssistant(url: host!);
     });
@@ -35,7 +27,8 @@ class HomeAssistantRepository implements HomeAssistantInterface {
   Future<HomeAssistantAuth> authenticateHomeAssistant({required Uri url}) {
     const String callbackUrlScheme =
         ApiProprties.homeAssistantAuthcallbackScheme;
-    url.replace(path: '/auth/authorize', queryParameters: {
+
+    url = url.replace(path: '/auth/authorize', queryParameters: {
       'response_type': ApiProprties.homeAssistantAuthresponseType,
       'client_id': ApiProprties.homeAssistantAuthclientId,
       'redirect_uri': '$callbackUrlScheme:/'
