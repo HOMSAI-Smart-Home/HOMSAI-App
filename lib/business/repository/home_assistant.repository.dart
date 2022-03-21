@@ -16,31 +16,33 @@ import 'package:rxdart/rxdart.dart';
 class HomeAssistantRepository implements HomeAssistantInterface {
   @override
   Future<HomeAssistantAuth> authenticate({required String url}) {
-    List<String> hostInfo =
-        url.replaceAll("http://", "").replaceAll("https://", "").split(":");
+    List<String> hostInfo = url.split("://");
+
     int port = 8123;
-    if (hostInfo.length > 1) {
-      port = int.parse(hostInfo[1]);
+    if (hostInfo[1].split(':').length > 1) {
+      port = int.parse(hostInfo[1].split(':')[1]);
+      hostInfo[1] = hostInfo[1].split(':')[0];
     }
 
-    return canConnectToHomeAssistant(host: hostInfo.first, port: port)
-        .then((host) {
+    Uri UriUrl = Uri(scheme: hostInfo[0], host: hostInfo[1], port: port);
+
+    return canConnectToHomeAssistant(url: UriUrl).then((host) {
       throwIf(host == null, HostsNotFound());
-      return authenticateHomeAssistant(url: host! + ":$port");
+      return authenticateHomeAssistant(url: host!);
     });
   }
 
-  Future<HomeAssistantAuth> authenticateHomeAssistant({required String url}) {
+  Future<HomeAssistantAuth> authenticateHomeAssistant({required Uri url}) {
     const String callbackUrlScheme =
         ApiProprties.homeAssistantAuthcallbackScheme;
-    final String uri = Uri.https(url, '/auth/authorize', {
+    url.replace(path: '/auth/authorize', queryParameters: {
       'response_type': ApiProprties.homeAssistantAuthresponseType,
       'client_id': ApiProprties.homeAssistantAuthclientId,
-      'redirect_uri': '$callbackUrlScheme:/',
-    }).toString();
+      'redirect_uri': '$callbackUrlScheme:/'
+    });
 
     return FlutterWebAuth.authenticate(
-            url: uri, callbackUrlScheme: callbackUrlScheme)
+            url: url.toString(), callbackUrlScheme: callbackUrlScheme)
         .then((result) => HomeAssistantAuth(
             token: Uri.parse(result)
                 .queryParameters[ApiProprties.homeAssistantAuthresponseType]
@@ -58,11 +60,12 @@ class HomeAssistantRepository implements HomeAssistantInterface {
               lastIP: int.parse(hosts[2]),
               scanThreads: 8,
               progressCallback: progressCallback)
-          .flatMap(
-              (device) => canConnectToHomeAssistant(host: device.ip).asStream())
+          .flatMap((device) => canConnectToHomeAssistant(
+                  url: Uri(scheme: 'http', host: device.ip, port: 8123))
+              .asStream())
           .fold([], (previous, element) {
         if (element != null) {
-          previous.add("http://" + element + ":8123");
+          previous.add(element.toString());
         }
         return previous;
       });
@@ -70,17 +73,16 @@ class HomeAssistantRepository implements HomeAssistantInterface {
   }
 
   @override
-  Future<String?> canConnectToHomeAssistant({
-    required String host,
-    int port = 8123,
+  Future<Uri?> canConnectToHomeAssistant({
+    required Uri url,
     Duration timeout = const Duration(seconds: 2),
   }) async {
     try {
       final client = HttpClient();
       client.connectionTimeout = timeout;
-      await client.get(host, port, '');
+      await client.get(url.host, url.port, '');
       client.close();
-      return host;
+      return url;
     } catch (e) {
       return null;
     }

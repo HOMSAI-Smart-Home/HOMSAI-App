@@ -5,9 +5,8 @@ abstract class HomeAssistantInterface {
   Future<List<String>> startScan({
     void Function(double)? progressCallback,
   });
-  Future<String?> canConnectToHomeAssistant({
-    required String host,
-    int port = 8123,
+  Future<Uri?> canConnectToHomeAssistant({
+    required Uri url,
     Duration timeout = const Duration(seconds: 2),
   });
 }
