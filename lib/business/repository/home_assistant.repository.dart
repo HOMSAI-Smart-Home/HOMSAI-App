@@ -16,9 +16,7 @@ import 'package:rxdart/rxdart.dart';
 class HomeAssistantRepository implements HomeAssistantInterface {
   @override
   Future<HomeAssistantAuth> authenticate({required String url}) {
-    Uri uriurl = Uri.parse(url);
-
-    return canConnectToHomeAssistant(url: uriurl).then((host) {
+    return canConnectToHomeAssistant(url: Uri.parse(url)).then((host) {
       throwIf(host == null, HostsNotFound());
       return authenticateHomeAssistant(url: host!);
     });
@@ -45,7 +43,7 @@ class HomeAssistantRepository implements HomeAssistantInterface {
   @override
   Future<List<String>> startScan({
     void Function(double)? progressCallback,
-  }) async {
+  }) {
     return _discoverAvailableHosts().then((hosts) {
       return LanScanner()
           .icmpScan(hosts[0],
@@ -56,11 +54,14 @@ class HomeAssistantRepository implements HomeAssistantInterface {
           .flatMap((device) => canConnectToHomeAssistant(
                   url: Uri(scheme: 'http', host: device.ip, port: 8123))
               .asStream())
-          .fold([], (previous, element) {
+          .fold<List<String>>([], (previous, element) {
         if (element != null) {
           previous.add(element.toString());
         }
         return previous;
+      }).then((possibleHosts) {
+        throwIf(possibleHosts.isEmpty, HostsNotFound);
+        return possibleHosts;
       });
     });
   }

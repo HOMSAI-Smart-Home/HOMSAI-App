@@ -20,7 +20,7 @@ class HomeAssistantScanBloc
   final AppPreferencesInterface appPreferencesInterface =
       getIt.get<AppPreferencesInterface>();
 
-  StreamSubscription<void>? scanSubscription;
+  CancelableOperation<void>? scanningOperation;
 
   HomeAssistantScanBloc() : super(const HomeAssistantScanState()) {
     on<ScanPressed>(_onScanPressed);
@@ -44,22 +44,25 @@ class HomeAssistantScanBloc
       status: HomeAssistantScanStatus.scanningInProgress,
     ));
 
-    await homeAssistantRepository.startScan().then((possibleHosts) {
-      throwIf(possibleHosts.isEmpty, HostsNotFound);
-
-      return emit(state.copyWith(
+    scanningOperation =
+        CancelableOperation.fromFuture(homeAssistantRepository.startScan())
+            .then(
+      (possibleHosts) => emit(state.copyWith(
         scannedUrls: possibleHosts,
         status: HomeAssistantScanStatus.scanningSuccess,
-      ));
-    }).catchError((error, stackTrace) => emit(
-          state.copyWith(status: HomeAssistantScanStatus.scanningFailure),
-        ));
+      )),
+      onError: (error, stackTrace) => emit(
+        state.copyWith(status: HomeAssistantScanStatus.scanningFailure),
+      ),
+    );
+
+    await scanningOperation?.valueOrCancellation();
   }
 
   void _onManualUrlPressed(
       ManualUrlPressed event, Emitter<HomeAssistantScanState> emit) {
-    scanSubscription?.cancel();
-    scanSubscription = null;
+    scanningOperation?.cancel();
+    scanningOperation = null;
 
     emit(state.copyWith(
       selectedUrl: const Url.pure(),
