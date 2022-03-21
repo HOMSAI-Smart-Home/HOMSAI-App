@@ -14,15 +14,38 @@ class _AddImplantPageState extends State<AddImplantPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Center(
-            child: BlocBuilder<AddImplantBloc, AddImplantState>(
-              buildWhen: (previous, current) => previous.token != current.token,
-              builder: (context, state) {
-                return Text("Token: " + (state.token ?? "No token"));
-              },
-            ),
-          ),
+        child: BlocProvider(
+            create: (_) => AddImplantBloc(), child: const AddImplantToken()),
+      ),
+    );
+  }
+}
+
+class AddImplantToken extends StatefulWidget {
+  const AddImplantToken({Key? key}) : super(key: key);
+
+  @override
+  AddImplantTokenState createState() {
+    return AddImplantTokenState();
+  }
+}
+
+class AddImplantTokenState extends State<AddImplantToken> {
+  @override
+  void initState() {
+    super.initState();
+    BlocProvider.of<AddImplantBloc>(context).add(RetrieveToken());
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Center(
+        child: BlocBuilder<AddImplantBloc, AddImplantState>(
+          buildWhen: (previous, current) => previous.token != current.token,
+          builder: (context, state) {
+            return Text("Token: " + (state.token ?? "No token"));
+          },
         ),
       ),
     );

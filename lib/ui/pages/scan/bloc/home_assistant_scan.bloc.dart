@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:async/async.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:get_it/get_it.dart';
@@ -16,6 +19,8 @@ class HomeAssistantScanBloc
       getIt.get<HomeAssistantInterface>();
   final AppPreferencesInterface appPreferencesInterface =
       getIt.get<AppPreferencesInterface>();
+
+  StreamSubscription<void>? scanSubscription;
 
   HomeAssistantScanBloc() : super(const HomeAssistantScanState()) {
     on<ScanPressed>(_onScanPressed);
@@ -39,22 +44,30 @@ class HomeAssistantScanBloc
       status: HomeAssistantScanStatus.scanningInProgress,
     ));
 
-    await homeAssistantRepository.startScan().then((possibleHosts) {
-      throwIf(possibleHosts.isEmpty, HostsNotFound);
+    scanSubscription = homeAssistantRepository
+        .startScan()
+        .then((possibleHosts) {
+          throwIf(possibleHosts.isEmpty, HostsNotFound);
 
-      return emit(state.copyWith(
-        scannedUrls: possibleHosts,
-        selectedUrl: Url.pure(possibleHosts.first),
-        status: HomeAssistantScanStatus.scanningSuccess,
-      ));
-    }).catchError((error, stackTrace) => emit(
-          state.copyWith(status: HomeAssistantScanStatus.scanningFailure),
-        ));
+          return emit(state.copyWith(
+            scannedUrls: possibleHosts,
+            status: HomeAssistantScanStatus.scanningSuccess,
+          ));
+        })
+        .catchError((error, stackTrace) => emit(
+              state.copyWith(status: HomeAssistantScanStatus.scanningFailure),
+            ))
+        .asStream()
+        .listen((_) {});
   }
 
   void _onManualUrlPressed(
       ManualUrlPressed event, Emitter<HomeAssistantScanState> emit) {
+    scanSubscription?.cancel();
+    scanSubscription = null;
+
     emit(state.copyWith(
+      selectedUrl: const Url.pure(),
       status: HomeAssistantScanStatus.manual,
     ));
   }
@@ -84,6 +97,12 @@ class HomeAssistantScanBloc
 
   void _onUrlSubmitted(
       UrlSubmitted event, Emitter<HomeAssistantScanState> emit) async {
+    final url = Url.dirty(state.selectedUrl.value);
+    emit(state.copyWith(
+      selectedUrl: url,
+    ));
+    if (state.selectedUrl.invalid) return;
+
     emit(state.copyWith(
         status: HomeAssistantScanStatus.authenticationInProgress));
 

@@ -487,7 +487,7 @@ class _SearchLocalIntanceButtons extends StatelessWidget {
           children: <Widget>[
             _ContinueRetryButton(),
             const SizedBox(height: 24),
-            if (!state.status.isScanningInProgress) _ManualUrlButton()
+            _ManualUrlButton()
           ],
         );
       },
@@ -555,13 +555,10 @@ class _ManualUrlButton extends StatelessWidget {
       buildWhen: (previous, current) => previous.status != current.status,
       builder: (context, state) {
         return OutlinedButton(
-          onPressed: state.status.isScanningComplete
-              ? () =>
-                  context.read<HomeAssistantScanBloc>().add(ManualUrlPressed())
-              : state.status.isManual
-                  ? () =>
-                      context.read<HomeAssistantScanBloc>().add(ScanPressed())
-                  : null,
+          onPressed: state.status.isManual
+              ? () => context.read<HomeAssistantScanBloc>().add(ScanPressed())
+              : () =>
+                  context.read<HomeAssistantScanBloc>().add(ManualUrlPressed()),
           child: AnimatedSwitcher(
             duration: const Duration(milliseconds: 250),
             child: Text(

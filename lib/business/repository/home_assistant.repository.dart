@@ -22,17 +22,18 @@ class HomeAssistantRepository implements HomeAssistantInterface {
     if (hostInfo.length > 1) {
       port = int.parse(hostInfo[1]);
     }
+
     return canConnectToHomeAssistant(host: hostInfo.first, port: port)
         .then((host) {
       throwIf(host == null, HostsNotFound());
-      return authenticateHomeAssistant(url: host!);
+      return authenticateHomeAssistant(url: host! + ":$port");
     });
   }
 
   Future<HomeAssistantAuth> authenticateHomeAssistant({required String url}) {
     const String callbackUrlScheme =
         ApiProprties.homeAssistantAuthcallbackScheme;
-    final String uri = Uri.http(url, '/auth/authorize', {
+    final String uri = Uri.https(url, '/auth/authorize', {
       'response_type': ApiProprties.homeAssistantAuthresponseType,
       'client_id': ApiProprties.homeAssistantAuthclientId,
       'redirect_uri': '$callbackUrlScheme:/',
@@ -61,7 +62,7 @@ class HomeAssistantRepository implements HomeAssistantInterface {
               (device) => canConnectToHomeAssistant(host: device.ip).asStream())
           .fold([], (previous, element) {
         if (element != null) {
-          previous.add(element);
+          previous.add("http://" + element + ":8123");
         }
         return previous;
       });

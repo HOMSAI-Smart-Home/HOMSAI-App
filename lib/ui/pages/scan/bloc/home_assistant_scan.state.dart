@@ -38,6 +38,8 @@ enum HomeAssistantScanStatus {
 const _urlSubmittableStatus = <HomeAssistantScanStatus>{
   HomeAssistantScanStatus.scanningSuccess,
   HomeAssistantScanStatus.manual,
+  HomeAssistantScanStatus.authenticationFailure,
+  HomeAssistantScanStatus.authenticationSuccess
 };
 
 const _scannedCompleteStatus = <HomeAssistantScanStatus>{

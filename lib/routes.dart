@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:homsai/datastore/models/home_assistant_auth.model.dart';
+import 'package:homsai/ui/pages/add_implant/add_implant.pages.dart';
 import 'package:homsai/ui/pages/login/login.pages.dart';
 import 'package:homsai/ui/pages/register/register.pages.dart';
 import 'package:homsai/ui/pages/register/register.routes.dart'
@@ -60,7 +62,7 @@ class RouteConfiguration {
     ),
     Path(
       r'^' + addImplant,
-      (context, match) => const HomeAssistantScanPage(),
+      (context, match) => const AddImplantPage(),
     ),
   ];
 
