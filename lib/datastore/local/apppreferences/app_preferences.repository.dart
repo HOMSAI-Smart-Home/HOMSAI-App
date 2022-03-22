@@ -13,18 +13,16 @@ class AppPreferences implements AppPreferencesInterface {
 
   @override
   String? getAccessToken() {
-    return preferences
-        ?.getString(AppPreferencesProperties.PREF_KEY_ACCESS_TOKEN);
+    return preferences?.getString(AppPreferencesProperties.prefKeyAccessToken);
   }
 
   @override
   void setAccessToken(String value) {
-    preferences?.setString(
-        AppPreferencesProperties.PREF_KEY_ACCESS_TOKEN, value);
+    preferences?.setString(AppPreferencesProperties.prefKeyAccessToken, value);
   }
 
   @override
   void resetAccessToken() {
-    preferences?.remove(AppPreferencesProperties.PREF_KEY_ACCESS_TOKEN);
+    preferences?.remove(AppPreferencesProperties.prefKeyAccessToken);
   }
 }

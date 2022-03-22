@@ -1,12 +1,11 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:math';
-import 'dart:typed_data';
 
 import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:homsai/business/interfaces/home_assistant.interface.dart';
 import 'package:homsai/crossconcern/exceptions/scanning_not_found.exception.dart';
+import 'package:homsai/crossconcern/helpers/extensions/ipv4.extension.dart';
 import 'package:homsai/crossconcern/utilities/properties/api.proprties.dart';
 import 'package:homsai/datastore/models/home_assistant_auth.model.dart';
 import 'package:lan_scanner/lan_scanner.dart';
@@ -15,8 +14,8 @@ import 'package:rxdart/rxdart.dart';
 
 class HomeAssistantRepository implements HomeAssistantInterface {
   @override
-  Future<HomeAssistantAuth> authenticate({required String url}) {
-    return canConnectToHomeAssistant(url: Uri.parse(url)).then((host) {
+  Future<HomeAssistantAuth> authenticate({required Uri url}) {
+    return canConnectToHomeAssistant(url: url).then((host) {
       throwIf(host == null, HostsNotFound());
       return authenticateHomeAssistant(url: host!);
     });
@@ -83,50 +82,27 @@ class HomeAssistantRepository implements HomeAssistantInterface {
   }
 
   Future<List<String>> _discoverAvailableHosts() async {
-    int ipToint(String ip) {
-      List<String> ipList = ip.split('.');
-      return ipList.asMap().entries.map((entry) {
-        return int.parse(entry.value) * pow(256, ipList.length - entry.key - 1);
-      }).reduce((prev, curr) {
-        return prev + curr;
-      }).toInt();
-    }
-
-    int getNetwork(int ip, int subnet) {
-      return ip & subnet;
-    }
-
-    String intToIp(int value) {
-      Uint8List int32bytes(int value) =>
-          Uint8List(4)..buffer.asInt32List()[0] = value;
-
-      return int32bytes(value).reversed.toList().join('.');
-    }
-
     final info = NetworkInfo();
-    late int ip;
-    late int subnet;
-
-    late int network;
-    late int firstIp;
-    late int lastIp;
 
     String? hostIpString = await info.getWifiIP();
     String? hostSubmaskString = await info.getWifiSubmask();
 
-    ip = ipToint(hostIpString!);
-    subnet = ipToint(hostSubmaskString!);
+    final ip = hostIpString!.parseIPv4Address();
+    final subnet = hostSubmaskString!.parseIPv4Address();
 
-    network = getNetwork(ip, subnet);
-    firstIp = network + 1;
-    lastIp = (~subnet | firstIp).toUnsigned(firstIp.bitLength);
+    final network = ip & subnet;
+    final firstIp = network + 1;
+    final lastIp = (~subnet | firstIp).toUnsigned(firstIp.bitLength);
+
+    final firstParsedIp = IPv4.parse(firstIp);
+    final lastParsedIp = IPv4.parse(lastIp);
 
     return [
       hostIpString.substring(0, hostIpString.lastIndexOf('.')),
-      intToIp(firstIp).substring(
-          intToIp(firstIp).lastIndexOf('.') + 1, intToIp(firstIp).length),
-      intToIp(lastIp).substring(
-          intToIp(lastIp).lastIndexOf('.') + 1, intToIp(lastIp).length)
+      firstParsedIp.substring(
+          firstParsedIp.lastIndexOf('.') + 1, firstParsedIp.length),
+      lastParsedIp.substring(
+          lastParsedIp.lastIndexOf('.') + 1, lastParsedIp.length)
     ];
   }
 }

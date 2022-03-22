@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:homsai/routes.dart';
 import 'package:homsai/ui/widget/credentials_form/credentials_form.widget.dart';
-import 'package:homsai/ui/pages/register/register.routes.dart'
-    as register_routes;
 import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
 
 class LoginPage extends StatefulWidget {
@@ -91,7 +90,7 @@ class _Body extends StatelessWidget {
                     ),
                     onPressed: () {
                       Navigator.pushReplacementNamed(
-                          context, register_routes.defaultRoute);
+                          context, RouteConfiguration.register);
                     },
                     child: Text(HomsaiLocalizations.of(context)!.register),
                   ),

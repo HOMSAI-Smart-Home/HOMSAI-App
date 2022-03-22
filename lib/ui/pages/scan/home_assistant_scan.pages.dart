@@ -166,12 +166,14 @@ class _SearchLocalInstanceContainerState
           child: AnimatedSwitcher(
             duration: const Duration(milliseconds: 250),
             transitionBuilder: (Widget child, Animation<double> animation) {
-              final inAnimation =
-                  Tween<Offset>(begin: Offset(-1.0, 0.0), end: Offset(0.0, 0.0))
-                      .animate(animation);
-              final outAnimation =
-                  Tween<Offset>(begin: Offset(1.0, 0.0), end: Offset(0.0, 0.0))
-                      .animate(animation);
+              final inAnimation = Tween<Offset>(
+                begin: const Offset(-1.0, 0.0),
+                end: const Offset(0.0, 0.0),
+              ).animate(animation);
+              final outAnimation = Tween<Offset>(
+                begin: const Offset(1.0, 0.0),
+                end: const Offset(0.0, 0.0),
+              ).animate(animation);
 
               if (child.key == this.child?.key) {
                 return ClipRect(

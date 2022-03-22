@@ -1,3 +1,3 @@
 class AppPreferencesProperties {
-  static const String PREF_KEY_ACCESS_TOKEN = 'token';
+  static const String prefKeyAccessToken = 'token';
 }

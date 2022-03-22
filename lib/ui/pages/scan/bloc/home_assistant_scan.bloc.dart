@@ -1,11 +1,7 @@
-import 'dart:async';
-
 import 'package:async/async.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:get_it/get_it.dart';
 import 'package:homsai/business/interfaces/home_assistant.interface.dart';
-import 'package:homsai/crossconcern/exceptions/scanning_not_found.exception.dart';
 import 'package:homsai/crossconcern/helpers/models/url.model.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.dart';
 import 'package:homsai/main.dart';
@@ -105,7 +101,7 @@ class HomeAssistantScanBloc
         status: HomeAssistantScanStatus.authenticationInProgress));
 
     await homeAssistantRepository
-        .authenticate(url: state.selectedUrl.value)
+        .authenticate(url: Uri.parse(state.selectedUrl.value))
         .then((authResult) {
       appPreferencesInterface.setAccessToken(authResult.token);
       return emit(

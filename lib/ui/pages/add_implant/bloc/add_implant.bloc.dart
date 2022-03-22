@@ -1,9 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:get_it/get_it.dart';
-import 'package:homsai/business/interfaces/home_assistant.interface.dart';
-import 'package:homsai/crossconcern/exceptions/scanning_not_found.exception.dart';
-import 'package:homsai/crossconcern/helpers/models/url.model.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.dart';
 import 'package:homsai/main.dart';
 
