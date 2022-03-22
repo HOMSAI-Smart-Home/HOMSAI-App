@@ -1,15 +1,17 @@
 import 'dart:async';
-import 'dart:io';
+import 'dart:convert';
 
 import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:homsai/business/interfaces/home_assistant.interface.dart';
 import 'package:homsai/crossconcern/exceptions/scanning_not_found.exception.dart';
+import 'package:homsai/crossconcern/exceptions/token.exception.dart';
 import 'package:homsai/crossconcern/helpers/extensions/ipv4.extension.dart';
 import 'package:homsai/crossconcern/utilities/properties/api.proprties.dart';
 import 'package:homsai/datastore/models/home_assistant_auth.model.dart';
 import 'package:lan_scanner/lan_scanner.dart';
 import 'package:network_info_plus/network_info_plus.dart';
+import 'package:http/http.dart' as http;
 
 class HomeAssistantRepository implements HomeAssistantInterface {
   @override
@@ -24,7 +26,7 @@ class HomeAssistantRepository implements HomeAssistantInterface {
     const String callbackUrlScheme =
         ApiProprties.homeAssistantAuthcallbackScheme;
 
-    url = url.replace(path: '/auth/authorize', queryParameters: {
+    url = url.replace(path: ApiProprties.homeAssistantAuthPath, queryParameters: {
       'response_type': ApiProprties.homeAssistantAuthresponseType,
       'client_id': ApiProprties.homeAssistantAuthclientId,
       'redirect_uri': '$callbackUrlScheme:/'
@@ -32,10 +34,9 @@ class HomeAssistantRepository implements HomeAssistantInterface {
 
     return FlutterWebAuth.authenticate(
             url: url.toString(), callbackUrlScheme: callbackUrlScheme)
-        .then((result) => HomeAssistantAuth(
-            token: Uri.parse(result)
-                .queryParameters[ApiProprties.homeAssistantAuthresponseType]
-                .toString()));
+        .then((result) async {
+      return await _getToken(url: url, result: result);
+    });
   }
 
   @override
@@ -64,10 +65,7 @@ class HomeAssistantRepository implements HomeAssistantInterface {
     Duration timeout = const Duration(seconds: 2),
   }) async {
     try {
-      final client = HttpClient();
-      client.connectionTimeout = timeout;
-      await client.get(url.host, url.port, '');
-      client.close();
+      await http.get(url).timeout(timeout);
       return url;
     } catch (e) {
       return null;
@@ -98,5 +96,45 @@ class HomeAssistantRepository implements HomeAssistantInterface {
       lastParsedIp.substring(
           lastParsedIp.lastIndexOf('.') + 1, lastParsedIp.length)
     ];
+  }
+
+  Future<HomeAssistantAuth> _getToken(
+      {required Uri url,
+      required String result,
+      Duration timeout = const Duration(seconds: 2)}) async {
+    final client = http.Client();
+    late http.Response response;
+    late Map data;
+    late int now;
+
+    String userCode = Uri.parse(result)
+        .queryParameters[ApiProprties.homeAssistantAuthresponseType]
+        .toString();
+
+    url = url.replace(path: ApiProprties.homeAssistantTokenPath);
+
+    response = await client
+        .post(url,
+            headers: {"Content-Type": ApiProprties.homeAssistantTokenContentType},
+            body: {
+              'grant_type': ApiProprties.homeAssistantTokenGrantType,
+              'code': userCode,
+              'client_id': ApiProprties.homeAssistantAuthclientId,
+            },
+            encoding: Encoding.getByName("utf-8"))
+        .timeout(timeout);
+
+    throwIf(response.statusCode == 400, InvalidRequest);
+    data = json.decode(response.body);
+    throwIf(data.containsKey("error"),
+        InvalidRequest('${data['error']}: ${data['error_description']}'));
+
+    now = DateTime.now().millisecondsSinceEpoch ~/ 1000;
+
+    return HomeAssistantAuth(
+        token: data['access_token'],
+        expires: now + int.parse(data['expires_in'].toString()),
+        refresh_token: data["refresh_token"],
+        token_type: data["token_type"]);
   }
 }
