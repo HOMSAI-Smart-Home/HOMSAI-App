@@ -10,6 +10,7 @@ import 'package:homsai/crossconcern/exceptions/token.exception.dart';
 import 'package:homsai/crossconcern/helpers/extensions/ipv4.extension.dart';
 import 'package:homsai/crossconcern/utilities/properties/api.proprties.dart';
 import 'package:homsai/datastore/models/home_assistant_auth.model.dart';
+import 'package:http/http.dart';
 import 'package:lan_scanner/lan_scanner.dart';
 import 'package:network_info_plus/network_info_plus.dart';
 import 'package:http/http.dart' as http;
@@ -122,19 +123,37 @@ class HomeAssistantRepository implements HomeAssistantInterface {
     client = HttpClient();
     client.connectionTimeout = timeout;
 
-    HttpClientRequest request = await client.post(url.host, url.port, url.path);
-    request.headers.contentType =
-        ContentType(ApiProprties.homeAssistantTokenContentType, 'text');
-    request.encoding.encode('application/x-www-form-urlencoded');
-    request.write('grant_type=${ApiProprties.homeAssistantTokenGrantType}&'
-        'code=$userCode&'
-        'client_id=${ApiProprties.homeAssistantAuthclientId}');
+    //HttpClientRequest request = await client.post(url.host, url.port, url.path);
+    Map<String, dynamic> body = {
+      'grant_type': ApiProprties.homeAssistantTokenGrantType,
+      'code': userCode,
+      'client_id': ApiProprties.homeAssistantAuthclientId
+    };
+    //request.encoding = Encoding.getByName('application/x-www-form-urlencoded')!;
+    /*request.encoding = Ut;
+    request.headers.set(
+        HttpHeaders.contentTypeHeader, "application/x-www_form-urlencoded");
+    request.write(body);
+    response = await request.close();*/
+    Response response2 = await http
+        .post(
+      url,
+      body: body,
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      encoding: Encoding.getByName('utf-8'),
+    )
+        .onError((error, stackTrace) {
+      print(error);
+      throw error as Exception;
+    });
 
-    response = await request.close();
+    print(response2.statusCode);
+    throwIf(response2.statusCode == 400, InvalidRequest);
 
-    throwIf(response.statusCode == 400, InvalidRequest);
-
-    data = jsonDecode(await response.transform(utf8.decoder).join());
+    data = jsonDecode(response2.body);
+    print(data);
 
     throwIf(data.containsKey("error"),
         InvalidRequest('${data['error']}: ${data['error_description']}'));
@@ -142,7 +161,7 @@ class HomeAssistantRepository implements HomeAssistantInterface {
     now = DateTime.now().millisecondsSinceEpoch ~/ 1000;
 
     return HomeAssistantAuth(
-        Uri(host:url.host, port:url.port),
+        Uri(host: url.host, port: url.port),
         data['access_token'],
         now + int.parse(data['expires_in'].toString()),
         data["refresh_token"],
