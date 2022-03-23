@@ -3,23 +3,23 @@ import 'package:equatable/equatable.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.dart';
 import 'package:homsai/main.dart';
 
-part 'add_implant.event.dart';
-part 'add_implant.state.dart';
+part 'add_plant.event.dart';
+part 'add_plant.state.dart';
 
-class AddImplantBloc extends Bloc<AddImplantEvent, AddImplantState> {
+class AddPlantBloc extends Bloc<AddPlantEvent, AddPlantState> {
   final AppPreferencesInterface appPreferencesInterface =
       getIt.get<AppPreferencesInterface>();
 
-  AddImplantBloc() : super(const AddImplantState()) {
+  AddPlantBloc() : super(const AddPlantState()) {
     on<RetrieveToken>(_onRetrieveToken);
   }
 
   @override
-  void onTransition(Transition<AddImplantEvent, AddImplantState> transition) {
+  void onTransition(Transition<AddPlantEvent, AddPlantState> transition) {
     super.onTransition(transition);
   }
 
-  void _onRetrieveToken(RetrieveToken event, Emitter<AddImplantState> emit) {
+  void _onRetrieveToken(RetrieveToken event, Emitter<AddPlantState> emit) {
     String? token = appPreferencesInterface.getAccessToken();
     emit(state.copyWith(
       token: token,

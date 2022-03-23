@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:homsai/routes.dart';
 import 'package:homsai/themes/card.theme.dart';
 import 'package:homsai/themes/colors.theme.dart';
 import 'package:homsai/ui/pages/scan/bloc/home_assistant_scan.bloc.dart';
+import 'package:homsai/ui/widget/homsai_scaffold.widget.dart';
 import 'package:homsai/ui/widget/radio.widget.dart';
 import 'package:rive/rive.dart';
 import 'package:super_rich_text/super_rich_text.dart';
@@ -38,28 +38,17 @@ class _HomeAssistantScanPage extends State<HomeAssistantScanPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                SvgPicture.asset("assets/icons/full_logo.svg", height: 20),
-                const SizedBox(height: 32),
-                _HomeAssistantScanDialog(),
-                const SizedBox(height: 40),
-                BlocProvider(
-                  create: (_) => HomeAssistantScanBloc(),
-                  child: const _SearchLocalInstance(),
-                ),
-              ],
-            ),
-          ),
+    return HomsaiScaffold(
+      providers: [
+        BlocProvider<HomeAssistantScanBloc>(
+          create: (BuildContext context) => HomeAssistantScanBloc(),
         ),
-      ),
+      ],
+      children: <Widget>[
+        _HomeAssistantScanDialog(),
+        const SizedBox(height: 40),
+        const _SearchLocalInstance()
+      ],
     );
   }
 }
@@ -504,7 +493,7 @@ class _ContinueRetryButton extends StatelessWidget {
       listenWhen: (previous, current) => previous.status != current.status,
       listener: (context, state) {
         if (state.status.isAuthenticationSuccess) {
-          Navigator.popAndPushNamed(context, RouteConfiguration.addImplant);
+          Navigator.popAndPushNamed(context, RouteConfiguration.addPlant);
         }
       },
       child: BlocBuilder<HomeAssistantScanBloc, HomeAssistantScanState>(

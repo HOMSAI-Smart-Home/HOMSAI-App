@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:homsai/main.dart';
-import 'package:homsai/ui/pages/add_implant/add_implant.pages.dart';
+import 'package:homsai/ui/pages/add_plant/add_plant.pages.dart';
 import 'package:homsai/ui/pages/login/login.pages.dart';
 import 'package:homsai/ui/pages/register/register.pages.dart';
 import 'package:homsai/ui/pages/register/register.routes.dart'
@@ -11,7 +11,7 @@ import 'package:homsai/ui/pages/login/login.routes.dart' as login_routes;
 import 'package:homsai/ui/pages/scan/home_assistant_scan.pages.dart';
 import 'package:homsai/ui/pages/scan/home_assistant_scan.routes.dart'
     as has_routes;
-import 'package:homsai/ui/pages/add_implant/add_implant.routes.dart'
+import 'package:homsai/ui/pages/add_plant/add_plant.routes.dart'
     as add_implant_routes;
 
 typedef PathWidgetBuilder = Widget Function(BuildContext, String?);
@@ -36,11 +36,11 @@ class Path {
 }
 
 class RouteConfiguration {
-  static const String initialRoute = has_routes.defaultRoute;
+  static const String initialRoute = addPlant; // has_routes.defaultRoute;
   static const String login = login_routes.defaultRoute;
   static const String register = register_routes.defaultRoute;
   static const String homeAssistantScan = has_routes.defaultRoute;
-  static const String addImplant = add_implant_routes.defaultRoute;
+  static const String addPlant = add_implant_routes.defaultRoute;
 
   /// List of [Path] to for route matching. When a named route is pushed with
   /// [Navigator.pushNamed], the route name is matched with the [Path.pattern]
@@ -61,8 +61,8 @@ class RouteConfiguration {
       (context, match) => const HomeAssistantScanPage(),
     ),
     Path(
-      r'^' + addImplant,
-      (context, match) => const AddImplantPage(),
+      r'^' + addPlant,
+      (context, match) => const AddPlantPage(),
     ),
   ];
 

@@ -31,5 +31,12 @@
     "homeAssistantScanManualLabel": "Inserisci Url",
     "homeAssistantScanLabel": "Scansiona",
     "homeAssistantScanManualError": "Url invalido",
-    "homeAssistantScanManualAuthError": "Impossibile connettersi a Home Assistant"
+    "homeAssistantScanManualAuthError": "Impossibile connettersi a Home Assistant",
+
+    "addPlantTitle": "Configura nuovo impianto",
+    "addPlantNameLabel": "Nome impianto",
+    "addPlantLocationLabel": "Coordinate GPS",
+    "addPlantLocationButtonLabel": "Usa posizione attuale",
+    "addPlantLocationInfoTitle": "Perché abbiamo bisogno della posizione?",
+    "addPlantLocationInfoDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum eget dictum eros, non varius velit. Praesent bibendum molestie feugiat."
 }

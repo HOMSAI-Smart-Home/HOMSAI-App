@@ -29,5 +29,12 @@
     "homeAssistantScanManualLabel": "Enter Url",
     "homeAssistantScanLabel": "Scan",
     "homeAssistantScanManualError": "Invalid url",
-    "homeAssistantScanManualAuthError": "Cannot connect to Home Assistant"
+    "homeAssistantScanManualAuthError": "Cannot connect to Home Assistant",
+
+    "addPlantTitle": "Configure a new plant",
+    "addPlantNameLabel": "Plant name",
+    "addPlantLocationLabel": "GPS Coordinates",
+    "addPlantLocationButtonLabel": "Use your location",
+    "addPlantLocationInfoTitle": "Why do we need plant's position?",
+    "addPlantLocationInfoDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum eget dictum eros, non varius velit. Praesent bibendum molestie feugiat."
 }

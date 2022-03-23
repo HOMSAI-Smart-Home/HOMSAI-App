@@ -3,7 +3,13 @@ import 'package:flutter/material.dart';
 class HomsaiButtonsTheme {
   static TextButtonThemeData defaultTextTheme(
       ColorScheme colorScheme, TextTheme textTheme) {
-    return TextButtonThemeData(style: TextButton.styleFrom());
+    return TextButtonThemeData(
+      style: ButtonStyle(
+        textStyle: MaterialStateProperty.all(
+          textTheme.headline2?.copyWith(color: colorScheme.primary),
+        ),
+      ),
+    );
   }
 
   static ElevatedButtonThemeData defaultElevatedTheme(
