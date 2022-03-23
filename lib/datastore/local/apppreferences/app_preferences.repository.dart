@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:homsai/crossconcern/utilities/properties/app_preference.proprties.dart';
+import 'package:homsai/datastore/models/home_assistant_auth.model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app_preferences.interface.dart';
@@ -12,17 +15,18 @@ class AppPreferences implements AppPreferencesInterface {
   }
 
   @override
-  String? getAccessToken() {
-    return preferences?.getString(AppPreferencesProperties.prefKeyAccessToken);
+  HomeAssistantAuth? getToken() {
+    return HomeAssistantAuth.json(jsonDecode(
+        preferences?.getString(AppPreferencesProperties.prefKeyAccessToken) ??
+            "{}"));
   }
 
   @override
-  void setAccessToken(String value) {
-    preferences?.setString(AppPreferencesProperties.prefKeyAccessToken, value);
-  }
+  void resetToken() {preferences?.remove(AppPreferencesProperties.prefKeyAccessToken);}
 
   @override
-  void resetAccessToken() {
-    preferences?.remove(AppPreferencesProperties.prefKeyAccessToken);
+  void setToken(HomeAssistantAuth token) {
+    preferences?.setString(AppPreferencesProperties.prefKeyAccessToken,
+        jsonEncode(token));
   }
 }

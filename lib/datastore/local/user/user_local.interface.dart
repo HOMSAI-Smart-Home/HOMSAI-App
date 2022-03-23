@@ -1,5 +1,7 @@
+import 'package:homsai/datastore/models/home_assistant_auth.model.dart';
+
 abstract class UserLocalInterface {
-  String? getAccessToken();
+  HomeAssistantAuth? getToken();
   void resetAccessToken();
-  void setAccessToken(String token);
+  void setToken(HomeAssistantAuth token);
 }

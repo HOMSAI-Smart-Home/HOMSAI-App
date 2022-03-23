@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:homsai/business/repository/home_assistant_websocket.repository.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.dart';
 import 'package:homsai/main.dart';
 
@@ -9,6 +10,8 @@ part 'add_plant.state.dart';
 class AddPlantBloc extends Bloc<AddPlantEvent, AddPlantState> {
   final AppPreferencesInterface appPreferencesInterface =
       getIt.get<AppPreferencesInterface>();
+  final HomeAssistantWebSocketRepository homeAssistantWebSocketRepository =
+      HomeAssistantWebSocketRepository();
 
   AddPlantBloc() : super(const AddPlantState()) {
     on<RetrieveToken>(_onRetrieveToken);
@@ -20,9 +23,11 @@ class AddPlantBloc extends Bloc<AddPlantEvent, AddPlantState> {
   }
 
   void _onRetrieveToken(RetrieveToken event, Emitter<AddPlantState> emit) {
-    String? token = appPreferencesInterface.getAccessToken();
+    String? token = appPreferencesInterface.getToken()?.token;
     emit(state.copyWith(
       token: token,
     ));
+
+    homeAssistantWebSocketRepository.connect();
   }
 }
