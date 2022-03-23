@@ -14,8 +14,10 @@ import 'package:homsai/datastore/local/user/user_local.interface.dart';
 import 'package:homsai/datastore/local/user/user_local.repository.dart';
 import 'package:homsai/routes.dart';
 import 'package:homsai/themes/app.theme.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 final getIt = GetIt.instance;
+String? appVersion;
 
 void setup() {
   // It enables to reassign an implementation of an interface, for example in Unit tests
@@ -41,10 +43,21 @@ Future<void> main() async {
       getIt.get<AppPreferencesInterface>();
   await appPreferences.initialize();
 
+  getAppVersion();
+
   Timer(const Duration(seconds: 3), () {
     FlutterNativeSplash.remove();
   });
   runApp(const HomsaiApp());
+}
+
+void getAppVersion() async {
+  PackageInfo packageInfo = await PackageInfo.fromPlatform();
+  appVersion = packageInfo.appName +
+      "-" +
+      packageInfo.version +
+      "+" +
+      packageInfo.buildNumber;
 }
 
 class HomsaiApp extends StatelessWidget {

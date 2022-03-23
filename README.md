@@ -23,6 +23,7 @@ Innover Flutter application
 - flutter_web_auth: used for handling web authentication like google auth
 - lan_scanner: allows discovering network devices in local network (LAN) via multi-threaded ICMP pings.
 - network_info_plus: allows Flutter apps to discover network info and configure themselves accordingly.
+- package_info_plus: provides an API for querying information about an application package.
 
 ## Localization files
 

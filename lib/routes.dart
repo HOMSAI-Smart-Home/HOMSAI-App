@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:homsai/main.dart';
 import 'package:homsai/ui/pages/add_implant/add_implant.pages.dart';
 import 'package:homsai/ui/pages/login/login.pages.dart';
 import 'package:homsai/ui/pages/register/register.pages.dart';
@@ -84,7 +85,24 @@ class RouteConfiguration {
           );
         }
         return CupertinoPageRoute<void>(
-          builder: (context) => path.builder(context, match),
+          builder: (context) => Stack(
+            alignment: AlignmentDirectional.bottomCenter,
+            children: [
+              path.builder(context, match),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text(
+                    appVersion ?? "",
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  )
+                ],
+              )
+            ],
+          ),
           settings: settings,
         );
       }
