@@ -37,8 +37,8 @@ class HomeAssistantRepository implements HomeAssistantInterface {
 
     return FlutterWebAuth.authenticate(
             url: url.toString(), callbackUrlScheme: callbackUrlScheme)
-        .then((result) async {
-      return await _getToken(url: url, result: result);
+        .then((result) {
+      return _getToken(url: url, result: result);
     });
   }
 
@@ -52,7 +52,7 @@ class HomeAssistantRepository implements HomeAssistantInterface {
         .icmpScan(hosts[0],
             firstIP: int.parse(hosts[1]),
             lastIP: int.parse(hosts[2]),
-            scanThreads: 8)
+            scanThreads: 20)
         .listen((device) async {
       Uri? possibleHost = await canConnectToHomeAssistant(
           url: Uri(scheme: 'http', host: device.ip, port: 8123));
@@ -107,7 +107,7 @@ class HomeAssistantRepository implements HomeAssistantInterface {
   Future<HomeAssistantAuth> _getToken(
       {required Uri url,
       required String result,
-      Duration timeout = const Duration(seconds: 10)}) async {
+      Duration timeout = const Duration(seconds: 2)}) async {
     late HttpClient client;
     late HttpClientResponse response;
     late Map data;
@@ -137,23 +137,22 @@ class HomeAssistantRepository implements HomeAssistantInterface {
     response = await request.close();*/
     Response response2 = await http
         .post(
-      url,
-      body: body,
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      encoding: Encoding.getByName('utf-8'),
-    )
+          url,
+          body: body,
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          encoding: Encoding.getByName('utf-8'),
+        )
+        .timeout(timeout)
         .onError((error, stackTrace) {
       print(error);
       throw error as Exception;
     });
 
-    print(response2.statusCode);
     throwIf(response2.statusCode == 400, InvalidRequest);
 
     data = jsonDecode(response2.body);
-    print(data);
 
     throwIf(data.containsKey("error"),
         InvalidRequest('${data['error']}: ${data['error_description']}'));
@@ -161,7 +160,6 @@ class HomeAssistantRepository implements HomeAssistantInterface {
     now = DateTime.now().millisecondsSinceEpoch ~/ 1000;
 
     return HomeAssistantAuth(
-        Uri(host: url.host, port: url.port),
         data['access_token'],
         now + int.parse(data['expires_in'].toString()),
         data["refresh_token"],

@@ -16,7 +16,7 @@ class AppPreferences implements AppPreferencesInterface {
 
   @override
   HomeAssistantAuth? getToken() {
-    return HomeAssistantAuth.json(jsonDecode(
+    return HomeAssistantAuth.fromJson(jsonDecode(
         preferences?.getString(AppPreferencesProperties.prefKeyAccessToken) ??
             "{}"));
   }

@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:get_it/get_it.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.dart';
 import 'package:homsai/datastore/models/home_assistant_auth.model.dart';
 import 'package:homsai/main.dart';
@@ -12,23 +11,21 @@ class HomeAssistantWebSocketRepository {
   final AppPreferencesInterface appPreferencesInterface =
       getIt.get<AppPreferencesInterface>();
 
-  void connect() {
+  void connect(Uri url) {
     homeAssistantAuth = appPreferencesInterface.getToken();
 
-    throwIf(homeAssistantAuth?.url == null, Exception("change this placeholder"));
+    url = url.replace(path: "/api/websocket", scheme: 'wss');
+    webSocket = WebSocketChannel.connect(url);
 
-    webSocket = WebSocketChannel.connect(homeAssistantAuth!.url!);
-    print("yoo");
+    print("WebSocket");
     webSocket.stream.listen((data) {
       data = jsonDecode(data);
 
       print(data);
 
       if (data["type"] == "auth_required") {
-        return webSocket.sink.add(jsonEncode({
-          "type": "auth",
-          "access_token": appPreferencesInterface.getToken()
-        }));
+        return webSocket.sink.add(jsonEncode(
+            {"type": "auth", "access_token": homeAssistantAuth!.token}));
       }
 
       if (data["type"] == "auth_ok") {

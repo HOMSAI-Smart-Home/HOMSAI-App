@@ -1,20 +1,25 @@
-import 'dart:convert';
-
 class HomeAssistantAuth {
-  Uri? url;
   String? token;
   int? expires;
   String? refreshToken;
   String? tokenType;
 
   HomeAssistantAuth(
-      this.url, this.token, this.expires, this.refreshToken, this.tokenType);
+      this.token, this.expires, this.refreshToken, this.tokenType);
 
-  HomeAssistantAuth.json(Map<String, dynamic> json) {
-    url = json["url"];
+  HomeAssistantAuth.fromJson(Map<String, dynamic> json) {
     token = json["token"];
     expires = json["expires"];
     refreshToken = json["refreshToken"];
     tokenType = json["tokenType"];
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'token': token,
+      'expires': expires,
+      'refreshToken': refreshToken,
+      'tokenType': tokenType,
+    };
   }
 }

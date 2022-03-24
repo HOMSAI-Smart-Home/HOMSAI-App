@@ -27,7 +27,5 @@ class AddPlantBloc extends Bloc<AddPlantEvent, AddPlantState> {
     emit(state.copyWith(
       token: token,
     ));
-
-    homeAssistantWebSocketRepository.connect();
   }
 }
