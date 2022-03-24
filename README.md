@@ -18,6 +18,7 @@ Innover Flutter application
 - rxdart: RxDart extends the capabilities of Dart Streams and StreamControllers.
 - bloc: A dart package that helps implement the BLoC pattern.
 - flutter_bloc: Widgets that make it easy to integrate blocs and cubits into Flutter. Built to work with package:bloc.
+- bloc_concurrency: exposes custom event transformers inspired by ember concurrency. Built to work with bloc.
 - equatable: Equatable overrides == and hashCode for you so you don't have to waste your time writing lots of boilerplate code.
 - super_rich_text: Handles boilerplate for rich text when you need to make a part of the text with a different font style
 - flutter_web_auth: used for handling web authentication like google auth

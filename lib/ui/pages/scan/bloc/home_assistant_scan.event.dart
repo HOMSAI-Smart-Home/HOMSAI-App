@@ -32,3 +32,25 @@ class ManualUrlChanged extends HomeAssistantEvent {
 class ManualUrlUnfocused extends HomeAssistantEvent {}
 
 class UrlSubmitted extends HomeAssistantEvent {}
+
+class HostFound extends HomeAssistantEvent {
+  const HostFound({required this.host});
+
+  final String host;
+
+  @override
+  List<Object> get props => [host];
+}
+
+class ScanFailed extends HomeAssistantEvent {
+  const ScanFailed({required this.error});
+
+  final Error error;
+
+  @override
+  List<Object> get props => [error];
+}
+
+class ScanCompleted extends HomeAssistantEvent {}
+
+class EnableManualUrlButton extends HomeAssistantEvent {}

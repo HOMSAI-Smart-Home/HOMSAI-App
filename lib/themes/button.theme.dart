@@ -40,7 +40,12 @@ class HomsaiButtonsTheme {
     return OutlinedButtonThemeData(
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.all(Colors.transparent),
-        foregroundColor: MaterialStateProperty.all(colorScheme.onBackground),
+        foregroundColor: MaterialStateProperty.resolveWith((states) {
+          if (states.contains(MaterialState.disabled)) {
+            return colorScheme.onBackground.withOpacity(0.3);
+          }
+          return colorScheme.onBackground;
+        }),
         overlayColor: MaterialStateProperty.all(colorScheme.surface),
         minimumSize: MaterialStateProperty.all(const Size.fromHeight(48)),
         textStyle: MaterialStateProperty.all(
@@ -52,10 +57,18 @@ class HomsaiButtonsTheme {
               color: colorScheme.onBackground,
               width: 1,
             ))),
-        side: MaterialStateProperty.all(BorderSide(
-          color: colorScheme.onBackground,
-          width: 1,
-        )),
+        side: MaterialStateProperty.resolveWith((states) {
+          if (states.contains(MaterialState.disabled)) {
+            return BorderSide(
+              color: colorScheme.onBackground.withOpacity(0.3),
+              width: 1,
+            );
+          }
+          return BorderSide(
+            color: colorScheme.onBackground,
+            width: 1,
+          );
+        }),
         padding: MaterialStateProperty.all(const EdgeInsets.all(8)),
       ),
     );

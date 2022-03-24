@@ -1,10 +1,14 @@
-import 'package:async/async.dart';
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:homsai/business/interfaces/home_assistant.interface.dart';
 import 'package:homsai/crossconcern/helpers/models/url.model.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.dart';
+import 'package:homsai/globalkeys.widget.dart';
 import 'package:homsai/main.dart';
+import 'package:lan_scanner/lan_scanner.dart';
+import 'package:bloc_concurrency/bloc_concurrency.dart';
 
 part 'home_assistant_scan.event.dart';
 part 'home_assistant_scan.state.dart';
@@ -16,15 +20,19 @@ class HomeAssistantScanBloc
   final AppPreferencesInterface appPreferencesInterface =
       getIt.get<AppPreferencesInterface>();
 
-  CancelableOperation<void>? scanningOperation;
+  StreamSubscription<HostModel>? _scanSubscription;
 
   HomeAssistantScanBloc() : super(const HomeAssistantScanState()) {
-    on<ScanPressed>(_onScanPressed);
+    on<ScanPressed>(_onScanPressed, transformer: restartable());
     on<ManualUrlPressed>(_onManualUrlPressed);
     on<ManualUrlChanged>(_onManualUrlChanged);
     on<ManualUrlUnfocused>(_onManualUrlUnfocused);
     on<UrlSelected>(_onUrlSelected);
     on<UrlSubmitted>(_onUrlSubmitted);
+    on<HostFound>(_onHostFound, transformer: sequential());
+    on<ScanFailed>(_onScanFailure);
+    on<ScanCompleted>(_onScanCompleted);
+    on<EnableManualUrlButton>(_onEnableManualUrlButton);
   }
 
   @override
@@ -33,32 +41,78 @@ class HomeAssistantScanBloc
     super.onTransition(transition);
   }
 
+  @override
+  Future<void> close() {
+    _scanSubscription?.cancel();
+    return super.close();
+  }
+
   void _onScanPressed(
       ScanPressed event, Emitter<HomeAssistantScanState> emit) async {
     emit(state.copyWith(
       selectedUrl: const Url.pure(),
+      scannedUrls: [],
+      enableManualUrlButton: false,
       status: HomeAssistantScanStatus.scanningInProgress,
     ));
 
-    scanningOperation =
-        CancelableOperation.fromFuture(homeAssistantRepository.startScan())
-            .then(
-      (possibleHosts) => emit(state.copyWith(
-        scannedUrls: possibleHosts,
-        status: HomeAssistantScanStatus.scanningSuccess,
-      )),
-      onError: (error, stackTrace) => emit(
-        state.copyWith(status: HomeAssistantScanStatus.scanningFailure),
-      ),
-    );
+    Future.delayed(const Duration(seconds: 5), () {
+      add(EnableManualUrlButton());
+    });
 
-    await scanningOperation?.valueOrCancellation();
+    _scanSubscription?.cancel();
+    List<String> hosts = await homeAssistantRepository.discoverAvailableHosts();
+    _scanSubscription = homeAssistantRepository.scan(
+        hosts: hosts,
+        onData: (host) => add(HostFound(host: host)),
+        onError: (error, stackTrace) => add(ScanFailed(error: error)));
+    _scanSubscription?.onDone(() {
+      if (state.scannedUrls.isEmpty) {
+        add(ScanFailed(error: Error()));
+      } else {
+        add(ScanCompleted());
+      }
+    });
+  }
+
+  void _onHostFound(HostFound hostFound, Emitter<HomeAssistantScanState> emit) {
+    List<String> scannedUrls = state.scannedUrls;
+    if (!state.status.isManual) {
+      scannedUrls.add(hostFound.host);
+      emit(state.copyWith(
+        scannedUrls: scannedUrls,
+      ));
+      GlobalKeys.scannedUrlsAnimatedList.currentState?.insertItem(
+          scannedUrls.length - 1,
+          duration: const Duration(milliseconds: 250));
+    }
+  }
+
+  void _onScanFailure(
+      ScanFailed possibleHostFound, Emitter<HomeAssistantScanState> emit) {
+    if (!state.status.isManual) {
+      emit(state.copyWith(status: HomeAssistantScanStatus.scanningFailure));
+    }
+  }
+
+  void _onScanCompleted(
+      ScanCompleted scanCompleted, Emitter<HomeAssistantScanState> emit) {
+    if (!state.status.isManual) {
+      emit(state.copyWith(status: HomeAssistantScanStatus.scanningSuccess));
+    }
+  }
+
+  void _onEnableManualUrlButton(
+      EnableManualUrlButton event, Emitter<HomeAssistantScanState> emit) {
+    emit(state.copyWith(
+      enableManualUrlButton: true,
+    ));
   }
 
   void _onManualUrlPressed(
       ManualUrlPressed event, Emitter<HomeAssistantScanState> emit) {
-    scanningOperation?.cancel();
-    scanningOperation = null;
+    _scanSubscription?.cancel();
+    _scanSubscription = null;
 
     emit(state.copyWith(
       selectedUrl: const Url.pure(),

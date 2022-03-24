@@ -10,7 +10,6 @@ import 'package:homsai/crossconcern/utilities/properties/api.proprties.dart';
 import 'package:homsai/datastore/models/home_assistant_auth.model.dart';
 import 'package:lan_scanner/lan_scanner.dart';
 import 'package:network_info_plus/network_info_plus.dart';
-import 'package:rxdart/rxdart.dart';
 
 class HomeAssistantRepository implements HomeAssistantInterface {
   @override
@@ -40,29 +39,23 @@ class HomeAssistantRepository implements HomeAssistantInterface {
   }
 
   @override
-  Future<List<String>> startScan({
-    void Function(double)? progressCallback,
+  StreamSubscription<HostModel> scan({
+    required List<String> hosts,
+    required void Function(String) onData,
+    Function? onError,
   }) {
-    return _discoverAvailableHosts().then((hosts) {
-      return LanScanner()
-          .icmpScan(hosts[0],
-              firstIP: int.parse(hosts[1]),
-              lastIP: int.parse(hosts[2]),
-              scanThreads: 8,
-              progressCallback: progressCallback)
-          .flatMap((device) => canConnectToHomeAssistant(
-                  url: Uri(scheme: 'http', host: device.ip, port: 8123))
-              .asStream())
-          .fold<List<String>>([], (previous, element) {
-        if (element != null) {
-          previous.add(element.toString());
-        }
-        return previous;
-      }).then((possibleHosts) {
-        throwIf(possibleHosts.isEmpty, HostsNotFound);
-        return possibleHosts;
-      });
-    });
+    return LanScanner()
+        .icmpScan(hosts[0],
+            firstIP: int.parse(hosts[1]),
+            lastIP: int.parse(hosts[2]),
+            scanThreads: 8)
+        .listen((device) async {
+      Uri? possibleHost = await canConnectToHomeAssistant(
+          url: Uri(scheme: 'http', host: device.ip, port: 8123));
+      if (possibleHost != null) {
+        onData(possibleHost.toString());
+      }
+    }, onError: onError);
   }
 
   @override
@@ -81,7 +74,8 @@ class HomeAssistantRepository implements HomeAssistantInterface {
     }
   }
 
-  Future<List<String>> _discoverAvailableHosts() async {
+  @override
+  Future<List<String>> discoverAvailableHosts() async {
     final info = NetworkInfo();
 
     String? hostIpString = await info.getWifiIP();

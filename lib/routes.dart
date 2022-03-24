@@ -36,7 +36,7 @@ class Path {
 }
 
 class RouteConfiguration {
-  static const String initialRoute = addPlant; // has_routes.defaultRoute;
+  static const String initialRoute = homeAssistantScan;
   static const String login = login_routes.defaultRoute;
   static const String register = register_routes.defaultRoute;
   static const String homeAssistantScan = has_routes.defaultRoute;

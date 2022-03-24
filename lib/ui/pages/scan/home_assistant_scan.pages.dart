@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:homsai/globalkeys.widget.dart';
 import 'package:homsai/routes.dart';
 import 'package:homsai/themes/card.theme.dart';
 import 'package:homsai/themes/colors.theme.dart';
 import 'package:homsai/ui/pages/scan/bloc/home_assistant_scan.bloc.dart';
 import 'package:homsai/ui/widget/homsai_scaffold.widget.dart';
 import 'package:homsai/ui/widget/radio.widget.dart';
-import 'package:rive/rive.dart';
+import 'package:rive/rive.dart' as rive;
 import 'package:super_rich_text/super_rich_text.dart';
 import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
 
@@ -108,7 +109,6 @@ class _SearchLocalInstanceState extends State<_SearchLocalInstance> {
   @override
   void initState() {
     super.initState();
-
     BlocProvider.of<HomeAssistantScanBloc>(context).add(ScanPressed());
   }
 
@@ -147,7 +147,9 @@ class _SearchLocalInstanceContainerState
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeAssistantScanBloc, HomeAssistantScanState>(
-      buildWhen: (previous, current) => previous.status != current.status,
+      buildWhen: (previous, current) =>
+          previous.status != current.status ||
+          previous.scannedUrls.length != current.scannedUrls.length,
       builder: (context, state) {
         return Container(
           alignment: Alignment.center,
@@ -180,19 +182,25 @@ class _SearchLocalInstanceContainerState
                 );
               }
             },
-            child: getChildByStatus(state.status),
+            child: getChildByStatus(state),
           ),
         );
       },
     );
   }
 
-  Widget? getChildByStatus(HomeAssistantScanStatus status) {
-    switch (status) {
+  Widget? getChildByStatus(HomeAssistantScanState state) {
+    switch (state.status) {
       case HomeAssistantScanStatus.scanningInProgress:
-        child = _SearchLocalIntanceScanning(
-          key: UniqueKey(),
-        );
+        if (state.scannedUrls.isEmpty) {
+          child = _SearchLocalIntanceScanning(
+            key: UniqueKey(),
+          );
+        } else {
+          child = _SearchLocalIntanceListResults(
+            key: UniqueKey(),
+          );
+        }
         break;
       case HomeAssistantScanStatus.scanningSuccess:
         child = _SearchLocalIntanceListResults(
@@ -263,10 +271,11 @@ class _HourglassIcon extends StatefulWidget {
 }
 
 class _HourglassIconState extends State<_HourglassIcon> {
-  SMIInput<bool>? _error;
+  rive.SMIInput<bool>? _error;
 
-  void _onHouglassInit(Artboard artboard) {
-    final controller = StateMachineController.fromArtboard(artboard, 'spin');
+  void _onHouglassInit(rive.Artboard artboard) {
+    final controller =
+        rive.StateMachineController.fromArtboard(artboard, 'spin');
     if (controller != null) {
       artboard.addController(controller);
       _error = controller.findInput<bool>('error');
@@ -283,7 +292,7 @@ class _HourglassIconState extends State<_HourglassIcon> {
       child: SizedBox(
         width: 48,
         height: 48,
-        child: RiveAnimation.asset(
+        child: rive.RiveAnimation.asset(
           "assets/animations/hourglass.riv",
           stateMachines: const [''],
           onInit: _onHouglassInit,
@@ -299,19 +308,44 @@ class _SearchLocalIntanceListResults extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeAssistantScanBloc, HomeAssistantScanState>(
-        buildWhen: (previous, current) =>
-            previous.selectedUrl != current.selectedUrl,
         builder: (context, state) {
-          return ListView.separated(
+      return ShaderMask(
+        shaderCallback: (Rect rect) {
+          return LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Theme.of(context).colorScheme.background,
+              Colors.transparent,
+              Colors.transparent,
+              Theme.of(context).colorScheme.background,
+            ],
+            stops: const [0.0, 0.05, 0.95, 1.0],
+          ).createShader(rect);
+        },
+        blendMode: BlendMode.dstOut,
+        child: AnimatedList(
+            key: GlobalKeys.scannedUrlsAnimatedList,
             physics: const ClampingScrollPhysics(),
             padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 0),
-            separatorBuilder: (BuildContext context, int index) =>
-                const SizedBox(height: 24),
-            itemCount: state.scannedUrls.length,
-            itemBuilder: (BuildContext context, int index) =>
-                _SearchLocalIntanceItemList(url: state.scannedUrls[index]),
-          );
-        });
+            initialItemCount: state.scannedUrls.length,
+            itemBuilder: (context, index, animation) {
+              return slideIn(context, state.scannedUrls[index], animation);
+            }),
+      );
+    });
+  }
+
+  Widget slideIn(BuildContext context, String url, animation) {
+    return SlideTransition(
+        position: Tween<Offset>(
+          begin: const Offset(-1, 0),
+          end: const Offset(0, 0),
+        ).animate(animation),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 12),
+          child: _SearchLocalIntanceItemList(url: url),
+        ));
   }
 }
 
@@ -540,16 +574,24 @@ class _ContinueRetryButton extends StatelessWidget {
 }
 
 class _ManualUrlButton extends StatelessWidget {
+  void Function()? onPressed(
+      BuildContext context, HomeAssistantScanState state) {
+    if (!state.enableManualUrlButton) return null;
+
+    return state.status.isManual
+        ? () => context.read<HomeAssistantScanBloc>().add(ScanPressed())
+        : () => context.read<HomeAssistantScanBloc>().add(ManualUrlPressed());
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeAssistantScanBloc, HomeAssistantScanState>(
-      buildWhen: (previous, current) => previous.status != current.status,
+      buildWhen: (previous, current) =>
+          previous.status != current.status ||
+          previous.enableManualUrlButton != current.enableManualUrlButton,
       builder: (context, state) {
         return OutlinedButton(
-          onPressed: state.status.isManual
-              ? () => context.read<HomeAssistantScanBloc>().add(ScanPressed())
-              : () =>
-                  context.read<HomeAssistantScanBloc>().add(ManualUrlPressed()),
+          onPressed: onPressed(context, state),
           child: AnimatedSwitcher(
             duration: const Duration(milliseconds: 250),
             child: Text(

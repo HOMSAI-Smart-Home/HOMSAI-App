@@ -4,24 +4,29 @@ class HomeAssistantScanState extends Equatable {
   const HomeAssistantScanState(
       {this.scannedUrls = const [],
       this.selectedUrl = const Url.pure(),
+      this.enableManualUrlButton = false,
       this.status = HomeAssistantScanStatus.scanningInProgress});
-
   final List<String> scannedUrls;
   final Url selectedUrl;
   final HomeAssistantScanStatus status;
+  final bool enableManualUrlButton;
 
   HomeAssistantScanState copyWith(
       {List<String>? scannedUrls,
       Url? selectedUrl,
+      bool? enableManualUrlButton,
       HomeAssistantScanStatus? status}) {
     return HomeAssistantScanState(
         scannedUrls: scannedUrls ?? this.scannedUrls,
         selectedUrl: selectedUrl ?? this.selectedUrl,
+        enableManualUrlButton:
+            enableManualUrlButton ?? this.enableManualUrlButton,
         status: status ?? this.status);
   }
 
   @override
-  List<Object> get props => [scannedUrls, selectedUrl, status];
+  List<Object> get props =>
+      [scannedUrls, selectedUrl, enableManualUrlButton, status];
 }
 
 /// Enum representing the status the [HomeAssistantScanPage] at any given point in time.
