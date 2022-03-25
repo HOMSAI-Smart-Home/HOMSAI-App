@@ -18,7 +18,7 @@ class _AddPlantPageState extends State<AddPlantPage> {
     super.initState();
     HomeAssistantWebSocketRepository homeAssistantWebSocketRepository
        = HomeAssistantWebSocketRepository();
-    homeAssistantWebSocketRepository.connect(Uri.parse("https://hass.izismartsolutions.com"));
+    homeAssistantWebSocketRepository.connect(Uri.parse("http://192.168.0.102:8123"));
   }
 
   @override

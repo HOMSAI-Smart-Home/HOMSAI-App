@@ -26,12 +26,12 @@ class HomeAssistantRepository implements HomeAssistantInterface {
 
   Future<HomeAssistantAuth> authenticateHomeAssistant({required Uri url}) {
     const String callbackUrlScheme =
-        ApiProprties.homeAssistantAuthcallbackScheme;
+        HomeAssistantApiProprties.authCallbackScheme;
 
     url =
-        url.replace(path: ApiProprties.homeAssistantAuthPath, queryParameters: {
-      'response_type': ApiProprties.homeAssistantAuthresponseType,
-      'client_id': ApiProprties.homeAssistantAuthclientId,
+        url.replace(path: HomeAssistantApiProprties.authPath, queryParameters: {
+      'response_type': HomeAssistantApiProprties.authResponseType,
+      'client_id': HomeAssistantApiProprties.authClientId,
       'redirect_uri': '$callbackUrlScheme:/'
     });
 
@@ -114,20 +114,20 @@ class HomeAssistantRepository implements HomeAssistantInterface {
     late int now;
 
     String userCode = Uri.parse(result)
-        .queryParameters[ApiProprties.homeAssistantAuthresponseType]
+        .queryParameters[HomeAssistantApiProprties.authResponseType]
         .toString();
 
     url = url.replace(
-        path: ApiProprties.homeAssistantTokenPath, queryParameters: {});
+        path: HomeAssistantApiProprties.tokenPath, queryParameters: {});
 
     client = HttpClient();
     client.connectionTimeout = timeout;
 
     //HttpClientRequest request = await client.post(url.host, url.port, url.path);
     Map<String, dynamic> body = {
-      'grant_type': ApiProprties.homeAssistantTokenGrantType,
+      'grant_type': HomeAssistantApiProprties.tokenGrantType,
       'code': userCode,
-      'client_id': ApiProprties.homeAssistantAuthclientId
+      'client_id': HomeAssistantApiProprties.authClientId
     };
     //request.encoding = Encoding.getByName('application/x-www-form-urlencoded')!;
     /*request.encoding = Ut;
