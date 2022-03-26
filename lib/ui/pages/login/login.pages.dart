@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:homsai/routes.dart';
 import 'package:homsai/ui/widget/credentials_form/credentials_form.widget.dart';
 import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
 
@@ -88,10 +87,7 @@ class _Body extends StatelessWidget {
                       primary: Theme.of(context).colorScheme.primary,
                       textStyle: Theme.of(context).textTheme.headline6,
                     ),
-                    onPressed: () {
-                      Navigator.pushReplacementNamed(
-                          context, RouteConfiguration.register);
-                    },
+                    onPressed: () {},
                     child: Text(HomsaiLocalizations.of(context)!.register),
                   ),
                   const SizedBox(height: 20),

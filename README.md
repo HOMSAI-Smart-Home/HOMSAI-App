@@ -4,7 +4,6 @@ Innover Flutter application
 
 ## Used libraries
 
-- charts_flutter: Material Design data/charts visualization library
 - flutter_svg: Dart-native SVG rendering library
 - intl: used for internationalization and localization facilities such as date/number formatting and parsing
 - sqflite: used to persist and query data on the local device
@@ -13,18 +12,35 @@ Innover Flutter application
 - get_it: service locator used to implement dependency injection
 - shared_preferences: used to provide a persistent store for simple data
 - flutter_native_splash: automatically generates iOS, Android, and Web-native code for customizing this native splash screen background color and splash image.
-- rive: used to handle .riv animation file.
 - formz: unified form representation in Dart. Formz aims to simplify form representation and validation in a generic way.
 - rxdart: RxDart extends the capabilities of Dart Streams and StreamControllers.
 - bloc: A dart package that helps implement the BLoC pattern.
 - flutter_bloc: Widgets that make it easy to integrate blocs and cubits into Flutter. Built to work with package:bloc.
 - bloc_concurrency: exposes custom event transformers inspired by ember concurrency. Built to work with bloc.
 - equatable: Equatable overrides == and hashCode for you so you don't have to waste your time writing lots of boilerplate code.
-- super_rich_text: Handles boilerplate for rich text when you need to make a part of the text with a different font style
+- super_rich_text: Handles boilerplate for rich text when you need to make a part of the text with a different font style.
+- auto_route: a Flutter navigation package, it allows for strongly-typed arguments passing, effortless deep-linking and it uses code generation to simplify routes setup, with that being said it requires a minimal amount of code to generate everything needed for navigation inside of your App.
+- package_info_plus: provides an API for querying information about an application package.
+- rive: used to handle .riv animation file.
 - flutter_web_auth: used for handling web authentication like google auth
 - lan_scanner: allows discovering network devices in local network (LAN) via multi-threaded ICMP pings.
 - network_info_plus: allows Flutter apps to discover network info and configure themselves accordingly.
-- package_info_plus: provides an API for querying information about an application package.
+- charts_flutter: Material Design data/charts visualization library
+
+## Auto Router Generator
+
+Flutter generates route name from app.router.dar automatically.
+
+Use the [watch] flag to watch the files' system for edits and rebuild as necessary.
+```
+flutter packages pub run build_runner watch
+```
+
+If you want the generator to run one time and exits use
+```
+flutter packages pub run build_runner watch
+```
+
 
 ## Localization files
 

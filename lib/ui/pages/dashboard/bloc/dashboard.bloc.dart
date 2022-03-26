@@ -10,7 +10,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   final AppPreferencesInterface appPreferencesInterface =
       getIt.get<AppPreferencesInterface>();
 
-  DashboardBloc() : super(const DashboardState()) {}
+  DashboardBloc() : super(const DashboardState());
 
   @override
   void onTransition(Transition<DashboardEvent, DashboardState> transition) {

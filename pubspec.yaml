@@ -57,6 +57,7 @@ dependencies:
   package_info_plus: ^1.4.0
   bloc_concurrency: ^0.2.0
   web_socket_channel: ^2.1.0
+  auto_route: ^3.2.4
 
 dev_dependencies:
   flutter_test:
@@ -69,6 +70,9 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^1.0.0
 
+  auto_route_generator: ^3.2.3
+  build_runner:
+  
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 

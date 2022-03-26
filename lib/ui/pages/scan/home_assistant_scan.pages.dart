@@ -1,7 +1,8 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:homsai/globalkeys.widget.dart';
-import 'package:homsai/routes.dart';
+import 'package:homsai/app.router.dart';
 import 'package:homsai/themes/card.theme.dart';
 import 'package:homsai/themes/colors.theme.dart';
 import 'package:homsai/ui/pages/scan/bloc/home_assistant_scan.bloc.dart';
@@ -527,7 +528,7 @@ class _ContinueRetryButton extends StatelessWidget {
       listenWhen: (previous, current) => previous.status != current.status,
       listener: (context, state) {
         if (state.status.isAuthenticationSuccess) {
-          Navigator.popAndPushNamed(context, RouteConfiguration.addPlant);
+          context.router.popAndPush(const AddPlantRoute());
         }
       },
       child: BlocBuilder<HomeAssistantScanBloc, HomeAssistantScanState>(

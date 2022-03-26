@@ -12,7 +12,7 @@ import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.
 import 'package:homsai/datastore/local/apppreferences/app_preferences.repository.dart';
 import 'package:homsai/datastore/local/user/user_local.interface.dart';
 import 'package:homsai/datastore/local/user/user_local.repository.dart';
-import 'package:homsai/routes.dart';
+import 'package:homsai/app.router.dart';
 import 'package:homsai/themes/app.theme.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
@@ -48,7 +48,8 @@ Future<void> main() async {
   Timer(const Duration(seconds: 3), () {
     FlutterNativeSplash.remove();
   });
-  runApp(const HomsaiApp());
+
+  runApp(App());
 }
 
 void getAppVersion() async {
@@ -60,12 +61,14 @@ void getAppVersion() async {
       packageInfo.buildNumber;
 }
 
-class HomsaiApp extends StatelessWidget {
-  const HomsaiApp({Key? key}) : super(key: key);
+class App extends StatelessWidget {
+  final _appRouter = AppRouter();
+
+  App({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       debugShowCheckedModeBanner: true,
       title: appName,
       theme: HomsaiThemeData.lightThemeData,
@@ -74,8 +77,8 @@ class HomsaiApp extends StatelessWidget {
         LocaleNamesLocalizationsDelegate()
       ],
       supportedLocales: HomsaiLocalizations.supportedLocales,
-      initialRoute: RouteConfiguration.initialRoute,
-      onGenerateRoute: RouteConfiguration.onGenerateRoute,
+      routerDelegate: _appRouter.delegate(),
+      routeInformationParser: _appRouter.defaultRouteParser(),
     );
   }
 }

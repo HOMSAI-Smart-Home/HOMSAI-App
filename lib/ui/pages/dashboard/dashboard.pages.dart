@@ -1,8 +1,9 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:homsai/app.router.dart';
 import 'package:homsai/ui/pages/dashboard/bloc/dashboard.bloc.dart';
-import 'package:homsai/ui/pages/dashboard/dashboard.routes.dart';
 import 'package:homsai/ui/widget/homsai_scaffold.widget.dart';
 import 'package:homsai/ui/widget/shadow.widget.dart';
 
@@ -16,17 +17,30 @@ class DashboardPage extends StatefulWidget {
 class _DashboardPageState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
-    return HomsaiScaffold(
-      providers: [
-        BlocProvider<DashboardBloc>(
-          create: (BuildContext context) => DashboardBloc(),
-        ),
-      ],
-      appBar: DashboardAppBar(),
-      bottomNavigationBar: _DashboardBottomNavigationBar(),
-      mainAxisAlignment: MainAxisAlignment.center,
-      resizeToAvoidBottomInset: false,
-      children: <Widget>[],
+    return AutoTabsRouter(
+      routes: DashboardNavigation.values
+          .map((tab) => dashboardTabRoutes[tab]!)
+          .toList(),
+      builder: (context, child, animation) {
+        return HomsaiScaffold(
+          providers: [
+            BlocProvider<DashboardBloc>(
+              create: (BuildContext context) => DashboardBloc(),
+            ),
+          ],
+          appBar: DashboardAppBar(),
+          bottomNavigationBar: _DashboardBottomNavigationBar(
+              tabsRouter: AutoTabsRouter.of(context)),
+          mainAxisAlignment: MainAxisAlignment.center,
+          resizeToAvoidBottomInset: false,
+          children: <Widget>[
+            FadeTransition(
+              opacity: animation,
+              child: child,
+            )
+          ],
+        );
+      },
     );
   }
 }
@@ -83,6 +97,11 @@ class _DashboardAppBarExitAction extends StatelessWidget {
 }
 
 class _DashboardBottomNavigationBar extends StatefulWidget {
+  final TabsRouter tabsRouter;
+
+  const _DashboardBottomNavigationBar({Key? key, required this.tabsRouter})
+      : super(key: key);
+
   @override
   State<_DashboardBottomNavigationBar> createState() =>
       _DashboardBottomNavigationBarState();
@@ -90,14 +109,6 @@ class _DashboardBottomNavigationBar extends StatefulWidget {
 
 class _DashboardBottomNavigationBarState
     extends State<_DashboardBottomNavigationBar> {
-  int? _selectedIndex;
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
   static final Map<DashboardNavigation, Widget Function(BuildContext)>
       _bottomBarIcons = {
     DashboardNavigation.home: (context) => SvgPicture.asset(
@@ -140,18 +151,13 @@ class _DashboardBottomNavigationBarState
 
   @override
   Widget build(BuildContext context) {
-    DashboardNavigation navigation =
-        (ModalRoute.of(context)!.settings.arguments ?? DashboardNavigation.home)
-            as DashboardNavigation;
-    _selectedIndex ??= DashboardNavigation.values.indexOf(navigation);
-
     return Shadow(
       child: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         items: getItems(),
-        currentIndex: _selectedIndex ?? 0,
+        currentIndex: widget.tabsRouter.activeIndex,
         selectedItemColor: Theme.of(context).colorScheme.primary,
-        onTap: _onItemTapped,
+        onTap: widget.tabsRouter.setActiveIndex,
         backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
         unselectedItemColor: Theme.of(context).colorScheme.onSurfaceVariant,
         showSelectedLabels: false,
