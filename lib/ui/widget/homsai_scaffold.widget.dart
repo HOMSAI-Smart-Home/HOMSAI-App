@@ -10,7 +10,9 @@ class HomsaiScaffold extends StatefulWidget {
       this.padding = const EdgeInsets.all(20),
       this.mainAxisAlignment = MainAxisAlignment.start,
       this.extendBodyBehindAppBar = false,
-      this.resizeToAvoidBottomInset = true})
+      this.resizeToAvoidBottomInset = true,
+      this.appBar,
+      this.bottomNavigationBar})
       : super(key: key);
 
   final EdgeInsetsGeometry padding;
@@ -19,6 +21,8 @@ class HomsaiScaffold extends StatefulWidget {
   final MainAxisAlignment mainAxisAlignment;
   final bool extendBodyBehindAppBar;
   final bool resizeToAvoidBottomInset;
+  final PreferredSizeWidget? appBar;
+  final Widget? bottomNavigationBar;
 
   @override
   _HomsaiScaffoldState createState() => _HomsaiScaffoldState();
@@ -45,22 +49,23 @@ class _HomsaiScaffoldState extends State<HomsaiScaffold> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        title: Row(
-          children: [
-            const Spacer(),
-            SvgPicture.asset("assets/icons/full_logo.svg", height: 20),
-            const Spacer(),
-          ],
-        ),
-      ),
-      extendBodyBehindAppBar: widget.extendBodyBehindAppBar,
-      resizeToAvoidBottomInset: widget.resizeToAvoidBottomInset,
-      body: MultiBlocProvider(
-        providers: widget.providers,
-        child: SafeArea(
+    return MultiBlocProvider(
+      providers: widget.providers,
+      child: Scaffold(
+        appBar: widget.appBar ??
+            AppBar(
+              backgroundColor: Colors.transparent,
+              title: Row(
+                children: [
+                  const Spacer(),
+                  SvgPicture.asset("assets/icons/full_logo.svg", height: 20),
+                  const Spacer(),
+                ],
+              ),
+            ),
+        extendBodyBehindAppBar: widget.extendBodyBehindAppBar,
+        resizeToAvoidBottomInset: widget.resizeToAvoidBottomInset,
+        body: SafeArea(
           child: (widget.resizeToAvoidBottomInset)
               ? SingleChildScrollView(
                   child: _HomsaiScaffoldBody(
@@ -75,6 +80,7 @@ class _HomsaiScaffoldState extends State<HomsaiScaffold> {
                   children: widget.children,
                 ),
         ),
+        bottomNavigationBar: widget.bottomNavigationBar,
       ),
     );
   }

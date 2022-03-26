@@ -3,6 +3,7 @@ import 'package:homsai/themes/button.theme.dart';
 import 'package:homsai/themes/card.theme.dart';
 import 'package:homsai/themes/checkbox.theme.dart';
 import 'package:homsai/themes/colors.theme.dart';
+import 'package:homsai/themes/icon.theme.dart';
 import 'package:homsai/themes/input_decoration.theme.dart';
 
 class HomsaiThemeData {
@@ -43,7 +44,8 @@ class HomsaiThemeData {
         colorScheme,
         _textTheme,
       ),
-      iconTheme: IconThemeData(color: colorScheme.onBackground),
+      iconTheme: HomsaiIconTheme.defaultTheme(colorScheme),
+      primaryIconTheme: HomsaiIconTheme.defaultTheme(colorScheme),
       unselectedWidgetColor: colorScheme.onBackground,
       toggleableActiveColor: HomsaiColors.primaryGreen,
       canvasColor: colorScheme.background,
@@ -72,6 +74,8 @@ class HomsaiThemeData {
     onPrimary: HomsaiColors.primaryBlack,
     onSecondary: HomsaiColors.secondaryBlack,
     onSurface: HomsaiColors.primaryWhite,
+    surfaceVariant: HomsaiColors.secondaryBlack,
+    onSurfaceVariant: HomsaiColors.primaryGrey,
     brightness: Brightness.light,
   );
 
@@ -83,7 +87,7 @@ class HomsaiThemeData {
 
   static final TextTheme _textTheme = const TextTheme(
     headline4: TextStyle(
-        fontFamily: "JoyrideExtended", fontWeight: _bold, fontSize: 22.0),
+        fontFamily: "JoyrideExtended", fontWeight: _regular, fontSize: 22.0),
     caption: TextStyle(
         fontFamily: "HelveticaNowText", fontWeight: _semiBold, fontSize: 16.0),
     headline5: TextStyle(

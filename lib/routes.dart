@@ -3,6 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:homsai/main.dart';
 import 'package:homsai/ui/pages/add_plant/add_plant.pages.dart';
+import 'package:homsai/ui/pages/dashboard/dashboard.pages.dart';
+import 'package:homsai/ui/pages/dashboard/dashboard.routes.dart';
 import 'package:homsai/ui/pages/login/login.pages.dart';
 import 'package:homsai/ui/pages/register/register.pages.dart';
 import 'package:homsai/ui/pages/register/register.routes.dart'
@@ -13,6 +15,8 @@ import 'package:homsai/ui/pages/scan/home_assistant_scan.routes.dart'
     as has_routes;
 import 'package:homsai/ui/pages/add_plant/add_plant.routes.dart'
     as add_implant_routes;
+import 'package:homsai/ui/pages/dashboard/dashboard.routes.dart'
+    as dashboard_routes;
 
 typedef PathWidgetBuilder = Widget Function(BuildContext, String?);
 
@@ -36,11 +40,12 @@ class Path {
 }
 
 class RouteConfiguration {
-  static const String initialRoute = homeAssistantScan;
+  static const String initialRoute = dashboard;
   static const String login = login_routes.defaultRoute;
   static const String register = register_routes.defaultRoute;
   static const String homeAssistantScan = has_routes.defaultRoute;
   static const String addPlant = add_implant_routes.defaultRoute;
+  static const String dashboard = dashboard_routes.defaultRoute;
 
   /// List of [Path] to for route matching. When a named route is pushed with
   /// [Navigator.pushNamed], the route name is matched with the [Path.pattern]
@@ -63,6 +68,10 @@ class RouteConfiguration {
     Path(
       r'^' + addPlant,
       (context, match) => const AddPlantPage(),
+    ),
+    Path(
+      r'^' + dashboard,
+      (context, match) => const DashboardPage(),
     ),
   ];
 
