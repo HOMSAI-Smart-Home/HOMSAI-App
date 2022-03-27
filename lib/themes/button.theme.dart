@@ -42,30 +42,30 @@ class HomsaiButtonsTheme {
         backgroundColor: MaterialStateProperty.all(Colors.transparent),
         foregroundColor: MaterialStateProperty.resolveWith((states) {
           if (states.contains(MaterialState.disabled)) {
-            return colorScheme.onBackground.withOpacity(0.3);
+            return colorScheme.onSurface.withOpacity(0.3);
           }
-          return colorScheme.onBackground;
+          return colorScheme.onSurface;
         }),
         overlayColor: MaterialStateProperty.all(colorScheme.surface),
         minimumSize: MaterialStateProperty.all(const Size.fromHeight(48)),
         textStyle: MaterialStateProperty.all(
-            textTheme.headline6?.copyWith(color: colorScheme.onBackground)),
+            textTheme.headline6?.copyWith(color: colorScheme.onSurface)),
         elevation: MaterialStateProperty.all(0.0),
         shape: MaterialStateProperty.all(RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8.0),
             side: BorderSide(
-              color: colorScheme.onBackground,
+              color: colorScheme.onSurface,
               width: 1,
             ))),
         side: MaterialStateProperty.resolveWith((states) {
           if (states.contains(MaterialState.disabled)) {
             return BorderSide(
-              color: colorScheme.onBackground.withOpacity(0.3),
+              color: colorScheme.onSurface.withOpacity(0.3),
               width: 1,
             );
           }
           return BorderSide(
-            color: colorScheme.onBackground,
+            color: colorScheme.onSurface,
             width: 1,
           );
         }),

@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:homsai/globalkeys.widget.dart';
 import 'package:homsai/app.router.dart';
-import 'package:homsai/themes/card.theme.dart';
 import 'package:homsai/themes/colors.theme.dart';
 import 'package:homsai/ui/pages/scan/bloc/home_assistant_scan.bloc.dart';
+import 'package:homsai/ui/widget/alert.widget.dart';
 import 'package:homsai/ui/widget/homsai_scaffold.widget.dart';
 import 'package:homsai/ui/widget/radio.widget.dart';
 import 'package:rive/rive.dart' as rive;
@@ -58,43 +58,18 @@ class _HomeAssistantScanPage extends State<HomeAssistantScanPage> {
 class _HomeAssistantScanDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Theme(
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              const Icon(Icons.wifi_rounded),
-              const SizedBox(
-                width: 8,
-              ),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.only(top: 2),
-                      child: Text(
-                        HomsaiLocalizations.of(context)!
-                            .homeAssistantScanDialogTitle,
-                        style: Theme.of(context).textTheme.headline6,
-                      ),
-                    ),
-                    const SizedBox(height: 9),
-                    SuperRichText(
-                      text: HomsaiLocalizations.of(context)!
-                          .homeAssistantScanDialogMessage,
-                      style: Theme.of(context).textTheme.subtitle1,
-                    )
-                  ],
-                ),
-              )
-            ],
-          ),
-        ),
+    return Alert(
+      AlertType.tips,
+      icon: const Icon(Icons.wifi_rounded),
+      title: Text(
+        HomsaiLocalizations.of(context)!.homeAssistantScanDialogTitle,
+        style: Theme.of(context).textTheme.headline6,
       ),
-      data: HomsaiCardTheme.confirmTheme(Theme.of(context)),
+      message: SuperRichText(
+        text: HomsaiLocalizations.of(context)!.homeAssistantScanDialogMessage,
+        style: Theme.of(context).textTheme.subtitle1,
+      ),
+      cancelable: false,
     );
   }
 }

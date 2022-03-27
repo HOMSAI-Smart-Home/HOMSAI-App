@@ -9,4 +9,5 @@ class HomsaiColors {
   static Color secondaryGreen = const Color(0xFF29F07E);
 
   static Color primaryRed = const Color(0xFFF03829);
+  static Color secondaryYellow = const Color(0xFFFFBD55);
 }

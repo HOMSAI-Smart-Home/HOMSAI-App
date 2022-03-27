@@ -32,13 +32,10 @@ class _DashboardPageState extends State<DashboardPage> {
           bottomNavigationBar: _DashboardBottomNavigationBar(
               tabsRouter: AutoTabsRouter.of(context)),
           mainAxisAlignment: MainAxisAlignment.center,
-          resizeToAvoidBottomInset: false,
-          children: <Widget>[
-            FadeTransition(
-              opacity: animation,
-              child: child,
-            )
-          ],
+          child: FadeTransition(
+            opacity: animation,
+            child: child,
+          ),
         );
       },
     );
@@ -109,40 +106,46 @@ class _DashboardBottomNavigationBar extends StatefulWidget {
 
 class _DashboardBottomNavigationBarState
     extends State<_DashboardBottomNavigationBar> {
-  static final Map<DashboardNavigation, Widget Function(BuildContext)>
-      _bottomBarIcons = {
-    DashboardNavigation.home: (context) => SvgPicture.asset(
+  Widget getBottomBarIcons(
+      BuildContext context, DashboardNavigation dashboardNavigation) {
+    switch (dashboardNavigation) {
+      case DashboardNavigation.home:
+        return SvgPicture.asset(
           "assets/icons/logo.svg",
           color: Theme.of(context).colorScheme.onSurfaceVariant,
           width: 20,
           height: 20,
-        ),
-    DashboardNavigation.history: (context) => const Icon(Icons.history_rounded),
-    DashboardNavigation.search: (context) => const Icon(Icons.search_rounded),
-    DashboardNavigation.accounts: (context) =>
-        const Icon(Icons.manage_accounts_rounded),
-  };
+        );
+      case DashboardNavigation.history:
+        return const Icon(Icons.history_rounded);
+      case DashboardNavigation.search:
+        return const Icon(Icons.search_rounded);
+      case DashboardNavigation.accounts:
+        return const Icon(Icons.manage_accounts_rounded);
+    }
+  }
 
-  static final Map<DashboardNavigation, Widget Function(BuildContext)>
-      _activeBottomBarIcons = {
-    DashboardNavigation.home: (context) => SvgPicture.asset(
+  Widget? getActiveBottomBarIcons(
+      BuildContext context, DashboardNavigation dashboardNavigation) {
+    switch (dashboardNavigation) {
+      case DashboardNavigation.home:
+        return SvgPicture.asset(
           "assets/icons/logo.svg",
           color: Theme.of(context).colorScheme.primary,
           width: 20,
           height: 20,
-        ),
-  };
+        );
+      default:
+        return null;
+    }
+  }
 
   List<BottomNavigationBarItem> getItems() {
     List<BottomNavigationBarItem> items = [];
     for (var value in DashboardNavigation.values) {
-      Widget? activeIcon;
-      if (_activeBottomBarIcons.containsKey(value)) {
-        activeIcon = _activeBottomBarIcons[value]!(context);
-      }
       items.add(BottomNavigationBarItem(
-          icon: _bottomBarIcons[value]!(context),
-          activeIcon: activeIcon,
+          icon: getBottomBarIcons(context, value),
+          activeIcon: getActiveBottomBarIcons(context, value),
           label: '',
           tooltip: ''));
     }

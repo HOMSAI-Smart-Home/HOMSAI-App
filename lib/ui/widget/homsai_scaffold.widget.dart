@@ -3,17 +3,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
 class HomsaiScaffold extends StatefulWidget {
-  const HomsaiScaffold(
-      {Key? key,
-      this.providers = const [],
-      this.children = const [],
-      this.padding = const EdgeInsets.all(20),
-      this.mainAxisAlignment = MainAxisAlignment.start,
-      this.extendBodyBehindAppBar = false,
-      this.resizeToAvoidBottomInset = true,
-      this.appBar,
-      this.bottomNavigationBar})
-      : super(key: key);
+  const HomsaiScaffold({
+    Key? key,
+    this.providers = const [],
+    this.child,
+    this.children = const [],
+    this.padding = const EdgeInsets.all(20),
+    this.mainAxisAlignment = MainAxisAlignment.start,
+    this.extendBodyBehindAppBar = false,
+    this.resizeToAvoidBottomInset = true,
+    this.appBar,
+    this.bottomNavigationBar,
+  }) : super(key: key);
 
   final EdgeInsetsGeometry padding;
   final List<BlocProvider> providers;
@@ -21,6 +22,7 @@ class HomsaiScaffold extends StatefulWidget {
   final MainAxisAlignment mainAxisAlignment;
   final bool extendBodyBehindAppBar;
   final bool resizeToAvoidBottomInset;
+  final Widget? child;
   final PreferredSizeWidget? appBar;
   final Widget? bottomNavigationBar;
 
@@ -72,12 +74,14 @@ class _HomsaiScaffoldState extends State<HomsaiScaffold> {
                     padding: widget.padding,
                     mainAxisAlignment: widget.mainAxisAlignment,
                     children: widget.children,
+                    child: widget.child,
                   ),
                 )
               : _HomsaiScaffoldBody(
                   padding: widget.padding,
                   mainAxisAlignment: widget.mainAxisAlignment,
                   children: widget.children,
+                  child: widget.child,
                 ),
         ),
         bottomNavigationBar: widget.bottomNavigationBar,
@@ -89,24 +93,27 @@ class _HomsaiScaffoldState extends State<HomsaiScaffold> {
 class _HomsaiScaffoldBody extends StatelessWidget {
   final EdgeInsetsGeometry padding;
   final MainAxisAlignment mainAxisAlignment;
+  final Widget? child;
   final List<Widget> children;
 
-  const _HomsaiScaffoldBody({
-    Key? key,
-    required this.padding,
-    required this.mainAxisAlignment,
-    required this.children,
-  }) : super(key: key);
+  const _HomsaiScaffoldBody(
+      {Key? key,
+      required this.padding,
+      required this.mainAxisAlignment,
+      required this.children,
+      this.child})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: padding,
-      child: Column(
-        mainAxisAlignment: mainAxisAlignment,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: children,
-      ),
+      child: child ??
+          Column(
+            mainAxisAlignment: mainAxisAlignment,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: children,
+          ),
     );
   }
 }

@@ -20,13 +20,16 @@ part 'package:homsai/ui/pages/scan/home_assistant_scan.router.dart';
 @CupertinoAutoRouter(
   replaceInRouteName: 'Page,Route',
   routes: <AutoRoute>[
-    AutoRoute(path: homeAssistantScanPath, page: HomeAssistantScanPage),
-    AutoRoute(path: addPlantPath, page: AddPlantPage, initial: true),
     AutoRoute(
-      path: dashboardPath,
-      page: DashboardPage,
-      children: dashboardChildrenRoutes,
+      path: homeAssistantScanPath,
+      page: HomeAssistantScanPage,
     ),
+    AutoRoute(path: addPlantPath, page: AddPlantPage),
+    AutoRoute(
+        path: dashboardPath,
+        page: DashboardPage,
+        children: dashboardChildrenRoutes,
+        initial: true),
   ],
 )
 class AppRouter extends _$AppRouter {}

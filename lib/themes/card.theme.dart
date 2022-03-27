@@ -13,14 +13,43 @@ class HomsaiCardTheme {
     );
   }
 
-  static ThemeData confirmTheme(ThemeData themeData) {
+  static ThemeData alertTheme(ThemeData themeData, Color primary) {
     return themeData.copyWith(
       cardTheme: themeData.cardTheme.copyWith(
-        color: HomsaiColors.primaryGreen.withOpacity(0.3),
+        color: primary.withOpacity(0.3),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(5.0),
+        ),
+        elevation: 0,
       ),
       iconTheme: themeData.iconTheme.copyWith(
-        color: HomsaiColors.primaryGreen,
+        color: primary,
       ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+            primary: primary,
+            side: BorderSide(
+              color: primary,
+            ),
+            minimumSize: const Size(100, 30)),
+      ),
+      splashColor: primary.withOpacity(0.3),
     );
+  }
+
+  static ThemeData tipAlertTheme(ThemeData themeData) {
+    return alertTheme(themeData, HomsaiColors.primaryGreen);
+  }
+
+  static ThemeData warningAlertTheme(ThemeData themeData) {
+    return alertTheme(themeData, HomsaiColors.secondaryYellow);
+  }
+
+  static ThemeData errorAlertTheme(ThemeData themeData) {
+    return alertTheme(themeData, HomsaiColors.primaryRed);
+  }
+
+  static ThemeData infoAlertTheme(ThemeData themeData) {
+    return alertTheme(themeData, HomsaiColors.primaryGrey);
   }
 }
