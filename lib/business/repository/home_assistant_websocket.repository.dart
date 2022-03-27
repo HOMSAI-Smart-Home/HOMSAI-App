@@ -1,23 +1,35 @@
 import 'dart:convert';
 
 import 'package:homsai/crossconcern/utilities/properties/api.proprties.dart';
+import 'package:homsai/datastore/DTOs/websocket/error.dto.dart';
+import 'package:homsai/datastore/DTOs/websocket/response.dto.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.dart';
 import 'package:homsai/datastore/models/home_assistant_auth.model.dart';
 import 'package:homsai/main.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 class Event {
-  Map<Function(dynamic), Function(dynamic)?> subscribed = {};
+  Map<Function(dynamic), Function(ErrorDto)?> subscribed = {};
   bool isfetch;
 
   Event(this.isfetch);
 
-  void subscribe(Function(dynamic) onDone, Function(dynamic)? onError) {
+  void subscribe(Function(dynamic) onDone, Function(ErrorDto)? onError) {
     subscribed[onDone] = onError;
   }
 
   void unsubscribe(Function(dynamic) onDone) {
     subscribed.remove(onDone);
+  }
+
+  void publish(dynamic result) {
+    subscribed.forEach((key, value) {
+      if (result is ErrorDto) {
+        value!(result);
+      } else {
+        key(result);
+      }
+    });
   }
 }
 
@@ -27,6 +39,9 @@ class HomeAssistantWebSocketRepository {
   final AppPreferencesInterface appPreferencesInterface =
       getIt.get<AppPreferencesInterface>();
   int id = 1;
+  
+  //TODO: Remove and take it from global.
+  late Uri url;
 
   static Map<String, int> eventsId = {};
   static Map<int, Event> events = {};
@@ -37,6 +52,12 @@ class HomeAssistantWebSocketRepository {
     String scheme = url.scheme.contains('s') ? 'wss' : 'ws';
 
     url = url.replace(path: "/api/websocket", scheme: scheme);
+
+    this.url = url;
+    _connect();
+  }
+
+  void _connect() {
     webSocket = WebSocketChannel.connect(url);
 
     webSocket.stream.listen((data) {
@@ -52,27 +73,23 @@ class HomeAssistantWebSocketRepository {
           listen();
           break;
 
-        default:
-          throw Exception('Replace this placeolder');
+        case "auth_invalid":
+          throw Exception(data["message"]);
       }
     });
   }
 
   void listen() {
+    ResponseDto? response;
     webSocket.stream.listen((data) {
-      data = jsonDecode(data);
+      response = ResponseDto.fromJson(jsonDecode(data));
 
-      switch (data["type"]) {
-        case 1:
-          break;
-
-        case 2:
-          break;
-
-        default:
-          throw Exception('Replace this placeolder');
+      if (response != null && response!.success != null && response!.success!) {
+        events[response?.id]?.publish(response!.result);
+      } else {
+        events[response?.id]?.publish(response!.error);
       }
-    });
+    }).onError((error) => _connect());
   }
 
   void addSubscription(String event, String payload, Function(dynamic) onDone,
