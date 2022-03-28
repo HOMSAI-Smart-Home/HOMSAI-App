@@ -11,8 +11,9 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 class Event {
   Map<Function(dynamic), Function(ErrorDto)?> subscribed = {};
   bool isfetch;
+  String event;
 
-  Event(this.isfetch);
+  Event(this.isfetch, this.event);
 
   void subscribe(Function(dynamic) onDone, Function(ErrorDto)? onError) {
     subscribed[onDone] = onError;
@@ -39,7 +40,7 @@ class HomeAssistantWebSocketRepository {
   final AppPreferencesInterface appPreferencesInterface =
       getIt.get<AppPreferencesInterface>();
   int id = 1;
-  
+
   //TODO: Remove and take it from global.
   late Uri url;
 
@@ -89,6 +90,10 @@ class HomeAssistantWebSocketRepository {
       } else {
         events[response?.id]?.publish(response!.error);
       }
+
+      if (events[response!.id]!.isfetch) {
+        _removeEvent(id);
+      }
     }).onError((error) => _connect());
   }
 
@@ -96,7 +101,7 @@ class HomeAssistantWebSocketRepository {
       {bool isfetch = false, Function(dynamic)? onError}) {
     if (!eventsId.containsKey(event)) {
       eventsId[event] = id++;
-      events[eventsId[event]!] = Event(isfetch);
+      events[eventsId[event]!] = Event(isfetch, event);
     }
 
     webSocket.sink.add(payload);
@@ -104,10 +109,17 @@ class HomeAssistantWebSocketRepository {
     events[eventsId[event]]!.subscribe(onDone, onError);
   }
 
-  /*void removeSubscription(String event, Function(dynamic) callback) {
+  void _removeEvent(int id) {
+    if (events.containsKey(id)) {
+      eventsId.remove(events[id]?.event);
+      events.remove(id);
+    }
+  }
+
+  void removeSubscription(String event, Function(dynamic) callback) {
     if (eventsId.containsKey(event) &&
         events[eventsId[event]]!.subscribed.isNotEmpty) {
       events[eventsId[event]]!.unsubscribe(callback);
     }
-  }*/
+  }
 }
