@@ -109,7 +109,6 @@ class HomeAssistantRepository implements HomeAssistantInterface {
       required String result,
       Duration timeout = const Duration(seconds: 2)}) async {
     late HttpClient client;
-    late HttpClientResponse response;
     late Map data;
     late int now;
 
@@ -123,18 +122,12 @@ class HomeAssistantRepository implements HomeAssistantInterface {
     client = HttpClient();
     client.connectionTimeout = timeout;
 
-    //HttpClientRequest request = await client.post(url.host, url.port, url.path);
     Map<String, dynamic> body = {
       'grant_type': HomeAssistantApiProprties.tokenGrantType,
       'code': userCode,
       'client_id': HomeAssistantApiProprties.authClientId
     };
-    //request.encoding = Encoding.getByName('application/x-www-form-urlencoded')!;
-    /*request.encoding = Ut;
-    request.headers.set(
-        HttpHeaders.contentTypeHeader, "application/x-www_form-urlencoded");
-    request.write(body);
-    response = await request.close();*/
+
     Response response2 = await http
         .post(
           url,
@@ -146,7 +139,6 @@ class HomeAssistantRepository implements HomeAssistantInterface {
         )
         .timeout(timeout)
         .onError((error, stackTrace) {
-      print(error);
       throw error as Exception;
     });
 

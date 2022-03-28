@@ -1,6 +1,10 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:homsai/business/repository/home_assistant_websocket.repository.dart';
+import 'package:homsai/datastore/DTOs/websocket/error.dto.dart';
 import 'package:homsai/ui/pages/add_plant/bloc/add_plant.bloc.dart';
 import 'package:homsai/ui/widget/homsai_scaffold.widget.dart';
 import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
@@ -16,9 +20,20 @@ class _AddPlantPageState extends State<AddPlantPage> {
   @override
   void initState() {
     super.initState();
-    HomeAssistantWebSocketRepository homeAssistantWebSocketRepository
-       = HomeAssistantWebSocketRepository();
-    homeAssistantWebSocketRepository.connect(Uri.parse("http://192.168.0.102:8123"));
+
+    HomeAssistantWebSocketRepository websocket =
+        HomeAssistantWebSocketRepository();
+
+    websocket.connect(Uri.parse("http://192.168.0.115:8123"));
+    websocket.fetchingConfig(Subscriber(printConfig, onError: printError));
+  }
+
+  void printConfig(Map<String, dynamic> config) {
+    print(jsonEncode(config));
+  }
+
+  void printError(ErrorDto error) {
+    print('[${error.code}] ${error.message}');
   }
 
   @override

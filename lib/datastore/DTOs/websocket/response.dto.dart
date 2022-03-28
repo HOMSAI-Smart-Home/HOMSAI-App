@@ -17,7 +17,7 @@ class ResponseDto {
     if (success!) {
       result = json["result"];
     } else {
-      error = json["error"];
+      error = ErrorDto.fromJson(json["error"]);
     }
   }
 
