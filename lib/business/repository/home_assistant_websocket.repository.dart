@@ -147,12 +147,12 @@ class HomeAssistantWebSocketRepository {
   }
 
   void _addSubscriber(String event, Subscriber subscriber, bool isfetch,
-      Map<String, dynamic> paylod) {
+      Map<String, dynamic> payload) {
     if (!eventsId.containsKey(event)) {
       eventsId[event] = id++;
       events[eventsId[event]!] = SubscribersHandler(isfetch, event);
 
-      _message.add(jsonEncode(paylod));
+      _message.add(jsonEncode(payload));
       _send();
     }
 
@@ -178,25 +178,25 @@ class HomeAssistantWebSocketRepository {
   ///////////////////
 
   void subscribeEvent(String event, Subscriber subscriber) {
-    Map<String, dynamic> paylod = {};
+    Map<String, dynamic> payload = {};
 
-    paylod['id'] = eventsId.containsKey(event) ? eventsId[event] : id;
-    paylod['type'] = HomeAssistantApiProprties.fetchingSubscribeEvents;
-    paylod['subscribe_events'] = event;
+    payload['id'] = eventsId.containsKey(event) ? eventsId[event] : id;
+    payload['type'] = HomeAssistantApiProprties.fetchingSubscribeEvents;
+    payload['subscribe_events'] = event;
 
-    _addSubscriber(event, subscriber, false, paylod);
+    _addSubscriber(event, subscriber, false, payload);
   }
 
   void subscribeTrigger(String event, Subscriber subscriber, String state,
       String entityId, String from, String to) {
-    Map<String, dynamic> paylod = {};
+    Map<String, dynamic> payload = {};
 
-    paylod['id'] =
+    payload['id'] =
         eventsId.containsKey(HomeAssistantApiProprties.fetchingSubscribeTrigger)
             ? eventsId[HomeAssistantApiProprties.fetchingSubscribeTrigger]
             : id;
-    paylod['type'] = HomeAssistantApiProprties.fetchingSubscribeTrigger;
-    paylod['trigger'] = {
+    payload['type'] = HomeAssistantApiProprties.fetchingSubscribeTrigger;
+    payload['trigger'] = {
       "platform": state,
       "entity_id": entityId,
       "from": from,
@@ -204,124 +204,124 @@ class HomeAssistantWebSocketRepository {
     };
 
     _addSubscriber(HomeAssistantApiProprties.fetchingSubscribeTrigger,
-        subscriber, false, paylod);
+        subscriber, false, payload);
   }
 
   void unsubscribingFromEvents(String event, Subscriber subscriber) {
-    Map<String, dynamic> paylod = {};
+    Map<String, dynamic> payload = {};
 
     if (!eventsId.containsKey(event)) return;
 
-    paylod['id'] = eventsId
+    payload['id'] = eventsId
             .containsKey(HomeAssistantApiProprties.fetchingUnsubscribeEvents)
         ? eventsId[HomeAssistantApiProprties.fetchingUnsubscribeEvents]
         : id;
-    paylod['type'] = HomeAssistantApiProprties.fetchingUnsubscribeEvents;
-    paylod['subscription'] = eventsId[event];
+    payload['type'] = HomeAssistantApiProprties.fetchingUnsubscribeEvents;
+    payload['subscription'] = eventsId[event];
 
     _addSubscriber(HomeAssistantApiProprties.fetchingUnsubscribeEvents,
-        subscriber, true, paylod);
+        subscriber, true, payload);
   }
 
   void fireAnEvent(Subscriber subscriber, String eventType,
       {Map<String, String>? eventData}) {
-    Map<String, dynamic> paylod = {};
+    Map<String, dynamic> payload = {};
 
-    paylod['id'] = eventsId.containsKey(HomeAssistantApiProprties.fireEvent)
+    payload['id'] = eventsId.containsKey(HomeAssistantApiProprties.fireEvent)
         ? eventsId[HomeAssistantApiProprties.fireEvent]
         : id;
-    paylod['type'] = HomeAssistantApiProprties.fireEvent;
-    paylod['event_type'] = eventType;
-    eventData != null ? paylod['event_data'] = eventData : null;
+    payload['type'] = HomeAssistantApiProprties.fireEvent;
+    payload['event_type'] = eventType;
+    eventData != null ? payload['event_data'] = eventData : null;
 
     _addSubscriber(
-        HomeAssistantApiProprties.fireEvent, subscriber, true, paylod);
+        HomeAssistantApiProprties.fireEvent, subscriber, true, payload);
   }
 
   void callingAService(Subscriber subscriber, String domain, String service,
       {Map<String, String>? serviceData, Map<String, String>? target}) {
-    Map<String, dynamic> paylod = {};
+    Map<String, dynamic> payload = {};
 
-    paylod['id'] = eventsId.containsKey(HomeAssistantApiProprties.callService)
+    payload['id'] = eventsId.containsKey(HomeAssistantApiProprties.callService)
         ? eventsId[HomeAssistantApiProprties.callService]
         : id;
-    paylod['type'] = HomeAssistantApiProprties.callService;
-    paylod['domain'] = domain;
-    paylod['service'] = service;
-    serviceData != null ? paylod['service_data'] = serviceData : null;
-    target != null ? paylod['target'] = target : null;
+    payload['type'] = HomeAssistantApiProprties.callService;
+    payload['domain'] = domain;
+    payload['service'] = service;
+    serviceData != null ? payload['service_data'] = serviceData : null;
+    target != null ? payload['target'] = target : null;
 
     _addSubscriber(
-        HomeAssistantApiProprties.callService, subscriber, true, paylod);
+        HomeAssistantApiProprties.callService, subscriber, true, payload);
   }
 
   void fetchingStates(Subscriber subscriber) {
-    Map<String, dynamic> paylod = {};
+    Map<String, dynamic> payload = {};
 
-    paylod['id'] =
+    payload['id'] =
         eventsId.containsKey(HomeAssistantApiProprties.fetchingStates)
             ? eventsId[HomeAssistantApiProprties.fetchingStates]
             : id;
-    paylod['type'] = HomeAssistantApiProprties.fetchingStates;
+    payload['type'] = HomeAssistantApiProprties.fetchingStates;
 
     _addSubscriber(
-        HomeAssistantApiProprties.fetchingStates, subscriber, true, paylod);
+        HomeAssistantApiProprties.fetchingStates, subscriber, true, payload);
   }
 
   void fetchingConfig(Subscriber subscriber) {
-    Map<String, dynamic> paylod = {};
+    Map<String, dynamic> payload = {};
 
-    paylod['id'] =
+    payload['id'] =
         eventsId.containsKey(HomeAssistantApiProprties.fetchingConfig)
             ? eventsId[HomeAssistantApiProprties.fetchingConfig]
             : id;
-    paylod['type'] = HomeAssistantApiProprties.fetchingConfig;
+    payload['type'] = HomeAssistantApiProprties.fetchingConfig;
 
     _addSubscriber(
-        HomeAssistantApiProprties.fetchingConfig, subscriber, true, paylod);
+        HomeAssistantApiProprties.fetchingConfig, subscriber, true, payload);
   }
 
   void fetchingServices(Subscriber subscriber) {
-    Map<String, dynamic> paylod = {};
+    Map<String, dynamic> payload = {};
 
-    paylod['id'] =
+    payload['id'] =
         eventsId.containsKey(HomeAssistantApiProprties.fetchingServices)
             ? eventsId[HomeAssistantApiProprties.fetchingServices]
             : id;
-    paylod['type'] = HomeAssistantApiProprties.fetchingServices;
+    payload['type'] = HomeAssistantApiProprties.fetchingServices;
 
     _addSubscriber(
-        HomeAssistantApiProprties.fetchingServices, subscriber, true, paylod);
+        HomeAssistantApiProprties.fetchingServices, subscriber, true, payload);
   }
 
   void fetchingMediaPlayerThumbnails(Subscriber subscriber, String entityId) {
-    Map<String, dynamic> paylod = {};
+    Map<String, dynamic> payload = {};
 
-    paylod['id'] = eventsId
+    payload['id'] = eventsId
             .containsKey(HomeAssistantApiProprties.fetchingMediaPlayerThumbnail)
         ? eventsId[HomeAssistantApiProprties.fetchingMediaPlayerThumbnail]
         : id;
-    paylod['type'] = HomeAssistantApiProprties.fetchingMediaPlayerThumbnail;
-    paylod['entity_id'] = entityId;
+    payload['type'] = HomeAssistantApiProprties.fetchingMediaPlayerThumbnail;
+    payload['entity_id'] = entityId;
 
     _addSubscriber(HomeAssistantApiProprties.fetchingMediaPlayerThumbnail,
-        subscriber, true, paylod);
+        subscriber, true, payload);
   }
 
   void validateConfig(Subscriber subscriber, String entityId,
       {Map<String, dynamic>? trigger,
       Map<String, dynamic>? condition,
       Map<String, dynamic>? action}) {
-    Map<String, dynamic> paylod = {};
+    Map<String, dynamic> payload = {};
 
-    paylod['id'] =
+    payload['id'] =
         eventsId.containsKey(HomeAssistantApiProprties.validateConfig)
             ? eventsId[HomeAssistantApiProprties.validateConfig]
             : id;
-    paylod['type'] = HomeAssistantApiProprties.validateConfig;
-    paylod['entity_id'] = entityId;
+    payload['type'] = HomeAssistantApiProprties.validateConfig;
+    payload['entity_id'] = entityId;
 
     _addSubscriber(
-        HomeAssistantApiProprties.validateConfig, subscriber, true, paylod);
+        HomeAssistantApiProprties.validateConfig, subscriber, true, payload);
   }
 }
