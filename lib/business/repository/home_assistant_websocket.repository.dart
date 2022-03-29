@@ -2,8 +2,11 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:homsai/crossconcern/utilities/properties/api.proprties.dart';
+import 'package:homsai/datastore/DTOs/websocket/configurationBody.dto.dart';
 import 'package:homsai/datastore/DTOs/websocket/error.dto.dart';
 import 'package:homsai/datastore/DTOs/websocket/response.dto.dart';
+import 'package:homsai/datastore/DTOs/websocket/serviceBody.dto.dart';
+import 'package:homsai/datastore/DTOs/websocket/triggerBody.dto.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.dart';
 import 'package:homsai/datastore/models/home_assistant_auth.model.dart';
 import 'package:homsai/main.dart';
@@ -187,8 +190,8 @@ class HomeAssistantWebSocketRepository {
     _addSubscriber(event, subscriber, false, payload);
   }
 
-  void subscribeTrigger(String event, Subscriber subscriber, String state,
-      String entityId, String from, String to) {
+  void subscribeTrigger(
+      String event, Subscriber subscriber, TriggerBodyDto trigger) {
     Map<String, dynamic> payload = {};
 
     payload['id'] =
@@ -196,12 +199,7 @@ class HomeAssistantWebSocketRepository {
             ? eventsId[HomeAssistantApiProprties.fetchingSubscribeTrigger]
             : id;
     payload['type'] = HomeAssistantApiProprties.fetchingSubscribeTrigger;
-    payload['trigger'] = {
-      "platform": state,
-      "entity_id": entityId,
-      "from": from,
-      "to": to
-    };
+    payload['trigger'] = trigger.toJson();
 
     _addSubscriber(HomeAssistantApiProprties.fetchingSubscribeTrigger,
         subscriber, false, payload);
@@ -239,7 +237,7 @@ class HomeAssistantWebSocketRepository {
   }
 
   void callingAService(Subscriber subscriber, String domain, String service,
-      {Map<String, String>? serviceData, Map<String, String>? target}) {
+      ServiceBodyDto serviceBodyDto) {
     Map<String, dynamic> payload = {};
 
     payload['id'] = eventsId.containsKey(HomeAssistantApiProprties.callService)
@@ -248,8 +246,7 @@ class HomeAssistantWebSocketRepository {
     payload['type'] = HomeAssistantApiProprties.callService;
     payload['domain'] = domain;
     payload['service'] = service;
-    serviceData != null ? payload['service_data'] = serviceData : null;
-    target != null ? payload['target'] = target : null;
+    payload.addAll(serviceBodyDto.toJson());
 
     _addSubscriber(
         HomeAssistantApiProprties.callService, subscriber, true, payload);
@@ -309,9 +306,7 @@ class HomeAssistantWebSocketRepository {
   }
 
   void validateConfig(Subscriber subscriber, String entityId,
-      {Map<String, dynamic>? trigger,
-      Map<String, dynamic>? condition,
-      Map<String, dynamic>? action}) {
+      ConfigurationBodyDto configurationBodyDto) {
     Map<String, dynamic> payload = {};
 
     payload['id'] =
@@ -319,7 +314,7 @@ class HomeAssistantWebSocketRepository {
             ? eventsId[HomeAssistantApiProprties.validateConfig]
             : id;
     payload['type'] = HomeAssistantApiProprties.validateConfig;
-    payload['entity_id'] = entityId;
+    payload.addAll(configurationBodyDto.toJson());
 
     _addSubscriber(
         HomeAssistantApiProprties.validateConfig, subscriber, true, payload);
