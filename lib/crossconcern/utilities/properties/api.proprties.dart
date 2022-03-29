@@ -12,6 +12,9 @@ class HomeAssistantApiProprties {
 
   static const authRequired = "auth_required";
   static const authOk = "auth_ok";
+  static const authInvalid = "auth_invalid";
+
+  static const webSocketPath = "/api/websocket";
 
   static const eventStateChanged = "state_changed";
   static const eventAutomationTriggered = "automation_triggered";
@@ -22,16 +25,25 @@ class HomeAssistantApiProprties {
   static const eventHomeAssistantStop = "home_assistant_stop";
   static const eventCoreConfigUpdated = "core_config_updated";
   static const eventComponentLoaded = "component_loaded";
-  static const eventPersistentNotificationsUpdated = "persistent_notifications_updated";
+  static const eventPersistentNotificationsUpdated =
+      "persistent_notifications_updated";
 
   static const fetchingStates = "get_states";
   static const fetchingConfig = "get_config";
   static const fetchingServices = "get_services";
   static const fetchingMediaPlayerThumbnail = "media_player_thumbnail";
   static const fetchingAuthCurrentUser = "auth/current_user";
-  static const fetchingPersistentNotificationGet = "persistent_notification/get";
+  static const fetchingPersistentNotificationGet =
+      "persistent_notification/get";
   static const fetchingEnergyGetPrefs = "energy/get_prefs";
   static const fetchingEnergyInfo = "energy/info";
+  static const fetchingSubscribeTrigger = "subscribe_trigger";
+  static const fetchingSubscribeEvents = "subscribe_events";
   static const fetchingUnsubscribeEvents = "unsubscribe_events";
-  static const fetchingHistoryStatisticsDuringPeriod = "history/statistics_during_period";
+  static const fetchingHistoryStatisticsDuringPeriod =
+      "history/statistics_during_period";
+
+  static const fireEvent = "fire_event";
+  static const callService = "call_service";
+  static const validateConfig = "validate_config";
 }
