@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:homsai/themes/colors.theme.dart';
 import 'package:homsai/ui/widget/alert.widget.dart';
+import 'package:homsai/ui/widget/dashboard_device.widget.dart';
 import 'package:super_rich_text/super_rich_text.dart';
 
 class HomePage extends StatefulWidget {
@@ -13,6 +15,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
+      key: UniqueKey(),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -24,78 +27,101 @@ class _HomePageState extends State<HomePage> {
               style: Theme.of(context).textTheme.headline6,
             ),
             message: SuperRichText(
-                text: "Potresti spegnere *Lampadario Salotto* alle 19."),
+              text: "Potresti spegnere *Lampadario Salotto* alle 19.",
+              style: Theme.of(context).textTheme.subtitle1,
+            ),
             action: AlertAction("Details", () {}),
           ),
-          Alert(
-            AlertType.warning,
-            icon: const Icon(Icons.info_rounded),
-            title: Text(
-              "Miglioramento disponibile",
-              style: Theme.of(context).textTheme.headline6,
-            ),
-            message: SuperRichText(
-                text: "Potresti spegnere *Lampadario Salotto* alle 19."),
-            action: AlertAction("Details", () {}),
-          ),
-          Alert(
-            AlertType.error,
-            icon: const Icon(Icons.info_rounded),
-            title: Text(
-              "Miglioramento disponibile",
-              style: Theme.of(context).textTheme.headline6,
-            ),
-            message: SuperRichText(
-                text: "Potresti spegnere *Lampadario Salotto* alle 19."),
-            action: AlertAction("Details", () {}),
-          ),
-          Alert(
-            AlertType.warning,
-            icon: const Icon(Icons.info_rounded),
-            title: SuperRichText(
-              text: "Potresti spegnere *Lampadario Salotto* alle 19.",
-            ),
-          ),
-          Alert(
-            AlertType.error,
-            icon: const Icon(Icons.info_rounded),
-            title: SuperRichText(
-              text: "Potresti spegnere *Lampadario Salotto* alle 19.",
-              overflow: TextOverflow.clip,
-            ),
-          ),
-          Alert(
-            AlertType.info,
-            icon: const Icon(Icons.info_rounded),
-            title: SuperRichText(
-              text: "Potresti spegnere *Lampadario Salotto* alle 19.",
-            ),
-            cancelable: false,
-          ),
-          Alert(
-            AlertType.error,
-            icon: const Icon(Icons.info_rounded),
-            title: SuperRichText(
-              text: "Potresti spegnere *Lampadario Salotto* alle 19.",
-              overflow: TextOverflow.clip,
-            ),
-          ),
-          Alert(
-            AlertType.error,
-            icon: const Icon(Icons.info_rounded),
-            title: SuperRichText(
-              text: "Potresti spegnere *Lampadario Salotto* alle 19.",
-              overflow: TextOverflow.clip,
-            ),
-          ),
-          Alert(
-            AlertType.error,
-            icon: const Icon(Icons.info_rounded),
-            title: SuperRichText(
-              text: "Potresti spegnere *Lampadario Salotto* alle 19.",
-              overflow: TextOverflow.clip,
-            ),
-          ),
+          GridView.count(
+              shrinkWrap: true,
+              padding: const EdgeInsets.all(4),
+              mainAxisSpacing: 8,
+              crossAxisSpacing: 8,
+              crossAxisCount: 2,
+              childAspectRatio: 150 / 80,
+              physics: const NeverScrollableScrollPhysics(),
+              children: <Widget>[
+                DashboardDevice(
+                  DeviceStatus.disabled,
+                  baseIcon: Icons.lightbulb,
+                  baseColor: HomsaiColors.primaryYellow,
+                  title: "Lampada Tavolo",
+                  room: "Camera",
+                  info: "off",
+                ),
+                DashboardDevice(
+                  DeviceStatus.disabled,
+                  baseIcon: Icons.thermostat_rounded,
+                  baseColor: HomsaiColors.primaryOrange,
+                  title: "Clima Cucina",
+                  room: "Cucina",
+                  info: "22.3°",
+                ),
+                DashboardDevice(
+                  DeviceStatus.enabled,
+                  baseIcon: Icons.lightbulb,
+                  baseColor: HomsaiColors.primaryYellow,
+                  title: "Lampada Tavolo",
+                  room: "Camera",
+                  info: "off",
+                ),
+                DashboardDevice(
+                  DeviceStatus.enabled,
+                  baseIcon: Icons.thermostat_rounded,
+                  baseColor: HomsaiColors.primaryOrange,
+                  title: "Clima Cucina",
+                  room: "Cucina",
+                  info: "22.3°",
+                ),
+                DashboardDevice(
+                  DeviceStatus.warning,
+                  baseIcon: Icons.lightbulb,
+                  baseColor: HomsaiColors.primaryYellow,
+                  title: "Lampada Tavolo",
+                  room: "Camera",
+                  info: "off",
+                ),
+                DashboardDevice(
+                  DeviceStatus.warning,
+                  baseIcon: Icons.thermostat_rounded,
+                  baseColor: HomsaiColors.primaryOrange,
+                  title: "Clima Cucina",
+                  room: "Cucina",
+                  info: "22.3°",
+                ),
+                DashboardDevice(
+                  DeviceStatus.error,
+                  baseIcon: Icons.lightbulb,
+                  baseColor: HomsaiColors.primaryYellow,
+                  title: "Lampada Tavolo",
+                  room: "Camera",
+                  info: "off",
+                ),
+                DashboardDevice(
+                  DeviceStatus.error,
+                  baseIcon: Icons.thermostat_rounded,
+                  baseColor: HomsaiColors.primaryOrange,
+                  title: "Clima Cucina",
+                  room: "Cucina",
+                  info: "22.3°",
+                ),
+                DashboardDevice(
+                  DeviceStatus.group,
+                  baseIcon: Icons.lightbulb,
+                  baseColor: HomsaiColors.primaryYellow,
+                  title: "Lampada Tavolo",
+                  room: "Camera",
+                  info: "Dettagli",
+                ),
+                DashboardDevice(
+                  DeviceStatus.group,
+                  baseIcon: Icons.thermostat_rounded,
+                  baseColor: HomsaiColors.primaryOrange,
+                  title: "Clima Cucina",
+                  room: "Cucina",
+                  info: "22.3°",
+                ),
+              ]),
         ],
       ),
     );

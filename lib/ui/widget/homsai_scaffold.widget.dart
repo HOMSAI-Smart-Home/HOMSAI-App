@@ -8,7 +8,7 @@ class HomsaiScaffold extends StatefulWidget {
     this.providers = const [],
     this.child,
     this.children = const [],
-    this.padding = const EdgeInsets.all(20),
+    this.padding = const EdgeInsets.all(10),
     this.mainAxisAlignment = MainAxisAlignment.start,
     this.extendBodyBehindAppBar = false,
     this.resizeToAvoidBottomInset = true,
@@ -70,6 +70,7 @@ class _HomsaiScaffoldState extends State<HomsaiScaffold> {
         body: SafeArea(
           child: (widget.resizeToAvoidBottomInset)
               ? SingleChildScrollView(
+                  key: UniqueKey(),
                   child: _HomsaiScaffoldBody(
                     padding: widget.padding,
                     mainAxisAlignment: widget.mainAxisAlignment,

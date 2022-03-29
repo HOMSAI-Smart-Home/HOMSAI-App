@@ -102,7 +102,7 @@ class HomsaiThemeData {
     subtitle2: TextStyle(
         fontFamily: "HelveticaNowText", fontWeight: _thin, fontSize: 16.0),
     bodyText2: TextStyle(
-        fontFamily: "HelveticaNowText", fontWeight: _regular, fontSize: 16.0),
+        fontFamily: "HelveticaNowText", fontWeight: _regular, fontSize: 12.0),
     headline2: TextStyle(
         fontFamily: "HelveticaNowText", fontWeight: _bold, fontSize: 18.0),
     headline6: TextStyle(
