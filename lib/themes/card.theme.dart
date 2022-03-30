@@ -8,7 +8,6 @@ class HomsaiCardTheme {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
       ),
-      elevation: 5,
       shadowColor: Colors.black,
     );
   }
@@ -18,7 +17,7 @@ class HomsaiCardTheme {
       cardTheme: themeData.cardTheme.copyWith(
         color: primary.withOpacity(0.3),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(5.0),
+          borderRadius: BorderRadius.circular(10.0),
         ),
         elevation: 0,
       ),

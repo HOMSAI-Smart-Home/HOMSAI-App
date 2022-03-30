@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -56,6 +57,11 @@ class _HomsaiScaffoldState extends State<HomsaiScaffold> {
       child: Scaffold(
         appBar: widget.appBar ??
             AppBar(
+              systemOverlayStyle: SystemUiOverlayStyle(
+                statusBarColor: Theme.of(context).colorScheme.background,
+                systemNavigationBarColor:
+                    Theme.of(context).colorScheme.background,
+              ),
               backgroundColor: Colors.transparent,
               title: Row(
                 children: [
@@ -70,7 +76,6 @@ class _HomsaiScaffoldState extends State<HomsaiScaffold> {
         body: SafeArea(
           child: (widget.resizeToAvoidBottomInset)
               ? SingleChildScrollView(
-                  key: UniqueKey(),
                   child: _HomsaiScaffoldBody(
                     padding: widget.padding,
                     mainAxisAlignment: widget.mainAxisAlignment,

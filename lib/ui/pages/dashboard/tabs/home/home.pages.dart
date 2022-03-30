@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:homsai/themes/colors.theme.dart';
 import 'package:homsai/ui/widget/alert.widget.dart';
+import 'package:homsai/ui/widget/consumption_chart.widget.dart';
 import 'package:homsai/ui/widget/dashboard_device.widget.dart';
 import 'package:super_rich_text/super_rich_text.dart';
 
@@ -15,7 +16,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      key: UniqueKey(),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -32,20 +32,24 @@ class _HomePageState extends State<HomePage> {
             ),
             action: AlertAction("Details", () {}),
           ),
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 10),
+            child: ConsumptionChart(),
+          ),
           GridView.count(
               shrinkWrap: true,
-              padding: const EdgeInsets.all(4),
+              padding: const EdgeInsets.all(0),
               mainAxisSpacing: 8,
               crossAxisSpacing: 8,
               crossAxisCount: 2,
-              childAspectRatio: 150 / 80,
+              childAspectRatio: 150 / 90,
               physics: const NeverScrollableScrollPhysics(),
               children: <Widget>[
                 DashboardDevice(
                   DeviceStatus.disabled,
                   baseIcon: Icons.lightbulb,
                   baseColor: HomsaiColors.primaryYellow,
-                  title: "Lampada Tavolo",
+                  title: "Lampada Tavolo Lorem lorem kkkdldlasd",
                   room: "Camera",
                   info: "off",
                 ),
@@ -122,6 +126,7 @@ class _HomePageState extends State<HomePage> {
                   info: "22.3°",
                 ),
               ]),
+          SizedBox(height: 12)
         ],
       ),
     );

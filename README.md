@@ -25,7 +25,7 @@ Innover Flutter application
 - flutter_web_auth: used for handling web authentication like google auth
 - lan_scanner: allows discovering network devices in local network (LAN) via multi-threaded ICMP pings.
 - network_info_plus: allows Flutter apps to discover network info and configure themselves accordingly.
-- charts_flutter: Material Design data/charts visualization library
+- fl_chart: chart library that supports Line Chart, Bar Chart, Pie Chart, Scatter Chart, and Radar Chart.
 
 ## Auto Router Generator
 

@@ -1,8 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:homsai/app.router.dart';
+import 'package:homsai/themes/colors.theme.dart';
 import 'package:homsai/ui/pages/dashboard/bloc/dashboard.bloc.dart';
 import 'package:homsai/ui/widget/homsai_scaffold.widget.dart';
 import 'package:homsai/ui/widget/shadow.widget.dart';
@@ -17,38 +19,44 @@ class DashboardPage extends StatefulWidget {
 class _DashboardPageState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
-    return AutoTabsRouter(
-      routes: DashboardNavigation.values
-          .map((tab) => dashboardTabRoutes[tab]!)
-          .toList(),
-      builder: (context, child, animation) {
-        return HomsaiScaffold(
-          providers: [
-            BlocProvider<DashboardBloc>(
-              create: (BuildContext context) => DashboardBloc(),
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle(
+        statusBarColor: Theme.of(context).colorScheme.background,
+        systemNavigationBarColor: HomsaiColors.secondaryBlack,
+      ),
+      child: AutoTabsRouter(
+        routes: DashboardNavigation.values
+            .map((tab) => dashboardTabRoutes[tab]!)
+            .toList(),
+        builder: (context, child, animation) {
+          return HomsaiScaffold(
+            providers: [
+              BlocProvider<DashboardBloc>(
+                create: (BuildContext context) => DashboardBloc(),
+              ),
+            ],
+            appBar: dashboardAppBar(context),
+            bottomNavigationBar: _DashboardBottomNavigationBar(
+                tabsRouter: AutoTabsRouter.of(context)),
+            mainAxisAlignment: MainAxisAlignment.center,
+            child: FadeTransition(
+              opacity: animation,
+              child: child,
             ),
-          ],
-          appBar: DashboardAppBar(),
-          bottomNavigationBar: _DashboardBottomNavigationBar(
-              tabsRouter: AutoTabsRouter.of(context)),
-          mainAxisAlignment: MainAxisAlignment.center,
-          child: FadeTransition(
-            opacity: animation,
-            child: child,
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }
 
-class DashboardAppBar extends AppBar {
-  DashboardAppBar({Key? key})
-      : super(
-            key: key,
-            leading: _DashboardAppBarLeading(),
-            title: _DashboardAppBarTitle(),
-            actions: [_DashboardAppBarExitAction()]);
+AppBar dashboardAppBar(context) {
+  return AppBar(
+      leading: _DashboardAppBarLeading(),
+      title: _DashboardAppBarTitle(),
+      actions: [
+        _DashboardAppBarExitAction(),
+      ]);
 }
 
 class _DashboardAppBarLeading extends StatelessWidget {

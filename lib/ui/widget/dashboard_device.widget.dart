@@ -37,19 +37,19 @@ class _DashboardDeviceState extends State<DashboardDevice> {
       case DeviceStatus.enabled:
         return Icon(
           device.baseIcon,
-          size: 32,
+          size: 38,
           color: getColor(device),
         );
       case DeviceStatus.warning:
         return Icon(
           Icons.info_rounded,
-          size: 32,
+          size: 38,
           color: getColor(device),
         );
       case DeviceStatus.error:
         return Icon(
           Icons.warning_rounded,
-          size: 32,
+          size: 38,
           color: getColor(device),
         );
     }
@@ -86,7 +86,7 @@ class _DashboardDeviceState extends State<DashboardDevice> {
               children: [
                 Text(
                   widget.title,
-                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.bodyText1?.copyWith(
                         fontWeight: FontWeight.w500,
                       ),
