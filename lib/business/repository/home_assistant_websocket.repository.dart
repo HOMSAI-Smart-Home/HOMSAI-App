@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:convert';
 
 import 'package:homsai/crossconcern/utilities/properties/api.proprties.dart';
@@ -78,9 +77,7 @@ class HomeAssistantWebSocketRepository {
     _listen();
   }
 
-  late StreamController streamController;
-
-  void _auth(data) {
+  void _auth(Map<String, dynamic> data) {
     switch (data["type"]) {
       case HomeAssistantApiProprties.authRequired:
         _send(force: true);
@@ -96,7 +93,7 @@ class HomeAssistantWebSocketRepository {
     }
   }
 
-  void responseHandler(data) {
+  void responseHandler(Map<String, dynamic> data) {
     ResponseDto response = ResponseDto.fromJson(data);
 
     if ((response.success ?? "") == "result" && (response.success ?? false)) {
