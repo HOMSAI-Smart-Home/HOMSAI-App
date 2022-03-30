@@ -12,7 +12,7 @@ import 'package:homsai/main.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 class Subscriber {
-  Function(Map<String, dynamic>) onDone;
+  Function(dynamic) onDone;
   Function(ErrorDto)? onError;
 
   Subscriber(this.onDone, {this.onError});
