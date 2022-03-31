@@ -1,11 +1,8 @@
 import 'dart:ffi';
-import 'dart:html';
 
-import 'package:homsai/business/repository/home_assistant_websocket.repository.dart';
-import 'package:homsai/datastore/DTOs/websocket/serviceBody.dto.dart';
 import 'package:homsai/datastore/models/entity/toggle.entity.model.dart';
 
-class LightEntity implements ToggleEntity {
+class LightEntity extends ToggleEntity {
   String? name;
   int? brightness;
   String? colorMode;
@@ -28,9 +25,6 @@ class LightEntity implements ToggleEntity {
   late String state;
   @override
   String? friendlyName;
-
-  @override
-  bool? isOn;
 
   LightEntity.fromJson(Map<String, dynamic> entity) {
     entityId = entity['entity_id'];
@@ -81,40 +75,7 @@ class LightEntity implements ToggleEntity {
     }
   }
 
-  //TODO: must be global
-  HomeAssistantWebSocketRepository? webSocket;
-  void setWebSocket(HomeAssistantWebSocketRepository webSocket) {
-    this.webSocket = webSocket;
-  }
-
-  @override
-  void toggle() {
-    if (isOn == null || isOn!) {
-      turnOff();
-    } else {
-      turnOn();
-    }
-  }
-
-  @override
-  void turnOff() {
-    webSocket!.callingAService(
-        Subscriber((data) => isOn = true, onError: (error) => print(error)),
-        'light',
-        'turn_off',
-        ServiceBodyDto(getAttributes(), {'entity_id': entityId}));
-  }
-
-  @override
-  void turnOn() {
-    webSocket!.callingAService(
-        Subscriber((data) => isOn = true, onError: (error) => print(error)),
-        'light',
-        'turn_on',
-        ServiceBodyDto(getAttributes(), {'entity_id': entityId}));
-  }
-
-  Map<String, String> getAttributes() {
+  Map<String, String> toJson() {
     Map<String, String> attributes = {};
 
     brightness != null

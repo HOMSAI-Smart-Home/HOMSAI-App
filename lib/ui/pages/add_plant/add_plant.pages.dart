@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:homsai/business/repository/home_assistant_websocket.repository.dart';
 import 'package:homsai/datastore/DTOs/websocket/error.dto.dart';
 import 'package:homsai/app.router.dart';
+import 'package:homsai/main.dart';
 import 'package:homsai/ui/pages/add_plant/bloc/add_plant.bloc.dart';
 import 'package:homsai/ui/widget/homsai_scaffold.widget.dart';
 import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
@@ -22,13 +23,13 @@ class _AddPlantPageState extends State<AddPlantPage> {
     super.initState();
 
     HomeAssistantWebSocketRepository websocket =
-        HomeAssistantWebSocketRepository();
+       getIt.get<HomeAssistantWebSocketRepository>();
 
-    websocket.connect(Uri.parse("http://192.168.0.115:8123"));
-    websocket.fetchingConfig(Subscriber(printConfig, onError: printError));
+    websocket.connect(Uri.parse("https://hass.izismartsolutions.com"));
+    websocket.fetchingStates(Subscriber(printConfig, onError: printError));
   }
 
-  void printConfig(Map<String, dynamic> config) {
+  void printConfig(dynamic config) {
     print(jsonEncode(config));
   }
 

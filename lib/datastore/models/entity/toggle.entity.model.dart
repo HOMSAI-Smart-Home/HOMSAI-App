@@ -1,11 +1,13 @@
 import 'package:homsai/datastore/models/entity/entity.entity.model.dart';
 
-abstract class ToggleEntity  implements Entity{
+abstract class ToggleEntity implements Entity {
   bool? isOn;
 
-  void turnOn();
+  void turnOn() {
+    isOn = true;
+  }
 
-  void turnOff();
-
-  void toggle();
+  void turnOff() {
+    isOn = false;
+  }
 }
