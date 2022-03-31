@@ -1,8 +1,9 @@
 import 'dart:ffi';
 
-import 'package:homsai/datastore/models/entity/toggle.entity.model.dart';
+import 'package:homsai/datastore/models/entity/base.entity.dart';
+import 'package:homsai/datastore/models/entity/toggle.entity.dart';
 
-class LightEntity extends ToggleEntity {
+class LightEntity extends ToggleEntity implements Entity{
   String? name;
   int? brightness;
   String? colorMode;
