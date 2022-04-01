@@ -29,6 +29,13 @@ class _$AppRouter extends RootStackRouter {
       return CupertinoPageX<dynamic>(
           routeData: routeData, child: const DashboardPage());
     },
+    IntroductionRoute.name: (routeData) {
+      final args = routeData.argsAs<IntroductionRouteArgs>(
+          orElse: () => const IntroductionRouteArgs());
+      return CupertinoPageX<dynamic>(
+          routeData: routeData,
+          child: IntroductionPage(key: args.key, page: args.page));
+    },
     HomeRoute.name: (routeData) {
       return CupertinoPageX<dynamic>(
           routeData: routeData, child: const HomePage());
@@ -50,7 +57,7 @@ class _$AppRouter extends RootStackRouter {
   @override
   List<RouteConfig> get routes => [
         RouteConfig('/#redirect',
-            path: '/', redirectTo: '/dashboard', fullMatch: true),
+            path: '/', redirectTo: '/introduction', fullMatch: true),
         RouteConfig(HomeAssistantScanRoute.name, path: '/scanner'),
         RouteConfig(AddPlantRoute.name, path: '/add-plant'),
         RouteConfig(DashboardRoute.name, path: '/dashboard', children: [
@@ -67,7 +74,8 @@ class _$AppRouter extends RootStackRouter {
               path: 'search', parent: DashboardRoute.name),
           RouteConfig(AccountsRoute.name,
               path: 'accounts', parent: DashboardRoute.name)
-        ])
+        ]),
+        RouteConfig(IntroductionRoute.name, path: '/introduction')
       ];
 }
 
@@ -96,6 +104,30 @@ class DashboardRoute extends PageRouteInfo<void> {
             path: '/dashboard', initialChildren: children);
 
   static const String name = 'DashboardRoute';
+}
+
+/// generated route for
+/// [IntroductionPage]
+class IntroductionRoute extends PageRouteInfo<IntroductionRouteArgs> {
+  IntroductionRoute({Key? key, int? page})
+      : super(IntroductionRoute.name,
+            path: '/introduction',
+            args: IntroductionRouteArgs(key: key, page: page));
+
+  static const String name = 'IntroductionRoute';
+}
+
+class IntroductionRouteArgs {
+  const IntroductionRouteArgs({this.key, this.page});
+
+  final Key? key;
+
+  final int? page;
+
+  @override
+  String toString() {
+    return 'IntroductionRouteArgs{key: $key, page: $page}';
+  }
 }
 
 /// generated route for

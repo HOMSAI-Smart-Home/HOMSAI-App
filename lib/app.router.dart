@@ -6,6 +6,8 @@ import 'package:homsai/ui/pages/dashboard/tabs/accounts/accounts.pages.dart';
 import 'package:homsai/ui/pages/dashboard/tabs/history/history.pages.dart';
 import 'package:homsai/ui/pages/dashboard/tabs/home/home.pages.dart';
 import 'package:homsai/ui/pages/dashboard/tabs/search/search.pages.dart';
+import 'package:homsai/ui/pages/introduction/introduction.pages.dart';
+import 'package:homsai/ui/pages/introduction/introduction.routes.dart';
 import 'package:homsai/ui/pages/scan/home_assistant_scan.pages.dart';
 
 part 'app.router.gr.dart';
@@ -29,7 +31,12 @@ part 'package:homsai/ui/pages/scan/home_assistant_scan.router.dart';
         path: dashboardPath,
         page: DashboardPage,
         children: dashboardChildrenRoutes,
-        initial: true),
+    ),
+    AutoRoute(
+      path: introductionPath,
+      page: IntroductionPage,
+      initial: true
+    )
   ],
 )
 class AppRouter extends _$AppRouter {}
