@@ -23,20 +23,16 @@ part 'package:homsai/ui/pages/scan/home_assistant_scan.router.dart';
   replaceInRouteName: 'Page,Route',
   routes: <AutoRoute>[
     AutoRoute(
-      path: homeAssistantScanPath,
-      page: HomeAssistantScanPage,
-    ),
+        path: homeAssistantScanPath,
+        page: HomeAssistantScanPage,
+        initial: true),
     AutoRoute(path: addPlantPath, page: AddPlantPage),
     AutoRoute(
-        path: dashboardPath,
-        page: DashboardPage,
-        children: dashboardChildrenRoutes,
+      path: dashboardPath,
+      page: DashboardPage,
+      children: dashboardChildrenRoutes,
     ),
-    AutoRoute(
-      path: introductionPath,
-      page: IntroductionPage,
-      initial: true
-    )
+    AutoRoute(path: introductionPath, page: IntroductionPage, initial: true)
   ],
 )
 class AppRouter extends _$AppRouter {}

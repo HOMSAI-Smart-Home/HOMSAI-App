@@ -148,7 +148,7 @@ class HomeAssistantWebSocketRepository {
 
   void _addSubscriber(String event, Subscriber subscriber, bool isfetch,
       Map<String, dynamic> payload) {
-    if (!eventsId.containsKey(event)) {
+    if (isfetch || !eventsId.containsKey(event)) {
       eventsId[event] = id++;
       events[eventsId[event]!] = SubscribersHandler(isfetch, event);
 
@@ -243,7 +243,8 @@ class HomeAssistantWebSocketRepository {
     payload['type'] = HomeAssistantApiProprties.callService;
     payload['domain'] = domain;
     payload['service'] = service;
-    payload.addAll(serviceBodyDto.toJson());
+    payload['target'] = serviceBodyDto.target;
+    // payload.addAll(serviceBodyDto.toJson());
 
     _addSubscriber(
         HomeAssistantApiProprties.callService, subscriber, true, payload);

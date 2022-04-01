@@ -6,8 +6,11 @@ import 'package:flutter_svg/svg.dart';
 import 'package:homsai/app.router.dart';
 import 'package:homsai/themes/colors.theme.dart';
 import 'package:homsai/ui/pages/dashboard/bloc/dashboard.bloc.dart';
+import 'package:homsai/ui/pages/dashboard/tabs/home/bloc/home.bloc.dart';
 import 'package:homsai/ui/widget/homsai_scaffold.widget.dart';
 import 'package:homsai/ui/widget/shadow.widget.dart';
+
+import '../../widget/homsai_bloc_scaffold.widget.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({Key? key}) : super(key: key);
@@ -25,14 +28,18 @@ class _DashboardPageState extends State<DashboardPage> {
         systemNavigationBarColor: HomsaiColors.secondaryBlack,
       ),
       child: AutoTabsRouter(
+        lazyLoad: false,
         routes: DashboardNavigation.values
             .map((tab) => dashboardTabRoutes[tab]!)
             .toList(),
         builder: (context, child, animation) {
-          return HomsaiScaffold(
+          return HomsaiBlocScaffold(
             providers: [
               BlocProvider<DashboardBloc>(
                 create: (BuildContext context) => DashboardBloc(),
+              ),
+              BlocProvider<HomeBloc>(
+                create: (BuildContext context) => HomeBloc(),
               ),
             ],
             appBar: dashboardAppBar(context),

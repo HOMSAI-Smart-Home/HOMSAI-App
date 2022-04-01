@@ -9,14 +9,17 @@ extension DeviceStatusX on DeviceStatus {
 }
 
 class DashboardDevice extends StatefulWidget {
-  const DashboardDevice(this.status,
-      {Key? key,
-      required this.baseIcon,
-      required this.baseColor,
-      required this.title,
-      required this.room,
-      required this.info})
-      : super(key: key);
+  const DashboardDevice(
+    this.status, {
+    Key? key,
+    required this.baseIcon,
+    required this.baseColor,
+    required this.title,
+    required this.room,
+    required this.info,
+    this.onTap,
+    this.onLongPress,
+  }) : super(key: key);
 
   final DeviceStatus status;
   final IconData baseIcon;
@@ -24,6 +27,8 @@ class DashboardDevice extends StatefulWidget {
   final String title;
   final String room;
   final String info;
+  final void Function()? onTap;
+  final void Function()? onLongPress;
 
   @override
   State<DashboardDevice> createState() => _DashboardDeviceState();
@@ -77,67 +82,74 @@ class _DashboardDeviceState extends State<DashboardDevice> {
       offset: const Offset(0, 2),
       color: getColor(widget),
       child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(8),
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Text(
-                  widget.title,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                        fontWeight: FontWeight.w500,
-                      ),
-                ),
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        (widget.status.isGroup)
-                            ? RichText(
-                                text: TextSpan(
-                                  children: [
-                                    WidgetSpan(
-                                      child: Icon(
-                                        Icons.house,
-                                        size: 20,
-                                        color: HomsaiColors.primaryGrey,
+        child: InkWell(
+          onTap: widget.onTap,
+          onLongPress: widget.onLongPress,
+          splashColor: getColor(widget).withOpacity(0.5),
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
+          child: Padding(
+            padding: const EdgeInsets.all(8),
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Text(
+                    widget.title,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                          fontWeight: FontWeight.w500,
+                        ),
+                  ),
+                  Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          (widget.status.isGroup)
+                              ? RichText(
+                                  text: TextSpan(
+                                    children: [
+                                      WidgetSpan(
+                                        child: Icon(
+                                          Icons.house,
+                                          size: 20,
+                                          color: HomsaiColors.primaryGrey,
+                                        ),
                                       ),
-                                    ),
-                                    TextSpan(
-                                      text: " Generale",
-                                      style:
-                                          Theme.of(context).textTheme.bodyText2,
-                                    ),
-                                  ],
-                                ),
-                              )
-                            : Text(
-                                widget.room,
-                                style: Theme.of(context).textTheme.bodyText2,
-                              ),
-                        const SizedBox(height: 12),
-                        Text(
-                          widget.info.toUpperCase(),
-                          style:
-                              Theme.of(context).textTheme.bodyText1?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color: getColor(widget),
+                                      TextSpan(
+                                        text: " Generale",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyText2,
+                                      ),
+                                    ],
                                   ),
-                        )
-                      ],
-                    ),
-                    getIcon(widget)
-                  ],
-                )
-              ]),
+                                )
+                              : Text(
+                                  widget.room,
+                                  style: Theme.of(context).textTheme.bodyText2,
+                                ),
+                          const SizedBox(height: 12),
+                          Text(
+                            widget.info.toUpperCase(),
+                            style:
+                                Theme.of(context).textTheme.bodyText1?.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      color: getColor(widget),
+                                    ),
+                          )
+                        ],
+                      ),
+                      getIcon(widget)
+                    ],
+                  )
+                ]),
+          ),
         ),
       ),
     );

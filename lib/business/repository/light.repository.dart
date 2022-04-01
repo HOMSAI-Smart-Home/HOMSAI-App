@@ -7,39 +7,37 @@ class LightRepository {
   HomeAssistantWebSocketRepository webSocket =
       getIt.get<HomeAssistantWebSocketRepository>();
 
-  late LightEntity lightEntity;
-
-  LightRepository.fromJson(Map<String, dynamic> entity) {
-    lightEntity = LightEntity.fromJson(entity);
-  }
-
-  void toggle() {
-    if (lightEntity.isOn == null || lightEntity.isOn!) {
-      turnOff();
+  void toggle(LightEntity light) {
+    if (light.isOn) {
+      turnOff(light);
     } else {
-      turnOn();
+      turnOn(light);
     }
   }
 
-  void turnOff() {
+  void turnOff(LightEntity light) {
     webSocket.callingAService(
-        Subscriber((data) => lightEntity.isOn = true,
+        Subscriber((data) => light.isOn = true,
             onError: (error) => print(error)),
         'light',
         'turn_off',
-        ServiceBodyDto(
-            lightEntity.toJson(), {'entity_id': lightEntity.entityId}));
-    lightEntity.turnOff();
+        ServiceBodyDto(light.toJson(), {
+          'entity_id': light.entityId,
+          'device_id': light.id,
+        }));
+    light.turnOff();
   }
 
-  void turnOn() {
+  void turnOn(LightEntity light) {
     webSocket.callingAService(
-        Subscriber((data) => lightEntity.isOn = true,
+        Subscriber((data) => light.isOn = true,
             onError: (error) => print(error)),
         'light',
         'turn_on',
-        ServiceBodyDto(
-            lightEntity.toJson(), {'entity_id': lightEntity.entityId}));
-    lightEntity.turnOff();
+        ServiceBodyDto(light.toJson(), {
+          'entity_id': light.entityId,
+          'device_id': light.id,
+        }));
+    light.turnOn();
   }
 }

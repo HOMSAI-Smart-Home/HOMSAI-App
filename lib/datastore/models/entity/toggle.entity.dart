@@ -1,5 +1,5 @@
-abstract class ToggleEntity {
-  bool? isOn;
+abstract class TogglableEntity {
+  bool isOn = false;
 
   void turnOn() {
     isOn = true;

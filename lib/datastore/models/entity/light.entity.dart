@@ -1,31 +1,25 @@
-import 'dart:ffi';
+import 'package:equatable/equatable.dart';
+import 'package:homsai/datastore/models/entity/entity.entity.model.dart';
+import 'package:homsai/datastore/models/entity/toggle.entity.model.dart';
 
-import 'package:homsai/datastore/models/entity/base.entity.dart';
-import 'package:homsai/datastore/models/entity/toggle.entity.dart';
-
-class LightEntity extends ToggleEntity implements Entity{
+class LightEntity extends Entity with ToggableEntity, EquatableMixin {
   String? name;
   int? brightness;
   String? colorMode;
   int? colorTemp;
   String? effect;
   List? effectList;
-  List<Float>? hsColor;
+  List<dynamic>? hsColor;
   late int maxMireds;
   late int minMireds;
-  List<int>? rgbColor;
-  List<int>? rgbwColor;
-  List<int>? rgbwwColor;
-  bool? supportedColorModes;
+  List<dynamic>? rgbColor;
+  List<dynamic>? rgbwColor;
+  List<dynamic>? rgbwwColor;
+  List<dynamic>? supportedColorModes;
   late int supportedFeatures;
-  List<Float>? xyColor;
+  List<dynamic>? xyColor;
 
-  @override
-  late String entityId;
-  @override
-  late String state;
-  @override
-  String? friendlyName;
+  late String id;
 
   LightEntity.fromJson(Map<String, dynamic> entity) {
     entityId = entity['entity_id'];
@@ -74,6 +68,9 @@ class LightEntity extends ToggleEntity implements Entity{
       xyColor =
           attributes.containsKey('xy_color') ? attributes['xy_color'] : null;
     }
+
+    Map<String, dynamic> context = entity['context'];
+    id = context['id'];
   }
 
   Map<String, String> toJson() {
@@ -107,4 +104,16 @@ class LightEntity extends ToggleEntity implements Entity{
 
     return attributes;
   }
+
+  LightEntity copy() {
+    return LightEntity.fromJson({
+      'entity_id': entityId,
+      'state': isOn ? 'on' : 'off',
+      "attributes": {"friendly_name": friendlyName},
+      "context": {'id': id}
+    });
+  }
+
+  @override
+  List<Object?> get props => [entityId, id, isOn];
 }

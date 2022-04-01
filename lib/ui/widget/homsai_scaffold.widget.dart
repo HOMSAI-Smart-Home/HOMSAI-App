@@ -4,21 +4,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
 class HomsaiScaffold extends StatefulWidget {
-  const HomsaiScaffold({
-    Key? key,
-    this.providers = const [],
-    this.child,
-    this.children = const [],
-    this.padding = const EdgeInsets.all(10),
-    this.mainAxisAlignment = MainAxisAlignment.start,
-    this.extendBodyBehindAppBar = false,
-    this.resizeToAvoidBottomInset = true,
-    this.appBar,
-    this.bottomNavigationBar,
-  }) : super(key: key);
+  const HomsaiScaffold(
+      {Key? key,
+      this.child,
+      this.children = const [],
+      this.padding = const EdgeInsets.all(10),
+      this.mainAxisAlignment = MainAxisAlignment.start,
+      this.extendBodyBehindAppBar = false,
+      this.resizeToAvoidBottomInset = true,
+      this.appBar,
+      this.bottomNavigationBar,
+      this.bottomSheet})
+      : super(key: key);
 
   final EdgeInsetsGeometry padding;
-  final List<BlocProvider> providers;
   final List<Widget> children;
   final MainAxisAlignment mainAxisAlignment;
   final bool extendBodyBehindAppBar;
@@ -26,6 +25,7 @@ class HomsaiScaffold extends StatefulWidget {
   final Widget? child;
   final PreferredSizeWidget? appBar;
   final Widget? bottomNavigationBar;
+  final Widget? bottomSheet;
 
   @override
   _HomsaiScaffoldState createState() => _HomsaiScaffoldState();
@@ -52,46 +52,44 @@ class _HomsaiScaffoldState extends State<HomsaiScaffold> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: widget.providers,
-      child: Scaffold(
-        appBar: widget.appBar ??
-            AppBar(
-              systemOverlayStyle: SystemUiOverlayStyle(
-                statusBarColor: Theme.of(context).colorScheme.background,
-                systemNavigationBarColor:
-                    Theme.of(context).colorScheme.background,
-              ),
-              backgroundColor: Colors.transparent,
-              title: Row(
-                children: [
-                  const Spacer(),
-                  SvgPicture.asset("assets/icons/full_logo.svg", height: 20),
-                  const Spacer(),
-                ],
-              ),
+    return Scaffold(
+      appBar: widget.appBar ??
+          AppBar(
+            systemOverlayStyle: SystemUiOverlayStyle(
+              statusBarColor: Theme.of(context).colorScheme.background,
+              systemNavigationBarColor:
+                  Theme.of(context).colorScheme.background,
             ),
-        extendBodyBehindAppBar: widget.extendBodyBehindAppBar,
-        resizeToAvoidBottomInset: widget.resizeToAvoidBottomInset,
-        body: SafeArea(
-          child: (widget.resizeToAvoidBottomInset)
-              ? SingleChildScrollView(
-                  child: _HomsaiScaffoldBody(
-                    padding: widget.padding,
-                    mainAxisAlignment: widget.mainAxisAlignment,
-                    children: widget.children,
-                    child: widget.child,
-                  ),
-                )
-              : _HomsaiScaffoldBody(
+            backgroundColor: Colors.transparent,
+            title: Row(
+              children: [
+                const Spacer(),
+                SvgPicture.asset("assets/icons/full_logo.svg", height: 20),
+                const Spacer(),
+              ],
+            ),
+          ),
+      extendBodyBehindAppBar: widget.extendBodyBehindAppBar,
+      resizeToAvoidBottomInset: widget.resizeToAvoidBottomInset,
+      body: SafeArea(
+        child: (widget.resizeToAvoidBottomInset)
+            ? SingleChildScrollView(
+                child: _HomsaiScaffoldBody(
                   padding: widget.padding,
                   mainAxisAlignment: widget.mainAxisAlignment,
                   children: widget.children,
                   child: widget.child,
                 ),
-        ),
-        bottomNavigationBar: widget.bottomNavigationBar,
+              )
+            : _HomsaiScaffoldBody(
+                padding: widget.padding,
+                mainAxisAlignment: widget.mainAxisAlignment,
+                children: widget.children,
+                child: widget.child,
+              ),
       ),
+      bottomNavigationBar: widget.bottomNavigationBar,
+      bottomSheet: widget.bottomSheet,
     );
   }
 }

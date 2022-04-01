@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:homsai/datastore/models/entity/light.entity.model.dart';
 import 'package:homsai/themes/colors.theme.dart';
+import 'package:homsai/ui/pages/dashboard/tabs/home/bloc/home.bloc.dart';
 import 'package:homsai/ui/widget/alert.widget.dart';
 import 'package:homsai/ui/widget/consumption_chart.widget.dart';
 import 'package:homsai/ui/widget/dashboard_device.widget.dart';
@@ -13,6 +16,13 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<HomeBloc>().add(ConnectWebSocket());
+    context.read<HomeBloc>().add(FetchStates());
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -36,99 +46,62 @@ class _HomePageState extends State<HomePage> {
             padding: EdgeInsets.symmetric(vertical: 10),
             child: ConsumptionChart(),
           ),
-          GridView.count(
-              shrinkWrap: true,
-              padding: const EdgeInsets.all(0),
-              mainAxisSpacing: 8,
-              crossAxisSpacing: 8,
-              crossAxisCount: 2,
-              childAspectRatio: 150 / 90,
-              physics: const NeverScrollableScrollPhysics(),
-              children: <Widget>[
-                DashboardDevice(
-                  DeviceStatus.disabled,
-                  baseIcon: Icons.lightbulb,
-                  baseColor: HomsaiColors.primaryYellow,
-                  title: "Lampada Tavolo Lorem lorem kkkdldlasd",
-                  room: "Camera",
-                  info: "off",
-                ),
-                DashboardDevice(
-                  DeviceStatus.disabled,
-                  baseIcon: Icons.thermostat_rounded,
-                  baseColor: HomsaiColors.primaryOrange,
-                  title: "Clima Cucina",
-                  room: "Cucina",
-                  info: "22.3°",
-                ),
-                DashboardDevice(
-                  DeviceStatus.enabled,
-                  baseIcon: Icons.lightbulb,
-                  baseColor: HomsaiColors.primaryYellow,
-                  title: "Lampada Tavolo",
-                  room: "Camera",
-                  info: "off",
-                ),
-                DashboardDevice(
-                  DeviceStatus.enabled,
-                  baseIcon: Icons.thermostat_rounded,
-                  baseColor: HomsaiColors.primaryOrange,
-                  title: "Clima Cucina",
-                  room: "Cucina",
-                  info: "22.3°",
-                ),
-                DashboardDevice(
-                  DeviceStatus.warning,
-                  baseIcon: Icons.lightbulb,
-                  baseColor: HomsaiColors.primaryYellow,
-                  title: "Lampada Tavolo",
-                  room: "Camera",
-                  info: "off",
-                ),
-                DashboardDevice(
-                  DeviceStatus.warning,
-                  baseIcon: Icons.thermostat_rounded,
-                  baseColor: HomsaiColors.primaryOrange,
-                  title: "Clima Cucina",
-                  room: "Cucina",
-                  info: "22.3°",
-                ),
-                DashboardDevice(
-                  DeviceStatus.error,
-                  baseIcon: Icons.lightbulb,
-                  baseColor: HomsaiColors.primaryYellow,
-                  title: "Lampada Tavolo",
-                  room: "Camera",
-                  info: "off",
-                ),
-                DashboardDevice(
-                  DeviceStatus.error,
-                  baseIcon: Icons.thermostat_rounded,
-                  baseColor: HomsaiColors.primaryOrange,
-                  title: "Clima Cucina",
-                  room: "Cucina",
-                  info: "22.3°",
-                ),
-                DashboardDevice(
-                  DeviceStatus.group,
-                  baseIcon: Icons.lightbulb,
-                  baseColor: HomsaiColors.primaryYellow,
-                  title: "Lampada Tavolo",
-                  room: "Camera",
-                  info: "Dettagli",
-                ),
-                DashboardDevice(
-                  DeviceStatus.group,
-                  baseIcon: Icons.thermostat_rounded,
-                  baseColor: HomsaiColors.primaryOrange,
-                  title: "Clima Cucina",
-                  room: "Cucina",
-                  info: "22.3°",
-                ),
-              ]),
-          SizedBox(height: 12)
+          BlocBuilder<HomeBloc, HomeState>(
+            builder: (context, state) {
+              return GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    mainAxisSpacing: 8,
+                    crossAxisSpacing: 8,
+                    crossAxisCount: 2,
+                    childAspectRatio: 150 / 90,
+                  ),
+                  shrinkWrap: true,
+                  padding: const EdgeInsets.all(0),
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: state.lights.length,
+                  itemBuilder: (BuildContext context, index) {
+                    return BlocBuilder<HomeBloc, HomeState>(
+                        builder: (context, state) {
+                      return getDevice(state.lights[index]);
+                    });
+                  });
+            },
+          ),
+          const SizedBox(height: 12)
         ],
       ),
+    );
+  }
+
+  DashboardDevice getDevice(LightEntity light) {
+    return DashboardDevice(
+      (light.isOn) ? DeviceStatus.enabled : DeviceStatus.disabled,
+      baseIcon: Icons.lightbulb,
+      baseColor: HomsaiColors.primaryYellow,
+      title: light.friendlyName!,
+      room: "Camera",
+      info: (light.isOn) ? "on" : "off",
+      onTap: () {
+        context.read<HomeBloc>().add((light.isOn)
+            ? LightOff(light: light.copy())
+            : LightOn(light: light.copy()));
+      },
+      onLongPress: () {
+        showBottomSheet(
+          context: context,
+          builder: (builder) {
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(light.friendlyName!),
+              ],
+            );
+          },
+          backgroundColor: HomsaiColors.primaryOrange,
+          elevation: 5,
+        );
+      },
     );
   }
 }

@@ -12,6 +12,8 @@ import 'package:rive/rive.dart' as rive;
 import 'package:super_rich_text/super_rich_text.dart';
 import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
 
+import '../../widget/homsai_bloc_scaffold.widget.dart';
+
 class HomeAssistantScanPage extends StatefulWidget {
   const HomeAssistantScanPage({Key? key}) : super(key: key);
 
@@ -40,7 +42,7 @@ class _HomeAssistantScanPage extends State<HomeAssistantScanPage> {
 
   @override
   Widget build(BuildContext context) {
-    return HomsaiScaffold(
+    return HomsaiBlocScaffold(
       providers: [
         BlocProvider<HomeAssistantScanBloc>(
           create: (BuildContext context) => HomeAssistantScanBloc(),

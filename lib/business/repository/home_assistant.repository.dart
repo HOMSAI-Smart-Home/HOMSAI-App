@@ -152,6 +152,7 @@ class HomeAssistantRepository implements HomeAssistantInterface {
     now = DateTime.now().millisecondsSinceEpoch ~/ 1000;
 
     return HomeAssistantAuth(
+        url.origin,
         data['access_token'],
         now + int.parse(data['expires_in'].toString()),
         data["refresh_token"],

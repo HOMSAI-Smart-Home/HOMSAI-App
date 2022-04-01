@@ -80,7 +80,7 @@ class HomeAssistantScanBloc
     if (!state.status.isManual) {
       scannedUrls.add(hostFound.host);
       emit(state.copyWith(
-        scannedUrls: scannedUrls,
+        scannedUrls: List.from(scannedUrls),
       ));
       GlobalKeys.scannedUrlsAnimatedList.currentState?.insertItem(
           scannedUrls.length - 1,
