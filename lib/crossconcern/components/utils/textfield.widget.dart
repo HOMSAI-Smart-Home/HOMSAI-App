@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
-import 'package:homsai/ui/widget/credentials_form/bloc/credentials_form.bloc.dart';
+import 'package:homsai/crossconcern/components/utils/credentials_form/bloc/credentials_form.bloc.dart';
 import 'package:rive/rive.dart';
 
 class EmailAddressTextField extends StatelessWidget {

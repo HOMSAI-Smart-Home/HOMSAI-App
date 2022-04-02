@@ -2,9 +2,9 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
-import 'package:homsai/ui/widget/checkbox.widget.dart';
-import 'package:homsai/ui/widget/credentials_form/bloc/credentials_form.bloc.dart';
-import 'package:homsai/ui/widget/textfield.widget.dart';
+import 'package:homsai/crossconcern/components/utils/checkbox_text.widget.dart';
+import 'package:homsai/crossconcern/components/utils/credentials_form/bloc/credentials_form.bloc.dart';
+import 'package:homsai/crossconcern/components/utils/textfield.widget.dart';
 import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
 
 class CredentialsForm extends StatelessWidget {

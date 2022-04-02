@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:homsai/datastore/models/entity/light.entity.model.dart';
-import 'package:homsai/themes/colors.theme.dart';
 import 'package:homsai/ui/pages/dashboard/tabs/home/bloc/home.bloc.dart';
-import 'package:homsai/ui/widget/alert.widget.dart';
-import 'package:homsai/ui/widget/consumption_chart.widget.dart';
-import 'package:homsai/ui/widget/dashboard_device.widget.dart';
+import 'package:homsai/crossconcern/components/alerts/alert.widget.dart';
+import 'package:homsai/crossconcern/components/charts/consumption_chart.widget.dart';
+import 'package:homsai/ui/widget/devices/light/light_device.widget.dart';
 import 'package:super_rich_text/super_rich_text.dart';
 
 class HomePage extends StatefulWidget {
@@ -62,7 +60,7 @@ class _HomePageState extends State<HomePage> {
                   itemBuilder: (BuildContext context, index) {
                     return BlocBuilder<HomeBloc, HomeState>(
                         builder: (context, state) {
-                      return getDevice(state.lights[index]);
+                      return LightDevice(light: state.lights[index]);
                     });
                   });
             },
@@ -70,38 +68,6 @@ class _HomePageState extends State<HomePage> {
           const SizedBox(height: 12)
         ],
       ),
-    );
-  }
-
-  DashboardDevice getDevice(LightEntity light) {
-    return DashboardDevice(
-      (light.isOn) ? DeviceStatus.enabled : DeviceStatus.disabled,
-      baseIcon: Icons.lightbulb,
-      baseColor: HomsaiColors.primaryYellow,
-      title: light.friendlyName!,
-      room: "Camera",
-      info: (light.isOn) ? "on" : "off",
-      onTap: () {
-        context.read<HomeBloc>().add((light.isOn)
-            ? LightOff(light: light.copy())
-            : LightOn(light: light.copy()));
-      },
-      onLongPress: () {
-        showBottomSheet(
-          context: context,
-          builder: (builder) {
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(light.friendlyName!),
-              ],
-            );
-          },
-          backgroundColor: HomsaiColors.primaryOrange,
-          elevation: 5,
-        );
-      },
     );
   }
 }

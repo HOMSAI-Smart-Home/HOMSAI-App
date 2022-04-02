@@ -19,21 +19,3 @@ class FetchedLights extends HomeEvent {
   @override
   List<Object> get props => [entities];
 }
-
-class LightOn extends HomeEvent {
-  const LightOn({required this.light});
-
-  final LightEntity light;
-
-  @override
-  List<Object> get props => [light];
-}
-
-class LightOff extends HomeEvent {
-  const LightOff({required this.light});
-
-  final LightEntity light;
-
-  @override
-  List<Object> get props => [light];
-}

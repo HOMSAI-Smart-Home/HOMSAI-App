@@ -1,18 +1,16 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:homsai/crossconcern/components/common/scaffold/homsai_bloc_scaffold.widget.dart';
 import 'package:homsai/globalkeys.widget.dart';
 import 'package:homsai/app.router.dart';
 import 'package:homsai/themes/colors.theme.dart';
 import 'package:homsai/ui/pages/scan/bloc/home_assistant_scan.bloc.dart';
-import 'package:homsai/ui/widget/alert.widget.dart';
-import 'package:homsai/ui/widget/homsai_scaffold.widget.dart';
-import 'package:homsai/ui/widget/radio.widget.dart';
+import 'package:homsai/crossconcern/components/alerts/alert.widget.dart';
+import 'package:homsai/crossconcern/components/common/radio.widget.dart';
 import 'package:rive/rive.dart' as rive;
 import 'package:super_rich_text/super_rich_text.dart';
 import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
-
-import '../../widget/homsai_bloc_scaffold.widget.dart';
 
 class HomeAssistantScanPage extends StatefulWidget {
   const HomeAssistantScanPage({Key? key}) : super(key: key);

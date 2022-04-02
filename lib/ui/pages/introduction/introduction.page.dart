@@ -4,10 +4,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:homsai/app.router.dart';
+import 'package:homsai/crossconcern/components/common/scaffold/homsai_scaffold.widget.dart';
+import 'package:homsai/crossconcern/components/utils/shadow.widget.dart';
 import 'package:homsai/ui/pages/scan/bloc/home_assistant_scan.bloc.dart';
-import 'package:homsai/ui/widget/homsai_scaffold.widget.dart';
 import 'package:super_rich_text/super_rich_text.dart';
-import 'package:homsai/ui/widget/shadow.widget.dart';
 
 class IntroductionPage extends StatefulWidget {
   final int? page;
@@ -47,11 +47,6 @@ class _Body extends StatelessWidget {
   Widget build(BuildContext context) {
     return HomsaiScaffold(
       resizeToAvoidBottomInset: false,
-      providers: [
-        BlocProvider<HomeAssistantScanBloc>(
-          create: (BuildContext context) => HomeAssistantScanBloc(),
-        ),
-      ],
       padding: EdgeInsets.zero,
       child: _Steps(page),
       appBar: AppBar(
@@ -333,7 +328,7 @@ class _HomeAssistantSuperRichText extends StatelessWidget {
         MarkerText(
             marker: '*/', style: const TextStyle(fontWeight: FontWeight.w700)),
         MarkerText.withUrl(
-          onError: (index, msg) => print('$index: $msg'),
+            onError: (index, msg) => print('$index: $msg'),
             marker: 'l1',
             urls: ["https://www.home-assistant.io"],
             style: const TextStyle(

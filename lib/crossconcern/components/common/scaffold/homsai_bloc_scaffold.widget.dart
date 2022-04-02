@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:homsai/ui/widget/homsai_scaffold.widget.dart';
+import 'package:homsai/crossconcern/components/common/scaffold/homsai_scaffold.widget.dart';
 
 class HomsaiBlocScaffold extends StatefulWidget {
   const HomsaiBlocScaffold(

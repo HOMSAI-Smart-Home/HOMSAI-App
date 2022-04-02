@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:homsai/themes/colors.theme.dart';
-import 'package:homsai/ui/widget/shadow.widget.dart';
+import 'package:homsai/crossconcern/components/utils/shadow.widget.dart';
 
 enum DeviceStatus { disabled, enabled, warning, error, group }
 
@@ -8,8 +8,8 @@ extension DeviceStatusX on DeviceStatus {
   bool get isGroup => this == DeviceStatus.group;
 }
 
-class DashboardDevice extends StatefulWidget {
-  const DashboardDevice(
+class Device extends StatefulWidget {
+  const Device(
     this.status, {
     Key? key,
     required this.baseIcon,
@@ -31,11 +31,11 @@ class DashboardDevice extends StatefulWidget {
   final void Function()? onLongPress;
 
   @override
-  State<DashboardDevice> createState() => _DashboardDeviceState();
+  State<Device> createState() => _DeviceState();
 }
 
-class _DashboardDeviceState extends State<DashboardDevice> {
-  Widget getIcon(DashboardDevice device) {
+class _DeviceState extends State<Device> {
+  Widget getIcon(Device device) {
     switch (device.status) {
       case DeviceStatus.group:
       case DeviceStatus.disabled:
@@ -60,7 +60,7 @@ class _DashboardDeviceState extends State<DashboardDevice> {
     }
   }
 
-  Color getColor(DashboardDevice device) {
+  Color getColor(Device device) {
     switch (device.status) {
       case DeviceStatus.group:
       case DeviceStatus.enabled:

@@ -58,6 +58,7 @@ dependencies:
   web_socket_channel: ^2.1.0
   auto_route: ^3.2.4
   fl_chart: ^0.50.0
+  json_serializable: ^6.1.5
 
 dev_dependencies:
   flutter_test:

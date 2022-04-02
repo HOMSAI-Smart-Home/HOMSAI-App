@@ -4,7 +4,7 @@ import 'dart:io';
 
 import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:get_it/get_it.dart';
-import 'package:homsai/business/interfaces/home_assistant.interface.dart';
+import 'package:homsai/business/home_assistant/home_assistant.interface.dart';
 import 'package:homsai/crossconcern/exceptions/scanning_not_found.exception.dart';
 import 'package:homsai/crossconcern/exceptions/token.exception.dart';
 import 'package:homsai/crossconcern/helpers/extensions/ipv4.extension.dart';

@@ -5,10 +5,11 @@ import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
 import 'package:flutter_localized_locales/flutter_localized_locales.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get_it/get_it.dart';
-import 'package:homsai/business/interfaces/home_assistant.interface.dart';
-import 'package:homsai/business/repository/home_assistant.repository.dart';
-import 'package:homsai/business/repository/home_assistant_websocket.repository.dart';
-import 'package:homsai/business/repository/light.repository.dart';
+import 'package:homsai/business/home_assistant/home_assistant.interface.dart';
+import 'package:homsai/business/home_assistant/home_assistant.repository.dart';
+import 'package:homsai/business/light/light.interface.dart';
+import 'package:homsai/datastore/remote/websocket/home_assistant_websocket.repository.dart';
+import 'package:homsai/business/light/light.repository.dart';
 import 'package:homsai/crossconcern/utilities/properties/constants.util.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.repository.dart';
@@ -34,7 +35,8 @@ void setup() {
 
   getIt.registerLazySingleton<HomeAssistantWebSocketRepository>(
       () => HomeAssistantWebSocketRepository());
-  getIt.registerLazySingleton<LightRepository>(() => LightRepository());
+  getIt
+      .registerLazySingleton<LightRepositoryInterface>(() => LightRepository());
 }
 
 Future<void> main() async {

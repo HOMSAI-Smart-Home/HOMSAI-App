@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:homsai/ui/widget/credentials_form/credentials_form.widget.dart';
 import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
+import 'package:homsai/crossconcern/components/utils/credentials_form/credentials_form.widget.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);

@@ -1,7 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:homsai/themes/colors.theme.dart';
-import 'package:homsai/ui/widget/shadow.widget.dart' as sh;
+import 'package:homsai/crossconcern/components/utils/shadow.widget.dart' as sh;
 
 class ConsumptionChart extends StatelessWidget {
   const ConsumptionChart({Key? key}) : super(key: key);

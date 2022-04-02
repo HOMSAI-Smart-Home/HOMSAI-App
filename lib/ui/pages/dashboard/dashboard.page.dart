@@ -4,13 +4,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:homsai/app.router.dart';
+import 'package:homsai/crossconcern/components/common/scaffold/homsai_bloc_scaffold.widget.dart';
 import 'package:homsai/themes/colors.theme.dart';
 import 'package:homsai/ui/pages/dashboard/bloc/dashboard.bloc.dart';
 import 'package:homsai/ui/pages/dashboard/tabs/home/bloc/home.bloc.dart';
-import 'package:homsai/ui/widget/homsai_scaffold.widget.dart';
-import 'package:homsai/ui/widget/shadow.widget.dart';
-
-import '../../widget/homsai_bloc_scaffold.widget.dart';
+import 'package:homsai/crossconcern/components/utils/shadow.widget.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({Key? key}) : super(key: key);
