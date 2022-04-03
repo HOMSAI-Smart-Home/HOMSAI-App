@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:homsai/datastore/models/entity/light.entity.dart';
+import 'package:homsai/datastore/models/entity/light/light.entity.dart';
 import 'package:homsai/themes/colors.theme.dart';
 import 'package:homsai/ui/widget/devices/device.widget.dart';
 import 'package:homsai/ui/widget/devices/light/bloc/light_device.bloc.dart';
@@ -20,35 +20,40 @@ class _LightDeviceState extends State<LightDevice> {
     return BlocProvider(
       create: (context) => LightDeviceBloc(widget.light),
       child: BlocBuilder<LightDeviceBloc, LightDeviceState>(
-        builder: (context, state) => Device(
-          (state.light.isOn) ? DeviceStatus.enabled : DeviceStatus.disabled,
-          baseIcon: Icons.lightbulb,
-          baseColor: HomsaiColors.primaryYellow,
-          title: state.light.friendlyName!,
-          room: "Camera",
-          info: (state.light.isOn) ? "on" : "off",
-          onTap: () {
-            context
-                .read<LightDeviceBloc>()
-                .add((state.light.isOn) ? LightOff() : LightOn());
-          },
-          onLongPress: () {
-            showModalBottomSheet(
-              context: context,
-              builder: (builder) {
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(state.light.friendlyName!),
-                  ],
-                );
-              },
-              useRootNavigator: true,
+        buildWhen: (previous, current) => previous.light != current.light,
+        builder: (context, state) => buildDevice(context, state.light),
+      ),
+    );
+  }
+
+  Device buildDevice(BuildContext context, LightEntity light) {
+    return Device(
+      (light.isOn) ? DeviceStatus.enabled : DeviceStatus.disabled,
+      baseIcon: Icons.lightbulb,
+      baseColor: HomsaiColors.primaryYellow,
+      title: light.attributes.friendlyName,
+      room: "Camera",
+      info: (light.isOn) ? "on" : "off",
+      onTap: () {
+        context
+            .read<LightDeviceBloc>()
+            .add((light.isOn) ? LightOff(light) : LightOn(light));
+      },
+      onLongPress: () {
+        showModalBottomSheet(
+          context: context,
+          builder: (builder) {
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(light.attributes.friendlyName),
+              ],
             );
           },
-        ),
-      ),
+          useRootNavigator: true,
+        );
+      },
     );
   }
 }

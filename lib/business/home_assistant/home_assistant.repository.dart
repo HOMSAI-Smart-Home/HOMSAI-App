@@ -92,8 +92,8 @@ class HomeAssistantRepository implements HomeAssistantInterface {
     final firstIp = network + 1;
     final lastIp = (~subnet | firstIp).toUnsigned(firstIp.bitLength);
 
-    final firstParsedIp = IPv4.parse(firstIp);
-    final lastParsedIp = IPv4.parse(lastIp);
+    final firstParsedIp = IPv4X.parse(firstIp);
+    final lastParsedIp = IPv4X.parse(lastIp);
 
     return [
       hostIpString.substring(0, hostIpString.lastIndexOf('.')),

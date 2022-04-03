@@ -40,7 +40,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 create: (BuildContext context) => HomeBloc(),
               ),
             ],
-            appBar: dashboardAppBar(context),
+            appBar: _dashboardAppBar(context),
             bottomNavigationBar: _DashboardBottomNavigationBar(
                 tabsRouter: AutoTabsRouter.of(context)),
             mainAxisAlignment: MainAxisAlignment.center,
@@ -55,7 +55,7 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 }
 
-AppBar dashboardAppBar(context) {
+AppBar _dashboardAppBar(context) {
   return AppBar(
       leading: _DashboardAppBarLeading(),
       title: _DashboardAppBarTitle(),
@@ -119,7 +119,7 @@ class _DashboardBottomNavigationBar extends StatefulWidget {
 
 class _DashboardBottomNavigationBarState
     extends State<_DashboardBottomNavigationBar> {
-  Widget getBottomBarIcons(
+  Widget buildBottomBarIcons(
       BuildContext context, DashboardNavigation dashboardNavigation) {
     switch (dashboardNavigation) {
       case DashboardNavigation.home:
@@ -138,7 +138,7 @@ class _DashboardBottomNavigationBarState
     }
   }
 
-  Widget? getActiveBottomBarIcons(
+  Widget? buildActiveBottomBarIcons(
       BuildContext context, DashboardNavigation dashboardNavigation) {
     switch (dashboardNavigation) {
       case DashboardNavigation.home:
@@ -153,12 +153,12 @@ class _DashboardBottomNavigationBarState
     }
   }
 
-  List<BottomNavigationBarItem> getItems() {
+  List<BottomNavigationBarItem> buildBottomNavigationBarItems() {
     List<BottomNavigationBarItem> items = [];
     for (var value in DashboardNavigation.values) {
       items.add(BottomNavigationBarItem(
-          icon: getBottomBarIcons(context, value),
-          activeIcon: getActiveBottomBarIcons(context, value),
+          icon: buildBottomBarIcons(context, value),
+          activeIcon: buildActiveBottomBarIcons(context, value),
           label: '',
           tooltip: ''));
     }
@@ -170,7 +170,7 @@ class _DashboardBottomNavigationBarState
     return Shadow(
       child: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        items: getItems(),
+        items: buildBottomNavigationBarItems(),
         currentIndex: widget.tabsRouter.activeIndex,
         selectedItemColor: Theme.of(context).colorScheme.primary,
         onTap: widget.tabsRouter.setActiveIndex,

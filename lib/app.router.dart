@@ -28,8 +28,9 @@ part 'package:homsai/ui/pages/introduction/introduction.routes.dart';
       path: dashboardPath,
       page: DashboardPage,
       children: dashboardChildrenRoutes,
+      initial: true,
     ),
-    AutoRoute(path: introductionPath, page: IntroductionPage, initial: true)
+    AutoRoute(path: introductionPath, page: IntroductionPage)
   ],
 )
 class AppRouter extends _$AppRouter {}

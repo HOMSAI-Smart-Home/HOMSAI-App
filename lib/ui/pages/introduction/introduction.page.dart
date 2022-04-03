@@ -1,40 +1,26 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:homsai/app.router.dart';
 import 'package:homsai/crossconcern/components/common/scaffold/homsai_scaffold.widget.dart';
 import 'package:homsai/crossconcern/components/utils/shadow.widget.dart';
-import 'package:homsai/ui/pages/scan/bloc/home_assistant_scan.bloc.dart';
+import 'package:homsai/themes/colors.theme.dart';
 import 'package:super_rich_text/super_rich_text.dart';
 
 class IntroductionPage extends StatefulWidget {
-  final int? page;
+  final int page;
 
-  const IntroductionPage({Key? key, this.page}) : super(key: key);
+  const IntroductionPage({Key? key, this.page = 1}) : super(key: key);
 
   @override
-  State<IntroductionPage> createState() => _IntroductionPageState(page ?? 1);
+  State<IntroductionPage> createState() => _IntroductionPageState();
 }
 
 class _IntroductionPageState extends State<IntroductionPage> {
-  final int page;
-
-  _IntroductionPageState(this.page);
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: _Body(page));
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-    ));
+    return Scaffold(body: _Body(widget.page));
   }
 }
 
@@ -46,16 +32,16 @@ class _Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return HomsaiScaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       padding: EdgeInsets.zero,
       child: _Steps(page),
       appBar: AppBar(
         systemOverlayStyle: SystemUiOverlayStyle(
-          statusBarColor: Theme.of(context).colorScheme.background,
+          statusBarColor: HomsaiColors.primaryGreen,
           systemNavigationBarColor: Theme.of(context).colorScheme.background,
         ),
         automaticallyImplyLeading: false,
-        backgroundColor: const Color(0xff56bb76),
+        backgroundColor: HomsaiColors.primaryGreen,
         title: Row(children: [
           const Spacer(),
           SvgPicture.asset("assets/icons/full_logo.svg", height: 20),
@@ -98,7 +84,6 @@ class _Steps extends StatelessWidget {
           offset: const Offset(0, 5),
         ),
         _TextPadding(page),
-        const Spacer(),
         Align(
             alignment: Alignment.bottomCenter,
             child: TextButton(
@@ -250,18 +235,13 @@ class _NextButtonInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeAssistantScanBloc, HomeAssistantScanState>(
-      buildWhen: (previous, current) => previous.status != current.status,
-      builder: (context, state) {
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            _NextButton(page),
-            const SizedBox(height: 21),
-            _InfoPage(page)
-          ],
-        );
-      },
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        _NextButton(page),
+        const SizedBox(height: 21),
+        _InfoPage(page)
+      ],
     );
   }
 }

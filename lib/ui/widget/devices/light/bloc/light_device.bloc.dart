@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:homsai/business/light/light.interface.dart';
-import 'package:homsai/datastore/models/entity/light.entity.dart';
+import 'package:homsai/datastore/models/entity/light/light.entity.dart';
 import 'package:homsai/main.dart';
 
 part 'light_device.event.dart';
@@ -22,13 +22,13 @@ class LightDeviceBloc extends Bloc<LightDeviceEvent, LightDeviceState> {
   }
 
   void _onLightOn(LightOn event, Emitter<LightDeviceState> emit) {
-    LightEntity light = state.light.copy();
+    LightEntity light = event.light;
     lightRepository.turnOn(light);
     emit(state.copyWith(light: light));
   }
 
   void _onLightOff(LightOff event, Emitter<LightDeviceState> emit) {
-    LightEntity light = state.light.copy();
+    LightEntity light = event.light;
     lightRepository.turnOff(light);
     emit(state.copyWith(light: light));
   }

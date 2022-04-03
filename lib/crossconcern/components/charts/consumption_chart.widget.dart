@@ -183,7 +183,7 @@ Widget leftTitleWidgets(double value, TitleMeta meta) {
   }
 
   return Padding(
-      padding: EdgeInsets.only(right: 6),
+      padding: const EdgeInsets.only(right: 6),
       child: Text(text, style: style, textAlign: TextAlign.end));
 }
 

@@ -7,6 +7,22 @@ abstract class LightDeviceEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class LightOn extends LightDeviceEvent {}
+class LightOn extends LightDeviceEvent {
+  const LightOn(this._lightEntity);
 
-class LightOff extends LightDeviceEvent {}
+  final LightEntity _lightEntity;
+  LightEntity get light => _lightEntity.copy();
+
+  @override
+  List<Object> get props => [light];
+}
+
+class LightOff extends LightDeviceEvent {
+  const LightOff(this._lightEntity);
+
+  final LightEntity _lightEntity;
+  LightEntity get light => _lightEntity.copy();
+
+  @override
+  List<Object> get props => [light];
+}

@@ -1,7 +1,7 @@
 import 'dart:math';
 import 'dart:typed_data';
 
-extension IPv4 on String {
+extension IPv4X on String {
   static String parse(int value) {
     Uint8List int32bytes(int value) =>
         Uint8List(4)..buffer.asInt32List()[0] = value;

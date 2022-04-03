@@ -1,11 +1,11 @@
 import 'dart:convert';
 
 import 'package:homsai/crossconcern/utilities/properties/api.proprties.dart';
-import 'package:homsai/datastore/DTOs/websocket/configurationBody.dto.dart';
-import 'package:homsai/datastore/DTOs/websocket/error.dto.dart';
-import 'package:homsai/datastore/DTOs/websocket/response.dto.dart';
-import 'package:homsai/datastore/DTOs/websocket/serviceBody.dto.dart';
-import 'package:homsai/datastore/DTOs/websocket/triggerBody.dto.dart';
+import 'package:homsai/datastore/DTOs/websocket/configuration/configuration_body.dto.dart';
+import 'package:homsai/datastore/DTOs/websocket/error/error.dto.dart';
+import 'package:homsai/datastore/DTOs/websocket/response/response.dto.dart';
+import 'package:homsai/datastore/DTOs/websocket/service/service_body.dto.dart';
+import 'package:homsai/datastore/DTOs/websocket/trigger/trigger_body.dto.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.dart';
 import 'package:homsai/datastore/models/home_assistant_auth.model.dart';
 import 'package:homsai/main.dart';
@@ -96,11 +96,7 @@ class HomeAssistantWebSocketRepository {
   void responseHandler(Map<String, dynamic> data) {
     ResponseDto response = ResponseDto.fromJson(data);
 
-    if ((response.success ?? "") == "result" && (response.success ?? false)) {
-      return;
-    }
-
-    if (response.success ?? false) {
+    if (response.success) {
       events[response.id]?.publish(response.result);
     } else {
       events[response.id]?.publish(response.error);

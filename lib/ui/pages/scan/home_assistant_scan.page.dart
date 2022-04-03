@@ -132,40 +132,15 @@ class _SearchLocalInstanceContainerState
           height: 222,
           child: AnimatedSwitcher(
             duration: const Duration(milliseconds: 250),
-            transitionBuilder: (Widget child, Animation<double> animation) {
-              final inAnimation = Tween<Offset>(
-                begin: const Offset(-1.0, 0.0),
-                end: const Offset(0.0, 0.0),
-              ).animate(animation);
-              final outAnimation = Tween<Offset>(
-                begin: const Offset(1.0, 0.0),
-                end: const Offset(0.0, 0.0),
-              ).animate(animation);
-
-              if (child.key == this.child?.key) {
-                return ClipRect(
-                  child: SlideTransition(
-                    position: inAnimation,
-                    child: child,
-                  ),
-                );
-              } else {
-                return ClipRect(
-                  child: SlideTransition(
-                    position: outAnimation,
-                    child: child,
-                  ),
-                );
-              }
-            },
-            child: getChildByStatus(state),
+            transitionBuilder: buildTransition,
+            child: buildChildByStatus(state),
           ),
         );
       },
     );
   }
 
-  Widget? getChildByStatus(HomeAssistantScanState state) {
+  Widget? buildChildByStatus(HomeAssistantScanState state) {
     switch (state.status) {
       case HomeAssistantScanStatus.scanningInProgress:
         if (state.scannedUrls.isEmpty) {
@@ -196,6 +171,33 @@ class _SearchLocalInstanceContainerState
         );
     }
     return child;
+  }
+
+  Widget buildTransition(Widget child, Animation<double> animation) {
+    final inAnimation = Tween<Offset>(
+      begin: const Offset(-1.0, 0.0),
+      end: const Offset(0.0, 0.0),
+    ).animate(animation);
+    final outAnimation = Tween<Offset>(
+      begin: const Offset(1.0, 0.0),
+      end: const Offset(0.0, 0.0),
+    ).animate(animation);
+
+    if (child.key == this.child?.key) {
+      return ClipRect(
+        child: SlideTransition(
+          position: inAnimation,
+          child: child,
+        ),
+      );
+    } else {
+      return ClipRect(
+        child: SlideTransition(
+          position: outAnimation,
+          child: child,
+        ),
+      );
+    }
   }
 }
 

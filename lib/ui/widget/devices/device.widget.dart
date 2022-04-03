@@ -35,7 +35,7 @@ class Device extends StatefulWidget {
 }
 
 class _DeviceState extends State<Device> {
-  Widget getIcon(Device device) {
+  Widget buildIcon(Device device) {
     switch (device.status) {
       case DeviceStatus.group:
       case DeviceStatus.disabled:
@@ -145,7 +145,7 @@ class _DeviceState extends State<Device> {
                           )
                         ],
                       ),
-                      getIcon(widget)
+                      buildIcon(widget)
                     ],
                   )
                 ]),

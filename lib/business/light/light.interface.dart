@@ -1,4 +1,4 @@
-import 'package:homsai/datastore/models/entity/light.entity.dart';
+import 'package:homsai/datastore/models/entity/light/light.entity.dart';
 
 abstract class LightRepositoryInterface {
   void toggle(LightEntity light);

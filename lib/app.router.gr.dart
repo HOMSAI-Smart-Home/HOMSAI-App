@@ -57,7 +57,7 @@ class _$AppRouter extends RootStackRouter {
   @override
   List<RouteConfig> get routes => [
         RouteConfig('/#redirect',
-            path: '/', redirectTo: '/introduction', fullMatch: true),
+            path: '/', redirectTo: '/dashboard', fullMatch: true),
         RouteConfig(HomeAssistantScanRoute.name, path: '/scanner'),
         RouteConfig(AddPlantRoute.name, path: '/add-plant'),
         RouteConfig(DashboardRoute.name, path: '/dashboard', children: [
@@ -109,7 +109,7 @@ class DashboardRoute extends PageRouteInfo<void> {
 /// generated route for
 /// [IntroductionPage]
 class IntroductionRoute extends PageRouteInfo<IntroductionRouteArgs> {
-  IntroductionRoute({Key? key, int? page})
+  IntroductionRoute({Key? key, int page = 1})
       : super(IntroductionRoute.name,
             path: '/introduction',
             args: IntroductionRouteArgs(key: key, page: page));
@@ -118,11 +118,11 @@ class IntroductionRoute extends PageRouteInfo<IntroductionRouteArgs> {
 }
 
 class IntroductionRouteArgs {
-  const IntroductionRouteArgs({this.key, this.page});
+  const IntroductionRouteArgs({this.key, this.page = 1});
 
   final Key? key;
 
-  final int? page;
+  final int page;
 
   @override
   String toString() {
