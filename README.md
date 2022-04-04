@@ -21,6 +21,7 @@ Innover Flutter application
 - super_rich_text: Handles boilerplate for rich text when you need to make a part of the text with a different font style.
 - auto_route: a Flutter navigation package, it allows for strongly-typed arguments passing, effortless deep-linking and it uses code generation to simplify routes setup, with that being said it requires a minimal amount of code to generate everything needed for navigation inside of your App.
 - package_info_plus: provides an API for querying information about an application package.
+- json_serializable: generates Json Serializable fields reducing boiler plate for from and To Json functions.
 - rive: used to handle .riv animation file.
 - flutter_web_auth: used for handling web authentication like google auth
 - lan_scanner: allows discovering network devices in local network (LAN) via multi-threaded ICMP pings.
