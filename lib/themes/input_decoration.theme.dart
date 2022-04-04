@@ -26,7 +26,7 @@ class HomsaiInputDecorationTheme {
 
   static OutlineInputBorder _textBorder(Color color) {
     return OutlineInputBorder(
-      borderRadius: const BorderRadius.all(Radius.circular(5)),
+      borderRadius: BorderRadius.circular(5),
       borderSide: BorderSide(
         width: 1,
         color: color,

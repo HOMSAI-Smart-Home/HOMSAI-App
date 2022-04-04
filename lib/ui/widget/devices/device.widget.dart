@@ -86,7 +86,7 @@ class _DeviceState extends State<Device> {
           onTap: widget.onTap,
           onLongPress: widget.onLongPress,
           splashColor: getColor(widget).withOpacity(0.5),
-          borderRadius: const BorderRadius.all(Radius.circular(10)),
+          borderRadius: BorderRadius.circular(10),
           child: Padding(
             padding: const EdgeInsets.all(8),
             child: Column(

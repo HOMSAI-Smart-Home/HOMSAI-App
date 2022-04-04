@@ -57,7 +57,7 @@ class _$AppRouter extends RootStackRouter {
   @override
   List<RouteConfig> get routes => [
         RouteConfig('/#redirect',
-            path: '/', redirectTo: '/dashboard', fullMatch: true),
+            path: '/', redirectTo: '/introduction', fullMatch: true),
         RouteConfig(HomeAssistantScanRoute.name, path: '/scanner'),
         RouteConfig(AddPlantRoute.name, path: '/add-plant'),
         RouteConfig(DashboardRoute.name, path: '/dashboard', children: [

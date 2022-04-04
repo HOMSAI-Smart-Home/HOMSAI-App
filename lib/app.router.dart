@@ -22,15 +22,21 @@ part 'package:homsai/ui/pages/introduction/introduction.routes.dart';
 @CupertinoAutoRouter(
   replaceInRouteName: 'Page,Route',
   routes: <AutoRoute>[
-    AutoRoute(path: homeAssistantScanPath, page: HomeAssistantScanPage),
+    AutoRoute(
+      path: homeAssistantScanPath,
+      page: HomeAssistantScanPage,
+    ),
     AutoRoute(path: addPlantPath, page: AddPlantPage),
     AutoRoute(
       path: dashboardPath,
       page: DashboardPage,
       children: dashboardChildrenRoutes,
-      initial: true,
     ),
-    AutoRoute(path: introductionPath, page: IntroductionPage)
+    AutoRoute(
+      path: introductionPath,
+      page: IntroductionPage,
+      initial: true,
+    )
   ],
 )
 class AppRouter extends _$AppRouter {}

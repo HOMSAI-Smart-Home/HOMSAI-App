@@ -1,30 +1,28 @@
 import 'package:flutter/material.dart';
 
-class RadioButton extends StatefulWidget {
+class CheckboxButton extends StatefulWidget {
   final bool initialValue;
   final double? width;
   final double? height;
   final double stroke;
   final double radius;
-  final bool clickable;
   final void Function(bool)? onChanged;
 
-  const RadioButton(
+  const CheckboxButton(
       {Key? key,
       required this.initialValue,
       this.width = 20,
       this.height = 20,
       this.stroke = 1,
       this.radius = 2,
-      this.onChanged,
-      this.clickable = true})
+      this.onChanged})
       : super(key: key);
 
   @override
-  State<RadioButton> createState() => _RadioButtonState();
+  State<CheckboxButton> createState() => _CheckboxButtonState();
 }
 
-class _RadioButtonState extends State<RadioButton> {
+class _CheckboxButtonState extends State<CheckboxButton> {
   bool value = false;
 
   @override
@@ -41,17 +39,18 @@ class _RadioButtonState extends State<RadioButton> {
 
   @override
   Widget build(BuildContext context) {
-    return ClipOval(
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(widget.radius),
       child: Material(
         color: Colors.transparent,
-        shape: CircleBorder(
-          side: BorderSide(
-            width: widget.stroke,
-            color: getBorderColor(context),
-          ),
-        ),
+        shape: RoundedRectangleBorder(
+            side: BorderSide(
+              width: widget.stroke,
+              color: getBorderColor(context),
+            ),
+            borderRadius: BorderRadius.circular(widget.radius * 0.5)),
         child: InkWell(
-          onTap: !widget.clickable || isDisabled()
+          onTap: isDisabled()
               ? null
               : () {
                   if (widget.onChanged != null) {
@@ -73,11 +72,16 @@ class _RadioButtonState extends State<RadioButton> {
               width: widget.width,
               height: widget.height,
               child: !isDisabled() && value
-                  ? CircleAvatar(
-                      backgroundColor: Theme.of(context).colorScheme.primary,
-                    )
-                  : const CircleAvatar(
-                      backgroundColor: Colors.transparent,
+                  ? Container(
+                      decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.primary,
+                      borderRadius: BorderRadius.circular(widget.radius),
+                    ))
+                  : Container(
+                      decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        borderRadius: BorderRadius.circular(widget.radius),
+                      ),
                     ),
             ),
           ),
