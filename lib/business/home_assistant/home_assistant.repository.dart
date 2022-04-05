@@ -17,8 +17,6 @@ import 'package:homsai/datastore/remote/network/network_manager.interface.dart';
 import 'package:homsai/datastore/remote/rest/remote.Interface.dart';
 import 'package:homsai/crossconcern/helpers/extensions/date_time.extension.dart';
 import 'package:homsai/main.dart';
-import 'package:http/http.dart';
-import 'package:http/http.dart' as http;
 
 class HomeAssistantRepository implements HomeAssistantInterface {
   final HomeAssistantScannerInterface _homeAssistantScanner =
@@ -31,6 +29,9 @@ class HomeAssistantRepository implements HomeAssistantInterface {
       getIt.get<AppPreferencesInterface>();
 
   final RemoteInterface remoteInterface = getIt.get<RemoteInterface>();
+
+  final AppPreferencesInterface appPreferencesInterface =
+      getIt.get<AppPreferencesInterface>();
 
   @override
   Future<HomeAssistantAuth> authenticate({required Uri url}) {
@@ -137,17 +138,10 @@ class HomeAssistantRepository implements HomeAssistantInterface {
 
     now = DateTime.now().millisecondsSinceEpoch ~/ 1000;
 
-    print({
-      "expires": int.parse(data['expires_in'].toString()),
-      "now": now,
-      "tot": now + 30
-    });
-
     return HomeAssistantAuth(
         url.origin,
         data['access_token'],
-        //now + int.parse(data['expires_in'].toString()),
-        now + 30,
+        now + int.parse(data['expires_in'].toString()),
         data["refresh_token"],
         data["token_type"]);
   }

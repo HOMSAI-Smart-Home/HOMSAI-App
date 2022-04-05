@@ -116,7 +116,7 @@ class HomeAssistantWebSocketRepository {
     }
   }
 
-  void responseHandler(Map<String, dynamic> data) {
+  void _responseHandler(Map<String, dynamic> data) {
     ResponseDto response = ResponseDto.fromJson(data);
 
     if (response.success ?? false) {
@@ -147,7 +147,7 @@ class HomeAssistantWebSocketRepository {
         if (!_connected) {
           _auth(data);
         } else {
-          responseHandler(data);
+          _responseHandler(data);
         }
       },
       onDone: () => connect(url),
@@ -164,9 +164,10 @@ class HomeAssistantWebSocketRepository {
     }
   }
 
-  void close() {
+  void logOut() {
     _connected = false;
     webSocket?.sink.close();
+    homeAssistantRepository.revokeToken(url: url);
   }
 
   void _addSubscriber(String event, WebSocketSubscriber subscriber,
