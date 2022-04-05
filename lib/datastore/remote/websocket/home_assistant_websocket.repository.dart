@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:homsai/business/home_assistant/home_assistant.interface.dart';
 import 'package:homsai/crossconcern/utilities/properties/api.proprties.dart';
 import 'package:homsai/datastore/DTOs/websocket/configuration/configuration_body.dto.dart';
 import 'package:homsai/datastore/DTOs/websocket/error/error.dto.dart';
@@ -48,10 +49,13 @@ class WebSocketSubscribersHandler {
 }
 
 class HomeAssistantWebSocketRepository {
-  late WebSocketChannel webSocket;
-  late HomeAssistantAuth? homeAssistantAuth;
   final AppPreferencesInterface appPreferencesInterface =
       getIt.get<AppPreferencesInterface>();
+  final HomeAssistantInterface homeAssistantRepository =
+      getIt.get<HomeAssistantInterface>();
+
+  WebSocketChannel? webSocket;
+  HomeAssistantAuth? homeAssistantAuth;
   int id = 2;
   bool _connected = false;
   final List<String> _message = [];
@@ -66,18 +70,25 @@ class HomeAssistantWebSocketRepository {
     return _connected;
   }
 
-  void connect(Uri url) {
+  Future<void> connect(Uri url) async {
+    String scheme;
+
     homeAssistantAuth = appPreferencesInterface.getToken();
 
-    String scheme = url.scheme.contains('s') ? 'wss' : 'ws';
+    if (homeAssistantAuth!.expires <
+        DateTime.now().millisecondsSinceEpoch ~/ 1000) {
+      await homeAssistantRepository.refreshToken(url: url);
+      homeAssistantAuth = appPreferencesInterface.getToken();
+    }
+
+    scheme = url.scheme.contains('s') ? 'wss' : 'ws';
 
     url = url.replace(
         path: HomeAssistantApiProprties.webSocketPath, scheme: scheme);
 
     this.url = url;
 
-    _message.add(
-        jsonEncode({"type": "auth", "access_token": homeAssistantAuth!.token}));
+    _message.insert(0, jsonEncode({"type": "auth", "access_token": homeAssistantAuth!.token}));
 
     getIt.get<HomeAssistantBroker>().connect();
 
@@ -106,11 +117,10 @@ class HomeAssistantWebSocketRepository {
     if (response.success ?? false) {
       events[response.id]!.publish(response.result);
     } else {
-      if(response.event != null){
+      if (response.event != null) {
         events[response.id]!.publish(response.event);
-      }
-      else{
-      events[response.id]!.publish(response.error);
+      } else {
+        events[response.id]!.publish(response.error);
       }
     }
 
@@ -122,35 +132,36 @@ class HomeAssistantWebSocketRepository {
   void _listen() {
     webSocket = WebSocketChannel.connect(url);
 
-    webSocket.stream.listen((data) {
-      //TODO: remove
-      //print(data);
+    webSocket?.stream.listen(
+      (data) {
+        //TODO: remove
+        print(data);
 
-      data = jsonDecode(data);
+        data = jsonDecode(data);
 
-      if (!_connected) {
-        _auth(data);
-      } else {
-        responseHandler(data);
-      }
-    }).onError((error) {
-      close();
-      throw error;
-    });
+        if (!_connected) {
+          _auth(data);
+        } else {
+          responseHandler(data);
+        }
+      },
+      onDone: () => connect(url),
+      onError: (e) => connect(url),
+    );
   }
 
   void _send({bool flush = false, bool force = false}) {
     if (!_connected && !force) return;
-    if (!flush) return webSocket.sink.add(_message.removeAt(0));
+    if (!flush) return webSocket?.sink.add(_message.removeAt(0));
 
     while (_message.isNotEmpty) {
-      webSocket.sink.add(_message.removeAt(0));
+      webSocket?.sink.add(_message.removeAt(0));
     }
   }
 
   void close() {
     _connected = false;
-    webSocket.sink.close();
+    webSocket?.sink.close();
   }
 
   void _addSubscriber(String event, WebSocketSubscriber subscriber,

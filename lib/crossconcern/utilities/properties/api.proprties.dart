@@ -9,6 +9,8 @@ class HomeAssistantApiProprties {
   static const tokenPath = "/auth/token";
   static const tokenContentType = "application/x-www-form-urlencoded";
   static const tokenGrantType = "authorization_code";
+  static const tokenRefresh = "refresh_token";
+  static const tokenRevoke = "revoke";
 
   static const authRequired = "auth_required";
   static const authOk = "auth_ok";

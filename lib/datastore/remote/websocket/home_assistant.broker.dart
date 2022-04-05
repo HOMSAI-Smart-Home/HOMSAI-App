@@ -1,7 +1,5 @@
-import 'package:get_it/get_it.dart';
 import 'package:homsai/crossconcern/utilities/properties/api.proprties.dart';
 import 'package:homsai/datastore/DTOs/websocket/change/change.dto.dart';
-import 'package:homsai/datastore/DTOs/websocket/response/response.dto.dart';
 import 'package:homsai/datastore/models/entity/base/base.entity.dart';
 import 'package:homsai/datastore/remote/websocket/home_assistant_websocket.repository.dart';
 import 'package:homsai/main.dart';
@@ -36,8 +34,6 @@ class BrokerSubscribersHandler {
         element.onDone(result);
       }
     } else {
-      print(id);
-      print(_subscribersWithId);
       _subscribersWithId[id]!.onDone(result);
     }
   }
@@ -71,9 +67,6 @@ class HomeAssistantBroker {
 
     //TODO: remove this filter
     if (!changeDto.data.entityId.contains("light.")) return;
-
-    print("yoo");
-    print(result);
 
     eventHandler[HomeAssistantApiProprties.eventStateChanged]
         ?.publish(changeDto.data.newState, id: changeDto.data.entityId);
