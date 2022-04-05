@@ -38,7 +38,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   void _onFetchState(FetchStates event, Emitter<HomeState> emit) {
     webSocketRepository.fetchingStates(
-      Subscriber((res) {
+      WebSocketSubscriber((res) {
         add(FetchedLights(entities: res));
       }),
     );

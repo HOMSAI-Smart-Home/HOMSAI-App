@@ -19,41 +19,59 @@ class _LightDeviceState extends State<LightDevice> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => LightDeviceBloc(widget.light),
-      child: BlocBuilder<LightDeviceBloc, LightDeviceState>(
-        buildWhen: (previous, current) => previous.light != current.light,
-        builder: (context, state) => buildDevice(context, state.light),
-      ),
+      child: _LightDeviceCard(),
+    );
+  }
+}
+
+class _LightDeviceCard extends StatefulWidget {
+  @override
+  State<_LightDeviceCard> createState() => _LightDeviceCardState();
+}
+
+class _LightDeviceCardState extends State<_LightDeviceCard> {
+  @override
+  void initState() {
+    context.read<LightDeviceBloc>().add(LightOnChanged());
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<LightDeviceBloc, LightDeviceState>(
+      buildWhen: (previous, current) => previous.light != current.light,
+      builder: buidDevice
     );
   }
 
-  Device buildDevice(BuildContext context, LightEntity light) {
+  Widget buidDevice(BuildContext context, LightDeviceState state){
     return Device(
-      (light.isOn) ? DeviceStatus.enabled : DeviceStatus.disabled,
-      baseIcon: Icons.lightbulb,
-      baseColor: HomsaiColors.primaryYellow,
-      title: light.attributes.friendlyName,
-      room: "Camera",
-      info: (light.isOn) ? "on" : "off",
-      onTap: () {
-        context
-            .read<LightDeviceBloc>()
-            .add((light.isOn) ? LightOff(light) : LightOn(light));
-      },
-      onLongPress: () {
-        showModalBottomSheet(
-          context: context,
-          builder: (builder) {
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(light.attributes.friendlyName),
-              ],
-            );
-          },
-          useRootNavigator: true,
-        );
-      },
+        (state.light.isOn) ? DeviceStatus.enabled : DeviceStatus.disabled,
+        baseIcon: Icons.lightbulb,
+        baseColor: HomsaiColors.primaryYellow,
+        title: state.light.attributes.friendlyName,
+        room: "Camera",
+        info: (state.light.isOn) ? "on" : "off",
+        onTap: () {
+          context.read<LightDeviceBloc>().add((state.light.isOn)
+              ? LightOff(state.light)
+              : LightOn(state.light));
+        },
+        onLongPress: () {
+          showModalBottomSheet(
+            context: context,
+            builder: (builder) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(state.light.attributes.friendlyName),
+                ],
+              );
+            },
+            useRootNavigator: true,
+          );
+        },
     );
   }
 }

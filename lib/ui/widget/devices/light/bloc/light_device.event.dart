@@ -26,3 +26,15 @@ class LightOff extends LightDeviceEvent {
   @override
   List<Object> get props => [light];
 }
+
+class LightNewState extends LightDeviceEvent {
+  const LightNewState(this._lightEntity);
+
+  final LightEntity _lightEntity;
+  LightEntity get light => _lightEntity.copy();
+
+  @override
+  List<Object> get props => [light];
+}
+
+class LightOnChanged extends LightDeviceEvent {}

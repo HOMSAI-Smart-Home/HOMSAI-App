@@ -14,6 +14,8 @@ class LightDeviceBloc extends Bloc<LightDeviceEvent, LightDeviceState> {
   LightDeviceBloc(LightEntity light) : super(LightDeviceState(light: light)) {
     on<LightOn>(_onLightOn);
     on<LightOff>(_onLightOff);
+    on<LightOnChanged>(_onChanged);
+    on<LightNewState>(_onNewState);
   }
 
   @override
@@ -30,6 +32,15 @@ class LightDeviceBloc extends Bloc<LightDeviceEvent, LightDeviceState> {
   void _onLightOff(LightOff event, Emitter<LightDeviceState> emit) {
     LightEntity light = event.light;
     lightRepository.turnOff(light);
+    emit(state.copyWith(light: light));
+  }
+
+  void _onChanged(LightOnChanged event, Emitter<LightDeviceState> emit) {
+    lightRepository.onChanged(state.light, (entity) =>add(LightNewState(entity)));
+  }
+
+  void _onNewState(LightNewState event, Emitter<LightDeviceState> emit) {
+    LightEntity light = event.light;
     emit(state.copyWith(light: light));
   }
 }

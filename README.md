@@ -42,6 +42,7 @@ If you want the generator to run one time and exits use
 flutter packages pub run build_runner watch
 ```
 
+flutter packages pub run build_runner watch --delete-conflicting-outputs
 
 ## Localization files
 

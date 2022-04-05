@@ -7,9 +7,10 @@ part 'response.dto.g.dart';
 class ResponseDto {
   int id;
   String type;
-  bool success;
+  bool? success;
   dynamic result;
   ErrorDto? error;
+  Map<String, dynamic>? event;
 
   ResponseDto(this.id, this.type, this.success, this.result);
 

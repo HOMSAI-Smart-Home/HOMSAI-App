@@ -9,11 +9,13 @@ part of 'response.dto.dart';
 ResponseDto _$ResponseDtoFromJson(Map<String, dynamic> json) => ResponseDto(
       json['id'] as int,
       json['type'] as String,
-      json['success'] as bool,
+      json['success'] as bool?,
       json['result'],
-    )..error = json['error'] == null
-        ? null
-        : ErrorDto.fromJson(json['error'] as Map<String, dynamic>);
+    )
+      ..error = json['error'] == null
+          ? null
+          : ErrorDto.fromJson(json['error'] as Map<String, dynamic>)
+      ..event = json['event'] as Map<String, dynamic>?;
 
 Map<String, dynamic> _$ResponseDtoToJson(ResponseDto instance) =>
     <String, dynamic>{
@@ -22,4 +24,5 @@ Map<String, dynamic> _$ResponseDtoToJson(ResponseDto instance) =>
       'success': instance.success,
       'result': instance.result,
       'error': instance.error?.toJson(),
+      'event': instance.event,
     };

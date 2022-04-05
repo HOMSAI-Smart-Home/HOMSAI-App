@@ -8,6 +8,7 @@ import 'package:get_it/get_it.dart';
 import 'package:homsai/business/home_assistant/home_assistant.interface.dart';
 import 'package:homsai/business/home_assistant/home_assistant.repository.dart';
 import 'package:homsai/business/light/light.interface.dart';
+import 'package:homsai/datastore/remote/websocket/home_assistant.broker.dart';
 import 'package:homsai/datastore/remote/websocket/home_assistant_websocket.repository.dart';
 import 'package:homsai/business/light/light.repository.dart';
 import 'package:homsai/crossconcern/utilities/properties/constants.util.dart';
@@ -35,6 +36,10 @@ void setup() {
 
   getIt.registerLazySingleton<HomeAssistantWebSocketRepository>(
       () => HomeAssistantWebSocketRepository());
+  
+  getIt.registerLazySingleton<HomeAssistantBroker>(
+      () => HomeAssistantBroker());
+
   getIt
       .registerLazySingleton<LightRepositoryInterface>(() => LightRepository());
 }
