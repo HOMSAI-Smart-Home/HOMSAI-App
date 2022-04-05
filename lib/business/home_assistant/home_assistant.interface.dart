@@ -12,12 +12,10 @@ abstract class HomeAssistantInterface {
     required Uri url,
     Duration timeout = const Duration(seconds: 2),
   });
-
   Future refreshToken({
     required Uri url,
     Duration timeout = const Duration(seconds: 2),
   });
-
   Future revokeToken({
     required Uri url,
     Duration timeout = const Duration(seconds: 2),
