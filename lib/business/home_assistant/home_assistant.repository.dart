@@ -10,11 +10,13 @@ import 'package:homsai/business/home_assistant_scanner/home_assistant_scanner.in
 import 'package:homsai/crossconcern/exceptions/scanning_not_found.exception.dart';
 import 'package:homsai/crossconcern/exceptions/token.exception.dart';
 import 'package:homsai/crossconcern/utilities/properties/api.proprties.dart';
+import 'package:homsai/datastore/DTOs/remote/history_body.dto.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.dart';
 import 'package:homsai/datastore/models/home_assistant_auth.model.dart';
 import 'package:homsai/datastore/remote/network/network_manager.interface.dart';
-import 'package:homsai/main.dart';
 import 'package:homsai/datastore/remote/rest/remote.Interface.dart';
+import 'package:homsai/crossconcern/helpers/extensions/date_time.extension.dart';
+import 'package:homsai/main.dart';
 
 class HomeAssistantRepository implements HomeAssistantInterface {
   final HomeAssistantScannerInterface _homeAssistantScanner =
@@ -77,7 +79,7 @@ class HomeAssistantRepository implements HomeAssistantInterface {
         url: url, timeout: timeout);
   }
 
-  Future<Map<String, dynamic>> _getReqest(
+  Future<Map<String, dynamic>> _tokenReqest(
     Duration timeout,
     Uri url,
     Map<String, dynamic> body,
@@ -127,7 +129,7 @@ class HomeAssistantRepository implements HomeAssistantInterface {
       'client_id': HomeAssistantApiProprties.authClientId
     };
 
-    data = await _getReqest(timeout, url, body);
+    data = await _tokenReqest(timeout, url, body);
 
     now = DateTime.now().millisecondsSinceEpoch ~/ 1000;
 
@@ -158,7 +160,7 @@ class HomeAssistantRepository implements HomeAssistantInterface {
       'client_id': HomeAssistantApiProprties.authClientId,
     };
 
-    data = await _getReqest(timeout, url, body);
+    data = await _tokenReqest(timeout, url, body);
 
     now = DateTime.now().millisecondsSinceEpoch ~/ 1000;
 
@@ -185,8 +187,25 @@ class HomeAssistantRepository implements HomeAssistantInterface {
       'token': auth!.token,
     };
 
-    await _getReqest(timeout, url, body);
+    await _tokenReqest(timeout, url, body);
 
     appPreferencesInterface.resetToken();
+  }
+
+  Future<Map<String, dynamic>> getHistory(
+    Uri url, {
+    HistoryBodyDto? historyBodyDto,
+  }) async {
+    Map<String, dynamic> response;
+
+    url = url.replace(
+      path: HomeAssistantApiProprties.historyPath +
+          (historyBodyDto?.start?.formatHA ?? ""),
+      queryParameters: historyBodyDto?.toJson(),
+    );
+
+    response = await remoteInterface.get(url);
+
+    return response;
   }
 }

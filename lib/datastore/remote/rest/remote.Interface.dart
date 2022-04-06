@@ -2,8 +2,7 @@ import 'dart:convert';
 
 abstract class RemoteInterface {
   Future<Map<String, dynamic>> get(
-    Uri url,
-    Map<String, String> queryParameters, {
+    Uri url, {
     Map<String, String>? headers,
   });
   Future<Map<String, dynamic>> post(

@@ -48,4 +48,6 @@ class HomeAssistantApiProprties {
   static const fireEvent = "fire_event";
   static const callService = "call_service";
   static const validateConfig = "validate_config";
+
+  static const historyPath = "/api/history/period";
 }

@@ -54,14 +54,13 @@ class RemoteRepository implements RemoteInterface {
 
   @override
   Future<Map<String, dynamic>> get(
-    Uri url,
-    Map<String, String> queryParameters, {
+    Uri url, {
     Map<String, String>? headers,
     Duration timeout = _timeout,
   }) async {
     final Response response = await client
         .get(
-          url.replace(queryParameters: queryParameters),
+          url,
           headers: headers ?? getHeader(),
         )
         .timeout(timeout);
