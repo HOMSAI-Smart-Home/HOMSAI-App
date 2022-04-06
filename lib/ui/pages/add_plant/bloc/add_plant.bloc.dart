@@ -44,7 +44,7 @@ class AddPlantBloc extends Bloc<AddPlantEvent, AddPlantState> {
 
   void _onFetchConfig(FetchConfig event, Emitter<AddPlantState> emit) {
     webSocketRepository.fetchingConfig(
-      Subscriber(
+      WebSocketSubscriber(
         (data) {
           add(FetchedConfig(ConfigurationDto.fromJson(data)));
         },
