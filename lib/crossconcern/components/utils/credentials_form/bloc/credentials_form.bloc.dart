@@ -2,8 +2,8 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
-import 'package:homsai/crossconcern/helpers/models/forms/email.model.dart';
-import 'package:homsai/crossconcern/helpers/models/forms/password.model.dart';
+import 'package:homsai/crossconcern/helpers/models/forms/credentials/email.model.dart';
+import 'package:homsai/crossconcern/helpers/models/forms/credentials/password.model.dart';
 
 part 'credentials_form.event.dart';
 part 'credentials_form.state.dart';

@@ -53,7 +53,19 @@ class _AddPlantTitle extends StatelessWidget {
   }
 }
 
-class _AddPlantForm extends StatelessWidget {
+class _AddPlantForm extends StatefulWidget {
+  @override
+  State<_AddPlantForm> createState() => _AddPlantFormState();
+}
+
+class _AddPlantFormState extends State<_AddPlantForm> {
+  @override
+  void initState() {
+    context.read<AddPlantBloc>().add(ConnectWebSocket());
+    context.read<AddPlantBloc>().add(FetchConfig());
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -72,20 +84,28 @@ class _AddPlantForm extends StatelessWidget {
 class _AddPlantNameField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      restorationId: 'implant_name_text_field',
-      keyboardType: TextInputType.name,
-      onChanged: (value) {},
-      textInputAction: TextInputAction.next,
-      decoration: InputDecoration(
-        prefixIcon: Icon(
-          Icons.house_rounded,
-          color: Theme.of(context).colorScheme.onBackground,
+    return BlocBuilder<AddPlantBloc, AddPlantState>(builder: ((context, state) {
+      return TextFormField(
+        key: ValueKey(
+          state.plantName.value,
         ),
-        labelText: HomsaiLocalizations.of(context)!.addPlantNameLabel,
-      ),
-      style: Theme.of(context).textTheme.subtitle2,
-    );
+        restorationId: 'plant_name_text_field',
+        keyboardType: TextInputType.name,
+        onChanged: (value) {
+          context.read<AddPlantBloc>().add(PlantNameChanged(value));
+        },
+        initialValue: state.plantName.value,
+        textInputAction: TextInputAction.next,
+        decoration: InputDecoration(
+          prefixIcon: Icon(
+            Icons.house_rounded,
+            color: Theme.of(context).colorScheme.onBackground,
+          ),
+          labelText: HomsaiLocalizations.of(context)!.addPlantNameLabel,
+        ),
+        style: Theme.of(context).textTheme.subtitle2,
+      );
+    }));
   }
 }
 
@@ -94,20 +114,28 @@ class _AddPlantLocationField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        TextFormField(
-          restorationId: 'coordinate_text_field',
-          keyboardType: TextInputType.name,
-          onChanged: (value) {},
-          textInputAction: TextInputAction.done,
-          decoration: InputDecoration(
-            prefixIcon: Icon(
-              Icons.place_rounded,
-              color: Theme.of(context).colorScheme.onBackground,
+        BlocBuilder<AddPlantBloc, AddPlantState>(builder: ((context, state) {
+          return TextFormField(
+            key: ValueKey(
+              state.coordinate.value,
             ),
-            labelText: HomsaiLocalizations.of(context)!.addPlantLocationLabel,
-          ),
-          style: Theme.of(context).textTheme.subtitle2,
-        ),
+            restorationId: 'coordinate_text_field',
+            onChanged: (value) {
+              context.read<AddPlantBloc>().add(CoordinateChanged(value));
+            },
+            enabled: false,
+            initialValue: state.coordinate.value,
+            textInputAction: TextInputAction.done,
+            decoration: InputDecoration(
+              prefixIcon: Icon(
+                Icons.place_rounded,
+                color: Theme.of(context).colorScheme.onBackground,
+              ),
+              labelText: HomsaiLocalizations.of(context)!.addPlantLocationLabel,
+            ),
+            style: Theme.of(context).textTheme.subtitle2,
+          );
+        })),
         const SizedBox(height: 16),
         TextButton(
           onPressed: () {},

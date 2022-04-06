@@ -2,17 +2,27 @@ part of 'add_plant.bloc.dart';
 
 class AddPlantState extends Equatable {
   const AddPlantState({
-    this.token,
+    this.plantName = const PlantName.pure(),
+    this.coordinate = const Coordinate.pure(),
+    this.status = FormzStatus.pure,
   });
 
-  final String? token;
+  final PlantName plantName;
+  final Coordinate coordinate;
+  final FormzStatus status;
 
   AddPlantState copyWith({
-    String? token,
+    PlantName? plantName,
+    Coordinate? coordinate,
+    FormzStatus? status,
   }) {
-    return AddPlantState(token: token ?? this.token);
+    return AddPlantState(
+      plantName: plantName ?? this.plantName,
+      coordinate: coordinate ?? this.coordinate,
+      status: status ?? this.status,
+    );
   }
 
   @override
-  List<Object> get props => [token ?? ""];
+  List<Object> get props => [plantName, coordinate, status];
 }
