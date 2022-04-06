@@ -84,11 +84,16 @@ class HomeAssistantWebSocketRepository {
     scheme = url.scheme.contains('s') ? 'wss' : 'ws';
 
     url = url.replace(
-        path: HomeAssistantApiProprties.webSocketPath, scheme: scheme);
+      path: HomeAssistantApiProprties.webSocketPath,
+      scheme: scheme,
+    );
 
     this.url = url;
 
-    _message.insert(0, jsonEncode({"type": "auth", "access_token": homeAssistantAuth!.token}));
+    _message.insert(
+      0,
+      jsonEncode({"type": "auth", "access_token": homeAssistantAuth!.token}),
+    );
 
     getIt.get<HomeAssistantBroker>().connect();
 

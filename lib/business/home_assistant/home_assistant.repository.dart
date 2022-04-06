@@ -14,8 +14,7 @@ import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.
 import 'package:homsai/datastore/models/home_assistant_auth.model.dart';
 import 'package:homsai/datastore/remote/network/network_manager.interface.dart';
 import 'package:homsai/main.dart';
-import 'package:http/http.dart';
-import 'package:http/http.dart' as http;
+import 'package:homsai/datastore/remote/rest/remote.Interface.dart';
 
 class HomeAssistantRepository implements HomeAssistantInterface {
   final HomeAssistantScannerInterface _homeAssistantScanner =
@@ -23,6 +22,11 @@ class HomeAssistantRepository implements HomeAssistantInterface {
 
   final NetworkManagerInterface networkManager =
       getIt.get<NetworkManagerInterface>();
+
+  final AppPreferencesInterface appPreferencesInterface =
+      getIt.get<AppPreferencesInterface>();
+
+  final RemoteInterface remoteInterface = getIt.get<RemoteInterface>();
 
   @override
   Future<HomeAssistantAuth> authenticate({required Uri url}) {
@@ -44,8 +48,9 @@ class HomeAssistantRepository implements HomeAssistantInterface {
     });
 
     return FlutterWebAuth.authenticate(
-            url: url.toString(), callbackUrlScheme: callbackUrlScheme)
-        .then((result) {
+      url: url.toString(),
+      callbackUrlScheme: callbackUrlScheme,
+    ).then((result) {
       return _getToken(url: url, result: result);
     });
   }
@@ -73,9 +78,11 @@ class HomeAssistantRepository implements HomeAssistantInterface {
   }
 
   Future<Map<String, dynamic>> _getReqest(
-      Duration timeout, Uri url, Map<String, dynamic> body) async {
-    Map<String, dynamic> data = {};
-    Response response;
+    Duration timeout,
+    Uri url,
+    Map<String, dynamic> body,
+  ) async {
+    Map<String, dynamic> response = {};
     HttpClient client = HttpClient();
     client.connectionTimeout = timeout;
 
@@ -84,30 +91,22 @@ class HomeAssistantRepository implements HomeAssistantInterface {
       queryParameters: {},
     );
 
-    response = await http
-        .post(
-          url,
-          body: body,
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-          encoding: Encoding.getByName('utf-8'),
-        )
-        .timeout(timeout)
-        .onError((error, stackTrace) {
-      throw error as Exception;
-    });
+    response = await remoteInterface.post(
+      url,
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: body,
+      encoding: Encoding.getByName('utf-8'),
+    );
 
-    try {
-      data = jsonDecode(response.body);
-      print(data);
-      throwIf(data.containsKey("error"),
-          InvalidRequest('${data['error']}: ${data['error_description']}'));
-    } catch (e) {
-      rethrow;
-    }
+    throwIf(
+      response.containsKey("error"),
+      InvalidRequest(
+          message: '${response['error']}: ${response['error_description']}'),
+    );
 
-    return data;
+    return response;
   }
 
   Future<HomeAssistantAuth> _getToken(
@@ -132,17 +131,10 @@ class HomeAssistantRepository implements HomeAssistantInterface {
 
     now = DateTime.now().millisecondsSinceEpoch ~/ 1000;
 
-    print({
-      "expires": int.parse(data['expires_in'].toString()),
-      "now": now,
-      "tot": now + 30
-    });
-
     return HomeAssistantAuth(
         url.origin,
         data['access_token'],
-        //now + int.parse(data['expires_in'].toString()),
-        now + 30,
+        now + int.parse(data['expires_in'].toString()),
         data["refresh_token"],
         data["token_type"]);
   }
@@ -152,8 +144,6 @@ class HomeAssistantRepository implements HomeAssistantInterface {
     required Uri url,
     Duration timeout = const Duration(seconds: 2),
   }) async {
-    final AppPreferencesInterface appPreferencesInterface =
-        getIt.get<AppPreferencesInterface>();
     HomeAssistantAuth? auth = appPreferencesInterface.getToken();
     Map<String, dynamic> body;
     Map<String, dynamic> data;
@@ -172,18 +162,9 @@ class HomeAssistantRepository implements HomeAssistantInterface {
 
     now = DateTime.now().millisecondsSinceEpoch ~/ 1000;
 
-    print({
-      "expires": int.parse(data['expires_in'].toString()),
-      "now": now,
-      "tot": now + 30
-    });
-
     auth.token = data["access_token"];
-    //auth.expires = now + int.parse(data['expires_in'].toString());
-    auth.expires = now + 30;
+    auth.expires = now + int.parse(data['expires_in'].toString());
     auth.tokenType = data["token_type"];
-
-    print(auth);
   }
 
   @override
@@ -191,27 +172,21 @@ class HomeAssistantRepository implements HomeAssistantInterface {
     required Uri url,
     Duration timeout = const Duration(seconds: 2),
   }) async {
-    HomeAssistantAuth auth = getIt.get<HomeAssistantAuth>();
+    HomeAssistantAuth? auth = appPreferencesInterface.getToken();
     Map<String, dynamic> body;
-    Map<String, dynamic> data;
-    int now;
 
     url = url.replace(
-        path: HomeAssistantApiProprties.tokenPath, queryParameters: {});
+      path: HomeAssistantApiProprties.tokenPath,
+      queryParameters: {},
+    );
 
     body = {
       'action': HomeAssistantApiProprties.tokenRevoke,
-      'token': auth.token,
+      'token': auth!.token,
     };
 
-    data = await _getReqest(timeout, url, body);
+    await _getReqest(timeout, url, body);
 
-    now = DateTime.now().millisecondsSinceEpoch ~/ 1000;
-
-    print("refresh");
-
-    auth.token = data["refresh_token"];
-    auth.expires = now + int.parse(data['expires_in'].toString());
-    auth.tokenType = data["token_type"];
+    appPreferencesInterface.resetToken();
   }
 }

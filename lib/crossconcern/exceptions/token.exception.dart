@@ -1,9 +1,7 @@
 class InvalidRequest implements Exception {
-  String message = "Empty request";
+  final String message;
 
-  InvalidRequest(String s) {
-    message = s;
-  }
+  InvalidRequest({this.message="Empty request"});
 
   String errMsg() => message;
 }

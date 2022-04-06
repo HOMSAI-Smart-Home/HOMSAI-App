@@ -12,6 +12,8 @@ import 'package:homsai/business/home_assistant_scanner/home_assistant_scanner.re
 import 'package:homsai/business/light/light.interface.dart';
 import 'package:homsai/datastore/remote/network/network_manager.interface.dart';
 import 'package:homsai/datastore/remote/network/network.manager.dart';
+import 'package:homsai/datastore/remote/rest/remote.Interface.dart';
+import 'package:homsai/datastore/remote/rest/remote.repository.dart';
 import 'package:homsai/datastore/remote/websocket/home_assistant.broker.dart';
 import 'package:homsai/datastore/remote/websocket/home_assistant_websocket.repository.dart';
 import 'package:homsai/business/light/light.repository.dart';
@@ -50,6 +52,8 @@ void setup() {
 
   getIt
       .registerLazySingleton<LightRepositoryInterface>(() => LightRepository());
+
+  getIt.registerLazySingleton<RemoteInterface>(() => RemoteRepository());
 }
 
 Future<void> main() async {
