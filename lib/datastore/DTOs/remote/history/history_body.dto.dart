@@ -1,4 +1,4 @@
-import 'package:homsai/crossconcern/helpers/extensions/date_time.extension.dart';
+import 'package:homsai/crossconcern/helpers/converters/date_time.converter.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'history_body.dto.g.dart';
@@ -29,16 +29,4 @@ class HistoryBodyDto {
       _$HistoryBodyDtoFromJson(json);
 
   Map<String, dynamic> toJson() => _$HistoryBodyDtoToJson(this);
-}
-
-@JsonSerializable()
-class DateTimeConverter implements JsonConverter<DateTime, String> {
-
-  const DateTimeConverter();
-
-  @override
-  DateTime fromJson(String json) => DateTime.parse(json);
-
-  @override
-  String toJson(DateTime object) => object.formatHA;
 }

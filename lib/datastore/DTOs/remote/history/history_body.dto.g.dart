@@ -33,9 +33,3 @@ Map<String, dynamic> _$HistoryBodyDtoToJson(HistoryBodyDto instance) {
   val['significant_changes_only'] = instance.significantChangesOnly;
   return val;
 }
-
-DateTimeConverter _$DateTimeConverterFromJson(Map<String, dynamic> json) =>
-    DateTimeConverter();
-
-Map<String, dynamic> _$DateTimeConverterToJson(DateTimeConverter instance) =>
-    <String, dynamic>{};

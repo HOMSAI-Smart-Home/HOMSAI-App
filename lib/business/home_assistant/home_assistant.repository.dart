@@ -10,7 +10,7 @@ import 'package:homsai/business/home_assistant_scanner/home_assistant_scanner.in
 import 'package:homsai/crossconcern/exceptions/scanning_not_found.exception.dart';
 import 'package:homsai/crossconcern/exceptions/token.exception.dart';
 import 'package:homsai/crossconcern/utilities/properties/api.proprties.dart';
-import 'package:homsai/datastore/DTOs/remote/history_body.dto.dart';
+import 'package:homsai/datastore/DTOs/remote/history/history_body.dto.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.dart';
 import 'package:homsai/datastore/models/home_assistant_auth.model.dart';
 import 'package:homsai/datastore/remote/network/network_manager.interface.dart';
