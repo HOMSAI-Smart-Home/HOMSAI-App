@@ -1,4 +1,5 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:homsai/datastore/remote/network/network_manager.interface.dart';
 
 class NetworkManagerSubscriber {
   Function(ConnectivityResult) onInernetChange;
@@ -26,7 +27,7 @@ class NetworkManagerSubscribersHandler {
   }
 }
 
-class NetworkManager {
+class NetworkManager implements NetworkManagerInterface {
   NetworkManagerSubscribersHandler subscribersHandler =
       NetworkManagerSubscribersHandler();
 
@@ -34,10 +35,12 @@ class NetworkManager {
     _listen();
   }
 
+  @override
   void subscribe(NetworkManagerSubscriber subscriber) {
     subscribersHandler.subscribe(subscriber);
   }
 
+  @override
   void unsubscribe(NetworkManagerSubscriber subscriber) {
     subscribersHandler.unsubscribe(subscriber);
   }
@@ -46,5 +49,22 @@ class NetworkManager {
     Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
       subscribersHandler.publish(result);
     });
+  }
+
+  @override
+  Future<bool> isConnect() async {
+    switch (await Connectivity().checkConnectivity()) {
+      case ConnectivityResult.mobile:
+        return true;
+      case ConnectivityResult.wifi:
+        return true;
+      default:
+        return false;
+    }
+  }
+
+  @override
+  Future<ConnectivityResult> getConnectionType() async {
+    return await Connectivity().checkConnectivity();
   }
 }

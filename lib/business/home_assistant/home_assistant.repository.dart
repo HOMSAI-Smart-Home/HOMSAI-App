@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:homsai/business/home_assistant/home_assistant.interface.dart';
@@ -10,6 +11,8 @@ import 'package:homsai/crossconcern/exceptions/scanning_not_found.exception.dart
 import 'package:homsai/crossconcern/exceptions/token.exception.dart';
 import 'package:homsai/crossconcern/utilities/properties/api.proprties.dart';
 import 'package:homsai/datastore/models/home_assistant_auth.model.dart';
+import 'package:homsai/datastore/remote/network/network.manager.dart';
+import 'package:homsai/datastore/remote/network/network_manager.interface.dart';
 import 'package:homsai/main.dart';
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
@@ -17,6 +20,22 @@ import 'package:http/http.dart' as http;
 class HomeAssistantRepository implements HomeAssistantInterface {
   final HomeAssistantScannerInterface _homeAssistantScanner =
       getIt.get<HomeAssistantScannerInterface>();
+
+  final NetworkManagerInterface networkManager =
+      getIt.get<NetworkManagerInterface>();
+
+  HomeAssistantRepository() {
+    networkManager.subscribe(NetworkManagerSubscriber((result) {
+      switch (result) {
+        case ConnectivityResult.mobile:
+          break;
+        case ConnectivityResult.wifi:
+          break;
+        default:
+          throw Exception("Missing internet connection");
+      }
+    }));
+  }
 
   @override
   Future<HomeAssistantAuth> authenticate({required Uri url}) {
@@ -45,15 +64,16 @@ class HomeAssistantRepository implements HomeAssistantInterface {
   }
 
   @override
-  StreamSubscription<String> scan({
+  Future<StreamSubscription<String>> scan({
     required void Function(String) onData,
     Function? onError,
-  }) {
-    return _homeAssistantScanner.scanNetwork().listen((host) {
-      //TODO: qui il messaggio arriva, va controllato il block, credo..
-      print(host);
-      onData(host);
-    }, onError: onError);
+  }) async {
+    throwIf(
+      await networkManager.getConnectionType() != ConnectivityResult.wifi,
+      Exception("Wifi Disabled"),
+    );
+
+    return _homeAssistantScanner.scanNetwork().listen(onData, onError: onError);
   }
 
   @override

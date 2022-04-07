@@ -60,7 +60,7 @@ class HomeAssistantScanBloc
     });
 
     _scanSubscription?.cancel();
-    _scanSubscription = homeAssistantRepository.scan(
+    _scanSubscription = await homeAssistantRepository.scan(
         onData: (host) => add(HostFound(host: host)),
         onError: (error, stackTrace) => add(ScanFailed(error: error)));
     _scanSubscription?.onDone(() {
