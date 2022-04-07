@@ -42,12 +42,14 @@ class HomeAssistantRepository implements HomeAssistantInterface {
     const String callbackUrlScheme =
         HomeAssistantApiProprties.authCallbackScheme;
 
-    url =
-        url.replace(path: HomeAssistantApiProprties.authPath, queryParameters: {
-      'response_type': HomeAssistantApiProprties.authResponseType,
-      'client_id': HomeAssistantApiProprties.authClientId,
-      'redirect_uri': '$callbackUrlScheme:/'
-    });
+    url = url.replace(
+      path: HomeAssistantApiProprties.authPath,
+      queryParameters: {
+        'response_type': HomeAssistantApiProprties.authResponseType,
+        'client_id': HomeAssistantApiProprties.authClientId,
+        'redirect_uri': '$callbackUrlScheme:/'
+      },
+    );
 
     return FlutterWebAuth.authenticate(
       url: url.toString(),

@@ -1,4 +1,8 @@
-class ApiProprties {}
+class ApiProprties {
+  static const AIServiceBaseUrl = "http://staging.aiservice.homsai.app:8080";
+  static const AiServicePhotovoltaicSelfConsumptionOptimizerForecast =
+      "/aiservice/forecast/photovoltaic/self-consumption";
+}
 
 class HomeAssistantApiProprties {
   static const authClientId = "http://authcallback.homsai.app";

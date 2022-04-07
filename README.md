@@ -23,8 +23,7 @@ Innover Flutter application
 - package_info_plus: provides an API for querying information about an application package.
 - json_serializable: generates Json Serializable fields reducing boiler plate for from and To Json functions.
 - rive: used to handle .riv animation file.
-- flutter_web_auth: used for handling web authentication like google auth
-- lan_scanner: allows discovering network devices in local network (LAN) via multi-threaded ICMP pings.
+- flutter_web_auth: used for handling web authentication like google auth.
 - network_info_plus: allows Flutter apps to discover network info and configure themselves accordingly.
 - fl_chart: chart library that supports Line Chart, Bar Chart, Pie Chart, Scatter Chart, and Radar Chart.
 
