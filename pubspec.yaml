@@ -59,6 +59,7 @@ dependencies:
   auto_route: ^3.2.4
   fl_chart: ^0.50.0
   json_serializable: ^6.1.5
+  connectivity_plus: ^2.2.1
 
 dev_dependencies:
   flutter_test:
