@@ -14,12 +14,12 @@ class ChangeDto {
   String origin;
   ContextEntity context;
 
-  ChangeDto(this.data, this.eventType, this.timeFired, this.origin, this.context);
+  ChangeDto(
+      this.data, this.eventType, this.timeFired, this.origin, this.context);
 
   factory ChangeDto.fromJson(Map<String, dynamic> json) =>
       _$ChangeDtoFromJson(json);
 
-  @override
   Map<String, dynamic> toJson() => _$ChangeDtoToJson(this);
 }
 

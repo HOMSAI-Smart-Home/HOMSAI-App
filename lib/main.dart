@@ -14,6 +14,8 @@ import 'package:homsai/datastore/remote/network/network_manager.interface.dart';
 import 'package:homsai/datastore/remote/network/network.manager.dart';
 import 'package:homsai/datastore/remote/rest/remote.Interface.dart';
 import 'package:homsai/datastore/remote/rest/remote.repository.dart';
+import 'package:homsai/crossconcern/utilities/properties/database.properties.dart';
+import 'package:homsai/datastore/local/app.database.dart';
 import 'package:homsai/datastore/remote/websocket/home_assistant.broker.dart';
 import 'package:homsai/datastore/remote/websocket/home_assistant_websocket.repository.dart';
 import 'package:homsai/business/light/light.repository.dart';
@@ -29,7 +31,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 final getIt = GetIt.instance;
 String? appVersion;
 
-void setup() {
+void setup() async {
   // It enables to reassign an implementation of an interface, for example in Unit tests
   getIt.allowReassignment = true;
 
@@ -54,6 +56,15 @@ void setup() {
       .registerLazySingleton<LightRepositoryInterface>(() => LightRepository());
 
   getIt.registerLazySingleton<RemoteInterface>(() => RemoteRepository());
+
+  final database =
+      await $FloorAppDatabase.databaseBuilder(DatabaseProperties.name).build();
+  getIt.registerLazySingleton<AppDatabase>(() => database);
+
+  // Wait asynchronous AppPreferences initialization
+  final AppPreferencesInterface appPreferences =
+      getIt.get<AppPreferencesInterface>();
+  await appPreferences.initialize();
 }
 
 Future<void> main() async {
@@ -62,11 +73,6 @@ Future<void> main() async {
 
   // Initialize singletons
   setup();
-
-// Wait asynchronous AppPreferences initialization
-  final AppPreferencesInterface appPreferences =
-      getIt.get<AppPreferencesInterface>();
-  await appPreferences.initialize();
 
   getAppVersion();
 

@@ -180,7 +180,9 @@ class _AddPlantSubmit extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
-        context.router.push(const DashboardRoute());
+        context
+            .read<AddPlantBloc>()
+            .add(OnSubmit(() => context.router.push(const DashboardRoute())));
       },
       child: Text(HomsaiLocalizations.of(context)!.next),
     );

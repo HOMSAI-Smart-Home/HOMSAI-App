@@ -22,6 +22,7 @@ Innover Flutter application
 - auto_route: a Flutter navigation package, it allows for strongly-typed arguments passing, effortless deep-linking and it uses code generation to simplify routes setup, with that being said it requires a minimal amount of code to generate everything needed for navigation inside of your App.
 - package_info_plus: provides an API for querying information about an application package.
 - json_serializable: generates Json Serializable fields reducing boiler plate for from and To Json functions.
+- floor: dependency to handle OMR database for sqlfite.
 - rive: used to handle .riv animation file.
 - flutter_web_auth: used for handling web authentication like google auth.
 - network_info_plus: allows Flutter apps to discover network info and configure themselves accordingly.

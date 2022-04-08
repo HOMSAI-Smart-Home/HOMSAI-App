@@ -1,5 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:homsai/crossconcern/helpers/extensions/list.extension.dart';
+import 'package:homsai/datastore/local/app.database.dart';
+import 'package:homsai/datastore/models/database/home_assistant.entity.dart';
 import 'package:homsai/datastore/models/entity/base/base.entity.dart';
 import 'package:homsai/datastore/remote/websocket/home_assistant_websocket.repository.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.dart';
@@ -16,6 +19,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   final AppPreferencesInterface appPreferencesInterface =
       getIt.get<AppPreferencesInterface>();
+
+  final AppDatabase appDatabase = getIt.get<AppDatabase>();
 
   HomeBloc() : super(const HomeState()) {
     on<ConnectWebSocket>(_onWebsocketConnect);
@@ -44,18 +49,15 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     );
   }
 
-  void _onFetchedLights(FetchedLights event, Emitter<HomeState> emit) {
-    List<LightEntity> lights = event.entities
-        .map((entity) {
-          if (Entity.fromJson(entity).entityId.contains("light.")) {
-            return LightEntity.fromJson(entity);
-          }
-          return null;
-        })
-        .where((entity) => entity != null)
-        .map<LightEntity>((light) => light!)
-        .toList();
+  void _onFetchedLights(FetchedLights event, Emitter<HomeState> emit) async {
+    final plant = await appDatabase.plantDao.getActivePlant();
+    await appDatabase.homeAssitantDao.insertItems(event.entities
+        .getEntities<Entity>()
+        .map((entity) =>
+            HomeAssistantEntity(plant!.id!, entity.entityId, entity))
+        .toList());
 
+    List<LightEntity> lights = event.entities.getEntities<LightEntity>();
     emit(state.copyWith(lights: lights));
   }
 }

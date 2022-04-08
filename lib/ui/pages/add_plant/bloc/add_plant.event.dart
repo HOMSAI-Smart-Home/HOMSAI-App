@@ -55,3 +55,12 @@ class CoordinateUnfocused extends AddPlantEvent {
   @override
   List<Object> get props => [coordinate];
 }
+
+class OnSubmit extends AddPlantEvent {
+  const OnSubmit(this.onSubmit);
+
+  final void Function() onSubmit;
+
+  @override
+  List<Object> get props => [onSubmit];
+}

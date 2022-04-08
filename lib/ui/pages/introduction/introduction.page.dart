@@ -308,20 +308,18 @@ class _HomeAssistantSuperRichText extends StatelessWidget {
         MarkerText(
             marker: '*/', style: const TextStyle(fontWeight: FontWeight.w700)),
         MarkerText.withUrl(
-            onError: (index, msg) => print('$index: $msg'),
             marker: 'l1',
             urls: ["https://www.home-assistant.io"],
-            style: const TextStyle(
+            style: TextStyle(
                 fontWeight: FontWeight.w700,
-                color: Color(0xff56bb76),
+                color: Theme.of(context).colorScheme.primary,
                 decoration: TextDecoration.underline)),
         MarkerText.withUrl(
-            onError: (index, msg) => print('$index: $msg'),
             marker: 'l2',
             urls: ['https://homsai.app'],
-            style: const TextStyle(
+            style: TextStyle(
                 fontWeight: FontWeight.w700,
-                color: Color(0xff56bb76),
+                color: Theme.of(context).colorScheme.primary,
                 decoration: TextDecoration.underline)),
       ],
     ));
