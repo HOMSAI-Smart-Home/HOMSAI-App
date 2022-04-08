@@ -7,7 +7,6 @@ import 'package:homsai/crossconcern/helpers/models/forms/url.model.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.dart';
 import 'package:homsai/globalkeys.widget.dart';
 import 'package:homsai/main.dart';
-import 'package:lan_scanner/lan_scanner.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 
 part 'home_assistant_scan.event.dart';
@@ -20,7 +19,7 @@ class HomeAssistantScanBloc
   final AppPreferencesInterface appPreferencesInterface =
       getIt.get<AppPreferencesInterface>();
 
-  StreamSubscription<HostModel>? _scanSubscription;
+  StreamSubscription<String>? _scanSubscription;
 
   HomeAssistantScanBloc() : super(const HomeAssistantScanState()) {
     on<ScanPressed>(_onScanPressed, transformer: restartable());
@@ -61,9 +60,7 @@ class HomeAssistantScanBloc
     });
 
     _scanSubscription?.cancel();
-    List<String> hosts = await homeAssistantRepository.discoverAvailableHosts();
     _scanSubscription = homeAssistantRepository.scan(
-        hosts: hosts,
         onData: (host) => add(HostFound(host: host)),
         onError: (error, stackTrace) => add(ScanFailed(error: error)));
     _scanSubscription?.onDone(() {

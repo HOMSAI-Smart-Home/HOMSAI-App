@@ -7,6 +7,8 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get_it/get_it.dart';
 import 'package:homsai/business/home_assistant/home_assistant.interface.dart';
 import 'package:homsai/business/home_assistant/home_assistant.repository.dart';
+import 'package:homsai/business/home_assistant_scanner/home_assistant_scanner.interface.dart';
+import 'package:homsai/business/home_assistant_scanner/home_assistant_scanner.repository.dart';
 import 'package:homsai/business/light/light.interface.dart';
 import 'package:homsai/datastore/remote/websocket/home_assistant.broker.dart';
 import 'package:homsai/datastore/remote/websocket/home_assistant_websocket.repository.dart';
@@ -30,6 +32,9 @@ void setup() {
   // Local interfaces
   getIt.registerLazySingleton<AppPreferencesInterface>(() => AppPreferences());
   getIt.registerLazySingleton<UserLocalInterface>(() => UserLocalRepository());
+
+  getIt.registerLazySingleton<HomeAssistantScannerInterface>(
+      () => HomeAssistantScannerRepository());
 
   getIt.registerLazySingleton<HomeAssistantInterface>(
       () => HomeAssistantRepository());
