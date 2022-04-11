@@ -444,6 +444,12 @@ class _SearchLocalIntanceManualTextFieldState
     super.dispose();
   }
 
+  Color _color(BuildContext context, HomeAssistantScanState state) {
+    return (state.selectedUrl.invalid || state.status.isAuthenticationFailure)
+        ? Theme.of(context).colorScheme.error
+        : Theme.of(context).colorScheme.onBackground;
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeAssistantScanBloc, HomeAssistantScanState>(
@@ -462,13 +468,7 @@ class _SearchLocalIntanceManualTextFieldState
             },
             enabled: !state.status.isAuthenticationInProgress,
             decoration: InputDecoration(
-              prefixIcon: Icon(
-                Icons.link,
-                color: state.selectedUrl.invalid ||
-                        state.status.isAuthenticationFailure
-                    ? Theme.of(context).colorScheme.error
-                    : Theme.of(context).colorScheme.onBackground,
-              ),
+              prefixIcon: Icon(Icons.link, color: _color(context, state)),
               errorText: state.status.isAuthenticationFailure
                   ? HomsaiLocalizations.of(context)!
                       .homeAssistantScanManualAuthError
@@ -570,8 +570,6 @@ class _ContinueRetryButton extends StatelessWidget {
 class _ManualUrlButton extends StatelessWidget {
   void Function()? onPressed(
       BuildContext context, HomeAssistantScanState state) {
-    if (!state.enableManualUrlButton) return null;
-
     return state.status.isManual
         ? () => context.read<HomeAssistantScanBloc>().add(ScanPressed())
         : () => context.read<HomeAssistantScanBloc>().add(ManualUrlPressed());
@@ -580,9 +578,7 @@ class _ManualUrlButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeAssistantScanBloc, HomeAssistantScanState>(
-      buildWhen: (previous, current) =>
-          previous.status != current.status ||
-          previous.enableManualUrlButton != current.enableManualUrlButton,
+      buildWhen: (previous, current) => previous.status != current.status,
       builder: (context, state) {
         return OutlinedButton(
           onPressed: onPressed(context, state),

@@ -52,5 +52,3 @@ class ScanFailed extends HomeAssistantEvent {
 }
 
 class ScanCompleted extends HomeAssistantEvent {}
-
-class EnableManualUrlButton extends HomeAssistantEvent {}

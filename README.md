@@ -23,6 +23,7 @@ Innover Flutter application
 - package_info_plus: provides an API for querying information about an application package.
 - json_serializable: generates Json Serializable fields reducing boiler plate for from and To Json functions.
 - floor: dependency to handle OMR database for sqlfite.
+- connectivity_plus: allow Flutter apps to know connectivity status.
 - rive: used to handle .riv animation file.
 - flutter_web_auth: used for handling web authentication like google auth.
 - network_info_plus: allows Flutter apps to discover network info and configure themselves accordingly.

@@ -31,7 +31,6 @@ class HomeAssistantScanBloc
     on<HostFound>(_onHostFound, transformer: sequential());
     on<ScanFailed>(_onScanFailure);
     on<ScanCompleted>(_onScanCompleted);
-    on<EnableManualUrlButton>(_onEnableManualUrlButton);
   }
 
   @override
@@ -51,13 +50,8 @@ class HomeAssistantScanBloc
     emit(state.copyWith(
       selectedUrl: const Url.pure(),
       scannedUrls: [],
-      enableManualUrlButton: false,
       status: HomeAssistantScanStatus.scanningInProgress,
     ));
-
-    Future.delayed(const Duration(seconds: 5), () {
-      add(EnableManualUrlButton());
-    });
 
     _scanSubscription?.cancel();
     _scanSubscription = await homeAssistantRepository.scan(
@@ -97,13 +91,6 @@ class HomeAssistantScanBloc
     if (!state.status.isManual) {
       emit(state.copyWith(status: HomeAssistantScanStatus.scanningSuccess));
     }
-  }
-
-  void _onEnableManualUrlButton(
-      EnableManualUrlButton event, Emitter<HomeAssistantScanState> emit) {
-    emit(state.copyWith(
-      enableManualUrlButton: true,
-    ));
   }
 
   void _onManualUrlPressed(

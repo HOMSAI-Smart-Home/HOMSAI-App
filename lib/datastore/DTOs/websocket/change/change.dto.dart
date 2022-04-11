@@ -1,4 +1,3 @@
-import 'package:homsai/datastore/models/entity/base/base.entity.dart';
 import 'package:homsai/datastore/models/entity/context/context.entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 

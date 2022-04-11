@@ -57,10 +57,11 @@ class _DashboardPageState extends State<DashboardPage> {
 
 AppBar _dashboardAppBar(context) {
   return AppBar(
-      leading: _DashboardAppBarLeading(),
+      leading: _DashboardAppBarExitAction(),
       title: _DashboardAppBarTitle(),
+      centerTitle: true,
       actions: [
-        _DashboardAppBarExitAction(),
+        _DashboardAppBarLeading(),
       ]);
 }
 
@@ -80,15 +81,9 @@ class _DashboardAppBarLeading extends StatelessWidget {
 class _DashboardAppBarTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        const Spacer(),
-        Text(
-          "casa andrea",
-          style: Theme.of(context).textTheme.headline1,
-        ),
-        const Spacer(),
-      ],
+    return Text(
+      "casa andrea",
+      style: Theme.of(context).textTheme.headline1,
     );
   }
 }

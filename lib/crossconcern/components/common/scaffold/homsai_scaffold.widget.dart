@@ -62,13 +62,11 @@ class _HomsaiScaffoldState extends State<HomsaiScaffold> {
                     Theme.of(context).colorScheme.background,
               ),
               backgroundColor: Colors.transparent,
-              title: Row(
-                children: [
-                  const Spacer(),
-                  SvgPicture.asset("assets/icons/full_logo.svg", height: 20),
-                  const Spacer(),
-                ],
+              title: SvgPicture.asset("assets/icons/full_logo.svg", height: 20),
+              iconTheme: IconThemeData(
+                color: Theme.of(context).colorScheme.onBackground,
               ),
+              centerTitle: true,
             ),
         extendBodyBehindAppBar: widget.extendBodyBehindAppBar,
         resizeToAvoidBottomInset: widget.resizeToAvoidBottomInset,

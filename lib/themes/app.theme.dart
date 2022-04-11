@@ -7,9 +7,6 @@ import 'package:homsai/themes/icon.theme.dart';
 import 'package:homsai/themes/input_decoration.theme.dart';
 
 class HomsaiThemeData {
-  static const _lightFillColor = Colors.black;
-  static const _darkFillColor = Colors.white;
-
   static final Color _lightFocusColor = Colors.black.withOpacity(0.12);
 
   static ThemeData lightThemeData =

@@ -1,14 +1,12 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
-import 'package:homsai/crossconcern/helpers/extensions/list.extension.dart';
 import 'package:homsai/crossconcern/helpers/models/forms/add_plant/coordinate.model.dart';
 import 'package:homsai/crossconcern/helpers/models/forms/add_plant/plant_name.model.dart';
 import 'package:homsai/datastore/DTOs/websocket/configuration/configuration.dto.dart';
 import 'package:homsai/datastore/local/app.database.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.dart';
 import 'package:homsai/datastore/models/database/configuration.entity.dart';
-import 'package:homsai/datastore/models/database/home_assistant.entity.dart';
 import 'package:homsai/datastore/models/database/plant.entity.dart';
 import 'package:homsai/datastore/models/entity/base/base.entity.dart';
 import 'package:homsai/datastore/models/home_assistant_auth.model.dart';

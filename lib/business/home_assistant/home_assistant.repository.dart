@@ -30,9 +30,6 @@ class HomeAssistantRepository implements HomeAssistantInterface {
 
   final RemoteInterface remoteInterface = getIt.get<RemoteInterface>();
 
-  final AppPreferencesInterface appPreferencesInterface =
-      getIt.get<AppPreferencesInterface>();
-
   @override
   Future<HomeAssistantAuth> authenticate({required Uri url}) {
     return canConnectToHomeAssistant(url: url).then((host) {
