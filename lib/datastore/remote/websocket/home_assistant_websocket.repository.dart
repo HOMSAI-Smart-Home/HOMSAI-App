@@ -17,7 +17,10 @@ class WebSocketSubscriber {
   Function(dynamic) onDone;
   Function(ErrorDto)? onError;
 
-  WebSocketSubscriber(this.onDone, {this.onError});
+  WebSocketSubscriber(
+    this.onDone, {
+    this.onError,
+  });
 }
 
 class WebSocketSubscribersHandler {
@@ -25,7 +28,10 @@ class WebSocketSubscribersHandler {
   bool isfetch;
   String event;
 
-  WebSocketSubscribersHandler(this.isfetch, this.event);
+  WebSocketSubscribersHandler(
+    this.isfetch,
+    this.event,
+  );
 
   void subscribe(WebSocketSubscriber subscriber) {
     subscribers[subscriber.onDone] = subscriber;
@@ -155,7 +161,10 @@ class HomeAssistantWebSocketRepository {
     );
   }
 
-  void _send({bool flush = false, bool force = false}) {
+  void _send({
+    bool flush = false,
+    bool force = false,
+  }) {
     if (!_connected && !force) return;
     if (!flush) return webSocket?.sink.add(_message.removeAt(0));
 
@@ -170,27 +179,36 @@ class HomeAssistantWebSocketRepository {
     homeAssistantRepository.revokeToken(url: url);
   }
 
-  void _addSubscriber(String event, WebSocketSubscriber subscriber,
-      bool isfetch, Map<String, dynamic> payload) {
+  void _addSubscriber(
+    String event,
+    WebSocketSubscriber subscriber,
+    bool isfetch,
+    Map<String, dynamic> payload,
+  ) {
     if (isfetch || !eventsId.containsKey(event)) {
-      eventsId[event] = id++;
-      events[eventsId[event]!] = WebSocketSubscribersHandler(isfetch, event);
+      isfetch ? {} : eventsId[event] = id;
+      events[id] = WebSocketSubscribersHandler(isfetch, event);
 
       _message.add(jsonEncode(payload));
       _send();
     }
 
-    events[eventsId[event]]!.subscribe(subscriber);
+    events[id++]!.subscribe(subscriber);
   }
 
   void _removeEvent(int id) {
     if (events.containsKey(id)) {
-      eventsId.remove(events[id]?.event);
+      if (!events[id]!.isfetch) {
+        eventsId.remove(events[id]!.event);
+      }
       events.remove(id);
     }
   }
 
-  void removeSubscription(String event, WebSocketSubscriber subscriber) {
+  void removeSubscription(
+    String event,
+    WebSocketSubscriber subscriber,
+  ) {
     if (eventsId.containsKey(event) &&
         events[eventsId[event]]!.subscribers.isNotEmpty) {
       events[eventsId[event]]!.unsubscribe(subscriber);
@@ -201,18 +219,29 @@ class HomeAssistantWebSocketRepository {
   // Subscriptions
   ///////////////////
 
-  void subscribeEvent(String event, WebSocketSubscriber subscriber) {
+  void subscribeEvent(
+    String event,
+    WebSocketSubscriber subscriber,
+  ) {
     Map<String, dynamic> payload = {};
 
     payload['id'] = eventsId.containsKey(event) ? eventsId[event] : id;
     payload['type'] = HomeAssistantApiProprties.fetchingSubscribeEvents;
     payload['event_type'] = event;
 
-    _addSubscriber(event, subscriber, false, payload);
+    _addSubscriber(
+      event,
+      subscriber,
+      false,
+      payload,
+    );
   }
 
   void subscribeTrigger(
-      String event, WebSocketSubscriber subscriber, TriggerBodyDto trigger) {
+    String event,
+    WebSocketSubscriber subscriber,
+    TriggerBodyDto trigger,
+  ) {
     Map<String, dynamic> payload = {};
 
     payload['id'] =
@@ -222,11 +251,18 @@ class HomeAssistantWebSocketRepository {
     payload['type'] = HomeAssistantApiProprties.fetchingSubscribeTrigger;
     payload['trigger'] = trigger.toJson();
 
-    _addSubscriber(HomeAssistantApiProprties.fetchingSubscribeTrigger,
-        subscriber, false, payload);
+    _addSubscriber(
+      HomeAssistantApiProprties.fetchingSubscribeTrigger,
+      subscriber,
+      false,
+      payload,
+    );
   }
 
-  void unsubscribingFromEvents(String event, WebSocketSubscriber subscriber) {
+  void unsubscribingFromEvents(
+    String event,
+    WebSocketSubscriber subscriber,
+  ) {
     Map<String, dynamic> payload = {};
 
     if (!eventsId.containsKey(event)) return;
@@ -238,12 +274,19 @@ class HomeAssistantWebSocketRepository {
     payload['type'] = HomeAssistantApiProprties.fetchingUnsubscribeEvents;
     payload['subscription'] = eventsId[event];
 
-    _addSubscriber(HomeAssistantApiProprties.fetchingUnsubscribeEvents,
-        subscriber, true, payload);
+    _addSubscriber(
+      HomeAssistantApiProprties.fetchingUnsubscribeEvents,
+      subscriber,
+      true,
+      payload,
+    );
   }
 
-  void fireAnEvent(WebSocketSubscriber subscriber, String eventType,
-      {Map<String, String>? eventData}) {
+  void fireAnEvent(
+    WebSocketSubscriber subscriber,
+    String eventType, {
+    Map<String, String>? eventData,
+  }) {
     Map<String, dynamic> payload = {};
 
     payload['id'] = eventsId.containsKey(HomeAssistantApiProprties.fireEvent)
@@ -254,11 +297,19 @@ class HomeAssistantWebSocketRepository {
     eventData != null ? payload['event_data'] = eventData : null;
 
     _addSubscriber(
-        HomeAssistantApiProprties.fireEvent, subscriber, true, payload);
+      HomeAssistantApiProprties.fireEvent,
+      subscriber,
+      true,
+      payload,
+    );
   }
 
-  void callingAService(WebSocketSubscriber subscriber, String domain,
-      String service, ServiceBodyDto serviceBodyDto) {
+  void callingAService(
+    WebSocketSubscriber subscriber,
+    String domain,
+    String service,
+    ServiceBodyDto serviceBodyDto,
+  ) {
     Map<String, dynamic> payload = {};
 
     payload['id'] = eventsId.containsKey(HomeAssistantApiProprties.callService)
@@ -268,10 +319,13 @@ class HomeAssistantWebSocketRepository {
     payload['domain'] = domain;
     payload['service'] = service;
     payload['target'] = serviceBodyDto.target;
-    // payload.addAll(serviceBodyDto.toJson());
 
     _addSubscriber(
-        HomeAssistantApiProprties.callService, subscriber, true, payload);
+      HomeAssistantApiProprties.callService,
+      subscriber,
+      true,
+      payload,
+    );
   }
 
   void fetchingStates(WebSocketSubscriber subscriber) {
@@ -284,7 +338,11 @@ class HomeAssistantWebSocketRepository {
     payload['type'] = HomeAssistantApiProprties.fetchingStates;
 
     _addSubscriber(
-        HomeAssistantApiProprties.fetchingStates, subscriber, true, payload);
+      HomeAssistantApiProprties.fetchingStates,
+      subscriber,
+      true,
+      payload,
+    );
   }
 
   void fetchingConfig(WebSocketSubscriber subscriber) {
@@ -297,7 +355,11 @@ class HomeAssistantWebSocketRepository {
     payload['type'] = HomeAssistantApiProprties.fetchingConfig;
 
     _addSubscriber(
-        HomeAssistantApiProprties.fetchingConfig, subscriber, true, payload);
+      HomeAssistantApiProprties.fetchingConfig,
+      subscriber,
+      true,
+      payload,
+    );
   }
 
   void fetchingServices(WebSocketSubscriber subscriber) {
@@ -310,11 +372,17 @@ class HomeAssistantWebSocketRepository {
     payload['type'] = HomeAssistantApiProprties.fetchingServices;
 
     _addSubscriber(
-        HomeAssistantApiProprties.fetchingServices, subscriber, true, payload);
+      HomeAssistantApiProprties.fetchingServices,
+      subscriber,
+      true,
+      payload,
+    );
   }
 
   void fetchingMediaPlayerThumbnails(
-      WebSocketSubscriber subscriber, String entityId) {
+    WebSocketSubscriber subscriber,
+    String entityId,
+  ) {
     Map<String, dynamic> payload = {};
 
     payload['id'] = eventsId
@@ -324,12 +392,19 @@ class HomeAssistantWebSocketRepository {
     payload['type'] = HomeAssistantApiProprties.fetchingMediaPlayerThumbnail;
     payload['entity_id'] = entityId;
 
-    _addSubscriber(HomeAssistantApiProprties.fetchingMediaPlayerThumbnail,
-        subscriber, true, payload);
+    _addSubscriber(
+      HomeAssistantApiProprties.fetchingMediaPlayerThumbnail,
+      subscriber,
+      true,
+      payload,
+    );
   }
 
-  void validateConfig(WebSocketSubscriber subscriber, String entityId,
-      ConfigurationBodyDto configurationBodyDto) {
+  void validateConfig(
+    WebSocketSubscriber subscriber,
+    String entityId,
+    ConfigurationBodyDto configurationBodyDto,
+  ) {
     Map<String, dynamic> payload = {};
 
     payload['id'] =
@@ -340,6 +415,10 @@ class HomeAssistantWebSocketRepository {
     payload.addAll(configurationBodyDto.toJson());
 
     _addSubscriber(
-        HomeAssistantApiProprties.validateConfig, subscriber, true, payload);
+      HomeAssistantApiProprties.validateConfig,
+      subscriber,
+      true,
+      payload,
+    );
   }
 }
