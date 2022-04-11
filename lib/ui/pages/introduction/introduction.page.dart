@@ -9,9 +9,11 @@ import 'package:homsai/themes/colors.theme.dart';
 import 'package:super_rich_text/super_rich_text.dart';
 
 class IntroductionPage extends StatefulWidget {
+  final void Function(bool) onResult;
   final int page;
 
-  const IntroductionPage({Key? key, this.page = 1}) : super(key: key);
+  const IntroductionPage({Key? key, required this.onResult, this.page = 1})
+      : super(key: key);
 
   @override
   State<IntroductionPage> createState() => _IntroductionPageState();
@@ -20,21 +22,10 @@ class IntroductionPage extends StatefulWidget {
 class _IntroductionPageState extends State<IntroductionPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: _Body(widget.page));
-  }
-}
-
-class _Body extends StatelessWidget {
-  final int page;
-
-  const _Body(this.page);
-
-  @override
-  Widget build(BuildContext context) {
     return HomsaiScaffold(
       resizeToAvoidBottomInset: true,
       padding: EdgeInsets.zero,
-      child: _Steps(page),
+      child: _Steps(widget.onResult, widget.page),
       appBar: AppBar(
         systemOverlayStyle: SystemUiOverlayStyle(
           statusBarColor: HomsaiColors.primaryGreen,
@@ -54,8 +45,9 @@ class _Body extends StatelessWidget {
 
 class _Steps extends StatelessWidget {
   final int page;
+  final void Function(bool) onResult;
 
-  const _Steps(this.page);
+  const _Steps(this.onResult, this.page);
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +75,7 @@ class _Steps extends StatelessWidget {
           ),
           offset: const Offset(0, 5),
         ),
-        _TextPadding(page),
+        _TextPadding(onResult, page),
         Align(
             alignment: Alignment.bottomCenter,
             child: TextButton(
@@ -92,8 +84,7 @@ class _Steps extends StatelessWidget {
                       fontSize: 18,
                       fontWeight: FontWeight.w500,
                       color: Color(0xff56bb76))),
-              onPressed: () =>
-                  context.router.replaceAll(const [HomeAssistantScanRoute()]),
+              onPressed: () => onResult(true),
               child: Column(children: const [
                 Text('Salta'),
                 SizedBox(
@@ -108,8 +99,9 @@ class _Steps extends StatelessWidget {
 
 class _TextPadding extends StatelessWidget {
   final int page;
+  final void Function(bool) onResult;
 
-  const _TextPadding(this.page);
+  const _TextPadding(this.onResult, this.page);
 
   @override
   Widget build(BuildContext context) {
@@ -144,7 +136,7 @@ class _TextPadding extends StatelessWidget {
             const SizedBox(
               height: 21,
             ),
-            _NextButtonInfo(page)
+            _NextButtonInfo(onResult, page)
           ],
         ));
   }
@@ -230,15 +222,16 @@ class _GetTextFromPage {
 
 class _NextButtonInfo extends StatelessWidget {
   final int page;
+  final void Function(bool) onResult;
 
-  const _NextButtonInfo(this.page);
+  const _NextButtonInfo(this.onResult, this.page);
 
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        _NextButton(page),
+        _NextButton(onResult, page),
         const SizedBox(height: 21),
         _InfoPage(page)
       ],
@@ -248,16 +241,22 @@ class _NextButtonInfo extends StatelessWidget {
 
 class _NextButton extends StatelessWidget {
   final int page;
+  final void Function(bool) onResult;
 
-  const _NextButton(this.page);
+  const _NextButton(this.onResult, this.page);
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
         page < 3
-            ? context.router.push(IntroductionRoute(page: page + 1))
-            : context.router.replaceAll(const [HomeAssistantScanRoute()]);
+            ? context.router.push(
+                IntroductionRoute(
+                  onResult: onResult,
+                  page: page + 1,
+                ),
+              )
+            : onResult(true);
       },
       child: AnimatedSwitcher(
         duration: const Duration(milliseconds: 250),

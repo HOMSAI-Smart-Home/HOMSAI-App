@@ -5,7 +5,7 @@ import 'package:homsai/crossconcern/components/common/scaffold/homsai_scaffold.w
 class HomsaiBlocScaffold extends StatefulWidget {
   const HomsaiBlocScaffold(
       {Key? key,
-      this.providers = const [],
+      required this.providers,
       this.child,
       this.children = const [],
       this.padding = const EdgeInsets.all(10),

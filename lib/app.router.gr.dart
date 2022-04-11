@@ -13,28 +13,42 @@
 part of 'app.router.dart';
 
 class _$AppRouter extends RootStackRouter {
-  _$AppRouter([GlobalKey<NavigatorState>? navigatorKey]) : super(navigatorKey);
+  _$AppRouter(
+      {GlobalKey<NavigatorState>? navigatorKey, required this.authGuard})
+      : super(navigatorKey);
+
+  final AuthGuard authGuard;
 
   @override
   final Map<String, PageFactory> pagesMap = {
     HomeAssistantScanRoute.name: (routeData) {
+      final args = routeData.argsAs<HomeAssistantScanRouteArgs>();
       return CupertinoPageX<dynamic>(
-          routeData: routeData, child: const HomeAssistantScanPage());
+          routeData: routeData,
+          child: HomeAssistantScanPage(key: args.key, onResult: args.onResult));
     },
     AddPlantRoute.name: (routeData) {
+      final args = routeData.argsAs<AddPlantRouteArgs>();
       return CupertinoPageX<dynamic>(
-          routeData: routeData, child: const AddPlantPage());
+          routeData: routeData,
+          child: AddPlantPage(key: args.key, onResult: args.onResult));
+    },
+    AddSensorRoute.name: (routeData) {
+      final args = routeData.argsAs<AddSensorRouteArgs>();
+      return CupertinoPageX<dynamic>(
+          routeData: routeData,
+          child: AddSensorPage(key: args.key, onResult: args.onResult));
     },
     DashboardRoute.name: (routeData) {
       return CupertinoPageX<dynamic>(
           routeData: routeData, child: const DashboardPage());
     },
     IntroductionRoute.name: (routeData) {
-      final args = routeData.argsAs<IntroductionRouteArgs>(
-          orElse: () => const IntroductionRouteArgs());
+      final args = routeData.argsAs<IntroductionRouteArgs>();
       return CupertinoPageX<dynamic>(
           routeData: routeData,
-          child: IntroductionPage(key: args.key, page: args.page));
+          child: IntroductionPage(
+              key: args.key, onResult: args.onResult, page: args.page));
     },
     HomeRoute.name: (routeData) {
       return CupertinoPageX<dynamic>(
@@ -57,10 +71,13 @@ class _$AppRouter extends RootStackRouter {
   @override
   List<RouteConfig> get routes => [
         RouteConfig('/#redirect',
-            path: '/', redirectTo: '/introduction', fullMatch: true),
+            path: '/', redirectTo: '/dashboard', fullMatch: true),
         RouteConfig(HomeAssistantScanRoute.name, path: '/scanner'),
         RouteConfig(AddPlantRoute.name, path: '/add-plant'),
-        RouteConfig(DashboardRoute.name, path: '/dashboard', children: [
+        RouteConfig(AddSensorRoute.name, path: '/add-sensor'),
+        RouteConfig(DashboardRoute.name, path: '/dashboard', guards: [
+          authGuard
+        ], children: [
           RouteConfig('#redirect',
               path: '',
               parent: DashboardRoute.name,
@@ -81,19 +98,74 @@ class _$AppRouter extends RootStackRouter {
 
 /// generated route for
 /// [HomeAssistantScanPage]
-class HomeAssistantScanRoute extends PageRouteInfo<void> {
-  const HomeAssistantScanRoute()
-      : super(HomeAssistantScanRoute.name, path: '/scanner');
+class HomeAssistantScanRoute extends PageRouteInfo<HomeAssistantScanRouteArgs> {
+  HomeAssistantScanRoute({Key? key, required void Function(bool) onResult})
+      : super(HomeAssistantScanRoute.name,
+            path: '/scanner',
+            args: HomeAssistantScanRouteArgs(key: key, onResult: onResult));
 
   static const String name = 'HomeAssistantScanRoute';
 }
 
+class HomeAssistantScanRouteArgs {
+  const HomeAssistantScanRouteArgs({this.key, required this.onResult});
+
+  final Key? key;
+
+  final void Function(bool) onResult;
+
+  @override
+  String toString() {
+    return 'HomeAssistantScanRouteArgs{key: $key, onResult: $onResult}';
+  }
+}
+
 /// generated route for
 /// [AddPlantPage]
-class AddPlantRoute extends PageRouteInfo<void> {
-  const AddPlantRoute() : super(AddPlantRoute.name, path: '/add-plant');
+class AddPlantRoute extends PageRouteInfo<AddPlantRouteArgs> {
+  AddPlantRoute({Key? key, required void Function(bool) onResult})
+      : super(AddPlantRoute.name,
+            path: '/add-plant',
+            args: AddPlantRouteArgs(key: key, onResult: onResult));
 
   static const String name = 'AddPlantRoute';
+}
+
+class AddPlantRouteArgs {
+  const AddPlantRouteArgs({this.key, required this.onResult});
+
+  final Key? key;
+
+  final void Function(bool) onResult;
+
+  @override
+  String toString() {
+    return 'AddPlantRouteArgs{key: $key, onResult: $onResult}';
+  }
+}
+
+/// generated route for
+/// [AddSensorPage]
+class AddSensorRoute extends PageRouteInfo<AddSensorRouteArgs> {
+  AddSensorRoute({Key? key, required void Function(bool) onResult})
+      : super(AddSensorRoute.name,
+            path: '/add-sensor',
+            args: AddSensorRouteArgs(key: key, onResult: onResult));
+
+  static const String name = 'AddSensorRoute';
+}
+
+class AddSensorRouteArgs {
+  const AddSensorRouteArgs({this.key, required this.onResult});
+
+  final Key? key;
+
+  final void Function(bool) onResult;
+
+  @override
+  String toString() {
+    return 'AddSensorRouteArgs{key: $key, onResult: $onResult}';
+  }
 }
 
 /// generated route for
@@ -109,24 +181,29 @@ class DashboardRoute extends PageRouteInfo<void> {
 /// generated route for
 /// [IntroductionPage]
 class IntroductionRoute extends PageRouteInfo<IntroductionRouteArgs> {
-  IntroductionRoute({Key? key, int page = 1})
+  IntroductionRoute(
+      {Key? key, required void Function(bool) onResult, int page = 1})
       : super(IntroductionRoute.name,
             path: '/introduction',
-            args: IntroductionRouteArgs(key: key, page: page));
+            args: IntroductionRouteArgs(
+                key: key, onResult: onResult, page: page));
 
   static const String name = 'IntroductionRoute';
 }
 
 class IntroductionRouteArgs {
-  const IntroductionRouteArgs({this.key, this.page = 1});
+  const IntroductionRouteArgs(
+      {this.key, required this.onResult, this.page = 1});
 
   final Key? key;
+
+  final void Function(bool) onResult;
 
   final int page;
 
   @override
   String toString() {
-    return 'IntroductionRouteArgs{key: $key, page: $page}';
+    return 'IntroductionRouteArgs{key: $key, onResult: $onResult, page: $page}';
   }
 }
 

@@ -24,17 +24,18 @@ class ChangeDto {
 }
 
 @JsonSerializable()
-class DataDto extends Entity {
+class DataDto {
+  @JsonKey(name: 'entity_id')
+  String entityId;
   @JsonKey(name: 'new_state')
   Map<String, dynamic> newState;
   @JsonKey(name: 'old_state')
   Map<String, dynamic> oldState;
 
-  DataDto(String entityId, this.newState, this.oldState) : super(entityId);
+  DataDto(this.entityId, this.newState, this.oldState);
 
   factory DataDto.fromJson(Map<String, dynamic> json) =>
       _$DataDtoFromJson(json);
 
-  @override
   Map<String, dynamic> toJson() => _$DataDtoToJson(this);
 }

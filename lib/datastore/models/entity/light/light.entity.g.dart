@@ -10,6 +10,8 @@ LightEntity _$LightEntityFromJson(Map<String, dynamic> json) => LightEntity(
       json['entity_id'] as String,
       json['state'] as String,
       LightAttributes.fromJson(json['attributes'] as Map<String, dynamic>),
+      DateTime.parse(json['last_changed'] as String),
+      DateTime.parse(json['last_updated'] as String),
       ContextEntity.fromJson(json['context'] as Map<String, dynamic>),
     );
 
@@ -17,8 +19,10 @@ Map<String, dynamic> _$LightEntityToJson(LightEntity instance) =>
     <String, dynamic>{
       'entity_id': instance.entityId,
       'state': instance.state,
-      'attributes': instance.attributes.toJson(),
+      'last_changed': instance.lastChanged.toIso8601String(),
+      'last_updated': instance.lastUpdated.toIso8601String(),
       'context': instance.context.toJson(),
+      'attributes': instance.attributes.toJson(),
     };
 
 LightAttributes _$LightAttributesFromJson(Map<String, dynamic> json) =>

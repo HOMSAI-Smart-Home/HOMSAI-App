@@ -86,7 +86,7 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `Plant` (`url` TEXT NOT NULL, `remote` INTEGER NOT NULL, `name` TEXT NOT NULL, `email` TEXT NOT NULL, `latitude` REAL NOT NULL, `longitude` REAL NOT NULL, `active` INTEGER NOT NULL, `configuration_id` INTEGER NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT, FOREIGN KEY (`configuration_id`) REFERENCES `Configuration` (`id`) ON UPDATE NO ACTION ON DELETE NO ACTION)');
+            'CREATE TABLE IF NOT EXISTS `Plant` (`url` TEXT NOT NULL, `remote` INTEGER NOT NULL, `name` TEXT NOT NULL, `email` TEXT NOT NULL, `latitude` REAL NOT NULL, `longitude` REAL NOT NULL, `active` INTEGER NOT NULL, `configuration_id` INTEGER NOT NULL, `production_sensor_id` TEXT, `consumption_sensor_id` TEXT, `id` INTEGER PRIMARY KEY AUTOINCREMENT, FOREIGN KEY (`configuration_id`) REFERENCES `Configuration` (`id`) ON UPDATE NO ACTION ON DELETE NO ACTION)');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `Configuration` (`latitude` REAL NOT NULL, `longitude` REAL NOT NULL, `elevation` REAL NOT NULL, `locationName` TEXT NOT NULL, `version` TEXT NOT NULL, `state` TEXT NOT NULL, `currency` TEXT NOT NULL, `source` TEXT NOT NULL, `dir` TEXT NOT NULL, `timezone` TEXT NOT NULL, `isSafeMode` INTEGER NOT NULL, `externalUrl` TEXT, `internalUrl` TEXT, `whitelistExternalDirs` TEXT NOT NULL, `allowExternalDirs` TEXT NOT NULL, `allowExternalUrls` TEXT NOT NULL, `components` TEXT NOT NULL, `unitSystem` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT)');
         await database.execute(
@@ -131,6 +131,8 @@ class _$PlantDao extends PlantDao {
                   'longitude': item.longitude,
                   'active': item.isActive ? 1 : 0,
                   'configuration_id': item.configurationId,
+                  'production_sensor_id': item.productionSensor,
+                  'consumption_sensor_id': item.consumptionSensor,
                   'id': item.id
                 }),
         _plantUpdateAdapter = UpdateAdapter(
@@ -146,6 +148,8 @@ class _$PlantDao extends PlantDao {
                   'longitude': item.longitude,
                   'active': item.isActive ? 1 : 0,
                   'configuration_id': item.configurationId,
+                  'production_sensor_id': item.productionSensor,
+                  'consumption_sensor_id': item.consumptionSensor,
                   'id': item.id
                 }),
         _plantDeletionAdapter = DeletionAdapter(
@@ -161,6 +165,8 @@ class _$PlantDao extends PlantDao {
                   'longitude': item.longitude,
                   'active': item.isActive ? 1 : 0,
                   'configuration_id': item.configurationId,
+                  'production_sensor_id': item.productionSensor,
+                  'consumption_sensor_id': item.consumptionSensor,
                   'id': item.id
                 });
 
@@ -188,6 +194,8 @@ class _$PlantDao extends PlantDao {
             row['configuration_id'] as int,
             id: row['id'] as int?,
             isUrlRemote: (row['remote'] as int) != 0,
+            productionSensor: row['production_sensor_id'] as String?,
+            consumptionSensor: row['consumption_sensor_id'] as String?,
             isActive: (row['active'] as int) != 0));
   }
 
@@ -203,6 +211,8 @@ class _$PlantDao extends PlantDao {
             row['configuration_id'] as int,
             id: row['id'] as int?,
             isUrlRemote: (row['remote'] as int) != 0,
+            productionSensor: row['production_sensor_id'] as String?,
+            consumptionSensor: row['consumption_sensor_id'] as String?,
             isActive: (row['active'] as int) != 0),
         arguments: [id]);
   }
@@ -219,6 +229,8 @@ class _$PlantDao extends PlantDao {
             row['configuration_id'] as int,
             id: row['id'] as int?,
             isUrlRemote: (row['remote'] as int) != 0,
+            productionSensor: row['production_sensor_id'] as String?,
+            consumptionSensor: row['consumption_sensor_id'] as String?,
             isActive: (row['active'] as int) != 0));
   }
 

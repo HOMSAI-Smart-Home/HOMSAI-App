@@ -51,7 +51,7 @@ class _Body extends StatelessWidget {
                   alignment: Alignment.centerLeft,
                   child: RichText(
                     text: TextSpan(
-                      style: Theme.of(context).textTheme.headline4,
+                      style: Theme.of(context).textTheme.headline1,
                       children: <TextSpan>[
                         TextSpan(
                           text: HomsaiLocalizations.of(context)!.registerTitle1,

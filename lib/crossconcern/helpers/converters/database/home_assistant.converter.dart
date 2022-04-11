@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:floor/floor.dart';
-import 'package:homsai/crossconcern/helpers/factories/home_assistant.factory.dart';
+import 'package:homsai/crossconcern/helpers/factories/home_assistant_entity.factory.dart';
 import 'package:homsai/datastore/models/entity/base/base.entity.dart'
     as home_assistant;
 

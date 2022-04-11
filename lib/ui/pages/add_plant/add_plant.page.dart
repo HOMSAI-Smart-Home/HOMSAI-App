@@ -1,13 +1,16 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:homsai/app.router.dart';
 import 'package:homsai/crossconcern/components/common/scaffold/homsai_bloc_scaffold.widget.dart';
+import 'package:homsai/crossconcern/helpers/blocs/websocket/websocket.bloc.dart';
 import 'package:homsai/ui/pages/add_plant/bloc/add_plant.bloc.dart';
 import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
-import 'package:auto_route/auto_route.dart';
 
 class AddPlantPage extends StatefulWidget {
-  const AddPlantPage({Key? key}) : super(key: key);
+  final void Function(bool) onResult;
+
+  const AddPlantPage({Key? key, required this.onResult}) : super(key: key);
 
   @override
   State<AddPlantPage> createState() => _AddPlantPageState();
@@ -18,8 +21,9 @@ class _AddPlantPageState extends State<AddPlantPage> {
   Widget build(BuildContext context) {
     return HomsaiBlocScaffold(
       providers: [
+        BlocProvider<WebSocketBloc>(create: (_) => WebSocketBloc()),
         BlocProvider<AddPlantBloc>(
-          create: (BuildContext context) => AddPlantBloc(),
+          create: (_) => AddPlantBloc(),
         ),
       ],
       mainAxisAlignment: MainAxisAlignment.center,
@@ -28,7 +32,7 @@ class _AddPlantPageState extends State<AddPlantPage> {
         _AddPlantTitle(),
         _AddPlantForm(),
         const SizedBox(height: 24),
-        _AddPlantSubmit(),
+        _AddPlantSubmit(widget.onResult),
         const SizedBox(height: 24),
       ],
     );
@@ -43,7 +47,7 @@ class _AddPlantTitle extends StatelessWidget {
       children: <Widget>[
         Text(
           HomsaiLocalizations.of(context)!.addPlantTitle,
-          style: Theme.of(context).textTheme.headline5,
+          style: Theme.of(context).textTheme.headline3,
         ),
         const SizedBox(
           height: 24,
@@ -61,8 +65,16 @@ class _AddPlantForm extends StatefulWidget {
 class _AddPlantFormState extends State<_AddPlantForm> {
   @override
   void initState() {
-    context.read<AddPlantBloc>().add(ConnectWebSocket());
-    context.read<AddPlantBloc>().add(FetchConfig());
+    context.read<WebSocketBloc>().add(FetchConfig(
+      onConfigurationFetched: (config) {
+        context.read<AddPlantBloc>().add(ConfigurationFetched(config));
+        context.read<WebSocketBloc>().add(FetchEntites(
+              onEntitiesFetched: (entities) =>
+                  context.read<AddPlantBloc>().add(StatesFetched(entities)),
+            ));
+      },
+    ));
+
     super.initState();
   }
 
@@ -103,7 +115,7 @@ class _AddPlantNameField extends StatelessWidget {
           ),
           labelText: HomsaiLocalizations.of(context)!.addPlantNameLabel,
         ),
-        style: Theme.of(context).textTheme.subtitle2,
+        style: Theme.of(context).textTheme.bodyText1,
       );
     }));
   }
@@ -133,7 +145,7 @@ class _AddPlantLocationField extends StatelessWidget {
               ),
               labelText: HomsaiLocalizations.of(context)!.addPlantLocationLabel,
             ),
-            style: Theme.of(context).textTheme.subtitle2,
+            style: Theme.of(context).textTheme.bodyText2,
           );
         })),
         const SizedBox(height: 16),
@@ -141,6 +153,10 @@ class _AddPlantLocationField extends StatelessWidget {
           onPressed: () {},
           child: Text(
             HomsaiLocalizations.of(context)!.addPlantLocationButtonLabel,
+            style: Theme.of(context)
+                .textTheme
+                .headline3
+                ?.copyWith(color: Theme.of(context).colorScheme.primary),
           ),
         ),
         const SizedBox(height: 16),
@@ -161,14 +177,14 @@ class _AddPlantLocationInfo extends StatelessWidget {
           HomsaiLocalizations.of(context)!.addPlantLocationInfoTitle,
           style: Theme.of(context)
               .textTheme
-              .subtitle1
+              .bodyText2
               ?.copyWith(fontWeight: FontWeight.bold),
           textAlign: TextAlign.left,
         ),
         const SizedBox(height: 6),
         Text(
           HomsaiLocalizations.of(context)!.addPlantLocationInfoDescription,
-          style: Theme.of(context).textTheme.subtitle1,
+          style: Theme.of(context).textTheme.bodyText2,
         ),
       ],
     );
@@ -176,13 +192,17 @@ class _AddPlantLocationInfo extends StatelessWidget {
 }
 
 class _AddPlantSubmit extends StatelessWidget {
+  final void Function(bool) onResult;
+
+  const _AddPlantSubmit(this.onResult);
+
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
-        context
-            .read<AddPlantBloc>()
-            .add(OnSubmit(() => context.router.push(const DashboardRoute())));
+        context.read<AddPlantBloc>().add(OnSubmit(
+              () => context.router.push(AddSensorRoute(onResult: onResult)),
+            ));
       },
       child: Text(HomsaiLocalizations.of(context)!.next),
     );

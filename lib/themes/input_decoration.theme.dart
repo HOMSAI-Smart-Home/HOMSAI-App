@@ -5,15 +5,15 @@ class HomsaiInputDecorationTheme {
   static InputDecorationTheme defaultTheme(
       ColorScheme colorScheme, TextTheme textTheme) {
     return InputDecorationTheme(
-        border: _normalTextBorder(colorScheme),
-        enabledBorder: _normalTextBorder(colorScheme),
-        focusedBorder: _normalTextBorder(colorScheme),
-        errorBorder: _errorTextBorder(colorScheme),
-        errorMaxLines: 2,
-        errorStyle:
-            textTheme.subtitle2?.copyWith(color: HomsaiColors.primaryRed),
-        labelStyle: textTheme.subtitle2,
-        iconColor: colorScheme.onBackground);
+      border: _normalTextBorder(colorScheme),
+      enabledBorder: _normalTextBorder(colorScheme),
+      focusedBorder: _normalTextBorder(colorScheme),
+      errorBorder: _errorTextBorder(colorScheme),
+      errorMaxLines: 2,
+      errorStyle: textTheme.bodyText1?.copyWith(color: HomsaiColors.primaryRed),
+      labelStyle: textTheme.bodyText1,
+      iconColor: colorScheme.onBackground,
+    );
   }
 
   static OutlineInputBorder _normalTextBorder(ColorScheme colorScheme) {

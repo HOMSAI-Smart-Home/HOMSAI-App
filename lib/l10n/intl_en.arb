@@ -25,7 +25,6 @@
     "homeAssistantScanTitle": "Searching local instance",
     "homeAssistantScanningError": "No local instances found",
     "homeAssistantScanningProgress": "Scanning...",
-    "homeAssistantScanManualHint": "*Example:* http://:192.168.x.x:8123",
     "homeAssistantScanManualLabel": "Enter Url",
     "homeAssistantScanLabel": "Scan",
     "homeAssistantScanManualError": "Invalid url",

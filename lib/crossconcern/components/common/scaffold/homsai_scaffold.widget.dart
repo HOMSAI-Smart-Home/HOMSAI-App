@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:homsai/main.dart';
 
 class HomsaiScaffold extends StatefulWidget {
   const HomsaiScaffold(
@@ -51,45 +52,57 @@ class _HomsaiScaffoldState extends State<HomsaiScaffold> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: widget.appBar ??
-          AppBar(
-            systemOverlayStyle: SystemUiOverlayStyle(
-              statusBarColor: Theme.of(context).colorScheme.background,
-              systemNavigationBarColor:
-                  Theme.of(context).colorScheme.background,
+    return Stack(children: [
+      Scaffold(
+        appBar: widget.appBar ??
+            AppBar(
+              systemOverlayStyle: SystemUiOverlayStyle(
+                statusBarColor: Theme.of(context).colorScheme.background,
+                systemNavigationBarColor:
+                    Theme.of(context).colorScheme.background,
+              ),
+              backgroundColor: Colors.transparent,
+              title: Row(
+                children: [
+                  const Spacer(),
+                  SvgPicture.asset("assets/icons/full_logo.svg", height: 20),
+                  const Spacer(),
+                ],
+              ),
             ),
-            backgroundColor: Colors.transparent,
-            title: Row(
-              children: [
-                const Spacer(),
-                SvgPicture.asset("assets/icons/full_logo.svg", height: 20),
-                const Spacer(),
-              ],
-            ),
-          ),
-      extendBodyBehindAppBar: widget.extendBodyBehindAppBar,
-      resizeToAvoidBottomInset: widget.resizeToAvoidBottomInset,
-      body: SafeArea(
-        child: (widget.resizeToAvoidBottomInset)
-            ? SingleChildScrollView(
-                child: _HomsaiScaffoldBody(
+        extendBodyBehindAppBar: widget.extendBodyBehindAppBar,
+        resizeToAvoidBottomInset: widget.resizeToAvoidBottomInset,
+        body: SafeArea(
+          child: (widget.resizeToAvoidBottomInset)
+              ? SingleChildScrollView(
+                  child: _HomsaiScaffoldBody(
+                    padding: widget.padding,
+                    mainAxisAlignment: widget.mainAxisAlignment,
+                    children: widget.children,
+                    child: widget.child,
+                  ),
+                )
+              : _HomsaiScaffoldBody(
                   padding: widget.padding,
                   mainAxisAlignment: widget.mainAxisAlignment,
                   children: widget.children,
                   child: widget.child,
                 ),
-              )
-            : _HomsaiScaffoldBody(
-                padding: widget.padding,
-                mainAxisAlignment: widget.mainAxisAlignment,
-                children: widget.children,
-                child: widget.child,
-              ),
+        ),
+        bottomNavigationBar: widget.bottomNavigationBar,
+        bottomSheet: widget.bottomSheet,
       ),
-      bottomNavigationBar: widget.bottomNavigationBar,
-      bottomSheet: widget.bottomSheet,
-    );
+      Align(
+        alignment: AlignmentDirectional.bottomCenter,
+        child: Padding(
+          padding: const EdgeInsets.all(8),
+          child: Text(
+            appVersion!,
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+        ),
+      ),
+    ]);
   }
 }
 

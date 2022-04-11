@@ -32,11 +32,11 @@ class _HomePageState extends State<HomePage> {
             icon: const Icon(Icons.tips_and_updates_rounded),
             title: Text(
               "Miglioramento disponibile",
-              style: Theme.of(context).textTheme.headline6,
+              style: Theme.of(context).textTheme.headline3,
             ),
             message: SuperRichText(
               text: "Potresti spegnere *Lampadario Salotto* alle 19.",
-              style: Theme.of(context).textTheme.subtitle1,
+              style: Theme.of(context).textTheme.bodyText2,
             ),
             action: AlertAction("Details", () {}),
           ),

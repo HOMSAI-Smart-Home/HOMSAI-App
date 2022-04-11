@@ -85,7 +85,7 @@ class _DashboardAppBarTitle extends StatelessWidget {
         const Spacer(),
         Text(
           "casa andrea",
-          style: Theme.of(context).textTheme.headline4,
+          style: Theme.of(context).textTheme.headline1,
         ),
         const Spacer(),
       ],

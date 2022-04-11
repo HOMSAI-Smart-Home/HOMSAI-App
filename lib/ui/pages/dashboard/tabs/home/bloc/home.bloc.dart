@@ -51,13 +51,17 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   void _onFetchedLights(FetchedLights event, Emitter<HomeState> emit) async {
     final plant = await appDatabase.plantDao.getActivePlant();
-    await appDatabase.homeAssitantDao.insertItems(event.entities
-        .getEntities<Entity>()
-        .map((entity) =>
-            HomeAssistantEntity(plant!.id!, entity.entityId, entity))
-        .toList());
+    final entities = await appDatabase.plantDao.getAllEntities(plant!.id!);
+    List<LightEntity> lights;
+    if (entities.isEmpty) {
+      await appDatabase.homeAssitantDao
+          .insertEntities(plant.id!, event.entities.getEntities<Entity>());
 
-    List<LightEntity> lights = event.entities.getEntities<LightEntity>();
+      lights = event.entities.getEntities<LightEntity>();
+    } else {
+      lights = entities.getEntities<LightEntity>();
+    }
+
     emit(state.copyWith(lights: lights));
   }
 }

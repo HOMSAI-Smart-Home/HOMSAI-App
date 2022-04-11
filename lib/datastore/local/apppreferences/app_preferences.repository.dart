@@ -22,11 +22,30 @@ class AppPreferences implements AppPreferencesInterface {
   }
 
   @override
-  void resetToken() {preferences?.remove(AppPreferencesProperties.prefKeyAccessToken);}
+  void resetToken() {
+    preferences?.remove(AppPreferencesProperties.prefKeyAccessToken);
+  }
 
   @override
   void setToken(HomeAssistantAuth token) {
-    preferences?.setString(AppPreferencesProperties.prefKeyAccessToken,
-        jsonEncode(token));
+    preferences?.setString(
+        AppPreferencesProperties.prefKeyAccessToken, jsonEncode(token));
+  }
+
+  @override
+  bool canSkipIntroduction() {
+    return preferences?.getBool(AppPreferencesProperties.prefKeyAccessToken) ??
+        false;
+  }
+
+  @override
+  void resetIntroduction() {
+    preferences?.remove(AppPreferencesProperties.prefKeySkipIntroduction);
+  }
+
+  @override
+  void setIntroduction(bool canSkip) {
+    preferences?.setBool(
+        AppPreferencesProperties.prefKeySkipIntroduction, canSkip);
   }
 }

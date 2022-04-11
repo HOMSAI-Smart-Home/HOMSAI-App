@@ -1,6 +1,6 @@
 import 'package:floor/floor.dart';
 import 'package:homsai/crossconcern/helpers/extensions/list.extension.dart';
-import 'package:homsai/crossconcern/helpers/factories/home_assistant.factory.dart';
+import 'package:homsai/crossconcern/helpers/factories/home_assistant_entity.factory.dart';
 import 'package:homsai/datastore/dao/base.dao.dart';
 import 'package:homsai/datastore/models/database/home_assistant.entity.dart';
 import 'package:homsai/datastore/models/database/plant.entity.dart';

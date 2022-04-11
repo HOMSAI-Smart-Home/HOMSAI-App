@@ -7,7 +7,7 @@ import 'package:homsai/datastore/models/database/configuration.entity.dart';
     childColumns: ['configuration_id'],
     parentColumns: ['id'],
     entity: Configuration,
-  )
+  ),
 ])
 class Plant extends BaseEntity {
   final String url;
@@ -22,6 +22,11 @@ class Plant extends BaseEntity {
   @ColumnInfo(name: 'configuration_id')
   final int configurationId;
 
+  @ColumnInfo(name: 'production_sensor_id')
+  final String? productionSensor;
+  @ColumnInfo(name: 'consumption_sensor_id')
+  final String? consumptionSensor;
+
   String get coordinates => "$latitude;$longitude";
 
   Plant(
@@ -33,12 +38,26 @@ class Plant extends BaseEntity {
     this.configurationId, {
     int? id,
     this.isUrlRemote = false,
+    this.productionSensor,
+    this.consumptionSensor,
     this.isActive = false,
   }) : super(id);
 
   Plant copyWith({
     bool? isActive,
+    String? productionSensor,
+    String? consumptionSensor,
   }) =>
-      Plant(url, name, email, latitude, longitude, configurationId,
-          id: id, isActive: isActive ?? this.isActive);
+      Plant(
+        url,
+        name,
+        email,
+        latitude,
+        longitude,
+        configurationId,
+        id: id,
+        productionSensor: productionSensor ?? this.productionSensor,
+        consumptionSensor: consumptionSensor ?? this.consumptionSensor,
+        isActive: isActive ?? this.isActive,
+      );
 }

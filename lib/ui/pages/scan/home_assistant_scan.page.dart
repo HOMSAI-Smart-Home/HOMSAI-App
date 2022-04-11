@@ -13,7 +13,10 @@ import 'package:super_rich_text/super_rich_text.dart';
 import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
 
 class HomeAssistantScanPage extends StatefulWidget {
-  const HomeAssistantScanPage({Key? key}) : super(key: key);
+  final void Function(bool) onResult;
+
+  const HomeAssistantScanPage({Key? key, required this.onResult})
+      : super(key: key);
 
   @override
   State<HomeAssistantScanPage> createState() => _HomeAssistantScanPage();
@@ -49,7 +52,7 @@ class _HomeAssistantScanPage extends State<HomeAssistantScanPage> {
       children: <Widget>[
         _HomeAssistantScanDialog(),
         const SizedBox(height: 40),
-        const _SearchLocalInstance()
+        _SearchLocalInstance(onResult: widget.onResult)
       ],
     );
   }
@@ -63,11 +66,11 @@ class _HomeAssistantScanDialog extends StatelessWidget {
       icon: const Icon(Icons.wifi_rounded),
       title: Text(
         HomsaiLocalizations.of(context)!.homeAssistantScanDialogTitle,
-        style: Theme.of(context).textTheme.headline6,
+        style: Theme.of(context).textTheme.headline4,
       ),
       message: SuperRichText(
         text: HomsaiLocalizations.of(context)!.homeAssistantScanDialogMessage,
-        style: Theme.of(context).textTheme.subtitle1,
+        style: Theme.of(context).textTheme.bodyText2,
       ),
       cancelable: false,
     );
@@ -75,7 +78,10 @@ class _HomeAssistantScanDialog extends StatelessWidget {
 }
 
 class _SearchLocalInstance extends StatefulWidget {
-  const _SearchLocalInstance({Key? key}) : super(key: key);
+  final void Function(bool) onResult;
+
+  const _SearchLocalInstance({Key? key, required this.onResult})
+      : super(key: key);
 
   @override
   _SearchLocalInstanceState createState() => _SearchLocalInstanceState();
@@ -95,7 +101,7 @@ class _SearchLocalInstanceState extends State<_SearchLocalInstance> {
       children: <Widget>[
         Text(
           HomsaiLocalizations.of(context)!.homeAssistantScanTitle,
-          style: Theme.of(context).textTheme.headline5,
+          style: Theme.of(context).textTheme.headline3,
         ),
         const SizedBox(
           height: 12,
@@ -104,7 +110,7 @@ class _SearchLocalInstanceState extends State<_SearchLocalInstance> {
         const SizedBox(
           height: 12,
         ),
-        _SearchLocalIntanceButtons()
+        _SearchLocalIntanceButtons(widget.onResult)
       ],
     );
   }
@@ -226,7 +232,7 @@ class _SearchLocalIntanceScanning extends StatelessWidget {
                         : HomsaiLocalizations.of(context)!
                             .homeAssistantScanningProgress,
                     key: ValueKey(state.status),
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    style: Theme.of(context).textTheme.bodyText2?.copyWith(
                         color: state.status.isScanningFailure
                             ? Theme.of(context).colorScheme.error
                             : HomsaiColors.primaryGrey),
@@ -308,7 +314,10 @@ class _SearchLocalIntanceListResults extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 0),
             initialItemCount: state.scannedUrls.length,
             itemBuilder: (context, index, animation) {
-              return slideIn(context, state.scannedUrls[index], animation);
+              if (state.scannedUrls.isNotEmpty) {
+                return slideIn(context, state.scannedUrls[index], animation);
+              }
+              return const SizedBox.shrink();
             }),
       );
     });
@@ -403,16 +412,7 @@ class _SearchLocalIntanceManual extends StatelessWidget {
         const SizedBox(
           height: 8,
         ),
-        SuperRichText(
-          text: HomsaiLocalizations.of(context)!.homeAssistantScanManualHint,
-          style: Theme.of(context).textTheme.subtitle1,
-          useGlobalMarkers: false,
-          othersMarkers: [
-            MarkerText(
-                marker: '*',
-                style: const TextStyle(fontWeight: FontWeight.bold))
-          ],
-        )
+        // TODO: Add Checkbox
       ],
     );
   }
@@ -464,7 +464,10 @@ class _SearchLocalIntanceManualTextFieldState
             decoration: InputDecoration(
               prefixIcon: Icon(
                 Icons.link,
-                color: Theme.of(context).colorScheme.onBackground,
+                color: state.selectedUrl.invalid ||
+                        state.status.isAuthenticationFailure
+                    ? Theme.of(context).colorScheme.error
+                    : Theme.of(context).colorScheme.onBackground,
               ),
               errorText: state.status.isAuthenticationFailure
                   ? HomsaiLocalizations.of(context)!
@@ -476,13 +479,19 @@ class _SearchLocalIntanceManualTextFieldState
               labelText:
                   HomsaiLocalizations.of(context)!.homeAssistantScanManualLabel,
             ),
-            style: Theme.of(context).textTheme.subtitle2,
+            style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                  color: Theme.of(context).colorScheme.onBackground,
+                ),
           ));
     });
   }
 }
 
 class _SearchLocalIntanceButtons extends StatelessWidget {
+  final void Function(bool) onResult;
+
+  const _SearchLocalIntanceButtons(this.onResult);
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeAssistantScanBloc, HomeAssistantScanState>(
@@ -491,7 +500,7 @@ class _SearchLocalIntanceButtons extends StatelessWidget {
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            _ContinueRetryButton(),
+            _ContinueRetryButton(onResult),
             const SizedBox(height: 24),
             _ManualUrlButton()
           ],
@@ -502,13 +511,17 @@ class _SearchLocalIntanceButtons extends StatelessWidget {
 }
 
 class _ContinueRetryButton extends StatelessWidget {
+  final void Function(bool) onResult;
+
+  const _ContinueRetryButton(this.onResult);
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<HomeAssistantScanBloc, HomeAssistantScanState>(
       listenWhen: (previous, current) => previous.status != current.status,
       listener: (context, state) {
         if (state.status.isAuthenticationSuccess) {
-          context.router.popAndPush(const AddPlantRoute());
+          context.router.popAndPush(AddPlantRoute(onResult: onResult));
         }
       },
       child: BlocBuilder<HomeAssistantScanBloc, HomeAssistantScanState>(

@@ -6,7 +6,7 @@ class HomsaiButtonsTheme {
     return TextButtonThemeData(
       style: ButtonStyle(
         textStyle: MaterialStateProperty.all(
-          textTheme.headline2?.copyWith(color: colorScheme.primary),
+          textTheme.headline3?.copyWith(color: colorScheme.primary),
         ),
       ),
     );

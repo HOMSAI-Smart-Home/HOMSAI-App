@@ -53,13 +53,8 @@ class HomsaiThemeData {
       scaffoldBackgroundColor: colorScheme.background,
       highlightColor: Colors.transparent,
       focusColor: focusColor,
-      snackBarTheme: SnackBarThemeData(
-        behavior: SnackBarBehavior.floating,
-        backgroundColor: Color.alphaBlend(
-          _lightFillColor.withOpacity(0.80),
-          _darkFillColor,
-        ),
-        contentTextStyle: _textTheme.subtitle1!.apply(color: _darkFillColor),
+      textSelectionTheme: TextSelectionThemeData(
+        cursorColor: HomsaiColors.primaryWhite,
       ),
     );
   }
@@ -80,35 +75,30 @@ class HomsaiThemeData {
     brightness: Brightness.light,
   );
 
-  static const _thin = FontWeight.w300;
+  static const _light = FontWeight.w300;
   static const _regular = FontWeight.w400;
   static const _medium = FontWeight.w500;
-  static const _semiBold = FontWeight.w600;
   static const _bold = FontWeight.w700;
 
   static final TextTheme _textTheme = const TextTheme(
-    headline4: TextStyle(
+    headline1: TextStyle(
         fontFamily: "JoyrideExtended", fontWeight: _regular, fontSize: 22.0),
-    caption: TextStyle(
-        fontFamily: "HelveticaNowText", fontWeight: _semiBold, fontSize: 16.0),
-    headline5: TextStyle(
-        fontFamily: "HelveticaNowText", fontWeight: _medium, fontSize: 22.0),
-    subtitle1: TextStyle(
-        fontFamily: "HelveticaNowText", fontWeight: _thin, fontSize: 14.0),
-    overline: TextStyle(
-        fontFamily: "HelveticaNowText", fontWeight: _medium, fontSize: 12.0),
-    bodyText1: TextStyle(
-        fontFamily: "HelveticaNowText", fontWeight: _regular, fontSize: 14.0),
-    subtitle2: TextStyle(
-        fontFamily: "HelveticaNowText", fontWeight: _thin, fontSize: 16.0),
-    bodyText2: TextStyle(
-        fontFamily: "HelveticaNowText", fontWeight: _regular, fontSize: 12.0),
     headline2: TextStyle(
-        fontFamily: "HelveticaNowText", fontWeight: _bold, fontSize: 18.0),
-    headline6: TextStyle(
+        fontFamily: "HelveticaNowText", fontWeight: _medium, fontSize: 22.0),
+    headline3: TextStyle(
+        fontFamily: "HelveticaNowText", fontWeight: _medium, fontSize: 18.0),
+    headline4: TextStyle(
         fontFamily: "HelveticaNowText", fontWeight: _bold, fontSize: 16.0),
+    headline5: TextStyle(
+        fontFamily: "HelveticaNowText", fontWeight: _bold, fontSize: 14.0),
+    bodyText1: TextStyle(
+        fontFamily: "HelveticaNowText", fontWeight: _light, fontSize: 16.0),
+    bodyText2: TextStyle(
+        fontFamily: "HelveticaNowText", fontWeight: _light, fontSize: 12.0),
+    caption: TextStyle(
+        fontFamily: "HelveticaNowText", fontWeight: _light, fontSize: 14.0),
     button: TextStyle(
-        fontFamily: "HelveticaNowText", fontWeight: _semiBold, fontSize: 16.0),
+        fontFamily: "HelveticaNowText", fontWeight: _medium, fontSize: 18.0),
   ).apply(
     bodyColor: HomsaiColors.primaryWhite,
     displayColor: HomsaiColors.primaryWhite,

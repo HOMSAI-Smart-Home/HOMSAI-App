@@ -7,17 +7,22 @@ abstract class AddPlantEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class ConnectWebSocket extends AddPlantEvent {}
-
-class FetchConfig extends AddPlantEvent {}
-
-class FetchedConfig extends AddPlantEvent {
-  const FetchedConfig(this.configuration);
+class ConfigurationFetched extends AddPlantEvent {
+  const ConfigurationFetched(this.configuration);
 
   final ConfigurationDto configuration;
 
   @override
   List<Object> get props => [configuration];
+}
+
+class StatesFetched extends AddPlantEvent {
+  const StatesFetched(this.entities);
+
+  final List<Entity> entities;
+
+  @override
+  List<Object> get props => [entities];
 }
 
 class PlantNameChanged extends AddPlantEvent {

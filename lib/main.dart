@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
 import 'package:flutter_localized_locales/flutter_localized_locales.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -31,18 +32,24 @@ import 'package:package_info_plus/package_info_plus.dart';
 final getIt = GetIt.instance;
 String? appVersion;
 
-void setup() async {
+Future<void> setup() async {
   // It enables to reassign an implementation of an interface, for example in Unit tests
   getIt.allowReassignment = true;
 
   // Local interfaces
-  getIt.registerLazySingleton<AppPreferencesInterface>(() => AppPreferences());
+  final database =
+      await $FloorAppDatabase.databaseBuilder(DatabaseProperties.name).build();
+  getIt.registerLazySingleton<AppDatabase>(() => database);
+  // Wait asynchronous AppPreferences initialization
+  final AppPreferencesInterface appPreferences = AppPreferences();
+  await appPreferences.initialize();
+  getIt.registerLazySingleton<AppPreferencesInterface>(() => appPreferences);
   getIt.registerLazySingleton<UserLocalInterface>(() => UserLocalRepository());
+  getIt.registerLazySingleton<NetworkManagerInterface>(() => NetworkManager());
 
+  // Remote interfaces
   getIt.registerLazySingleton<HomeAssistantScannerInterface>(
       () => HomeAssistantScannerRepository());
-
-  getIt.registerLazySingleton<NetworkManagerInterface>(() => NetworkManager());
 
   getIt.registerLazySingleton<HomeAssistantInterface>(
       () => HomeAssistantRepository());
@@ -56,15 +63,6 @@ void setup() async {
       .registerLazySingleton<LightRepositoryInterface>(() => LightRepository());
 
   getIt.registerLazySingleton<RemoteInterface>(() => RemoteRepository());
-
-  final database =
-      await $FloorAppDatabase.databaseBuilder(DatabaseProperties.name).build();
-  getIt.registerLazySingleton<AppDatabase>(() => database);
-
-  // Wait asynchronous AppPreferences initialization
-  final AppPreferencesInterface appPreferences =
-      getIt.get<AppPreferencesInterface>();
-  await appPreferences.initialize();
 }
 
 Future<void> main() async {
@@ -72,13 +70,16 @@ Future<void> main() async {
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
   // Initialize singletons
-  setup();
+  await setup();
 
   getAppVersion();
 
   Timer(const Duration(seconds: 3), () {
     FlutterNativeSplash.remove();
   });
+
+  await SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
   runApp(App());
 }
@@ -93,9 +94,11 @@ void getAppVersion() async {
 }
 
 class App extends StatelessWidget {
-  final _appRouter = AppRouter();
+  final _appRouter = AppRouter(authGuard: AuthGuard());
 
-  App({Key? key}) : super(key: key);
+  App({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

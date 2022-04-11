@@ -26,11 +26,13 @@ class HomsaiCardTheme {
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
-            primary: primary,
-            side: BorderSide(
-              color: primary,
-            ),
-            minimumSize: const Size(100, 30)),
+          primary: primary,
+          side: BorderSide(
+            color: primary,
+          ),
+          minimumSize: const Size(100, 30),
+          textStyle: themeData.textTheme.headline5,
+        ),
       ),
       splashColor: primary.withOpacity(0.3),
     );

@@ -1,4 +1,7 @@
+// ignore_for_file: overridden_fields
+
 import 'package:equatable/equatable.dart';
+import 'package:homsai/datastore/models/entity/attributes/attributes.entity.dart';
 import 'package:homsai/datastore/models/entity/base/base.entity.dart';
 import 'package:homsai/datastore/models/entity/context/context.entity.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -6,12 +9,25 @@ import 'package:json_annotation/json_annotation.dart';
 part 'light.entity.g.dart';
 
 @JsonSerializable()
-class LightEntity extends TogglableEntity with EquatableMixin {
-  LightAttributes attributes;
-  ContextEntity context;
+class LightEntity extends Entity with TogglableEntity, EquatableMixin {
+  @override
+  covariant LightAttributes attributes;
 
-  LightEntity(String entityId, String state, this.attributes, this.context)
-      : super(entityId, state);
+  LightEntity(
+    String entityId,
+    String state,
+    this.attributes,
+    DateTime lastChanged,
+    DateTime lastUpdated,
+    ContextEntity context,
+  ) : super(
+          entityId,
+          state,
+          attributes,
+          lastChanged,
+          lastUpdated,
+          context,
+        );
 
   factory LightEntity.fromJson(Map<String, dynamic> json) =>
       _$LightEntityFromJson(json);
@@ -28,9 +44,7 @@ class LightEntity extends TogglableEntity with EquatableMixin {
 }
 
 @JsonSerializable()
-class LightAttributes {
-  @JsonKey(name: 'friendly_name')
-  String friendlyName;
+class LightAttributes extends Attributes {
   @JsonKey(name: 'color_mode')
   String? colorMode;
   @JsonKey(name: 'color_temp')
@@ -63,10 +77,11 @@ class LightAttributes {
   @JsonKey(name: 'supported_features')
   int? supportedFeatures;
 
-  LightAttributes(this.friendlyName);
+  LightAttributes(String friendlyName) : super(friendlyName);
 
   factory LightAttributes.fromJson(Map<String, dynamic> json) =>
       _$LightAttributesFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$LightAttributesToJson(this);
 }

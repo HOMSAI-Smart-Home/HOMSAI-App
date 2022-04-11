@@ -1,13 +1,16 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
+import 'package:homsai/crossconcern/helpers/extensions/list.extension.dart';
 import 'package:homsai/crossconcern/helpers/models/forms/add_plant/coordinate.model.dart';
 import 'package:homsai/crossconcern/helpers/models/forms/add_plant/plant_name.model.dart';
 import 'package:homsai/datastore/DTOs/websocket/configuration/configuration.dto.dart';
 import 'package:homsai/datastore/local/app.database.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.dart';
 import 'package:homsai/datastore/models/database/configuration.entity.dart';
+import 'package:homsai/datastore/models/database/home_assistant.entity.dart';
 import 'package:homsai/datastore/models/database/plant.entity.dart';
+import 'package:homsai/datastore/models/entity/base/base.entity.dart';
 import 'package:homsai/datastore/models/home_assistant_auth.model.dart';
 import 'package:homsai/datastore/remote/websocket/home_assistant_websocket.repository.dart';
 import 'package:homsai/main.dart';
@@ -25,9 +28,8 @@ class AddPlantBloc extends Bloc<AddPlantEvent, AddPlantState> {
   final AppDatabase appDatabase = getIt.get<AppDatabase>();
 
   AddPlantBloc() : super(const AddPlantState()) {
-    on<ConnectWebSocket>(_onWebsocketConnect);
-    on<FetchConfig>(_onFetchConfig);
-    on<FetchedConfig>(_onFetchedConfig);
+    on<ConfigurationFetched>(_onConfigurationFetched);
+    on<StatesFetched>(_onStatesFetched);
     on<PlantNameChanged>(_onPlantNameChanged);
     on<PlantNameUnfocused>(_onPlantNameUnfocused);
     on<CoordinateChanged>(_onCoordinateChanged);
@@ -40,25 +42,8 @@ class AddPlantBloc extends Bloc<AddPlantEvent, AddPlantState> {
     super.onTransition(transition);
   }
 
-  void _onWebsocketConnect(
-      ConnectWebSocket event, Emitter<AddPlantState> emit) async {
-    HomeAssistantAuth? auth = appPreferencesInterface.getToken();
-    if (auth?.url != null) {
-      webSocketRepository.connect(Uri.parse(auth!.url));
-    }
-  }
-
-  void _onFetchConfig(FetchConfig event, Emitter<AddPlantState> emit) {
-    webSocketRepository.fetchingConfig(
-      WebSocketSubscriber(
-        (data) {
-          add(FetchedConfig(ConfigurationDto.fromJson(data)));
-        },
-      ),
-    );
-  }
-
-  void _onFetchedConfig(FetchedConfig event, Emitter<AddPlantState> emit) {
+  void _onConfigurationFetched(
+      ConfigurationFetched event, Emitter<AddPlantState> emit) {
     final plantName = PlantName.dirty(event.configuration.locationName);
     final coordinate = Coordinate.dirty(
         "${event.configuration.latitude};${event.configuration.longitude}");
@@ -66,6 +51,13 @@ class AddPlantBloc extends Bloc<AddPlantEvent, AddPlantState> {
         plantName: plantName,
         coordinate: coordinate,
         configuration: Configuration.fromDto(event.configuration)));
+  }
+
+  void _onStatesFetched(
+      StatesFetched event, Emitter<AddPlantState> emit) async {
+    emit(state.copyWith(
+      entities: event.entities,
+    ));
   }
 
   void _onPlantNameChanged(
@@ -125,6 +117,12 @@ class AddPlantBloc extends Bloc<AddPlantEvent, AddPlantState> {
       configurationId,
     ));
     await appDatabase.plantDao.setActive(plantId);
+    if (state.entities.isNotEmpty) {
+      await appDatabase.homeAssitantDao.insertEntities(
+        plantId,
+        state.entities,
+      );
+    }
     event.onSubmit();
   }
 
