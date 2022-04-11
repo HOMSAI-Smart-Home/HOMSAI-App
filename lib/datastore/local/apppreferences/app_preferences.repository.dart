@@ -34,7 +34,7 @@ class AppPreferences implements AppPreferencesInterface {
 
   @override
   bool canSkipIntroduction() {
-    return preferences?.getBool(AppPreferencesProperties.prefKeyAccessToken) ??
+    return preferences?.getBool(AppPreferencesProperties.prefKeySkipIntroduction) ??
         false;
   }
 

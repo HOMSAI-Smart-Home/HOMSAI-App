@@ -2,6 +2,7 @@ part of 'add_plant.bloc.dart';
 
 class AddPlantState extends Equatable {
   const AddPlantState({
+    this.email = const Email.pure(),
     this.plantName = const PlantName.pure(),
     this.coordinate = const Coordinate.pure(),
     this.entities = const [],
@@ -9,6 +10,7 @@ class AddPlantState extends Equatable {
     this.status = FormzStatus.pure,
   });
 
+  final Email email;
   final PlantName plantName;
   final Coordinate coordinate;
   final Configuration? configuration;
@@ -16,6 +18,7 @@ class AddPlantState extends Equatable {
   final FormzStatus status;
 
   AddPlantState copyWith({
+    Email? email,
     PlantName? plantName,
     Coordinate? coordinate,
     Configuration? configuration,
@@ -23,6 +26,7 @@ class AddPlantState extends Equatable {
     FormzStatus? status,
   }) {
     return AddPlantState(
+      email: email ?? this.email,
       plantName: plantName ?? this.plantName,
       coordinate: coordinate ?? this.coordinate,
       entities: entities ?? this.entities,
@@ -32,5 +36,5 @@ class AddPlantState extends Equatable {
   }
 
   @override
-  List<Object> get props => [plantName, coordinate, entities, status];
+  List<Object> get props => [email, plantName, coordinate, entities, status];
 }

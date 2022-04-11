@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
 import 'package:homsai/crossconcern/helpers/models/forms/add_plant/coordinate.model.dart';
 import 'package:homsai/crossconcern/helpers/models/forms/add_plant/plant_name.model.dart';
+import 'package:homsai/crossconcern/helpers/models/forms/credentials/email.model.dart';
 import 'package:homsai/datastore/DTOs/websocket/configuration/configuration.dto.dart';
 import 'package:homsai/datastore/local/app.database.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.dart';
@@ -28,6 +29,8 @@ class AddPlantBloc extends Bloc<AddPlantEvent, AddPlantState> {
   AddPlantBloc() : super(const AddPlantState()) {
     on<ConfigurationFetched>(_onConfigurationFetched);
     on<StatesFetched>(_onStatesFetched);
+    on<EmailChanged>(_onEmailChanged);
+    on<EmailUnfocused>(_onEmailUnfocused);
     on<PlantNameChanged>(_onPlantNameChanged);
     on<PlantNameUnfocused>(_onPlantNameUnfocused);
     on<CoordinateChanged>(_onCoordinateChanged);
@@ -55,6 +58,22 @@ class AddPlantBloc extends Bloc<AddPlantEvent, AddPlantState> {
       StatesFetched event, Emitter<AddPlantState> emit) async {
     emit(state.copyWith(
       entities: event.entities,
+    ));
+  }
+
+  void _onEmailChanged(EmailChanged event, Emitter<AddPlantState> emit) {
+    final email = Email.dirty(event.email);
+    emit(state.copyWith(
+      email: email.valid ? email : Email.pure(event.email),
+      status: _isFormValidate(email: email),
+    ));
+  }
+
+  void _onEmailUnfocused(EmailUnfocused event, Emitter<AddPlantState> emit) {
+    final email = Email.dirty(state.email.value);
+    emit(state.copyWith(
+      email: email,
+      status: _isFormValidate(email: email),
     ));
   }
 
@@ -101,6 +120,7 @@ class AddPlantBloc extends Bloc<AddPlantEvent, AddPlantState> {
 
   void _onSubmit(OnSubmit event, Emitter<AddPlantState> emit) async {
     HomeAssistantAuth? auth = appPreferencesInterface.getToken();
+    final email = state.email;
     List<String> coordinates = state.coordinate.value.split(";");
     final latitude = coordinates.first;
     final longitude = coordinates.last;
@@ -109,7 +129,7 @@ class AddPlantBloc extends Bloc<AddPlantEvent, AddPlantState> {
     final plantId = await appDatabase.plantDao.insertItem(Plant(
       (auth?.url ?? ""),
       state.plantName.value,
-      "",
+      email.value,
       double.parse(latitude),
       double.parse(longitude),
       configurationId,
@@ -125,10 +145,14 @@ class AddPlantBloc extends Bloc<AddPlantEvent, AddPlantState> {
   }
 
   FormzStatus _isFormValidate({
+    Email? email,
     PlantName? plantName,
     Coordinate? coordinate,
   }) {
-    return Formz.validate(
-        [plantName ?? state.plantName, coordinate ?? state.coordinate]);
+    return Formz.validate([
+      email ?? state.email,
+      plantName ?? state.plantName,
+      coordinate ?? state.coordinate,
+    ]);
   }
 }

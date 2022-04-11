@@ -63,6 +63,8 @@ class _AddPlantForm extends StatefulWidget {
 }
 
 class _AddPlantFormState extends State<_AddPlantForm> {
+  final _emailFocusNode = FocusNode();
+
   @override
   void initState() {
     context.read<WebSocketBloc>().add(FetchConfig(
@@ -75,7 +77,20 @@ class _AddPlantFormState extends State<_AddPlantForm> {
       },
     ));
 
+    _emailFocusNode.addListener(() {
+      if (!_emailFocusNode.hasFocus) {
+        context.read<AddPlantBloc>().add(EmailUnfocused());
+        //FocusScope.of(context).requestFocus(_passwordFocusNode);
+      }
+    });
+
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _emailFocusNode.dispose();
+    super.dispose();
   }
 
   @override
@@ -83,6 +98,10 @@ class _AddPlantFormState extends State<_AddPlantForm> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
+        _EmailAddressTextField(focusNode: _emailFocusNode),
+        const SizedBox(
+          height: 24,
+        ),
         _AddPlantNameField(),
         const SizedBox(
           height: 24,
@@ -90,6 +109,40 @@ class _AddPlantFormState extends State<_AddPlantForm> {
         _AddPlantLocationField()
       ],
     );
+  }
+}
+
+class _EmailAddressTextField extends StatelessWidget {
+  const _EmailAddressTextField({
+    Key? key,
+    required this.focusNode,
+  }) : super(key: key);
+
+  final FocusNode focusNode;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<AddPlantBloc, AddPlantState>(
+        builder: (context, state) {
+      return TextFormField(
+        restorationId: 'emailaddress_text_field',
+        focusNode: focusNode,
+        keyboardType: TextInputType.emailAddress,
+        textInputAction: TextInputAction.done,
+        onChanged: (value) {
+          context.read<AddPlantBloc>().add(EmailChanged(email: value));
+        },
+        decoration: InputDecoration(
+          prefixIcon: Icon(
+            Icons.email_rounded,
+            color: Theme.of(context).colorScheme.onBackground,
+          ),
+          labelText: HomsaiLocalizations.of(context)!.emailAddress,
+          errorText: state.email.invalid ? 'invalid email' : null,
+        ),
+        style: Theme.of(context).textTheme.bodyText1,
+      );
+    });
   }
 }
 
