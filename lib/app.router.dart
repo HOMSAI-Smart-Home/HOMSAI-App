@@ -77,10 +77,6 @@ class AuthGuard extends AutoRouteGuard {
       return;
     }
 
-    router.popAndPush(AddPlantRoute(onResult: (success) {
-      resolver.next(true);
-    }));
-    return;
     resolver.next(true);
   }
 }
