@@ -1,3 +1,4 @@
+import 'package:homsai/crossconcern/utilities/properties/ai_service.proprieties.dart';
 import 'package:homsai/crossconcern/utilities/properties/api.proprties.dart';
 import 'package:homsai/datastore/DTOs/remote/ai_service/consumption_optimizations_forecast.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/ai_service/consumption_optimizations_forecast_body.dto.dart';
@@ -19,7 +20,10 @@ class AIServiceRepository {
             ApiProprties.AiServicePhotovoltaicSelfConsumptionOptimizerForecast,
         queryParameters: {"unit": unit},
       ),
-      headers: null,
+      headers: {
+        "Authorization": AiServiceProprieties.token,
+      },
+      body: optimizationsForecastBody.toJson(),
     );
 
     return ConsumptionOptimizationsForecastDto.fromJson(result);
