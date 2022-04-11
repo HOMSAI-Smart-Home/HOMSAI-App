@@ -34,7 +34,8 @@ MesurableSensorAttributes _$MesurableSensorAttributesFromJson(
     MesurableSensorAttributes(
       json['friendly_name'] as String,
       json['icon'] as String?,
-      $enumDecodeNullable(_$DeviceClassEnumMap, json['device_class']) ??
+      $enumDecodeNullable(_$DeviceClassEnumMap, json['device_class'],
+              unknownValue: DeviceClass.unknown) ??
           DeviceClass.unknown,
       json['unit_of_measurement'] as String,
       json['state_class'] as String?,

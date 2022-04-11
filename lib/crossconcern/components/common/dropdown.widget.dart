@@ -1,6 +1,7 @@
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 
-class HomsaiDropdownButton<T extends Object> extends StatelessWidget {
+class HomsaiDropdownButton<T extends Object> extends StatefulWidget {
   final String label;
   final String hint;
   final T? value;
@@ -16,7 +17,25 @@ class HomsaiDropdownButton<T extends Object> extends StatelessWidget {
     this.onChanged,
   }) : super(key: key);
 
-  bool get isDisabled => items?.isEmpty ?? true;
+  @override
+  State<HomsaiDropdownButton<T>> createState() =>
+      _HomsaiDropdownButtonState<T>();
+}
+
+class _HomsaiDropdownButtonState<T extends Object>
+    extends State<HomsaiDropdownButton<T>> with TickerProviderStateMixin {
+  late final AnimationController _controller = AnimationController(
+    duration: const Duration(milliseconds: 250),
+    vsync: this,
+  );
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  bool get isDisabled => widget.items?.isEmpty ?? true;
 
   Color color(BuildContext context) => (isDisabled)
       ? Theme.of(context).disabledColor
@@ -31,50 +50,61 @@ class HomsaiDropdownButton<T extends Object> extends StatelessWidget {
       child: Stack(
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 6),
-            child: Container(
-              width: double.infinity,
-              height: double.infinity,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                border: border(context),
-                borderRadius: BorderRadius.circular(5),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.only(left: 24, right: 16),
-                child: DropdownButton<T>(
-                  value: value,
-                  hint: Text(
-                    hint,
-                    style: Theme.of(context).textTheme.bodyText1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
+            padding: const EdgeInsets.only(top: 8),
+            child: DropdownButtonHideUnderline(
+              child: DropdownButton2<T>(
+                value: widget.value,
+                hint: Text(
+                  widget.hint,
                   style: Theme.of(context).textTheme.bodyText1,
-                  items: items,
-                  onChanged: onChanged,
-                  underline: const SizedBox.shrink(),
-                  icon: Icon(
+                  overflow: TextOverflow.ellipsis,
+                ),
+                style: Theme.of(context).textTheme.bodyText1,
+                items: widget.items,
+                onChanged: widget.onChanged,
+                onMenuStateChange: (open) =>
+                    (open) ? _controller.forward() : _controller.reverse(),
+                icon: RotationTransition(
+                  turns: Tween(begin: 0.0, end: 0.5).animate(_controller),
+                  child: Icon(
                     Icons.keyboard_arrow_down,
                     color: Theme.of(context).colorScheme.onBackground,
                   ),
-                  isExpanded: true,
-                  isDense: true,
                 ),
+                isExpanded: true,
+                buttonPadding: const EdgeInsets.only(left: 24, right: 16),
+                buttonDecoration: BoxDecoration(
+                  border: border(context),
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                scrollbarRadius: const Radius.circular(40),
+                scrollbarThickness: 4,
+                scrollbarAlwaysShow: true,
+                dropdownMaxHeight: 200,
+                dropdownDecoration: BoxDecoration(
+                  border: border(context),
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                offset: const Offset(0, -2),
               ),
             ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: Container(
-              color: Theme.of(context).colorScheme.background,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 4),
-                child: Text(
-                  label,
-                  style: Theme.of(context).textTheme.bodyText2?.copyWith(
-                        fontSize: 10,
-                        color: color(context),
-                      ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(2),
+              child: Container(
+                color: Theme.of(context).colorScheme.background,
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                  child: Text(
+                    widget.label,
+                    style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                          fontSize: 10,
+                          color: color(context),
+                        ),
+                  ),
                 ),
               ),
             ),

@@ -53,7 +53,10 @@ class SensorEntity extends Entity with EquatableMixin {
 
 @JsonSerializable()
 class SensorAttributes extends Attributes {
-  @JsonKey(name: 'device_class', defaultValue: DeviceClass.unknown)
+  @JsonKey(
+      name: 'device_class',
+      defaultValue: DeviceClass.unknown,
+      unknownEnumValue: DeviceClass.unknown)
   DeviceClass deviceClass;
   String? icon;
 

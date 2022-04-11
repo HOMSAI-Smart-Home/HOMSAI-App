@@ -14,46 +14,48 @@ class HomsaiThemeData {
 
   static ThemeData themeData(ColorScheme colorScheme, Color focusColor) {
     return ThemeData(
-      colorScheme: colorScheme,
-      textTheme: _textTheme,
-      primaryColor: HomsaiColors.primaryBlack,
-      disabledColor: HomsaiColors.primaryGrey,
-      androidOverscrollIndicator: AndroidOverscrollIndicator.stretch,
-      appBarTheme: AppBarTheme(
-        backgroundColor: colorScheme.background,
-        elevation: 0,
-        iconTheme: IconThemeData(color: colorScheme.primary),
-      ),
-      inputDecorationTheme: HomsaiInputDecorationTheme.defaultTheme(
-        colorScheme,
-        _textTheme,
-      ),
-      checkboxTheme: HomsaiCheckboxTheme.defaultTheme(colorScheme),
-      cardTheme: HomsaiCardTheme.defaultTheme(colorScheme),
-      textButtonTheme: HomsaiButtonsTheme.defaultTextTheme(
-        colorScheme,
-        _textTheme,
-      ),
-      elevatedButtonTheme: HomsaiButtonsTheme.defaultElevatedTheme(
-        colorScheme,
-        _textTheme,
-      ),
-      outlinedButtonTheme: HomsaiButtonsTheme.defaultOutlinedTheme(
-        colorScheme,
-        _textTheme,
-      ),
-      iconTheme: HomsaiIconTheme.defaultTheme(colorScheme),
-      primaryIconTheme: HomsaiIconTheme.defaultTheme(colorScheme),
-      unselectedWidgetColor: colorScheme.onBackground,
-      toggleableActiveColor: HomsaiColors.primaryGreen,
-      canvasColor: colorScheme.background,
-      scaffoldBackgroundColor: colorScheme.background,
-      highlightColor: Colors.transparent,
-      focusColor: focusColor,
-      textSelectionTheme: TextSelectionThemeData(
-        cursorColor: HomsaiColors.primaryWhite,
-      ),
-    );
+        colorScheme: colorScheme,
+        textTheme: _textTheme,
+        primaryColor: HomsaiColors.primaryBlack,
+        disabledColor: HomsaiColors.primaryGrey,
+        androidOverscrollIndicator: AndroidOverscrollIndicator.stretch,
+        appBarTheme: AppBarTheme(
+          backgroundColor: colorScheme.background,
+          elevation: 0,
+          iconTheme: IconThemeData(color: colorScheme.primary),
+        ),
+        inputDecorationTheme: HomsaiInputDecorationTheme.defaultTheme(
+          colorScheme,
+          _textTheme,
+        ),
+        checkboxTheme: HomsaiCheckboxTheme.defaultTheme(colorScheme),
+        cardTheme: HomsaiCardTheme.defaultTheme(colorScheme),
+        textButtonTheme: HomsaiButtonsTheme.defaultTextTheme(
+          colorScheme,
+          _textTheme,
+        ),
+        elevatedButtonTheme: HomsaiButtonsTheme.defaultElevatedTheme(
+          colorScheme,
+          _textTheme,
+        ),
+        outlinedButtonTheme: HomsaiButtonsTheme.defaultOutlinedTheme(
+          colorScheme,
+          _textTheme,
+        ),
+        iconTheme: HomsaiIconTheme.defaultTheme(colorScheme),
+        primaryIconTheme: HomsaiIconTheme.defaultTheme(colorScheme),
+        unselectedWidgetColor: colorScheme.onBackground,
+        toggleableActiveColor: HomsaiColors.primaryGreen,
+        canvasColor: colorScheme.background,
+        scaffoldBackgroundColor: colorScheme.background,
+        highlightColor: Colors.transparent,
+        focusColor: focusColor,
+        textSelectionTheme: TextSelectionThemeData(
+          cursorColor: HomsaiColors.primaryWhite,
+        ),
+        scrollbarTheme: ScrollbarThemeData(
+          thumbColor: MaterialStateProperty.all(HomsaiColors.primaryWhite),
+        ));
   }
 
   static ColorScheme lightColorScheme = ColorScheme(

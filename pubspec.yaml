@@ -51,7 +51,6 @@ dependencies:
   formz: ^0.4.1
   flutter_web_auth: ^0.4.1
   super_rich_text: ^1.0.0
-  lan_scanner: 3.3.0
   network_info_plus: ^2.1.3
   package_info_plus: ^1.4.0
   bloc_concurrency: ^0.2.0
@@ -61,6 +60,7 @@ dependencies:
   json_serializable: ^6.1.5
   connectivity_plus: ^2.2.1
   floor: ^1.2.0
+  dropdown_button2: ^1.4.0
 
 dev_dependencies:
   flutter_test:

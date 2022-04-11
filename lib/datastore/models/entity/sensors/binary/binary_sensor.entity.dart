@@ -37,6 +37,7 @@ class BinarySensorEntity extends SensorEntity
   @override
   Map<String, dynamic> toJson() => _$BinarySensorEntityToJson(this);
 
+  @override
   BinarySensorEntity copy() {
     return BinarySensorEntity.fromJson(toJson());
   }

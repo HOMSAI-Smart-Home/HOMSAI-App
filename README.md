@@ -28,6 +28,7 @@ Innover Flutter application
 - flutter_web_auth: used for handling web authentication like google auth.
 - network_info_plus: allows Flutter apps to discover network info and configure themselves accordingly.
 - fl_chart: chart library that supports Line Chart, Bar Chart, Pie Chart, Scatter Chart, and Radar Chart.
+- dropdown_button2: allows dropdown to be more versatile.
 
 ## Auto Router Generator
 

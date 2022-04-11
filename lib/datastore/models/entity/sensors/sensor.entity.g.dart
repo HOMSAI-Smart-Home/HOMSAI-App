@@ -28,7 +28,8 @@ Map<String, dynamic> _$SensorEntityToJson(SensorEntity instance) =>
 SensorAttributes _$SensorAttributesFromJson(Map<String, dynamic> json) =>
     SensorAttributes(
       json['friendly_name'] as String,
-      $enumDecodeNullable(_$DeviceClassEnumMap, json['device_class']) ??
+      $enumDecodeNullable(_$DeviceClassEnumMap, json['device_class'],
+              unknownValue: DeviceClass.unknown) ??
           DeviceClass.unknown,
       json['icon'] as String?,
     );
