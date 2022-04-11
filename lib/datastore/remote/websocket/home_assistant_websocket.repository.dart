@@ -39,8 +39,8 @@ class WebSocketSubscribersHandler {
     if (result == null) return;
 
     subscribers.forEach((key, value) {
-      if (result is ErrorDto && value.onError != null) {
-        value.onError!(result);
+      if (result is ErrorDto) {
+        value.onError != null ? value.onError!(result) : {};
       } else {
         value.onDone(result);
       }
