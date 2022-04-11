@@ -86,11 +86,7 @@ Future<void> main() async {
 
 void getAppVersion() async {
   PackageInfo packageInfo = await PackageInfo.fromPlatform();
-  appVersion = packageInfo.appName +
-      "-" +
-      packageInfo.version +
-      "+" +
-      packageInfo.buildNumber;
+  appVersion = packageInfo.appName + "-" + packageInfo.version;
 }
 
 class App extends StatelessWidget {
