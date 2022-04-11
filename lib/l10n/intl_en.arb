@@ -35,5 +35,20 @@
     "addPlantLocationLabel": "GPS Coordinates",
     "addPlantLocationButtonLabel": "Use your location",
     "addPlantLocationInfoTitle": "Why do we need plant's position?",
-    "addPlantLocationInfoDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum eget dictum eros, non varius velit. Praesent bibendum molestie feugiat."
+    "addPlantLocationInfoDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum eget dictum eros, non varius velit. Praesent bibendum molestie feugiat.",
+
+    "introductionTitle1": "welcome!",
+    "introductionTitle2": "log in and configure!",
+    "introductionTitle3": "comfort and savings",
+    "introductionFirstText1": "Homsai is the application that allows you to */optimize*/ the management of your smart home.",
+    "introductionFirstText2": "Register at Homsai with your l1Home Assistantl1 credentials and in a few moments you will have your smart home configured.",
+    "introductionFirstText3": "Thanks to Homsai, your home will take care of you by optimizing consumption and allowing you to save on your bill.",
+    "introductionSecondText1": "Thanks to our */artificial intelligence*/ you will receive personalized suggestions for */efficiency and savings*/. With a simple click Homsai will take care of everything.",
+    "introductionSecondText2": "We use l2the most advanced technologiesl2 for data protection. Your privacy is secure.",
+    "introductionSecondText3": "The intuitive interface will also allow you to control */all your devices*/ and set */routines*/ easily.",
+    "introductionButtonText1": "How does it work?",
+    "introductionButtonText2": "What advantages do I have?",
+    "introductionButtonText3": "I want to try Homsai",
+    "introductionSkip": "Skip",
+    "introductionPageInfo": "Step {} of 3"
 }

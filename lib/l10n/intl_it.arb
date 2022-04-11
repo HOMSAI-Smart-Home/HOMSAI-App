@@ -8,7 +8,6 @@
     "register": "Registrati",
     "login": "Login",
 
-
     "registerTitle1": "rendi\nla tua casa \n",
     "registerTitle2": "davvero\n",
     "registerTitle3": "intelligente",
@@ -16,7 +15,6 @@
     "termsAgreements2": "Termini e Condizioni",
     "alradySignUp": "Hai già un account?",
     "registerToLogin": "Effettua l'accesso",
-
 
     "loginTitle1": "bentornato\na ",
     "loginTitle2": "casa\n",
@@ -37,5 +35,20 @@
     "addPlantLocationLabel": "Coordinate GPS",
     "addPlantLocationButtonLabel": "Usa posizione attuale",
     "addPlantLocationInfoTitle": "Perché abbiamo bisogno della posizione?",
-    "addPlantLocationInfoDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum eget dictum eros, non varius velit. Praesent bibendum molestie feugiat."
+    "addPlantLocationInfoDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum eget dictum eros, non varius velit. Praesent bibendum molestie feugiat.",
+
+    "introductionTitle1": "benvenuto!",
+    "introductionTitle2": "accedi e configura!",
+    "introductionTitle3": "comfort e risparmio",
+    "introductionFirstText1": "Homsai è l'applicazione che ti consente di */ottimizzare*/ la gestione della tua smart home.",
+    "introductionFirstText2": "Effettua la registrazione a Homsai con le tue credenziali di l1Home Assistantl1 e in pochi istanti avrai la tua smart home configurata.",
+    "introductionFirstText3": "Grazie ad Homsai la tua casa si prenderà cura di te ottimizzando i consumi e permettendoti un notevole risparmio in bolletta.",
+    "introductionSecondText1": "Grazie alla nostra */intelligenza artificiale*/ riceverai suggerimenti personalizzati per */l’efficienza e il risparmio*/. Con un semplice click Homsai si occuperà di tutto.",
+    "introductionSecondText2": "Utilizziamo l2le più avanzate tecnologiel2 per la salvaguardia dei dati. La tua privacy è al sicuro.",
+    "introductionSecondText3": "L’interfaccia intuitiva ti permetterà inoltre di controllare */tutti i tuoi dispositivi*/ e impostare */routine*/ facilmente.",
+    "introductionButtonText1": "Come funziona?",
+    "introductionButtonText2": "Quali vantaggi ho?",
+    "introductionButtonText3": "Voglio provare Homsai",
+    "introductionSkip": "Salta",
+    "introductionPageInfo": "Step {} di 3"
 }

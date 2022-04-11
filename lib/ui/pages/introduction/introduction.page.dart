@@ -7,6 +7,7 @@ import 'package:homsai/crossconcern/components/common/scaffold/homsai_scaffold.w
 import 'package:homsai/crossconcern/components/utils/shadow.widget.dart';
 import 'package:homsai/themes/colors.theme.dart';
 import 'package:super_rich_text/super_rich_text.dart';
+import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
 
 class IntroductionPage extends StatefulWidget {
   final void Function(bool) onResult;
@@ -85,9 +86,9 @@ class _Steps extends StatelessWidget {
                       fontWeight: FontWeight.w500,
                       color: Color(0xff56bb76))),
               onPressed: () => onResult(true),
-              child: Column(children: const [
-                Text('Salta'),
-                SizedBox(
+              child: Column(children: [
+                Text(HomsaiLocalizations.of(context)!.introductionSkip),
+                const SizedBox(
                   height: 10,
                 )
               ]),
@@ -112,7 +113,7 @@ class _TextPadding extends StatelessWidget {
           children: <Widget>[
             Row(children: [
               Text(
-                _GetTextFromPage.getTitle(page),
+                _GetTextFromPage.getTitle(page, context),
                 style: const TextStyle(
                     color: Color(0xffffffff),
                     fontFamily: 'JoyrideExtended',
@@ -125,13 +126,15 @@ class _TextPadding extends StatelessWidget {
               height: 13,
             ),
             Row(children: [
-              _HomeAssistantSuperRichText(_GetTextFromPage.firstText(page))
+              _HomeAssistantSuperRichText(
+                  _GetTextFromPage.firstText(page, context))
             ]),
             const SizedBox(
               height: 11,
             ),
             Row(children: [
-              _HomeAssistantSuperRichText(_GetTextFromPage.secondText(page))
+              _HomeAssistantSuperRichText(
+                  _GetTextFromPage.secondText(page, context))
             ]),
             const SizedBox(
               height: 21,
@@ -143,66 +146,50 @@ class _TextPadding extends StatelessWidget {
 }
 
 class _GetTextFromPage {
-  static String getTitle(int page) {
+  static String getTitle(int page, BuildContext context) {
     switch (page) {
       case 1:
-        return 'benvenuto!';
+        return HomsaiLocalizations.of(context)!.introductionTitle1;
       case 2:
-        return 'accedi e configura!';
+        return HomsaiLocalizations.of(context)!.introductionTitle2;
       case 3:
-        return 'comfort e risparmio';
+        return HomsaiLocalizations.of(context)!.introductionTitle3;
     }
     return '';
   }
 
-  static String firstText(int page) {
+  static String firstText(int page, BuildContext context) {
     switch (page) {
       case 1:
-        return "Homsai è l’applicazione che "
-            "ti consente di */ottimizzare*/ la gestione "
-            "della tua smart home.";
+        return HomsaiLocalizations.of(context)!.introductionFirstText1;
       case 2:
-        return "Effettua la registrazione a "
-            "Homsai con le tue credenziali di l1Home "
-            "Assistantl1 e in pochi istanti avrai "
-            "la tua smart home configurata.";
+        return HomsaiLocalizations.of(context)!.introductionFirstText2;
       case 3:
-        return "Grazie ad Homsai la tua casa "
-            "si prenderà cura di te ottimizzando "
-            "i consumi epermettendoti un notevole "
-            "risparmio in bolletta.";
+        return HomsaiLocalizations.of(context)!.introductionFirstText3;
     }
     return '';
   }
 
-  static String secondText(int page) {
+  static String secondText(int page, BuildContext context) {
     switch (page) {
       case 1:
-        return "Grazie alla nostra */intelligenza "
-            "artificiale*/ riceverai suggerimenti "
-            "personalizzati per */l’efficienza e il "
-            "risparmio*/. Con un semplice click Homsai "
-            "si occuperà di tutto.";
+        return HomsaiLocalizations.of(context)!.introductionSecondText1;
       case 2:
-        return "Utilizziamo l2le più avanzate "
-            "tecnologiel2 per la salvaguardia dei dati. "
-            "La tua privacy è al sicuro.";
+        return HomsaiLocalizations.of(context)!.introductionSecondText2;
       case 3:
-        return "L’interfaccia intuitiva ti permetterà "
-            "inoltre di controllare */tutti i tuoi dispositivi*/ "
-            "e impostare */routine*/facilmente.";
+        return HomsaiLocalizations.of(context)!.introductionSecondText3;
     }
     return '';
   }
 
-  static String buttonText(int page) {
+  static String buttonText(int page, BuildContext context) {
     switch (page) {
       case 1:
-        return "Come funziona?";
+        return HomsaiLocalizations.of(context)!.introductionButtonText1;
       case 2:
-        return "Quali vantaggi ho?";
+        return HomsaiLocalizations.of(context)!.introductionButtonText2;
       case 3:
-        return "Voglio provare Homsai";
+        return HomsaiLocalizations.of(context)!.introductionButtonText3;
     }
     return '';
   }
@@ -260,7 +247,7 @@ class _NextButton extends StatelessWidget {
       },
       child: AnimatedSwitcher(
         duration: const Duration(milliseconds: 250),
-        child: Text(_GetTextFromPage.buttonText(page),
+        child: Text(_GetTextFromPage.buttonText(page, context),
             style: const TextStyle(
                 fontSize: 18,
                 fontFamily: 'HelveticaNowText',
@@ -280,7 +267,10 @@ class _InfoPage extends StatelessWidget {
     return Center(
         child: AnimatedSwitcher(
       duration: const Duration(milliseconds: 250),
-      child: Text('Step $page di 3',
+      child: Text(
+          HomsaiLocalizations.of(context)!
+              .introductionPageInfo
+              .replaceFirst('{}', page.toString()),
           style: const TextStyle(
               fontSize: 16,
               fontFamily: 'HelveticaNowText',
@@ -300,7 +290,7 @@ class _HomeAssistantSuperRichText extends StatelessWidget {
         child: SuperRichText(
       text: text,
       style: const TextStyle(
-          fontSize: 18,
+          fontSize: 16,
           fontWeight: FontWeight.w300,
           fontFamily: 'HelveticaNowText'),
       othersMarkers: [
