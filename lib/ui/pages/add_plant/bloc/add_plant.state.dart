@@ -36,5 +36,6 @@ class AddPlantState extends Equatable {
   }
 
   @override
-  List<Object> get props => [plantName, initialPlantName, coordinate, entities, status];
+  List<Object> get props =>
+      [plantName, initialPlantName, coordinate, entities, status];
 }

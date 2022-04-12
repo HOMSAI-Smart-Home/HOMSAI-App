@@ -52,8 +52,7 @@ class AddPlantBloc extends Bloc<AddPlantEvent, AddPlantState> {
         configuration: Configuration.fromDto(event.configuration)));
   }
 
-  void _onStatesFetched(
-      StatesFetched event, Emitter<AddPlantState> emit) {
+  void _onStatesFetched(StatesFetched event, Emitter<AddPlantState> emit) {
     emit(state.copyWith(
       entities: event.entities,
     ));
