@@ -4,6 +4,7 @@
     "next": "Avanti",
 
     "emailAddress": "Indirizzo email",
+    "invalidEmail": "Email non valida",
     "password": "Password",
     "register": "Registrati",
     "login": "Login",

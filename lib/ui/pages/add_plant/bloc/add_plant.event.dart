@@ -25,17 +25,6 @@ class StatesFetched extends AddPlantEvent {
   List<Object> get props => [entities];
 }
 
-class EmailChanged extends AddPlantEvent {
-  const EmailChanged({required this.email});
-
-  final String email;
-
-  @override
-  List<Object> get props => [email];
-}
-
-class EmailUnfocused extends AddPlantEvent {}
-
 class PlantNameChanged extends AddPlantEvent {
   const PlantNameChanged(this.plantName);
 

@@ -4,6 +4,7 @@
     "next": "Next",
 
     "emailAddress": "Email address",
+    "invalidEmail": "invalid email",
     "password": "Password",
     "register": "Register",
     "login": "Login",

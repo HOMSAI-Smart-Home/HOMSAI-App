@@ -10,6 +10,7 @@ import 'package:homsai/ui/pages/dashboard/tabs/accounts/accounts.page.dart';
 import 'package:homsai/ui/pages/dashboard/tabs/history/history.page.dart';
 import 'package:homsai/ui/pages/dashboard/tabs/home/home.page.dart';
 import 'package:homsai/ui/pages/dashboard/tabs/search/search.page.dart';
+import 'package:homsai/ui/pages/intro_beta/intro_beta.page.dart';
 import 'package:homsai/ui/pages/introduction/introduction.page.dart';
 import 'package:homsai/ui/pages/scan/home_assistant_scan.page.dart';
 
@@ -23,6 +24,7 @@ part 'package:homsai/ui/pages/dashboard/tabs/accounts/accounts.router.dart';
 part 'package:homsai/ui/pages/add_plant/add_plant.router.dart';
 part 'package:homsai/ui/pages/scan/home_assistant_scan.router.dart';
 part 'package:homsai/ui/pages/introduction/introduction.routes.dart';
+part 'package:homsai/ui/pages/intro_beta/intro_beta.router.dart';
 
 @CupertinoAutoRouter(
   replaceInRouteName: 'Page,Route',
@@ -43,6 +45,10 @@ part 'package:homsai/ui/pages/introduction/introduction.routes.dart';
     AutoRoute(
       path: introductionPath,
       page: IntroductionPage,
+    ),
+    AutoRoute(
+      path: introBetaPath,
+      page: IntroBetaPage,
     )
   ],
 )
@@ -66,9 +72,11 @@ class AuthGuard extends AutoRouteGuard {
       });
 
       if (!_appPreferences.canSkipIntroduction()) {
-        router.popAndPush(IntroductionRoute(onResult: (success) {
-          _appPreferences.setIntroduction(true);
-          router.popAndPush(scanner);
+        router.popAndPush(IntroBetaRoute(onResult: (success) {
+          router.replace(IntroductionRoute(onResult: (success) {
+            _appPreferences.setIntroduction(true);
+            router.popAndPush(scanner);
+          }));
         }));
         return;
       }

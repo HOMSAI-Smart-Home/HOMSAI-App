@@ -50,6 +50,12 @@ class _$AppRouter extends RootStackRouter {
           child: IntroductionPage(
               key: args.key, onResult: args.onResult, page: args.page));
     },
+    IntroBetaRoute.name: (routeData) {
+      final args = routeData.argsAs<IntroBetaRouteArgs>();
+      return CupertinoPageX<dynamic>(
+          routeData: routeData,
+          child: IntroBetaPage(key: args.key, onResult: args.onResult));
+    },
     HomeRoute.name: (routeData) {
       return CupertinoPageX<dynamic>(
           routeData: routeData, child: const HomePage());
@@ -92,7 +98,8 @@ class _$AppRouter extends RootStackRouter {
           RouteConfig(AccountsRoute.name,
               path: 'accounts', parent: DashboardRoute.name)
         ]),
-        RouteConfig(IntroductionRoute.name, path: '/introduction')
+        RouteConfig(IntroductionRoute.name, path: '/introduction'),
+        RouteConfig(IntroBetaRoute.name, path: '/intro-beta')
       ];
 }
 
@@ -204,6 +211,30 @@ class IntroductionRouteArgs {
   @override
   String toString() {
     return 'IntroductionRouteArgs{key: $key, onResult: $onResult, page: $page}';
+  }
+}
+
+/// generated route for
+/// [IntroBetaPage]
+class IntroBetaRoute extends PageRouteInfo<IntroBetaRouteArgs> {
+  IntroBetaRoute({Key? key, required void Function(bool) onResult})
+      : super(IntroBetaRoute.name,
+            path: '/intro-beta',
+            args: IntroBetaRouteArgs(key: key, onResult: onResult));
+
+  static const String name = 'IntroBetaRoute';
+}
+
+class IntroBetaRouteArgs {
+  const IntroBetaRouteArgs({this.key, required this.onResult});
+
+  final Key? key;
+
+  final void Function(bool) onResult;
+
+  @override
+  String toString() {
+    return 'IntroBetaRouteArgs{key: $key, onResult: $onResult}';
   }
 }
 
