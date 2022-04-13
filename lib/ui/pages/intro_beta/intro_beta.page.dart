@@ -29,6 +29,8 @@ class _IntroBetaPageState extends State<IntroBetaPage> {
       resizeToAvoidBottomInset: false,
       children: <Widget>[
         _IntroBetaTitle(),
+        _IntroBetaDescription(),
+        const SizedBox(height: 24),
         _IntroBetaForm(),
         const SizedBox(height: 24),
         _IntroBetaSubmit(widget.onResult),
@@ -47,6 +49,27 @@ class _IntroBetaTitle extends StatelessWidget {
         Text(
           HomsaiLocalizations.of(context)!.addPlantTitle,
           style: Theme.of(context).textTheme.headline3,
+        ),
+        const SizedBox(
+          height: 24,
+        ),
+      ],
+    );
+  }
+}
+
+class _IntroBetaDescription extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        Text(
+          HomsaiLocalizations.of(context)!.emailDescription,
+          style: Theme.of(context)
+              .textTheme
+              .bodyText1,
+          textAlign: TextAlign.center,
         ),
         const SizedBox(
           height: 24,

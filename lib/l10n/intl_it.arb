@@ -5,6 +5,8 @@
 
     "emailAddress": "Indirizzo email",
     "invalidEmail": "Email non valida",
+    "emailDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum eget dictum eros, non varius velit. Praesent bibendum molestie feugiat.",
+
     "password": "Password",
     "register": "Registrati",
     "login": "Login",
