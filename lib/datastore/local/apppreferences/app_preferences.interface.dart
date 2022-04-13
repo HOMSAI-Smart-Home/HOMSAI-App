@@ -10,4 +10,8 @@ abstract class AppPreferencesInterface {
   HomeAssistantAuth? getToken();
   void setToken(HomeAssistantAuth homeAssistantAuth);
   void resetToken();
+
+  void resetUserId();
+  void setUserId(int id);
+  int? getUserId();
 }

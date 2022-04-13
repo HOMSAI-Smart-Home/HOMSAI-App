@@ -61,6 +61,8 @@ class _$AppDatabase extends AppDatabase {
     changeListener = listener ?? StreamController<String>.broadcast();
   }
 
+  UserDao? _userDaoInstance;
+
   PlantDao? _plantDaoInstance;
 
   ConfigurationDao? _configurationDaoInstance;
@@ -86,7 +88,9 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `Plant` (`url` TEXT NOT NULL, `remote` INTEGER NOT NULL, `name` TEXT NOT NULL, `email` TEXT NOT NULL, `latitude` REAL NOT NULL, `longitude` REAL NOT NULL, `active` INTEGER NOT NULL, `configuration_id` INTEGER NOT NULL, `production_sensor_id` TEXT, `consumption_sensor_id` TEXT, `id` INTEGER PRIMARY KEY AUTOINCREMENT, FOREIGN KEY (`configuration_id`) REFERENCES `Configuration` (`id`) ON UPDATE NO ACTION ON DELETE NO ACTION)');
+            'CREATE TABLE IF NOT EXISTS `User` (`email` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT)');
+        await database.execute(
+            'CREATE TABLE IF NOT EXISTS `Plant` (`url` TEXT NOT NULL, `remote` INTEGER NOT NULL, `name` TEXT NOT NULL, `latitude` REAL NOT NULL, `longitude` REAL NOT NULL, `active` INTEGER NOT NULL, `configuration_id` INTEGER NOT NULL, `production_sensor_id` TEXT, `consumption_sensor_id` TEXT, `id` INTEGER PRIMARY KEY AUTOINCREMENT, FOREIGN KEY (`configuration_id`) REFERENCES `Configuration` (`id`) ON UPDATE NO ACTION ON DELETE NO ACTION)');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `Configuration` (`latitude` REAL NOT NULL, `longitude` REAL NOT NULL, `elevation` REAL NOT NULL, `locationName` TEXT NOT NULL, `version` TEXT NOT NULL, `state` TEXT NOT NULL, `currency` TEXT NOT NULL, `source` TEXT NOT NULL, `dir` TEXT NOT NULL, `timezone` TEXT NOT NULL, `isSafeMode` INTEGER NOT NULL, `externalUrl` TEXT, `internalUrl` TEXT, `whitelistExternalDirs` TEXT NOT NULL, `allowExternalDirs` TEXT NOT NULL, `allowExternalUrls` TEXT NOT NULL, `components` TEXT NOT NULL, `unitSystem` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT)');
         await database.execute(
@@ -96,6 +100,11 @@ class _$AppDatabase extends AppDatabase {
       },
     );
     return sqfliteDatabaseFactory.openDatabase(path, options: databaseOptions);
+  }
+
+  @override
+  UserDao get userDao {
+    return _userDaoInstance ??= _$UserDao(database, changeListener);
   }
 
   @override
@@ -116,6 +125,83 @@ class _$AppDatabase extends AppDatabase {
   }
 }
 
+class _$UserDao extends UserDao {
+  _$UserDao(this.database, this.changeListener)
+      : _queryAdapter = QueryAdapter(database),
+        _userInsertionAdapter = InsertionAdapter(
+            database,
+            'User',
+            (User item) =>
+                <String, Object?>{'email': item.email, 'id': item.id}),
+        _userUpdateAdapter = UpdateAdapter(
+            database,
+            'User',
+            ['id'],
+            (User item) =>
+                <String, Object?>{'email': item.email, 'id': item.id}),
+        _userDeletionAdapter = DeletionAdapter(
+            database,
+            'User',
+            ['id'],
+            (User item) =>
+                <String, Object?>{'email': item.email, 'id': item.id});
+
+  final sqflite.DatabaseExecutor database;
+
+  final StreamController<String> changeListener;
+
+  final QueryAdapter _queryAdapter;
+
+  final InsertionAdapter<User> _userInsertionAdapter;
+
+  final UpdateAdapter<User> _userUpdateAdapter;
+
+  final DeletionAdapter<User> _userDeletionAdapter;
+
+  @override
+  Future<User?> findUserById(int id) async {
+    return _queryAdapter.query('SELECT * FROM User WHERE id = ?1',
+        mapper: (Map<String, Object?> row) =>
+            User(row['email'] as String, id: row['id'] as int?),
+        arguments: [id]);
+  }
+
+  @override
+  Future<User?> findUserByEmail(String email) async {
+    return _queryAdapter.query('SELECT * FROM User WHERE email = ?1',
+        mapper: (Map<String, Object?> row) =>
+            User(row['email'] as String, id: row['id'] as int?),
+        arguments: [email]);
+  }
+
+  @override
+  Future<int> insertItem(User item) {
+    return _userInsertionAdapter.insertAndReturnId(
+        item, OnConflictStrategy.abort);
+  }
+
+  @override
+  Future<List<int>> insertItems(List<User> items) {
+    return _userInsertionAdapter.insertListAndReturnIds(
+        items, OnConflictStrategy.abort);
+  }
+
+  @override
+  Future<void> updateItem(User item) async {
+    await _userUpdateAdapter.update(item, OnConflictStrategy.abort);
+  }
+
+  @override
+  Future<void> updateItems(List<User> item) async {
+    await _userUpdateAdapter.updateList(item, OnConflictStrategy.abort);
+  }
+
+  @override
+  Future<void> deleteItem(User item) async {
+    await _userDeletionAdapter.delete(item);
+  }
+}
+
 class _$PlantDao extends PlantDao {
   _$PlantDao(this.database, this.changeListener)
       : _queryAdapter = QueryAdapter(database),
@@ -126,7 +212,6 @@ class _$PlantDao extends PlantDao {
                   'url': item.url,
                   'remote': item.isUrlRemote ? 1 : 0,
                   'name': item.name,
-                  'email': item.email,
                   'latitude': item.latitude,
                   'longitude': item.longitude,
                   'active': item.isActive ? 1 : 0,
@@ -143,7 +228,6 @@ class _$PlantDao extends PlantDao {
                   'url': item.url,
                   'remote': item.isUrlRemote ? 1 : 0,
                   'name': item.name,
-                  'email': item.email,
                   'latitude': item.latitude,
                   'longitude': item.longitude,
                   'active': item.isActive ? 1 : 0,
@@ -160,7 +244,6 @@ class _$PlantDao extends PlantDao {
                   'url': item.url,
                   'remote': item.isUrlRemote ? 1 : 0,
                   'name': item.name,
-                  'email': item.email,
                   'latitude': item.latitude,
                   'longitude': item.longitude,
                   'active': item.isActive ? 1 : 0,
@@ -188,7 +271,6 @@ class _$PlantDao extends PlantDao {
         mapper: (Map<String, Object?> row) => Plant(
             row['url'] as String,
             row['name'] as String,
-            row['email'] as String,
             row['latitude'] as double,
             row['longitude'] as double,
             row['configuration_id'] as int,
@@ -205,7 +287,6 @@ class _$PlantDao extends PlantDao {
         mapper: (Map<String, Object?> row) => Plant(
             row['url'] as String,
             row['name'] as String,
-            row['email'] as String,
             row['latitude'] as double,
             row['longitude'] as double,
             row['configuration_id'] as int,
@@ -223,7 +304,6 @@ class _$PlantDao extends PlantDao {
         mapper: (Map<String, Object?> row) => Plant(
             row['url'] as String,
             row['name'] as String,
-            row['email'] as String,
             row['latitude'] as double,
             row['longitude'] as double,
             row['configuration_id'] as int,

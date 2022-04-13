@@ -7,9 +7,11 @@ import 'package:homsai/crossconcern/utilities/properties/database.properties.dar
 import 'package:homsai/datastore/dao/configuration.dao.dart';
 import 'package:homsai/datastore/dao/home_assistant.dao.dart';
 import 'package:homsai/datastore/dao/plant.dao.dart';
+import 'package:homsai/datastore/dao/user.dao.dart';
 import 'package:homsai/datastore/models/database/configuration.entity.dart';
 import 'package:homsai/datastore/models/database/home_assistant.entity.dart';
 import 'package:homsai/datastore/models/database/plant.entity.dart';
+import 'package:homsai/datastore/models/database/user.entity.dart';
 import 'package:sqflite/sqflite.dart' as sqflite;
 
 part 'app.database.g.dart';
@@ -17,8 +19,9 @@ part 'app.database.g.dart';
 @TypeConverters([ListConverter, MapConverter, HomeAssistantConverter])
 @Database(
     version: DatabaseProperties.version,
-    entities: [Plant, Configuration, HomeAssistantEntity])
+    entities: [User, Plant, Configuration, HomeAssistantEntity])
 abstract class AppDatabase extends FloorDatabase {
+  UserDao get userDao;
   PlantDao get plantDao;
   ConfigurationDao get configurationDao;
   HomeAssistantDao get homeAssitantDao;

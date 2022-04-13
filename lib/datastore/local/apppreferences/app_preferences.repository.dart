@@ -48,4 +48,21 @@ class AppPreferences implements AppPreferencesInterface {
     preferences?.setBool(
         AppPreferencesProperties.prefKeySkipIntroduction, canSkip);
   }
+
+  @override
+  void resetUserId() {
+    preferences?.remove(AppPreferencesProperties.prefKeyUserId);
+  }
+
+  @override
+  void setUserId(int id) {
+    preferences?.setInt(
+        AppPreferencesProperties.prefKeyUserId, id);
+  }
+
+  @override
+  int? getUserId() {
+    return preferences?.getInt(
+        AppPreferencesProperties.prefKeyUserId);
+  }
 }

@@ -52,7 +52,7 @@ class AddPlantBloc extends Bloc<AddPlantEvent, AddPlantState> {
   }
 
   void _onStatesFetched(
-      StatesFetched event, Emitter<AddPlantState> emit) async {
+      StatesFetched event, Emitter<AddPlantState> emit) {
     emit(state.copyWith(
       entities: event.entities,
     ));
@@ -109,7 +109,6 @@ class AddPlantBloc extends Bloc<AddPlantEvent, AddPlantState> {
     final plantId = await appDatabase.plantDao.insertItem(Plant(
       (auth?.url ?? ""),
       state.plantName.value,
-      "",
       double.parse(latitude),
       double.parse(longitude),
       configurationId,

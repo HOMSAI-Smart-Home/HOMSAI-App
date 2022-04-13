@@ -20,5 +20,5 @@ class IntroBetaState extends Equatable {
   }
 
   @override
-  List<Object> get props => [email, status];
+  List<Object> get props => [email.value, status];
 }

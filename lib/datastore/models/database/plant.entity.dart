@@ -14,7 +14,6 @@ class Plant extends BaseEntity {
   @ColumnInfo(name: 'remote')
   final bool isUrlRemote;
   final String name;
-  final String email;
   final double latitude;
   final double longitude;
   @ColumnInfo(name: 'active')
@@ -32,7 +31,6 @@ class Plant extends BaseEntity {
   Plant(
     this.url,
     this.name,
-    this.email,
     this.latitude,
     this.longitude,
     this.configurationId, {
@@ -51,7 +49,6 @@ class Plant extends BaseEntity {
       Plant(
         url,
         name,
-        email,
         latitude,
         longitude,
         configurationId,
