@@ -47,6 +47,7 @@ class AddPlantBloc extends Bloc<AddPlantEvent, AddPlantState> {
         "${event.configuration.latitude};${event.configuration.longitude}");
     emit(state.copyWith(
         plantName: plantName,
+        initialPlantName: plantName.value,
         coordinate: coordinate,
         configuration: Configuration.fromDto(event.configuration)));
   }

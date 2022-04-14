@@ -94,31 +94,34 @@ class _EmailAddressTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<IntroBetaBloc, IntroBetaState>(
+        buildWhen: (previous, current) =>
+            previous.email != current.email ||
+            previous.initialEmail != current.initialEmail,
         builder: (context, state) {
-      return TextFormField(
-        key: ValueKey(
-          state.email.value,
-        ),
-        restorationId: 'emailaddress_text_field',
-        initialValue: state.email.value,
-        keyboardType: TextInputType.emailAddress,
-        textInputAction: TextInputAction.done,
-        onChanged: (value) {
-          context.read<IntroBetaBloc>().add(EmailChanged(email: value));
-        },
-        decoration: InputDecoration(
-          prefixIcon: Icon(
-            Icons.email_rounded,
-            color: Theme.of(context).colorScheme.onBackground,
-          ),
-          labelText: HomsaiLocalizations.of(context)!.emailAddress,
-          errorText: state.email.invalid
-              ? HomsaiLocalizations.of(context)!.invalidEmail
-              : null,
-        ),
-        style: Theme.of(context).textTheme.bodyText1,
-      );
-    });
+          return TextFormField(
+            key: ValueKey(
+              state.initialEmail,
+            ),
+            restorationId: 'emailaddress_text_field',
+            initialValue: state.initialEmail,
+            keyboardType: TextInputType.emailAddress,
+            textInputAction: TextInputAction.done,
+            onChanged: (value) {
+              context.read<IntroBetaBloc>().add(EmailChanged(email: value));
+            },
+            decoration: InputDecoration(
+              prefixIcon: Icon(
+                Icons.email_rounded,
+                color: Theme.of(context).colorScheme.onBackground,
+              ),
+              labelText: HomsaiLocalizations.of(context)!.emailAddress,
+              errorText: state.email.invalid
+                  ? HomsaiLocalizations.of(context)!.invalidEmail
+                  : null,
+            ),
+            style: Theme.of(context).textTheme.bodyText1,
+          );
+        });
   }
 }
 

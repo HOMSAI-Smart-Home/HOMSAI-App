@@ -95,28 +95,32 @@ class _AddPlantFormState extends State<_AddPlantForm> {
 class _AddPlantNameField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AddPlantBloc, AddPlantState>(builder: ((context, state) {
-      return TextFormField(
-        key: ValueKey(
-          state.plantName.value,
-        ),
-        restorationId: 'plant_name_text_field',
-        keyboardType: TextInputType.name,
-        onChanged: (value) {
-          context.read<AddPlantBloc>().add(PlantNameChanged(value));
-        },
-        initialValue: state.plantName.value,
-        textInputAction: TextInputAction.next,
-        decoration: InputDecoration(
-          prefixIcon: Icon(
-            Icons.house_rounded,
-            color: Theme.of(context).colorScheme.onBackground,
-          ),
-          labelText: HomsaiLocalizations.of(context)!.addPlantNameLabel,
-        ),
-        style: Theme.of(context).textTheme.bodyText1,
-      );
-    }));
+    return BlocBuilder<AddPlantBloc, AddPlantState>(
+        buildWhen: (previous, current) =>
+            previous.plantName != current.plantName ||
+            previous.initialPlantName != current.initialPlantName,
+        builder: ((context, state) {
+          return TextFormField(
+            key: ValueKey(
+              state.initialPlantName,
+            ),
+            restorationId: 'plant_name_text_field',
+            keyboardType: TextInputType.name,
+            onChanged: (value) {
+              context.read<AddPlantBloc>().add(PlantNameChanged(value));
+            },
+            initialValue: state.initialPlantName,
+            textInputAction: TextInputAction.next,
+            decoration: InputDecoration(
+              prefixIcon: Icon(
+                Icons.house_rounded,
+                color: Theme.of(context).colorScheme.onBackground,
+              ),
+              labelText: HomsaiLocalizations.of(context)!.addPlantNameLabel,
+            ),
+            style: Theme.of(context).textTheme.bodyText1,
+          );
+        }));
   }
 }
 

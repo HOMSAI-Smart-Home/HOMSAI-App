@@ -48,7 +48,8 @@ class IntroBetaBloc extends Bloc<IntroBetaEvent, IntroBetaState> {
       if (user != null) {
         final email = Email.dirty(user.email);
         emit(state.copyWith(
-          email: email,
+          email: email.valid ? email : Email.pure(user.email),
+          initialEmail: user.email,
           status: _isFormValidate(email: email),
         ));
       }

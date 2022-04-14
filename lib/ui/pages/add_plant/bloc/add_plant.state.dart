@@ -3,6 +3,7 @@ part of 'add_plant.bloc.dart';
 class AddPlantState extends Equatable {
   const AddPlantState({
     this.plantName = const PlantName.pure(),
+    this.initialPlantName = "",
     this.coordinate = const Coordinate.pure(),
     this.entities = const [],
     this.configuration,
@@ -10,6 +11,7 @@ class AddPlantState extends Equatable {
   });
 
   final PlantName plantName;
+  final String initialPlantName;
   final Coordinate coordinate;
   final Configuration? configuration;
   final List<Entity> entities;
@@ -17,6 +19,7 @@ class AddPlantState extends Equatable {
 
   AddPlantState copyWith({
     PlantName? plantName,
+    String? initialPlantName,
     Coordinate? coordinate,
     Configuration? configuration,
     List<Entity>? entities,
@@ -24,6 +27,7 @@ class AddPlantState extends Equatable {
   }) {
     return AddPlantState(
       plantName: plantName ?? this.plantName,
+      initialPlantName: initialPlantName ?? this.initialPlantName,
       coordinate: coordinate ?? this.coordinate,
       entities: entities ?? this.entities,
       configuration: configuration ?? this.configuration,
@@ -32,5 +36,5 @@ class AddPlantState extends Equatable {
   }
 
   @override
-  List<Object> get props => [plantName, coordinate, entities, status];
+  List<Object> get props => [plantName, initialPlantName, coordinate, entities, status];
 }
