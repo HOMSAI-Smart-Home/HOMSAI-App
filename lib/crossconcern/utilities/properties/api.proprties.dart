@@ -1,7 +1,8 @@
 class ApiProprties {
-  static const AIServiceBaseUrl = "http://staging.aiservice.homsai.app:8080";
-  static const AiServicePhotovoltaicSelfConsumptionOptimizerForecast =
+  static const aiServiceBaseUrl = "http://staging.aiservice.homsai.app:8080";
+  static const aiServicePhotovoltaicSelfConsumptionOptimizerForecastPath =
       "/aiservice/forecast/photovoltaic/self-consumption";
+  static const aiServiceDailyPlanPath = "/statistics/suggestions/dailyplan";
 }
 
 class HomeAssistantApiProprties {
@@ -54,4 +55,5 @@ class HomeAssistantApiProprties {
   static const validateConfig = "validate_config";
 
   static const historyPath = "/api/history/period";
+  static const logbookPath = "/api/logbook";
 }

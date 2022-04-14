@@ -11,6 +11,8 @@ import 'package:homsai/crossconcern/exceptions/scanning_not_found.exception.dart
 import 'package:homsai/crossconcern/exceptions/token.exception.dart';
 import 'package:homsai/crossconcern/utilities/properties/api.proprties.dart';
 import 'package:homsai/datastore/DTOs/remote/history/history_body.dto.dart';
+import 'package:homsai/datastore/DTOs/remote/logbook/logbook.dto.dart';
+import 'package:homsai/datastore/DTOs/remote/logbook/logbook_body.dto.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.dart';
 import 'package:homsai/datastore/models/home_assistant_auth.model.dart';
 import 'package:homsai/datastore/remote/network/network_manager.interface.dart';
@@ -209,5 +211,22 @@ class HomeAssistantRepository implements HomeAssistantInterface {
     response = await remoteInterface.get(url);
 
     return response;
+  }
+
+  Future<LogbookDto> getLogBook(
+    Uri url, {
+    LogbookBodyDto? logbookBodyDto,
+  }) async {
+    Map<String, dynamic> response;
+
+    url = url.replace(
+      path: HomeAssistantApiProprties.logbookPath +
+          (logbookBodyDto?.start?.formatHA ?? ""),
+      queryParameters: logbookBodyDto?.toJson(),
+    );
+
+    response = await remoteInterface.get(url);
+
+    return LogbookDto.fromJson(response);
   }
 }

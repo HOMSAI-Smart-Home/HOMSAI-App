@@ -6,6 +6,8 @@ import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
 import 'package:flutter_localized_locales/flutter_localized_locales.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get_it/get_it.dart';
+import 'package:homsai/business/ai_service/ai_service.interface.dart';
+import 'package:homsai/business/ai_service/ai_service.repository.dart';
 import 'package:homsai/business/home_assistant/home_assistant.interface.dart';
 import 'package:homsai/business/home_assistant/home_assistant.repository.dart';
 import 'package:homsai/business/home_assistant_scanner/home_assistant_scanner.interface.dart';
@@ -63,6 +65,8 @@ Future<void> setup() async {
       .registerLazySingleton<LightRepositoryInterface>(() => LightRepository());
 
   getIt.registerLazySingleton<RemoteInterface>(() => RemoteRepository());
+
+  getIt.registerLazySingleton<AIServiceInterface>(() => AIServiceRepository());
 }
 
 Future<void> main() async {
