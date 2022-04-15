@@ -20,6 +20,8 @@ class IntroBetaBloc extends Bloc<IntroBetaEvent, IntroBetaState> {
     on<EmailChanged>(_onEmailChanged);
     on<EmaiAutocomplete>(_onEmailAutocomplete);
     on<OnSubmit>(_onSubmit);
+    on<OnSubmitSuccess>(_onSubmitSucces);
+    on<OnSubmitError>(_onSubmitError);
 
     add(EmaiAutocomplete());
   }
@@ -57,6 +59,8 @@ class IntroBetaBloc extends Bloc<IntroBetaEvent, IntroBetaState> {
   }
 
   void _onSubmit(OnSubmit event, Emitter<IntroBetaState> emit) async {
+    add(OnSubmitSuccess(event.onSubmit));
+    /*
     final email = state.email;
 
     User? user = await appDatabase.userDao.findUserByEmail(email.value);
@@ -67,6 +71,26 @@ class IntroBetaBloc extends Bloc<IntroBetaEvent, IntroBetaState> {
     appPreferencesInterface.setUserId(user.id!);
 
     event.onSubmit();
+    */
+  }
+
+  void _onSubmitSucces(
+      OnSubmitSuccess event, Emitter<IntroBetaState> emit) async {
+    state.introBetaStatus == IntroBetaStatus.emailEntry
+        ? emit(state.copyWith(
+            introBetaStatus: IntroBetaStatus.pending,
+          ))
+        : state.introBetaStatus == IntroBetaStatus.pending
+            ? add(OnSubmitError())
+            : emit(state.copyWith(
+                introBetaStatus: IntroBetaStatus.emailEntry,
+              ));
+  }
+
+  void _onSubmitError(OnSubmitError event, Emitter<IntroBetaState> emit) async {
+    emit(state.copyWith(
+      introBetaStatus: IntroBetaStatus.notRegistered,
+    ));
   }
 
   FormzStatus _isFormValidate({

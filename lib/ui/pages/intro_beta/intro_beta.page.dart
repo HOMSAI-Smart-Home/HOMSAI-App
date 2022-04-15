@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:formz/formz.dart';
 import 'package:homsai/crossconcern/components/common/scaffold/homsai_bloc_scaffold.widget.dart';
 import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
 import 'package:homsai/ui/pages/intro_beta/bloc/intro_beta.bloc.dart';
+import 'package:super_rich_text/super_rich_text.dart';
 
 class IntroBetaPage extends StatefulWidget {
   final void Function(bool) onResult;
@@ -26,27 +28,178 @@ class _IntroBetaPageState extends State<IntroBetaPage> {
       mainAxisAlignment: MainAxisAlignment.center,
       resizeToAvoidBottomInset: false,
       children: <Widget>[
-        _IntroBetaTitle(),
-        _IntroBetaDescription(),
-        const SizedBox(height: 24),
-        _IntroBetaForm(),
-        const SizedBox(height: 24),
+        _IntroBetaContainer(),
+        const SizedBox(height: 16),
         _IntroBetaSubmit(widget.onResult),
-        const SizedBox(height: 24),
       ],
     );
   }
 }
 
+class _IntroBetaContainer extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => _IntroBetaContainerState();
+}
+
+class _IntroBetaContainerState extends State<_IntroBetaContainer> {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<IntroBetaBloc, IntroBetaState>(
+      buildWhen: (previous, current) =>
+          previous.introBetaStatus != current.introBetaStatus &&
+          previous.introBetaStatus != IntroBetaStatus.loading,
+      builder: (context, state) {
+        return Container(
+          alignment: Alignment.center,
+          height: 222,
+          child: AnimatedSwitcher(
+            duration: const Duration(milliseconds: 250),
+            transitionBuilder: buildTransition,
+            child: buildChildByStatus(state),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget? buildChildByStatus(IntroBetaState state) {
+    switch (state.introBetaStatus) {
+      case IntroBetaStatus.emailEntry:
+        return _EmailEntry(
+          key: UniqueKey(),
+        );
+      case IntroBetaStatus.pending:
+        return _Pending(
+          key: UniqueKey(),
+        );
+      case IntroBetaStatus.notRegistered:
+        return _NotRegistered(
+          key: UniqueKey(),
+        );
+      case IntroBetaStatus.loading:
+        return null;
+      default:
+        return _EmailEntry(
+          key: UniqueKey(),
+        );
+    }
+  }
+
+  Widget buildTransition(Widget child, Animation<double> animation) {
+    final inAnimation = Tween<Offset>(
+      begin: const Offset(-1.0, 0.0),
+      end: const Offset(0.0, 0.0),
+    ).animate(animation);
+
+    return ClipRect(
+      child: SlideTransition(
+        position: inAnimation,
+        child: child,
+      ),
+    );
+  }
+}
+
+class _EmailEntry extends StatelessWidget {
+  const _EmailEntry({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        _IntroBetaTitle(
+          title: HomsaiLocalizations.of(context)!.emailEntryTitle,
+        ),
+        _IntroBetaDescription(
+          description: HomsaiLocalizations.of(context)!.emailEntryDescription,
+        ),
+        const SizedBox(height: 16),
+        _IntroBetaForm(),
+      ],
+    );
+  }
+}
+
+class _Pending extends StatelessWidget {
+  const _Pending({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        const _IntroBetaIcon(isPending: true),
+        const SizedBox(height: 16),
+        _IntroBetaTitle(
+          title: HomsaiLocalizations.of(context)!.emailPendingTitle,
+        ),
+        _IntroBetaDescription(
+          description: HomsaiLocalizations.of(context)!.emailPendingDescription,
+        ),
+      ],
+    );
+  }
+}
+
+class _NotRegistered extends StatelessWidget {
+  const _NotRegistered({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<IntroBetaBloc, IntroBetaState>(
+        builder: (context, state) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          const _IntroBetaIcon(isPending: false),
+          const SizedBox(height: 16),
+          _IntroBetaTitle(
+            title: HomsaiLocalizations.of(context)!.emailNotRegisteredTitle,
+          ),
+          _IntroBetaDescription(
+            description: HomsaiLocalizations.of(context)!
+                .emailNotRegisteredDescription
+                .replaceFirst('{}', state.email.value),
+          ),
+        ],
+      );
+    });
+  }
+}
+
+class _IntroBetaIcon extends StatelessWidget {
+  final bool isPending;
+
+  const _IntroBetaIcon({Key? key, required this.isPending}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SvgPicture.asset(
+      isPending 
+      ? "assets/icons/loading.svg"
+      : "assets/icons/error.svg",
+      height: 48);
+  }
+}
+
 class _IntroBetaTitle extends StatelessWidget {
+  final String title;
+
+  const _IntroBetaTitle({Key? key, required this.title}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         Text(
-          HomsaiLocalizations.of(context)!.addPlantTitle,
+          title,
           style: Theme.of(context).textTheme.headline3,
+          textAlign: TextAlign.center,
         ),
         const SizedBox(
           height: 24,
@@ -57,13 +210,18 @@ class _IntroBetaTitle extends StatelessWidget {
 }
 
 class _IntroBetaDescription extends StatelessWidget {
+  final String description;
+
+  const _IntroBetaDescription({Key? key, required this.description})
+      : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        Text(
-          HomsaiLocalizations.of(context)!.emailDescription,
+        SuperRichText(
+          text: description,
           style: Theme.of(context).textTheme.bodyText1,
           textAlign: TextAlign.center,
         ),

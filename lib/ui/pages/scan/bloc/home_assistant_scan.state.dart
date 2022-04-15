@@ -1,18 +1,20 @@
 part of 'home_assistant_scan.bloc.dart';
 
 class HomeAssistantScanState extends Equatable {
-  const HomeAssistantScanState(
-      {this.scannedUrls = const [],
-      this.selectedUrl = const Url.pure(),
-      this.status = HomeAssistantScanStatus.scanningInProgress});
+  const HomeAssistantScanState({
+    this.scannedUrls = const [],
+    this.selectedUrl = const Url.pure(),
+    this.status = HomeAssistantScanStatus.scanningInProgress,
+  });
   final List<String> scannedUrls;
   final Url selectedUrl;
   final HomeAssistantScanStatus status;
 
-  HomeAssistantScanState copyWith(
-      {List<String>? scannedUrls,
-      Url? selectedUrl,
-      HomeAssistantScanStatus? status}) {
+  HomeAssistantScanState copyWith({
+    List<String>? scannedUrls,
+    Url? selectedUrl,
+    HomeAssistantScanStatus? status,
+  }) {
     return HomeAssistantScanState(
         scannedUrls: scannedUrls ?? this.scannedUrls,
         selectedUrl: selectedUrl ?? this.selectedUrl,

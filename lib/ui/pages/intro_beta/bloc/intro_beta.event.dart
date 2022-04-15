@@ -28,3 +28,14 @@ class OnSubmit extends IntroBetaEvent {
   @override
   List<Object> get props => [onSubmit];
 }
+
+class OnSubmitSuccess extends IntroBetaEvent {
+  const OnSubmitSuccess(this.onSubmitSucces);
+
+  final void Function() onSubmitSucces;
+
+  @override
+  List<Object> get props => [onSubmitSucces];
+}
+
+class OnSubmitError extends IntroBetaEvent {}

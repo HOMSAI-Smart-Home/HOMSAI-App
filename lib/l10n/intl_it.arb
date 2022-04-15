@@ -5,7 +5,12 @@
 
     "emailAddress": "Indirizzo email",
     "invalidEmail": "Email non valida",
-    "emailDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum eget dictum eros, non varius velit. Praesent bibendum molestie feugiat.",
+    "emailEntryTitle": "Entra nella Closed BETA",
+    "emailEntryDescription": "Homsai è in BETA. Inserisci il tuo indirizzo email per scoprire se hai accesso. Se ancora non puoi entrare, non preoccuparti! Lasciaci la mail e verrai aggiunto alla coda di utenti.",
+    "emailPendingTitle": "Ancora un po’ di pazienza",
+    "emailPendingDescription": "Hai ancora alcuni utenti davanti nella coda. Non temere, ancora poche ore e potrai avere accesso esclusivo alla closed BETA di Homsai.",
+    "emailNotRegisteredTitle": "Iscriviti alla Closed BETA",
+    "emailNotRegisteredDescription": "L’indirizzo email *{}* non è ancora nella nostra coda di utenti. Vuoi entrare nella lista d’attesa per provare in esclusiva Homsai?",
 
     "password": "Password",
     "register": "Registrati",
