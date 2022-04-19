@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:homsai/crossconcern/exceptions/unauthorized.exception.dart';
 import 'package:homsai/crossconcern/helpers/errors/error.parser.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.dart';
-import 'package:homsai/datastore/models/home_assistant_auth.model.dart';
 import 'package:homsai/datastore/remote/rest/remote.Interface.dart';
 import 'package:homsai/main.dart';
 import 'package:http/http.dart';
@@ -16,32 +15,14 @@ class RemoteRepository implements RemoteInterface {
   Client client = Client();
   static const Duration _timeout = Duration(seconds: 10);
 
-  Map<String, String> getHeader() {
-    final headers = {HttpHeaders.acceptHeader: 'application/json'};
-
-    final HomeAssistantAuth? token = appPreferences.getToken();
-    if (token != null) {
-      headers['Authorization'] = 'Bearer ' + token.token;
-    }
-
-    return headers;
-  }
-
   Map<String, dynamic> parseResponse(Response response) {
     dynamic body;
     dynamic bodyList;
 
     try {
       body = json.decode(response.body);
-    } on FormatException catch (e) {
-      print(e.message);
+    } on FormatException {
       body = {'data': response.bodyBytes};
-    }
-
-    if (response.statusCode == HttpStatus.unauthorized) {
-      throw UnauthorizedException;
-    } else if (response.statusCode >= HttpStatus.badRequest) {
-      ErrorParser.parseError(body);
     }
 
     bodyList = body;
@@ -61,7 +42,7 @@ class RemoteRepository implements RemoteInterface {
     final Response response = await client
         .get(
           url,
-          headers: headers ?? getHeader(),
+          headers: headers,
         )
         .timeout(timeout);
     return parseResponse(response);
@@ -78,7 +59,7 @@ class RemoteRepository implements RemoteInterface {
     final Response response = await client
         .post(
           url,
-          headers: headers ?? getHeader(),
+          headers: headers,
           body: body,
           encoding: encoding,
         )
@@ -97,7 +78,7 @@ class RemoteRepository implements RemoteInterface {
     final Response response = await client
         .put(
           url,
-          headers: headers ?? getHeader(),
+          headers: headers,
           body: body,
         )
         .timeout(timeout);
@@ -115,7 +96,7 @@ class RemoteRepository implements RemoteInterface {
     final Response response = await client
         .delete(
           url,
-          headers: headers ?? getHeader(),
+          headers: headers,
         )
         .timeout(timeout);
     return parseResponse(response);

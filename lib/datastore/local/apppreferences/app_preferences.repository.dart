@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:homsai/crossconcern/utilities/properties/app_preference.proprties.dart';
+import 'package:homsai/datastore/models/ai_service_auth.model.dart';
 import 'package:homsai/datastore/models/home_assistant_auth.model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -15,21 +16,21 @@ class AppPreferences implements AppPreferencesInterface {
   }
 
   @override
-  HomeAssistantAuth? getToken() {
+  HomeAssistantAuth? getHomeAssistantToken() {
     return HomeAssistantAuth.fromJson(jsonDecode(
-        preferences?.getString(AppPreferencesProperties.prefKeyAccessToken) ??
+        preferences?.getString(AppPreferencesProperties.prefKeyHomeAssistantAccessToken) ??
             "{}"));
   }
 
   @override
-  void resetToken() {
-    preferences?.remove(AppPreferencesProperties.prefKeyAccessToken);
+  void resetHomeAssistantToken() {
+    preferences?.remove(AppPreferencesProperties.prefKeyHomeAssistantAccessToken);
   }
 
   @override
-  void setToken(HomeAssistantAuth token) {
+  void setHomeAssistantToken(HomeAssistantAuth token) {
     preferences?.setString(
-        AppPreferencesProperties.prefKeyAccessToken, jsonEncode(token));
+        AppPreferencesProperties.prefKeyHomeAssistantAccessToken, jsonEncode(token));
   }
 
   @override
@@ -64,5 +65,23 @@ class AppPreferences implements AppPreferencesInterface {
   int? getUserId() {
     return preferences?.getInt(
         AppPreferencesProperties.prefKeyUserId);
+  }
+
+  @override
+  AiServiceAuth? getAiServiceToken() {
+    return AiServiceAuth.fromJson(jsonDecode(
+        preferences?.getString(AppPreferencesProperties.prefKeyAiServiceAccessToken) ??
+            "{}"));
+  }
+
+  @override
+  void resetAiServiceToken() {
+    preferences?.remove(AppPreferencesProperties.prefKeyAiServiceAccessToken);
+  }
+
+  @override
+  void setAiServicetToken(AiServiceAuth token) {
+    preferences?.setString(
+        AppPreferencesProperties.prefKeyAiServiceAccessToken, jsonEncode(token));
   }
 }

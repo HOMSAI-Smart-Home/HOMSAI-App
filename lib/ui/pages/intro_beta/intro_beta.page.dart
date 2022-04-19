@@ -6,6 +6,7 @@ import 'package:homsai/crossconcern/components/common/scaffold/homsai_bloc_scaff
 import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
 import 'package:homsai/ui/pages/intro_beta/bloc/intro_beta.bloc.dart';
 import 'package:super_rich_text/super_rich_text.dart';
+import 'package:rive/rive.dart' as rive;
 
 class IntroBetaPage extends StatefulWidget {
   final void Function(bool) onResult;
@@ -47,7 +48,7 @@ class _IntroBetaContainerState extends State<_IntroBetaContainer> {
     return BlocBuilder<IntroBetaBloc, IntroBetaState>(
       buildWhen: (previous, current) =>
           previous.introBetaStatus != current.introBetaStatus &&
-          previous.introBetaStatus != IntroBetaStatus.loading,
+          current.introBetaStatus != IntroBetaStatus.loading,
       builder: (context, state) {
         return Container(
           alignment: Alignment.center,
@@ -76,8 +77,6 @@ class _IntroBetaContainerState extends State<_IntroBetaContainer> {
         return _NotRegistered(
           key: UniqueKey(),
         );
-      case IntroBetaStatus.loading:
-        return null;
       default:
         return _EmailEntry(
           key: UniqueKey(),
@@ -176,13 +175,26 @@ class _IntroBetaIcon extends StatelessWidget {
 
   const _IntroBetaIcon({Key? key, required this.isPending}) : super(key: key);
 
+  void _onHouglassInit(rive.Artboard artboard) {
+    final controller =
+        rive.StateMachineController.fromArtboard(artboard, 'spin');
+    if (controller != null) {
+      artboard.addController(controller);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return SvgPicture.asset(
-      isPending 
-      ? "assets/icons/loading.svg"
-      : "assets/icons/error.svg",
-      height: 48);
+    return SizedBox(
+        width: 48,
+        height: 48,
+        child: isPending
+            ? rive.RiveAnimation.asset(
+                "assets/animations/hourglass.riv",
+                stateMachines: const [''],
+                onInit: _onHouglassInit,
+              )
+            : SvgPicture.asset("assets/icons/error.svg"));
   }
 }
 
@@ -291,16 +303,51 @@ class _IntroBetaSubmit extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<IntroBetaBloc, IntroBetaState>(
-        buildWhen: (previous, current) => previous.status != current.status,
+        buildWhen: (previous, current) =>
+            previous.status != current.status ||
+            previous.introBetaStatus != current.introBetaStatus,
         builder: (context, state) {
           return ElevatedButton(
-            onPressed: (state.status.isValid)
+            onPressed: state.status.isValid
                 ? () => context
                     .read<IntroBetaBloc>()
                     .add(OnSubmit(() => onResult(true)))
                 : null,
-            child: Text(HomsaiLocalizations.of(context)!.next),
+            child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 250),
+              child: _buttonLabel(context, state),
+            ),
           );
         });
+  }
+
+  Widget _buttonLabel(BuildContext context, IntroBetaState state) {
+    return state.introBetaStatus == IntroBetaStatus.loading
+        ? Center(
+            key: ValueKey(state.introBetaStatus),
+            child: SizedBox(
+              width: 24,
+              height: 24,
+              child: CircularProgressIndicator(
+                color: Theme.of(context).colorScheme.background,
+              ),
+            ),
+          )
+        : Text(
+            () {
+              switch (state.introBetaStatus) {
+                case IntroBetaStatus.emailEntry:
+                  return HomsaiLocalizations.of(context)!.next;
+                case IntroBetaStatus.loading:
+                  return HomsaiLocalizations.of(context)!.next;
+                case IntroBetaStatus.pending:
+                  return HomsaiLocalizations.of(context)!.retry;
+                case IntroBetaStatus.notRegistered:
+                  return HomsaiLocalizations.of(context)!.emailSubmitError;
+                default:
+                  return "";
+              }
+            }() as String,
+            key: ValueKey(state.introBetaStatus));
   }
 }

@@ -1,7 +1,7 @@
+import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.dart';
 import 'package:homsai/datastore/models/home_assistant_auth.model.dart';
+import 'package:homsai/main.dart';
 
-import '../../../main.dart';
-import '../apppreferences/app_preferences.interface.dart';
 import 'user_local.interface.dart';
 
 class UserLocalRepository implements UserLocalInterface {
@@ -10,16 +10,16 @@ class UserLocalRepository implements UserLocalInterface {
 
   @override
   HomeAssistantAuth? getToken() {
-    return appPreferences.getToken();
+    return appPreferences.getHomeAssistantToken();
   }
 
   @override
   void setToken(HomeAssistantAuth token) {
-    appPreferences.setToken(token);
+    appPreferences.setHomeAssistantToken(token);
   }
 
   @override
   void resetAccessToken() {
-    appPreferences.resetToken();
+    appPreferences.resetHomeAssistantToken();
   }
 }

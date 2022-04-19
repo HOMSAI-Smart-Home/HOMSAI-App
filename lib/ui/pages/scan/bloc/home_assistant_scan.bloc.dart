@@ -141,7 +141,7 @@ class HomeAssistantScanBloc
     await homeAssistantRepository
         .authenticate(url: Uri.parse(state.selectedUrl.value))
         .then((authResult) {
-      appPreferencesInterface.setToken(authResult);
+      appPreferencesInterface.setHomeAssistantToken(authResult);
 
       return emit(
         state.copyWith(status: HomeAssistantScanStatus.authenticationSuccess),

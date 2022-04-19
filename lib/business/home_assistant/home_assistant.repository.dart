@@ -28,10 +28,10 @@ class HomeAssistantRepository implements HomeAssistantInterface {
   final NetworkManagerInterface networkManager =
       getIt.get<NetworkManagerInterface>();
 
-  final AppPreferencesInterface appPreferencesInterface =
+  final AppPreferencesInterface appPreferences =
       getIt.get<AppPreferencesInterface>();
 
-  final RemoteInterface remoteInterface = getIt.get<RemoteInterface>();
+  final RemoteInterface remote = getIt.get<RemoteInterface>();
 
   @override
   Future<HomeAssistantAuth> authenticate({required Uri url}) {
@@ -39,6 +39,17 @@ class HomeAssistantRepository implements HomeAssistantInterface {
       throwIf(host == null, HostsNotFound());
       return authenticateHomeAssistant(url: host!);
     });
+  }
+
+  Map<String, String> _getHeader() {
+    final headers = {HttpHeaders.acceptHeader: 'application/json'};
+
+    final HomeAssistantAuth? token = appPreferences.getHomeAssistantToken();
+    if (token != null) {
+      headers['Authorization'] = 'Bearer ' + token.token;
+    }
+
+    return headers;
   }
 
   Future<HomeAssistantAuth> authenticateHomeAssistant({required Uri url}) {
@@ -98,7 +109,7 @@ class HomeAssistantRepository implements HomeAssistantInterface {
       queryParameters: {},
     );
 
-    response = await remoteInterface.post(
+    response = await remote.post(
       url,
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
@@ -151,7 +162,7 @@ class HomeAssistantRepository implements HomeAssistantInterface {
     required Uri url,
     Duration timeout = const Duration(seconds: 2),
   }) async {
-    HomeAssistantAuth? auth = appPreferencesInterface.getToken();
+    HomeAssistantAuth? auth = appPreferences.getHomeAssistantToken();
     Map<String, dynamic> body;
     Map<String, dynamic> data;
     int now;
@@ -180,7 +191,7 @@ class HomeAssistantRepository implements HomeAssistantInterface {
     required Uri url,
     Duration timeout = const Duration(seconds: 2),
   }) async {
-    HomeAssistantAuth? auth = appPreferencesInterface.getToken();
+    HomeAssistantAuth? auth = appPreferences.getHomeAssistantToken();
     Map<String, dynamic> body;
 
     url = url.replace(
@@ -195,7 +206,7 @@ class HomeAssistantRepository implements HomeAssistantInterface {
 
     await _tokenReqest(timeout, url, body);
 
-    appPreferencesInterface.resetToken();
+    appPreferences.resetHomeAssistantToken();
   }
 
   @override
@@ -211,7 +222,10 @@ class HomeAssistantRepository implements HomeAssistantInterface {
       queryParameters: historyBodyDto?.toJson(),
     );
 
-    response = await remoteInterface.get(url);
+    response = await remote.get(
+      url,
+      headers: _getHeader(),
+    );
     final history = HistoryDto.fromList(response["data"][0]);
     return history;
   }
@@ -228,7 +242,10 @@ class HomeAssistantRepository implements HomeAssistantInterface {
       queryParameters: logbookBodyDto?.toJson(),
     );
 
-    response = await remoteInterface.get(url);
+    response = await remote.get(
+      url,
+      headers: _getHeader(),
+    );
 
     return LogbookDto.fromJson(response);
   }

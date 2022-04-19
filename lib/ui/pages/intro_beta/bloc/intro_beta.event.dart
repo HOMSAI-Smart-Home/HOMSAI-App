@@ -39,3 +39,5 @@ class OnSubmitSuccess extends IntroBetaEvent {
 }
 
 class OnSubmitError extends IntroBetaEvent {}
+
+class OnSubmitPending extends IntroBetaEvent {}

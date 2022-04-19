@@ -11,6 +11,7 @@
     "emailPendingDescription": "Hai ancora alcuni utenti davanti nella coda. Non temere, ancora poche ore e potrai avere accesso esclusivo alla closed BETA di Homsai.",
     "emailNotRegisteredTitle": "Iscriviti alla Closed BETA",
     "emailNotRegisteredDescription": "L’indirizzo email *{}* non è ancora nella nostra coda di utenti. Vuoi entrare nella lista d’attesa per provare in esclusiva Homsai?",
+    "emailSubmitError":"Sì, iscrivimi alla Closed BETA",
 
     "password": "Password",
     "register": "Registrati",

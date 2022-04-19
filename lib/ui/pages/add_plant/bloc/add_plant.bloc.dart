@@ -106,7 +106,7 @@ class AddPlantBloc extends Bloc<AddPlantEvent, AddPlantState> {
   }
 
   void _onSubmit(OnSubmit event, Emitter<AddPlantState> emit) async {
-    HomeAssistantAuth? auth = appPreferencesInterface.getToken();
+    HomeAssistantAuth? auth = appPreferencesInterface.getHomeAssistantToken();
     List<String> coordinates = state.coordinate.value.split(";");
     final latitude = coordinates.first;
     final longitude = coordinates.last;

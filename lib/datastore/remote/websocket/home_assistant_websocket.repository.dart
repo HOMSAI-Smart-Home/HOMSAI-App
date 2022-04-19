@@ -79,12 +79,12 @@ class HomeAssistantWebSocketRepository {
   Future<void> connect(Uri url) async {
     String scheme;
 
-    homeAssistantAuth = appPreferencesInterface.getToken();
+    homeAssistantAuth = appPreferencesInterface.getHomeAssistantToken();
 
     if (homeAssistantAuth!.expires <
         DateTime.now().millisecondsSinceEpoch ~/ 1000) {
       homeAssistantAuth = await homeAssistantRepository.refreshToken(url: url);
-      appPreferencesInterface.setToken(homeAssistantAuth!);
+      appPreferencesInterface.setHomeAssistantToken(homeAssistantAuth!);
     }
 
     scheme = url.scheme.contains('s') ? 'wss' : 'ws';

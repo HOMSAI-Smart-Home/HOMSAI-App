@@ -1,20 +1,66 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:homsai/business/ai_service/ai_service.interface.dart';
-import 'package:homsai/crossconcern/utilities/properties/ai_service.proprieties.dart';
 import 'package:homsai/crossconcern/utilities/properties/api.proprties.dart';
 import 'package:homsai/datastore/DTOs/remote/ai_service/consumption_optimizations_forecast/consumption_optimizations_forecast.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/ai_service/consumption_optimizations_forecast/consumption_optimizations_forecast_body.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/ai_service/daily_plan/daily_plan.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/ai_service/daily_plan/daily_plan_body.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/ai_service/daily_plan/log.dto.dart';
+import 'package:homsai/datastore/DTOs/remote/ai_service/login/login.dto.dart';
+import 'package:homsai/datastore/DTOs/remote/ai_service/login/login_body.dto.dart';
+import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.dart';
+import 'package:homsai/datastore/models/ai_service_auth.model.dart';
 import 'package:homsai/datastore/remote/rest/remote.Interface.dart';
 import 'package:homsai/main.dart';
 import 'package:uuid/uuid.dart';
 
 class AIServiceRepository implements AIServiceInterface {
   final RemoteInterface remoteInterface = getIt.get<RemoteInterface>();
+  final AppPreferencesInterface appPreferences =
+      getIt.get<AppPreferencesInterface>();
   final Uuid uuid = const Uuid();
   final Map<String, String> _anonToPlain = {};
   final Map<String, String> _plainToAnon = {};
+
+  Map<String, String> _getHeader() {
+    final headers = {"Content-Type": 'application/json'};
+
+    final AiServiceAuth? token = appPreferences.getAiServiceToken();
+    if (token != null && token.token != null) {
+      headers['Authorization'] = 'Bearer ' + token.token!;
+    }
+
+    return headers;
+  }
+
+  @override
+  Future<AiServiceAuth?> getToken(
+    LoginBodyDto loginBodyDto,
+  ) async {
+    Map<String, String> headers = _getHeader();
+    headers["X-Requested-With"] = "XMLHttpRequest";
+
+    Map<String, dynamic> result = await remoteInterface.post(
+      Uri.parse(ApiProprties.aIServiceBaseUrl).replace(
+        path: ApiProprties.aiServiceLoginPath,
+      ),
+      headers: headers,
+      body: jsonEncode(loginBodyDto.toJson()),
+    );
+
+    LoginDto loginDto = LoginDto.fromJson(result);
+
+    if (loginDto.code != null) {
+      if (loginDto.code == 102) {
+        throw Exception(loginDto.message);
+      }
+      return null;
+    }
+
+    return AiServiceAuth.fromJson(loginDto.toJson());
+  }
 
   @override
   Future<ConsumptionOptimizationsForecastDto>
@@ -23,15 +69,12 @@ class AIServiceRepository implements AIServiceInterface {
     String unit,
   ) async {
     Map<String, dynamic> result = await remoteInterface.post(
-      Uri(
-        host: ApiProprties.aIServiceBaseUrl,
+      Uri.parse(ApiProprties.aIServiceBaseUrl).replace(
         path:
             ApiProprties.aiServicePhotovoltaicSelfConsumptionOptimizerForecast,
         queryParameters: {"unit": unit},
       ),
-      headers: {
-        "Authorization": AiServiceProprieties.token,
-      },
+      headers: _getHeader(),
       body: optimizationsForecastBody.toJson(),
     );
 
@@ -47,14 +90,11 @@ class AIServiceRepository implements AIServiceInterface {
     dailyPlanBodyDto = _anonymizeDayliPlanBodyDto(dailyPlanBodyDto);
 
     Map<String, dynamic> result = await remoteInterface.post(
-      Uri.parse(ApiProprties.aIServiceBaseUrl)
-      .replace(
+      Uri.parse(ApiProprties.aIServiceBaseUrl).replace(
         path: ApiProprties.aiServiceDailyPlanPath,
         queryParameters: {"n": deviceNumber, "device": entitysType},
       ),
-      headers: {
-        "Authorization": AiServiceProprieties.token,
-      },
+      headers: _getHeader(),
       body: dailyPlanBodyDto.toJson(),
     );
     return _deanonymizeDayliPlanDto(DailyPlanDto.fromJson(result));

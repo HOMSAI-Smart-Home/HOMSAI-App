@@ -50,7 +50,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   void _onWebsocketConnect(
       ConnectWebSocket event, Emitter<HomeState> emit) async {
-    HomeAssistantAuth? auth = appPreferencesInterface.getToken();
+    HomeAssistantAuth? auth = appPreferencesInterface.getHomeAssistantToken();
     if (!webSocketRepository.isConnected() && auth?.url != null) {
       webSocketRepository.connect(Uri.parse(auth!.url));
     }

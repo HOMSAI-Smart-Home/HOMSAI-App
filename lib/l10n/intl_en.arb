@@ -11,6 +11,7 @@
     "emailPendingDescription": "You still have some users ahead in the queue. Don't worry, just a few more hours and you will have exclusive access to the closed BETA in Homsai.",
     "emailNotRegisteredTitle": "Sign up for the Closed BETA",
     "emailNotRegisteredDescription": "The email address *{}* is not yet in our user queue. Do you want to join the waiting list to try Homsai exclusively?.",
+    "emailSubmitError":"Yes, sign me up for the Closed BETA",
 
     "password": "Password",
     "register": "Register",
