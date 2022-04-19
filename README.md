@@ -1,6 +1,6 @@
-# Innover App
+# HOMSAI App
 
-Innover Flutter application
+HOMSAI Flutter application
 
 ## Used libraries
 
@@ -87,16 +87,4 @@ Then give permission with command
 chmod +x .git/hooks/pre-commit
 ```
 
-### Prepare-commit-msg hook integration
-This will automatically prepend JIRA Ticket ID (branch name) on commit message
-
-In the root of the project run
-```
-cp prepare-commit-msg .git/hooks/prepare-commit-msg
-```
-
-Then give permission with command
-```
-chmod +x .git/hooks/prepare-commit-msg
-```
 
