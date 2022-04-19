@@ -10,10 +10,10 @@ ConsumptionOptimizationsForecastDto
     _$ConsumptionOptimizationsForecastDtoFromJson(Map<String, dynamic> json) =>
         ConsumptionOptimizationsForecastDto(
           (json['general_power_meter_data'] as List<dynamic>)
-              .map((e) => ChangeAttribute.fromJson(e as Map<String, dynamic>))
+              .map((e) => HistoryDto.fromJson(e as Map<String, dynamic>))
               .toList(),
           (json['pv_production_meter_data'] as List<dynamic>)
-              .map((e) => ChangeAttribute.fromJson(e as Map<String, dynamic>))
+              .map((e) => HistoryDto.fromJson(e as Map<String, dynamic>))
               .toList(),
         );
 

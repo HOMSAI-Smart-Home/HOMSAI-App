@@ -19,3 +19,14 @@ class FetchedLights extends HomeEvent {
   @override
   List<Object> get props => [entities];
 }
+
+class FetchHistory extends HomeEvent {}
+
+class ToggleConsumptionOptimazedPlot extends HomeEvent {
+  const ToggleConsumptionOptimazedPlot({required this.isOptimized});
+
+  final bool isOptimized;
+
+  @override
+  List<Object> get props => [isOptimized];
+}

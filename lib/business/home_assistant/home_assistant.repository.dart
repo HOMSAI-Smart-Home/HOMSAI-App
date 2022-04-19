@@ -10,6 +10,7 @@ import 'package:homsai/business/home_assistant_scanner/home_assistant_scanner.in
 import 'package:homsai/crossconcern/exceptions/scanning_not_found.exception.dart';
 import 'package:homsai/crossconcern/exceptions/token.exception.dart';
 import 'package:homsai/crossconcern/utilities/properties/api.proprties.dart';
+import 'package:homsai/datastore/DTOs/remote/history/history.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/history/history_body.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/logbook/logbook.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/logbook/logbook_body.dto.dart';
@@ -146,7 +147,7 @@ class HomeAssistantRepository implements HomeAssistantInterface {
   }
 
   @override
-  Future refreshToken({
+  Future<HomeAssistantAuth> refreshToken({
     required Uri url,
     Duration timeout = const Duration(seconds: 2),
   }) async {
@@ -171,6 +172,7 @@ class HomeAssistantRepository implements HomeAssistantInterface {
     auth.token = data["access_token"];
     auth.expires = now + int.parse(data['expires_in'].toString());
     auth.tokenType = data["token_type"];
+    return auth;
   }
 
   @override
@@ -196,7 +198,8 @@ class HomeAssistantRepository implements HomeAssistantInterface {
     appPreferencesInterface.resetToken();
   }
 
-  Future<Map<String, dynamic>> getHistory(
+  @override
+  Future<List<HistoryDto>> getHistory(
     Uri url, {
     HistoryBodyDto? historyBodyDto,
   }) async {
@@ -209,8 +212,8 @@ class HomeAssistantRepository implements HomeAssistantInterface {
     );
 
     response = await remoteInterface.get(url);
-
-    return response;
+    final history = HistoryDto.fromList(response["data"][0]);
+    return history;
   }
 
   Future<LogbookDto> getLogBook(

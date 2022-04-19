@@ -83,8 +83,8 @@ class HomeAssistantWebSocketRepository {
 
     if (homeAssistantAuth!.expires <
         DateTime.now().millisecondsSinceEpoch ~/ 1000) {
-      await homeAssistantRepository.refreshToken(url: url);
-      homeAssistantAuth = appPreferencesInterface.getToken();
+      homeAssistantAuth = await homeAssistantRepository.refreshToken(url: url);
+      appPreferencesInterface.setToken(homeAssistantAuth!);
     }
 
     scheme = url.scheme.contains('s') ? 'wss' : 'ws';

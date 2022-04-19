@@ -68,7 +68,7 @@ class _DeviceState extends State<Device> {
       case DeviceStatus.disabled:
         return HomsaiColors.primaryGrey;
       case DeviceStatus.warning:
-        return HomsaiColors.secondaryYellow;
+        return HomsaiColors.tertiaryYellow;
       case DeviceStatus.error:
         return HomsaiColors.primaryRed;
     }

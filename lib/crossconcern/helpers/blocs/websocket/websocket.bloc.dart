@@ -25,7 +25,6 @@ class WebSocketBloc extends Bloc<WebSocketEvent, WebSocketState> {
     on<ConnectWebSocket>(_onWebsocketConnect);
     on<FetchConfig>(_onFetchConfig);
     on<FetchEntites>(_onFetchEntities);
-    add(ConnectWebSocket());
   }
 
   @override
@@ -37,7 +36,8 @@ class WebSocketBloc extends Bloc<WebSocketEvent, WebSocketState> {
       ConnectWebSocket event, Emitter<WebSocketState> emit) async {
     HomeAssistantAuth? auth = appPreferencesInterface.getToken();
     if (auth?.url != null) {
-      webSocketRepository.connect(Uri.parse(auth!.url));
+      await webSocketRepository.connect(Uri.parse(auth!.url));
+      event.onWebSocketConnected();
     }
   }
 

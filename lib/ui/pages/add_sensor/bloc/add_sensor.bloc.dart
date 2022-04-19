@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:homsai/crossconcern/helpers/blocs/websocket/websocket.bloc.dart';
 import 'package:homsai/crossconcern/helpers/extensions/list.extension.dart';
 import 'package:homsai/crossconcern/helpers/factories/home_assistant_sensor.factory.dart';
 import 'package:homsai/datastore/local/app.database.dart';
@@ -12,13 +13,16 @@ part 'add_sensor.state.dart';
 
 class AddSensorBloc extends Bloc<AddSensorEvent, AddSensorState> {
   final AppDatabase appDatabase = getIt.get<AppDatabase>();
+  final WebSocketBloc webSocketBloc;
 
-  AddSensorBloc() : super(const AddSensorState()) {
+  AddSensorBloc(this.webSocketBloc) : super(const AddSensorState()) {
     on<RetrieveSensors>(_onRetrieveSensors);
     on<ProductionSensorChanged>(_onProductionSensorChanged);
     on<ConsumptionSensorChanged>(_onConsumptionSensorChanged);
     on<OnSubmit>(_onSubmit);
-    add(RetrieveSensors());
+    webSocketBloc.add(ConnectWebSocket(onWebSocketConnected: () {
+      add(RetrieveSensors());
+    }));
   }
 
   @override

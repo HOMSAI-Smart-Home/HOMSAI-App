@@ -14,7 +14,7 @@ class RemoteRepository implements RemoteInterface {
       getIt.get<AppPreferencesInterface>();
 
   Client client = Client();
-  static const Duration _timeout = Duration(seconds: 5);
+  static const Duration _timeout = Duration(seconds: 10);
 
   Map<String, String> getHeader() {
     final headers = {HttpHeaders.acceptHeader: 'application/json'};

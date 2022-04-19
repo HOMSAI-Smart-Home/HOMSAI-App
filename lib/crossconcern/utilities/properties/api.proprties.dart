@@ -1,6 +1,6 @@
 class ApiProprties {
-  static const aiServiceBaseUrl = "http://staging.aiservice.homsai.app:8080";
-  static const aiServicePhotovoltaicSelfConsumptionOptimizerForecastPath =
+  static const aIServiceBaseUrl = "http://staging.aiservice.homsai.app:8080";
+  static const aiServicePhotovoltaicSelfConsumptionOptimizerForecast =
       "/aiservice/forecast/photovoltaic/self-consumption";
   static const aiServiceDailyPlanPath = "/statistics/suggestions/dailyplan";
 }

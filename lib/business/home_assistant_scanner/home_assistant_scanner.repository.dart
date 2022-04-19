@@ -7,7 +7,7 @@ import 'package:network_info_plus/network_info_plus.dart';
 
 class HomeAssistantScannerRepository implements HomeAssistantScannerInterface {
   @override
-  Stream<String> scanNetwork({Duration timeout = const Duration(seconds: 1)}) {
+  Stream<String> scanNetwork({Duration timeout = const Duration(seconds: 3)}) {
     late StreamController<String> controller;
     bool cancel = false;
 
@@ -15,10 +15,9 @@ class HomeAssistantScannerRepository implements HomeAssistantScannerInterface {
       String? ip = await (NetworkInfo().getWifiIP());
       String? subMask = await (NetworkInfo().getWifiSubmask());
 
-      //TODO: Exception message
-      throwIf(ip == null, Exception());
+      throwIf(ip == null, Exception('Invalid ip address'));
       throwIf(subMask == null || subMask != '255.255.255.0',
-          Exception('Wrong subnet'));
+          Exception('Invalid subnet'));
 
       final String net = ip!.substring(0, ip.lastIndexOf('.'));
       const int port = 8123;

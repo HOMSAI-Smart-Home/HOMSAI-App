@@ -39,7 +39,7 @@ enum DeviceClass {
   connectivity,
   update,
   plug,
-  window
+  window,
 }
 
 extension DeviceClassX on DeviceClass {

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:homsai/crossconcern/components/charts/daily_consumption_chart.widget.dart';
+import 'package:homsai/crossconcern/components/utils/shadow.widget.dart';
+import 'package:homsai/crossconcern/components/utils/toggle_text.widget.dart';
+import 'package:homsai/themes/colors.theme.dart';
 import 'package:homsai/ui/pages/dashboard/tabs/home/bloc/home.bloc.dart';
 import 'package:homsai/crossconcern/components/alerts/alert.widget.dart';
-import 'package:homsai/crossconcern/components/charts/consumption_chart.widget.dart';
 import 'package:homsai/ui/widget/devices/light/light_device.widget.dart';
 import 'package:super_rich_text/super_rich_text.dart';
 
@@ -42,7 +45,7 @@ class _HomePageState extends State<HomePage> {
           ),
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 10),
-            child: ConsumptionChart(),
+            child: DailyConsumptionChartInfo(),
           ),
           BlocBuilder<HomeBloc, HomeState>(
             builder: (context, state) {
@@ -68,6 +71,59 @@ class _HomePageState extends State<HomePage> {
           const SizedBox(height: 12)
         ],
       ),
+    );
+  }
+}
+
+class DailyConsumptionChartInfo extends StatelessWidget {
+  const DailyConsumptionChartInfo({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) {
+        return Shadow(
+          padding: const EdgeInsets.symmetric(horizontal: 3),
+          sigma: 1,
+          offset: const Offset(0, 2),
+          color: HomsaiColors.primaryGrey,
+          child: Card(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 10),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    child: ToggleText(
+                      key: ValueKey(state.isPlotOptimized),
+                      first: "Consumo attuale",
+                      second: "Consumo ottimizzato",
+                      onChanged: (isNormalPlot) {
+                        context.read<HomeBloc>().add(
+                            ToggleConsumptionOptimazedPlot(
+                                isOptimized: !isNormalPlot));
+                      },
+                      isFirstEnabled: !state.isPlotOptimized,
+                    ),
+                  ),
+                  DailyConsumptionChart(
+                    autoConsumptionPlot: (state.isPlotOptimized)
+                        ? state.autoConsumptionOptimization
+                        : state.autoConsumption,
+                    consumptionPlot: (state.isPlotOptimized)
+                        ? state.autoConsumptionOptimization
+                        : state.consumptionPlot,
+                    productionPlot: state.productionPlot,
+                    max: state.maxOffset,
+                    min: state.minOffset,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

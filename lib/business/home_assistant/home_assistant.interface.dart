@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:homsai/datastore/DTOs/remote/history/history.dto.dart';
+import 'package:homsai/datastore/DTOs/remote/history/history_body.dto.dart';
 import 'package:homsai/datastore/models/home_assistant_auth.model.dart';
 
 abstract class HomeAssistantInterface {
@@ -12,7 +14,11 @@ abstract class HomeAssistantInterface {
     required Uri url,
     Duration timeout = const Duration(seconds: 2),
   });
-  Future refreshToken({
+  Future<List<HistoryDto>> getHistory(
+    Uri url, {
+    HistoryBodyDto? historyBodyDto,
+  });
+  Future<HomeAssistantAuth> refreshToken({
     required Uri url,
     Duration timeout = const Duration(seconds: 2),
   });

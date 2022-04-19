@@ -5,5 +5,5 @@ import 'package:homsai/datastore/models/database/configuration.entity.dart';
 @dao
 abstract class ConfigurationDao extends BaseDao<Configuration> {
   @Query('SELECT * FROM Configuration WHERE id = :id')
-  Future<Configuration?> findPlantById(int id);
+  Future<Configuration?> findConfigurationById(int id);
 }

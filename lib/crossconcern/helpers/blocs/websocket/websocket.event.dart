@@ -7,7 +7,14 @@ abstract class WebSocketEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class ConnectWebSocket extends WebSocketEvent {}
+class ConnectWebSocket extends WebSocketEvent {
+  const ConnectWebSocket({required this.onWebSocketConnected});
+
+  final void Function() onWebSocketConnected;
+
+  @override
+  List<Object> get props => [onWebSocketConnected];
+}
 
 class FetchConfig extends WebSocketEvent {
   const FetchConfig({required this.onConfigurationFetched});

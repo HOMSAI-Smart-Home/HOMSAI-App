@@ -30,6 +30,7 @@ import 'package:homsai/datastore/local/user/user_local.repository.dart';
 import 'package:homsai/app.router.dart';
 import 'package:homsai/themes/app.theme.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:timezone/data/latest.dart' as tz;
 
 final getIt = GetIt.instance;
 String? appVersion;
@@ -55,6 +56,8 @@ Future<void> setup() async {
 
   getIt.registerLazySingleton<HomeAssistantInterface>(
       () => HomeAssistantRepository());
+
+  getIt.registerLazySingleton<AIServiceInterface>(() => AIServiceRepository());
 
   getIt.registerLazySingleton<HomeAssistantWebSocketRepository>(
       () => HomeAssistantWebSocketRepository());
@@ -84,6 +87,8 @@ Future<void> main() async {
 
   await SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+
+  tz.initializeTimeZones();
 
   runApp(App());
 }

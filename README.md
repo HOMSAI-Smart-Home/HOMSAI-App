@@ -24,11 +24,13 @@ Innover Flutter application
 - json_serializable: generates Json Serializable fields reducing boiler plate for from and To Json functions.
 - floor: dependency to handle OMR database for sqlfite.
 - connectivity_plus: allow Flutter apps to know connectivity status.
+- timezone: allow Flutter datetime to handle timezones.
 - rive: used to handle .riv animation file.
 - flutter_web_auth: used for handling web authentication like google auth.
 - network_info_plus: allows Flutter apps to discover network info and configure themselves accordingly.
 - fl_chart: chart library that supports Line Chart, Bar Chart, Pie Chart, Scatter Chart, and Radar Chart.
 - dropdown_button2: allows dropdown to be more versatile.
+- uuid: package to generate unique universal identifier.
 
 ## Auto Router Generator
 

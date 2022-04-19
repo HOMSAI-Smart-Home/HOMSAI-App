@@ -43,7 +43,7 @@ class HomsaiCardTheme {
   }
 
   static ThemeData warningAlertTheme(ThemeData themeData) {
-    return alertTheme(themeData, HomsaiColors.secondaryYellow);
+    return alertTheme(themeData, HomsaiColors.tertiaryYellow);
   }
 
   static ThemeData errorAlertTheme(ThemeData themeData) {

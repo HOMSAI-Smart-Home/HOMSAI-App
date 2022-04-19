@@ -19,14 +19,14 @@ class AIServiceRepository implements AIServiceInterface {
   @override
   Future<ConsumptionOptimizationsForecastDto>
       getPhotovoltaicSelfConsumptionOptimizerForecast(
-    Uri url,
     ConsumptionOptimizationsForecastBodyDto optimizationsForecastBody,
     String unit,
   ) async {
     Map<String, dynamic> result = await remoteInterface.post(
-      url.replace(
-        path: ApiProprties
-            .aiServicePhotovoltaicSelfConsumptionOptimizerForecastPath,
+      Uri(
+        host: ApiProprties.aIServiceBaseUrl,
+        path:
+            ApiProprties.aiServicePhotovoltaicSelfConsumptionOptimizerForecast,
         queryParameters: {"unit": unit},
       ),
       headers: {

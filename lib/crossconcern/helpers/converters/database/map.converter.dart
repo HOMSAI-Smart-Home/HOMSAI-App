@@ -5,7 +5,7 @@ import 'package:floor/floor.dart';
 class MapConverter extends TypeConverter<Map<String, String>, String> {
   @override
   Map<String, String> decode(String databaseValue) {
-    return jsonDecode(databaseValue);
+    return Map<String, String>.from(jsonDecode(databaseValue));
   }
 
   @override

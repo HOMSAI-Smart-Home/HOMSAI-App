@@ -1,10 +1,10 @@
 import 'dart:async';
 
 abstract class HomeAssistantScannerInterface {
-  Stream<String> scanNetwork({Duration timeout = const Duration(seconds: 1)});
+  Stream<String> scanNetwork({Duration timeout});
 
   Future<Uri?> canConnectToHomeAssistant({
     required Uri url,
-    Duration timeout = const Duration(seconds: 2),
+    Duration timeout,
   });
 }

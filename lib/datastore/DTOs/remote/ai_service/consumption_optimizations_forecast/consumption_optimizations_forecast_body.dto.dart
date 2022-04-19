@@ -5,11 +5,11 @@ part 'consumption_optimizations_forecast_body.dto.g.dart';
 
 @JsonSerializable()
 class ConsumptionOptimizationsForecastBodyDto {
-  @JsonKey(name:"general_power_meter_data")
-  List<ChangeAttribute> optimizedGeneralPowerMeterData;
-  @JsonKey(name:"without_homsai")
+  @JsonKey(name: "general_power_meter_data")
+  List<HistoryDto> optimizedGeneralPowerMeterData;
+  @JsonKey(name: "without_homsai")
   PVBalanceDto withoutHomsai;
-  @JsonKey(name:"with_homsai")
+  @JsonKey(name: "with_homsai")
   PVBalanceDto withHomsai;
 
   ConsumptionOptimizationsForecastBodyDto(
@@ -18,27 +18,29 @@ class ConsumptionOptimizationsForecastBodyDto {
     this.withHomsai,
   );
 
-  factory ConsumptionOptimizationsForecastBodyDto.fromJson(Map<String, dynamic> json) =>
+  factory ConsumptionOptimizationsForecastBodyDto.fromJson(
+          Map<String, dynamic> json) =>
       _$ConsumptionOptimizationsForecastBodyDtoFromJson(json);
 
-  Map<String, dynamic> toJson() => _$ConsumptionOptimizationsForecastBodyDtoToJson(this);
+  Map<String, dynamic> toJson() =>
+      _$ConsumptionOptimizationsForecastBodyDtoToJson(this);
 }
 
 @JsonSerializable()
 class PVBalanceDto {
-  @JsonKey(name:"bought_energy")
+  @JsonKey(name: "bought_energy")
   double boughtEnergy;
-  @JsonKey(name:"bought_energy_expense")
+  @JsonKey(name: "bought_energy_expense")
   double boughtEnergyExpense;
-  @JsonKey(name:"sold_energy")
+  @JsonKey(name: "sold_energy")
   double soldEnergy;
-  @JsonKey(name:"sold_energy_earning")
+  @JsonKey(name: "sold_energy_earning")
   double soldEnergyEarning;
-  @JsonKey(name:"self_consumption_percent")
+  @JsonKey(name: "self_consumption_percent")
   double selfConsumptionPercent;
   double balance;
 
-    PVBalanceDto(
+  PVBalanceDto(
     this.boughtEnergy,
     this.boughtEnergyExpense,
     this.soldEnergy,

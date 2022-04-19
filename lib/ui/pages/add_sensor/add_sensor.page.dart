@@ -26,7 +26,7 @@ class _AddSensorPageState extends State<AddSensorPage> {
           create: (_) => WebSocketBloc(),
         ),
         BlocProvider<AddSensorBloc>(
-          create: (_) => AddSensorBloc(),
+          create: (context) => AddSensorBloc(context.read<WebSocketBloc>()),
         ),
       ],
       mainAxisAlignment: MainAxisAlignment.center,

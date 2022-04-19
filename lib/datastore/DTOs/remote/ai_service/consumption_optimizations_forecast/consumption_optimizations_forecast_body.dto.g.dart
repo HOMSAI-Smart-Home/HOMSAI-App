@@ -11,7 +11,7 @@ ConsumptionOptimizationsForecastBodyDto
             Map<String, dynamic> json) =>
         ConsumptionOptimizationsForecastBodyDto(
           (json['general_power_meter_data'] as List<dynamic>)
-              .map((e) => ChangeAttribute.fromJson(e as Map<String, dynamic>))
+              .map((e) => HistoryDto.fromJson(e as Map<String, dynamic>))
               .toList(),
           PVBalanceDto.fromJson(json['without_homsai'] as Map<String, dynamic>),
           PVBalanceDto.fromJson(json['with_homsai'] as Map<String, dynamic>),

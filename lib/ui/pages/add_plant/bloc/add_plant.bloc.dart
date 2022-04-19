@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
+import 'package:homsai/crossconcern/helpers/blocs/websocket/websocket.bloc.dart';
 import 'package:homsai/crossconcern/helpers/models/forms/add_plant/coordinate.model.dart';
 import 'package:homsai/crossconcern/helpers/models/forms/add_plant/plant_name.model.dart';
 import 'package:homsai/datastore/DTOs/websocket/configuration/configuration.dto.dart';
@@ -12,6 +13,7 @@ import 'package:homsai/datastore/models/entity/base/base.entity.dart';
 import 'package:homsai/datastore/models/home_assistant_auth.model.dart';
 import 'package:homsai/datastore/remote/websocket/home_assistant_websocket.repository.dart';
 import 'package:homsai/main.dart';
+import 'package:timezone/timezone.dart';
 
 part 'add_plant.event.dart';
 part 'add_plant.state.dart';
@@ -24,8 +26,9 @@ class AddPlantBloc extends Bloc<AddPlantEvent, AddPlantState> {
       getIt.get<AppPreferencesInterface>();
 
   final AppDatabase appDatabase = getIt.get<AppDatabase>();
+  final WebSocketBloc webSocketBloc;
 
-  AddPlantBloc() : super(const AddPlantState()) {
+  AddPlantBloc(this.webSocketBloc) : super(const AddPlantState()) {
     on<ConfigurationFetched>(_onConfigurationFetched);
     on<StatesFetched>(_onStatesFetched);
     on<PlantNameChanged>(_onPlantNameChanged);
@@ -33,6 +36,7 @@ class AddPlantBloc extends Bloc<AddPlantEvent, AddPlantState> {
     on<CoordinateChanged>(_onCoordinateChanged);
     on<CoordinateUnfocused>(_onCoordinateUnfocused);
     on<OnSubmit>(_onSubmit);
+    webSocketBloc.add(ConnectWebSocket(onWebSocketConnected: () {}));
   }
 
   @override
@@ -45,6 +49,8 @@ class AddPlantBloc extends Bloc<AddPlantEvent, AddPlantState> {
     final plantName = PlantName.dirty(event.configuration.locationName);
     final coordinate = Coordinate.dirty(
         "${event.configuration.latitude};${event.configuration.longitude}");
+    getIt
+        .registerSingleton<Location>(getLocation(event.configuration.timezone));
     emit(state.copyWith(
         plantName: plantName,
         initialPlantName: plantName.value,

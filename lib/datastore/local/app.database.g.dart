@@ -475,7 +475,7 @@ class _$ConfigurationDao extends ConfigurationDao {
   final DeletionAdapter<Configuration> _configurationDeletionAdapter;
 
   @override
-  Future<Configuration?> findPlantById(int id) async {
+  Future<Configuration?> findConfigurationById(int id) async {
     return _queryAdapter.query('SELECT * FROM Configuration WHERE id = ?1',
         mapper: (Map<String, Object?> row) => Configuration(
             row['id'] as int?,

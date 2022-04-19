@@ -4,44 +4,8 @@ import 'package:json_annotation/json_annotation.dart';
 part 'history.dto.g.dart';
 
 @JsonSerializable()
-class HistoryDto {
-  List<EntitysHistory> entitysHistory = [];
-
-  HistoryDto(this.entitysHistory);
-
-  factory HistoryDto.fromJson(Map<String, dynamic> json) =>
-      _$HistoryDtoFromJson(json);
-
-  Map<String, dynamic> toJson() => _$HistoryDtoToJson(this);
-
-  HistoryDto.fromList(List jsonList) {
-    for (var element in jsonList) {
-      entitysHistory.add(EntitysHistory.fromList(element));
-    }
-  }
-}
-
-@JsonSerializable()
-class EntitysHistory {
-  List<ChangeAttribute> changes = [];
-
-  EntitysHistory(this.changes);
-
-  factory EntitysHistory.fromJson(Map<String, dynamic> json) =>
-      _$EntitysHistoryFromJson(json);
-
-  Map<String, dynamic> toJson() => _$EntitysHistoryToJson(this);
-
-  EntitysHistory.fromList(List jsonList) {
-    for (var element in jsonList) {
-      changes.add(ChangeAttribute.fromJson(element));
-    }
-  }
-}
-
-@JsonSerializable()
 @DateTimeConverter()
-class ChangeAttribute {
+class HistoryDto {
   Map<String, dynamic>? attributes;
   @JsonKey(name: 'entity_id')
   String? entityId;
@@ -51,7 +15,7 @@ class ChangeAttribute {
   DateTime? lastUpdated;
   String state;
 
-  ChangeAttribute(
+  HistoryDto(
     this.attributes,
     this.entityId,
     this.lastChanged,
@@ -59,8 +23,12 @@ class ChangeAttribute {
     this.state,
   );
 
-  factory ChangeAttribute.fromJson(Map<String, dynamic> json) =>
-      _$ChangeAttributeFromJson(json);
+  factory HistoryDto.fromJson(Map<String, dynamic> json) =>
+      _$HistoryDtoFromJson(json);
 
-  Map<String, dynamic> toJson() => _$ChangeAttributeToJson(this);
+  Map<String, dynamic> toJson() => _$HistoryDtoToJson(this);
+
+  static List<HistoryDto> fromList(List<dynamic> results) {
+    return results.map((result) => HistoryDto.fromJson(result)).toList();
+  }
 }

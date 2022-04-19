@@ -62,6 +62,7 @@ dependencies:
   floor: ^1.2.0
   dropdown_button2: ^1.4.0
   uuid: ^3.0.6
+  timezone: ^0.8.0
 
 dev_dependencies:
   flutter_test:

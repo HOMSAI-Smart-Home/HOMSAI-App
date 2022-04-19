@@ -23,7 +23,7 @@ class _AddPlantPageState extends State<AddPlantPage> {
       providers: [
         BlocProvider<WebSocketBloc>(create: (_) => WebSocketBloc()),
         BlocProvider<AddPlantBloc>(
-          create: (_) => AddPlantBloc(),
+          create: (context) => AddPlantBloc(context.read<WebSocketBloc>()),
         ),
       ],
       mainAxisAlignment: MainAxisAlignment.center,
