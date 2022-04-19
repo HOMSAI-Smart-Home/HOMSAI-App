@@ -40,7 +40,6 @@ class AIServiceRepository implements AIServiceInterface {
 
   @override
   Future<DailyPlanDto> getDailyPlan(
-    Uri url,
     DailyPlanBodyDto dailyPlanBodyDto,
     int deviceNumber,
     List<String> entitysType,
@@ -48,7 +47,8 @@ class AIServiceRepository implements AIServiceInterface {
     dailyPlanBodyDto = _anonymizeDayliPlanBodyDto(dailyPlanBodyDto);
 
     Map<String, dynamic> result = await remoteInterface.post(
-      url.replace(
+      Uri.parse(ApiProprties.aIServiceBaseUrl)
+      .replace(
         path: ApiProprties.aiServiceDailyPlanPath,
         queryParameters: {"n": deviceNumber, "device": entitysType},
       ),
