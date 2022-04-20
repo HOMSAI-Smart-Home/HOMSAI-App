@@ -1,4 +1,4 @@
-package com.example.homsai
+package com.izismartsolutions.homsai
 
 import io.flutter.embedding.android.FlutterActivity
 
