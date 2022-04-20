@@ -25,7 +25,7 @@ class AIServiceRepository implements AIServiceInterface {
   final Map<String, String> _plainToAnon = {};
 
   Map<String, String> _getHeader() {
-    final headers = {"Content-Type": 'application/json'};
+    final headers = {HttpHeaders.contentTypeHeader: 'application/json'};
 
     final AiServiceAuth? token = appPreferences.getAiServiceToken();
     if (token != null && token.token != null) {
@@ -79,6 +79,26 @@ class AIServiceRepository implements AIServiceInterface {
     );
 
     return ConsumptionOptimizationsForecastDto.fromJson(result);
+  }
+
+  @override
+  Future subscribeToBeta(LoginBodyDto loginBodyDto) async {
+    Map<String, dynamic> result = await remoteInterface.post(
+      Uri.parse(ApiProprties.aIServiceBaseUrl).replace(
+        path: ApiProprties.aiServiceSubscribeToBetaPath,
+      ),
+      headers: _getHeader(),
+      body: jsonEncode(loginBodyDto.toJson()),
+    );
+
+    LoginDto loginDto = LoginDto.fromJson(result);
+
+    if (loginDto.code != null) {
+      if (loginDto.code == 20) {
+        throw Exception(loginDto.message);
+      }
+      throw Exception('${loginDto.code}: ${loginDto.message}');
+    }
   }
 
   @override

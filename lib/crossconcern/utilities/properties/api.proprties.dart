@@ -4,6 +4,7 @@ class ApiProprties {
       "/aiservice/forecast/photovoltaic/self-consumption";
   static const aiServiceDailyPlanPath = "/aiservice/statistics/suggestions/dailyplan";
   static const aiServiceLoginPath = "/aiservice/auth/login";
+  static const aiServiceSubscribeToBetaPath = "/aiservice/users/requestdemo";
 }
 
 class HomeAssistantApiProprties {

@@ -193,7 +193,8 @@ class HomeAssistantWebSocketRepository {
       _send();
     }
 
-    events[id++]!.subscribe(subscriber);
+    events[isfetch ? id : eventsId[event]]!.subscribe(subscriber);
+    id++;
   }
 
   void _removeEvent(int id) {

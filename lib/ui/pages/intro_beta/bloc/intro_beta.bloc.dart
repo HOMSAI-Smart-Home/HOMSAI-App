@@ -24,7 +24,6 @@ class IntroBetaBloc extends Bloc<IntroBetaEvent, IntroBetaState> {
     on<EmailChanged>(_onEmailChanged);
     on<EmaiAutocomplete>(_onEmailAutocomplete);
     on<OnSubmit>(_onSubmit);
-    on<OnSubmitSuccess>(_onSubmitSucces);
     on<OnSubmitPending>(_onSubmitPending);
     on<OnSubmitError>(_onSubmitError);
     add(EmaiAutocomplete());
@@ -62,21 +61,6 @@ class IntroBetaBloc extends Bloc<IntroBetaEvent, IntroBetaState> {
   }
 
   void _onSubmit(OnSubmit event, Emitter<IntroBetaState> emit) async {
-    switch (state.introBetaStatus) {
-      case IntroBetaStatus.pending:
-        emit(state.copyWith(
-          introBetaStatus: IntroBetaStatus.emailEntry,
-        ));
-        return;
-      case IntroBetaStatus.notRegistered:
-        emit(state.copyWith(
-          introBetaStatus: IntroBetaStatus.emailEntry,
-        ));
-        return;
-      default:
-        break;
-    }
-
     emit(state.copyWith(
       introBetaStatus: IntroBetaStatus.loading,
     ));
@@ -87,11 +71,17 @@ class IntroBetaBloc extends Bloc<IntroBetaEvent, IntroBetaState> {
     try {
       aiServiceAuth = await aiServiceInterface.getToken(loginBodyDto);
     } catch (e) {
-      return add(OnSubmitError());
+      emit(state.copyWith(
+        introBetaStatus: IntroBetaStatus.notRegistered,
+      ));
+      return;
     }
 
     if (aiServiceAuth == null) {
-      return add(OnSubmitPending());
+      emit(state.copyWith(
+        introBetaStatus: IntroBetaStatus.pending,
+      ));
+      return;
     }
 
     appPreferencesInterface.setAiServicetToken(aiServiceAuth);
@@ -103,25 +93,26 @@ class IntroBetaBloc extends Bloc<IntroBetaEvent, IntroBetaState> {
     }
     appPreferencesInterface.setUserId(user.id!);
 
-    add(OnSubmitSuccess(event.onSubmit));
+    event.onSubmit();
   }
 
   void _onSubmitPending(OnSubmitPending event, Emitter<IntroBetaState> emit) {
     emit(state.copyWith(
-      introBetaStatus: IntroBetaStatus.pending,
+      introBetaStatus: IntroBetaStatus.emailEntry,
+      initialEmail: state.email.value,
     ));
   }
 
-  void _onSubmitSucces(
-    OnSubmitSuccess event,
-    Emitter<IntroBetaState> emit,
-  ) async {
-    event.onSubmitSucces();
-  }
-
-  void _onSubmitError(OnSubmitError event, Emitter<IntroBetaState> emit) async {
+  Future _onSubmitError(
+      OnSubmitError event, Emitter<IntroBetaState> emit) async {
     emit(state.copyWith(
-      introBetaStatus: IntroBetaStatus.notRegistered,
+      introBetaStatus: IntroBetaStatus.loading,
+    ));
+
+    await aiServiceInterface.subscribeToBeta(LoginBodyDto(state.email.value));
+
+    emit(state.copyWith(
+      introBetaStatus: IntroBetaStatus.pending,
     ));
   }
 

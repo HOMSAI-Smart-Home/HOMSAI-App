@@ -21,4 +21,8 @@ abstract class AIServiceInterface {
   Future<AiServiceAuth?> getToken(
     LoginBodyDto loginBodyDto,
   );
+
+  Future subscribeToBeta(
+    LoginBodyDto loginBodyDto,
+  );
 }

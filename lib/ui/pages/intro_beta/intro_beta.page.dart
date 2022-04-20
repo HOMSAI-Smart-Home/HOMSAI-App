@@ -309,9 +309,7 @@ class _IntroBetaSubmit extends StatelessWidget {
         builder: (context, state) {
           return ElevatedButton(
             onPressed: state.status.isValid
-                ? () => context
-                    .read<IntroBetaBloc>()
-                    .add(OnSubmit(() => onResult(true)))
+                ? _buttonFunction(context, state.introBetaStatus)
                 : null,
             child: AnimatedSwitcher(
               duration: const Duration(milliseconds: 250),
@@ -349,5 +347,21 @@ class _IntroBetaSubmit extends StatelessWidget {
               }
             }() as String,
             key: ValueKey(state.introBetaStatus));
+  }
+
+  VoidCallback? _buttonFunction(BuildContext context, IntroBetaStatus status){
+    switch(status){
+      case IntroBetaStatus.emailEntry:
+        return () => context.read<IntroBetaBloc>()
+          .add(OnSubmit(() => onResult(true)));
+      case IntroBetaStatus.loading:
+        return null;
+      case IntroBetaStatus.pending:
+        return () => context.read<IntroBetaBloc>()
+          .add(OnSubmitPending());
+      case IntroBetaStatus.notRegistered:
+        return () => context.read<IntroBetaBloc>()
+          .add(OnSubmitError());
+    }
   }
 }
