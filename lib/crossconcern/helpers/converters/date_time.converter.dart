@@ -14,5 +14,6 @@ class DateTimeConverter implements JsonConverter<DateTime, String> {
   }
 
   @override
-  String toJson(DateTime object) => object.formatHA;
+  String toJson(DateTime object) =>
+      (object is TZDateTime) ? object.format : object.toIso8601String();
 }

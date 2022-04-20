@@ -63,6 +63,8 @@ class Configuration extends BaseEntity {
       this.internalUrl)
       : super(id);
 
+  String get unitSystemType => unitSystem["temperature"] == "°C" ? "EU" : "US";
+
   factory Configuration.fromDto(ConfigurationDto configuration) {
     return Configuration.fromJson(configuration.toJson());
   }

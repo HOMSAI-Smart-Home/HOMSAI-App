@@ -60,10 +60,14 @@ class RemoteRepository implements RemoteInterface {
         .post(
           url,
           headers: headers,
-          body: body,
+          body: (headers?[HttpHeaders.contentTypeHeader] == 'application/json')
+              ? jsonEncode(body)
+              : body,
           encoding: encoding,
         )
         .timeout(timeout);
+    final h = jsonEncode(body);
+    print(h);
     return parseResponse(response);
   }
 

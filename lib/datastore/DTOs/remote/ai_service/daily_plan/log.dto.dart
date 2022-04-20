@@ -1,6 +1,5 @@
 import 'package:homsai/crossconcern/helpers/converters/date_time.converter.dart';
 import 'package:json_annotation/json_annotation.dart';
-
 part 'log.dto.g.dart';
 
 @JsonSerializable()
@@ -10,7 +9,7 @@ class LogDto {
   @JsonKey(name: 'entity_id')
   String? entityId;
   String? name;
-  DateTime? when;
+  DateTime when;
 
   LogDto(
     this.state,

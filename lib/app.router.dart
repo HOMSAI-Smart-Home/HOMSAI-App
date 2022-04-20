@@ -72,12 +72,12 @@ class AuthGuard extends AutoRouteGuard {
       });
 
       if (!_appPreferences.canSkipIntroduction()) {
-        router.replace(IntroBetaRoute(onResult: (success) {
-          router.replace(IntroductionRoute(onResult: (success) {
-            _appPreferences.setIntroduction(true);
-            router.replace(scanner);
-          }));
+        //router.replace(IntroBetaRoute(onResult: (success) {
+        router.replace(IntroductionRoute(onResult: (success) {
+          _appPreferences.setIntroduction(true);
+          router.replace(scanner);
         }));
+        //}));
         return;
       }
 

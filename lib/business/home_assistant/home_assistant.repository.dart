@@ -218,7 +218,7 @@ class HomeAssistantRepository implements HomeAssistantInterface {
 
     url = url.replace(
       path: HomeAssistantApiProprties.historyPath +
-          (historyBodyDto?.start?.formatHA ?? ""),
+          "/${historyBodyDto?.start?.toIso8601String() ?? ""}",
       queryParameters: historyBodyDto?.toJson(),
     );
 
@@ -238,7 +238,7 @@ class HomeAssistantRepository implements HomeAssistantInterface {
 
     url = url.replace(
       path: HomeAssistantApiProprties.logbookPath +
-          (logbookBodyDto?.start?.formatHA ?? ""),
+          (logbookBodyDto?.start?.toIso8601String() ?? ""),
       queryParameters: logbookBodyDto?.toJson(),
     );
 

@@ -186,7 +186,8 @@ class HomeAssistantWebSocketRepository {
     Map<String, dynamic> payload,
   ) {
     if (isfetch || !eventsId.containsKey(event)) {
-      isfetch ? {} : eventsId[event] = id;
+      if (!isfetch) eventsId[event] = id;
+
       events[id] = WebSocketSubscribersHandler(isfetch, event);
 
       _message.add(jsonEncode(payload));

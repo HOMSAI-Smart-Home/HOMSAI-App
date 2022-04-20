@@ -138,15 +138,16 @@ class HomeAssistantScanBloc
     emit(state.copyWith(
         status: HomeAssistantScanStatus.authenticationInProgress));
 
-    await homeAssistantRepository
-        .authenticate(url: Uri.parse(state.selectedUrl.value))
-        .then((authResult) {
+    try {
+      final authResult = await homeAssistantRepository.authenticate(
+          url: Uri.parse(state.selectedUrl.value));
       appPreferencesInterface.setHomeAssistantToken(authResult);
-
-      return emit(
+      emit(
         state.copyWith(status: HomeAssistantScanStatus.authenticationSuccess),
       );
-    }).catchError((error, stackTrace) => emit(state.copyWith(
-            status: HomeAssistantScanStatus.authenticationFailure)));
+    } catch (e) {
+      emit(state.copyWith(
+          status: HomeAssistantScanStatus.authenticationFailure));
+    }
   }
 }

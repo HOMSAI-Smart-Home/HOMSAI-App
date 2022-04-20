@@ -3,8 +3,8 @@ import 'dart:io';
 
 import 'package:homsai/business/ai_service/ai_service.interface.dart';
 import 'package:homsai/crossconcern/utilities/properties/api.proprties.dart';
-import 'package:homsai/datastore/DTOs/remote/ai_service/consumption_optimizations_forecast/consumption_optimizations_forecast.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/ai_service/consumption_optimizations_forecast/consumption_optimizations_forecast_body.dto.dart';
+import 'package:homsai/datastore/DTOs/remote/ai_service/consumption_optimizations_forecast/consumption_optimizations_forecast.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/ai_service/daily_plan/daily_plan.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/ai_service/daily_plan/daily_plan_body.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/ai_service/daily_plan/log.dto.dart';
@@ -20,6 +20,7 @@ class AIServiceRepository implements AIServiceInterface {
   final RemoteInterface remoteInterface = getIt.get<RemoteInterface>();
   final AppPreferencesInterface appPreferences =
       getIt.get<AppPreferencesInterface>();
+
   final Uuid uuid = const Uuid();
   final Map<String, String> _anonToPlain = {};
   final Map<String, String> _plainToAnon = {};
@@ -29,7 +30,7 @@ class AIServiceRepository implements AIServiceInterface {
 
     final AiServiceAuth? token = appPreferences.getAiServiceToken();
     if (token != null && token.token != null) {
-      headers['Authorization'] = 'Bearer ' + token.token!;
+      headers[HttpHeaders.authorizationHeader] = 'Bearer ' + token.token!;
     }
 
     return headers;

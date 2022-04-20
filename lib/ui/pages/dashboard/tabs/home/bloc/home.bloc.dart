@@ -4,14 +4,19 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:homsai/business/ai_service/ai_service.interface.dart';
 import 'package:homsai/business/home_assistant/home_assistant.interface.dart';
 import 'package:homsai/crossconcern/components/charts/daily_consumption_chart.widget.dart';
 import 'package:homsai/crossconcern/helpers/extensions/list.extension.dart';
 import 'package:homsai/crossconcern/utilities/util/plot.util.dart';
+import 'package:homsai/datastore/DTOs/remote/ai_service/consumption_optimizations_forecast/consumption_optimizations_forecast_body.dto.dart';
+import 'package:homsai/datastore/DTOs/remote/history/history.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/history/history_body.dto.dart';
 import 'package:homsai/datastore/local/app.database.dart';
 import 'package:homsai/datastore/models/database/configuration.entity.dart';
 import 'package:homsai/datastore/models/entity/base/base.entity.dart';
+import 'package:homsai/datastore/models/entity/sensors/mesurable/mesurable_sensor.entity.dart';
+import 'package:homsai/datastore/models/entity/sensors/sensor.entity.dart';
 import 'package:homsai/datastore/remote/websocket/home_assistant_websocket.repository.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.dart';
 import 'package:homsai/datastore/models/entity/light/light.entity.dart';
@@ -25,6 +30,8 @@ part 'home.state.dart';
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final HomeAssistantWebSocketRepository webSocketRepository =
       getIt.get<HomeAssistantWebSocketRepository>();
+
+  final AIServiceInterface aiServiceInterface = getIt.get<AIServiceInterface>();
 
   final HomeAssistantInterface homeAssistantRepository =
       getIt.get<HomeAssistantInterface>();
@@ -100,15 +107,30 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           await _getPlotInfo(plant.productionSensor, plant.url);
 
       List<FlSpot> autoConsumption = [];
+      List<FlSpot> autoConsumptionOptimization =
+          DailyConsumptionChart.emptyPlot;
       if (consumptionInfo.plot.isNotEmpty && productionInfo.plot.isNotEmpty) {
         autoConsumption = consumptionInfo.plot.intersect(productionInfo.plot);
+        final result = await aiServiceInterface
+            .getPhotovoltaicSelfConsumptionOptimizerForecast(
+                ConsumptionOptimizationsForecastBodyDto(
+                  consumptionInfo.history,
+                  MesurableSensorAttributes.fromJson(
+                          consumptionInfo.history.first.attributes!)
+                      .unit,
+                  productionInfo.history,
+                  MesurableSensorAttributes.fromJson(
+                          productionInfo.history.first.attributes!)
+                      .unit,
+                ),
+                configuration!.unitSystemType);
       }
 
       emit(state.copyWith(
         consumptionPlot: consumptionInfo.plot,
         productionPlot: productionInfo.plot,
         autoConsumption: autoConsumption,
-        autoConsumptionOptimization: DailyConsumptionChart.emptyPlot,
+        autoConsumptionOptimization: autoConsumptionOptimization,
         minOffset: consumptionInfo.minRange <= productionInfo.minRange
             ? consumptionInfo.minRange
             : productionInfo.minRange,
@@ -124,21 +146,21 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         PlotInfo(maxRange: Offset(Duration.minutesPerDay.toDouble(), 4));
     if (sensor == null) return info;
 
-    final body =
+    final historyBodyDto =
         HistoryBodyDto(sensor, minimalResponse: true, noAttributes: true);
-    final plot = await _getPlot(url, body);
+    final history = await homeAssistantRepository.getHistory(Uri.parse(url),
+        historyBodyDto: historyBodyDto);
+    final plot = await _parsePlot(history);
 
     return info.copyWith(
       plot: plot,
       minRange: Offset(plot.first.x, max(0, plot.min.y)),
       maxRange: Offset(plot.last.x, plot.max.y),
+      history: history,
     );
   }
 
-  Future<List<FlSpot>> _getPlot(
-      String url, HistoryBodyDto historyBodyDto) async {
-    final results = await homeAssistantRepository.getHistory(Uri.parse(url),
-        historyBodyDto: historyBodyDto);
+  Future<List<FlSpot>> _parsePlot(List<HistoryDto> results) async {
     final plot = results
         .map(
           (result) => FlSpot(
@@ -158,19 +180,25 @@ class PlotInfo {
   final List<FlSpot> plot;
   final Offset minRange;
   final Offset maxRange;
+  final List<HistoryDto> history;
 
-  PlotInfo(
-      {this.plot = const [],
-      this.minRange = Offset.zero,
-      this.maxRange = Offset.infinite});
+  PlotInfo({
+    this.plot = const [],
+    this.minRange = Offset.zero,
+    this.maxRange = Offset.infinite,
+    this.history = const [],
+  });
 
   PlotInfo copyWith({
     List<FlSpot>? plot,
     Offset? minRange,
     Offset? maxRange,
+    List<HistoryDto>? history,
   }) =>
       PlotInfo(
-          plot: plot ?? this.plot,
-          minRange: minRange ?? this.minRange,
-          maxRange: maxRange ?? this.maxRange);
+        plot: plot ?? this.plot,
+        minRange: minRange ?? this.minRange,
+        maxRange: maxRange ?? this.maxRange,
+        history: history ?? this.history,
+      );
 }
