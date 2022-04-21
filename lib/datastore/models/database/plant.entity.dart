@@ -10,9 +10,10 @@ import 'package:homsai/datastore/models/database/configuration.entity.dart';
   ),
 ])
 class Plant extends BaseEntity {
-  final String url;
-  @ColumnInfo(name: 'remote')
-  final bool isUrlRemote;
+  @ColumnInfo(name: 'local_url')
+  final String localUrl;
+  @ColumnInfo(name: 'remote_url')
+  final String remoteUrl;
   final String name;
   final double latitude;
   final double longitude;
@@ -29,13 +30,13 @@ class Plant extends BaseEntity {
   String get coordinates => "$latitude;$longitude";
 
   Plant(
-    this.url,
+    this.localUrl,
+    this.remoteUrl,
     this.name,
     this.latitude,
     this.longitude,
     this.configurationId, {
     int? id,
-    this.isUrlRemote = false,
     this.productionSensor,
     this.consumptionSensor,
     this.isActive = false,
@@ -47,7 +48,8 @@ class Plant extends BaseEntity {
     String? consumptionSensor,
   }) =>
       Plant(
-        url,
+        localUrl,
+        remoteUrl,
         name,
         latitude,
         longitude,

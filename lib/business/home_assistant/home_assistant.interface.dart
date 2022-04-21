@@ -5,7 +5,10 @@ import 'package:homsai/datastore/DTOs/remote/history/history_body.dto.dart';
 import 'package:homsai/datastore/models/home_assistant_auth.model.dart';
 
 abstract class HomeAssistantInterface {
-  Future<HomeAssistantAuth> authenticate({required Uri url});
+  Future<HomeAssistantAuth> authenticate({
+    required Uri url,
+    required bool remote,
+  });
   Future<StreamSubscription<String>> scan({
     required void Function(String) onData,
     Function? onError,

@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:homsai/business/home_assistant/home_assistant.interface.dart';
+import 'package:homsai/crossconcern/components/common/checkbox/checkbox_bloc.widget.dart';
+import 'package:homsai/crossconcern/components/common/checkbox/checkbox_event.widget.dart';
 import 'package:homsai/crossconcern/helpers/models/forms/url.model.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.dart';
 import 'package:homsai/globalkeys.widget.dart';
@@ -20,8 +22,10 @@ class HomeAssistantScanBloc
       getIt.get<AppPreferencesInterface>();
 
   StreamSubscription<String>? _scanSubscription;
+  CheckboxBloc checkboxBloc;
 
-  HomeAssistantScanBloc() : super(const HomeAssistantScanState()) {
+  HomeAssistantScanBloc(this.checkboxBloc)
+      : super(const HomeAssistantScanState()) {
     on<ScanPressed>(_onScanPressed, transformer: restartable());
     on<ManualUrlPressed>(_onManualUrlPressed);
     on<ManualUrlChanged>(_onManualUrlChanged);
@@ -123,6 +127,7 @@ class HomeAssistantScanBloc
 
   void _onManualToggleRemote(
       ManualToggleRemote event, Emitter<HomeAssistantScanState> emit) {
+    checkboxBloc.add(Toggle());
     emit(state.copyWith(
       remoteUrl: !state.remoteUrl,
     ));
@@ -148,7 +153,10 @@ class HomeAssistantScanBloc
 
     try {
       final authResult = await homeAssistantRepository.authenticate(
-          url: Uri.parse(state.selectedUrl.value));
+          url: Uri.parse(
+            state.selectedUrl.value,
+          ),
+          remote: state.remoteUrl);
       appPreferencesInterface.setHomeAssistantToken(authResult);
       emit(
         state.copyWith(status: HomeAssistantScanStatus.authenticationSuccess),

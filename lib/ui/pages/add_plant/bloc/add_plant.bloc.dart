@@ -113,7 +113,8 @@ class AddPlantBloc extends Bloc<AddPlantEvent, AddPlantState> {
     final configurationId =
         await appDatabase.configurationDao.insertItem(state.configuration!);
     final plantId = await appDatabase.plantDao.insertItem(Plant(
-      (auth?.url ?? ""),
+      (auth?.localUrl ?? ""),
+      (auth?.remoteUrl ?? ""),
       state.plantName.value,
       double.parse(latitude),
       double.parse(longitude),

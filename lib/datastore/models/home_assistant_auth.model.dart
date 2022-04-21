@@ -4,14 +4,15 @@ part 'home_assistant_auth.model.g.dart';
 
 @JsonSerializable()
 class HomeAssistantAuth {
-  String url;
+  String localUrl;
+  String remoteUrl;
   String token;
   int expires;
   String refreshToken;
   String tokenType;
 
   HomeAssistantAuth(
-      this.url, this.token, this.expires, this.refreshToken, this.tokenType);
+      this.localUrl, this.remoteUrl, this.token, this.expires, this.refreshToken, this.tokenType);
 
   factory HomeAssistantAuth.fromJson(Map<String, dynamic> json) =>
       _$HomeAssistantAuthFromJson(json);

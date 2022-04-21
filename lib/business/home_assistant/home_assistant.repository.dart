@@ -33,10 +33,10 @@ class HomeAssistantRepository implements HomeAssistantInterface {
   final RemoteInterface remote = getIt.get<RemoteInterface>();
 
   @override
-  Future<HomeAssistantAuth> authenticate({required Uri url}) {
+  Future<HomeAssistantAuth> authenticate({required Uri url, required bool remote}) {
     return canConnectToHomeAssistant(url: url).then((host) {
       throwIf(host == null, HostsNotFound());
-      return authenticateHomeAssistant(url: host!);
+      return authenticateHomeAssistant(url: host!, remote: remote);
     });
   }
 
@@ -51,7 +51,7 @@ class HomeAssistantRepository implements HomeAssistantInterface {
     return headers;
   }
 
-  Future<HomeAssistantAuth> authenticateHomeAssistant({required Uri url}) {
+  Future<HomeAssistantAuth> authenticateHomeAssistant({required Uri url, required bool remote}) {
     const String callbackUrlScheme =
         HomeAssistantApiProprties.authCallbackScheme;
 
@@ -68,7 +68,7 @@ class HomeAssistantRepository implements HomeAssistantInterface {
       url: url.toString(),
       callbackUrlScheme: callbackUrlScheme,
     ).then((result) {
-      return _getToken(url: url, result: result);
+      return _getToken(url: url, result: result, remote: remote);
     });
   }
 
@@ -129,6 +129,7 @@ class HomeAssistantRepository implements HomeAssistantInterface {
   Future<HomeAssistantAuth> _getToken(
       {required Uri url,
       required String result,
+      required bool remote,
       Duration timeout = const Duration(seconds: 2)}) async {
     Map<String, dynamic> data;
     Map<String, dynamic> body;
@@ -149,7 +150,8 @@ class HomeAssistantRepository implements HomeAssistantInterface {
     now = DateTime.now().millisecondsSinceEpoch ~/ 1000;
 
     return HomeAssistantAuth(
-        url.origin,
+        !remote ? url.origin : "",
+        remote ? url.origin : "",
         data['access_token'],
         now + int.parse(data['expires_in'].toString()),
         data["refresh_token"],
@@ -225,7 +227,8 @@ class HomeAssistantRepository implements HomeAssistantInterface {
       url,
       headers: _getHeader(),
     );
-    final history = HistoryDto.fromList(response["data"][0]);
+    print(response);
+    final history = HistoryDto.fromList(response["data"]);
     return history;
   }
 

@@ -8,7 +8,8 @@ part of 'home_assistant_auth.model.dart';
 
 HomeAssistantAuth _$HomeAssistantAuthFromJson(Map<String, dynamic> json) =>
     HomeAssistantAuth(
-      json['url'] as String,
+      json['localUrl'] as String,
+      json['remoteUrl'] as String,
       json['token'] as String,
       json['expires'] as int,
       json['refreshToken'] as String,
@@ -17,7 +18,8 @@ HomeAssistantAuth _$HomeAssistantAuthFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$HomeAssistantAuthToJson(HomeAssistantAuth instance) =>
     <String, dynamic>{
-      'url': instance.url,
+      'localUrl': instance.localUrl,
+      'remoteUrl': instance.remoteUrl,
       'token': instance.token,
       'expires': instance.expires,
       'refreshToken': instance.refreshToken,

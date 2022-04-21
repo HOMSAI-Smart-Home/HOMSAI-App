@@ -1,41 +1,16 @@
-import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:homsai/crossconcern/components/common/checkbox/checkbox_event.widget.dart';
+import 'package:homsai/crossconcern/components/common/checkbox/checkbox_state.widget.dart';
 
-class CheckboxBloc extends Bloc<CheckboxEvent, CheckboxScanState>{
-  CheckboxBloc(initialState) : super(initialState){
+class CheckboxBloc extends Bloc<CheckboxEvent, CheckboxState> {
+  bool initialValue;
+  CheckboxBloc(this.initialValue) : super(const CheckboxState()) {
     on<Toggle>(_onToggle);
   }
 
-  void _onToggle(Toggle event, Emitter<CheckboxScanState> emit){
+  void _onToggle(Toggle event, Emitter<CheckboxState> emit) {
     emit(state.copyWith(
       remote: !state.remote,
     ));
   }
 }
-
-class CheckboxScanState {
-  const CheckboxScanState({
-    required this.remote,
-  });
-
-  final bool remote;
-
-  CheckboxScanState copyWith({
-    bool? remote,
-  }) {
-    return CheckboxScanState(
-      remote: remote ?? this.remote,
-      
-    );
-  }
-
-  @override
-  List<Object> get props => [remote];
-}
-
-class CheckboxEvent extends Equatable {
-  @override
-  List<Object?> get props => [];
-}
-
-class Toggle extends CheckboxEvent {}

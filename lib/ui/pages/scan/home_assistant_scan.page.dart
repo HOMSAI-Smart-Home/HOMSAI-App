@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:homsai/crossconcern/components/common/checkbox/checkbox.widget.dart';
+import 'package:homsai/crossconcern/components/common/checkbox/checkbox_bloc.widget.dart';
 import 'package:homsai/crossconcern/components/common/radio.widget.dart';
 import 'package:homsai/crossconcern/components/common/scaffold/homsai_bloc_scaffold.widget.dart';
 import 'package:homsai/globalkeys.widget.dart';
@@ -46,8 +47,11 @@ class _HomeAssistantScanPage extends State<HomeAssistantScanPage> {
   Widget build(BuildContext context) {
     return HomsaiBlocScaffold(
       providers: [
+        BlocProvider<CheckboxBloc>(
+          create: (_) => CheckboxBloc(false),
+        ),
         BlocProvider<HomeAssistantScanBloc>(
-          create: (BuildContext context) => HomeAssistantScanBloc(),
+          create: (context) => HomeAssistantScanBloc(context.read<CheckboxBloc>()),
         ),
       ],
       children: <Widget>[
@@ -428,9 +432,8 @@ class _SearchLocalIntanceManualCheckbox extends StatelessWidget {
     return InkWell(
       child: SizedBox(
         child: Row(children: [
-          CheckboxButton(
-            initialValue: false,
-            onChanged: (v) => print("yoo"),
+          const CheckboxButton(
+            initialValue: false
           ),
           const SizedBox(
             width: 8,
