@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:homsai/crossconcern/components/common/checkbox/checkbox.widget.dart';
 import 'package:homsai/crossconcern/components/common/radio.widget.dart';
 import 'package:homsai/crossconcern/components/common/scaffold/homsai_bloc_scaffold.widget.dart';
 import 'package:homsai/globalkeys.widget.dart';
@@ -412,8 +413,36 @@ class _SearchLocalIntanceManual extends StatelessWidget {
         const SizedBox(
           height: 8,
         ),
-        // TODO: Add Checkbox
+        _SearchLocalIntanceManualCheckbox(),
+        const SizedBox(
+          height: 8,
+        ),
       ],
+    );
+  }
+}
+
+class _SearchLocalIntanceManualCheckbox extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      child: SizedBox(
+        child: Row(children: [
+          CheckboxButton(
+            initialValue: false,
+            onChanged: (v) => print("yoo"),
+          ),
+          const SizedBox(
+            width: 8,
+          ),
+          Text(
+            HomsaiLocalizations.of(context)!.homeAssistantScanManualCheckbox,
+            style: Theme.of(context).textTheme.bodyText1!,
+          ),
+        ]),
+      ),
+      onTap: () =>
+          context.read<HomeAssistantScanBloc>().add(ManualToggleRemote()),
     );
   }
 }

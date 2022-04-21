@@ -35,6 +35,7 @@
     "homeAssistantScanningError": "No local instances found",
     "homeAssistantScanningProgress": "Scanning...",
     "homeAssistantScanManualLabel": "Enter Url",
+    "homeAssistantScanManualCheckbox": "This is a remote URL",
     "homeAssistantScanLabel": "Scan",
     "homeAssistantScanManualError": "Invalid url",
     "homeAssistantScanManualAuthError": "Cannot connect to Home Assistant",

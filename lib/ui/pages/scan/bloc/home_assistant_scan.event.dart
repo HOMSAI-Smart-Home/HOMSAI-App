@@ -31,6 +31,8 @@ class ManualUrlChanged extends HomeAssistantEvent {
 
 class ManualUrlUnfocused extends HomeAssistantEvent {}
 
+class ManualToggleRemote extends HomeAssistantEvent {}
+
 class UrlSubmitted extends HomeAssistantEvent {}
 
 class HostFound extends HomeAssistantEvent {

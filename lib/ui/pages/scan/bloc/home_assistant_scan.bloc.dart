@@ -26,6 +26,7 @@ class HomeAssistantScanBloc
     on<ManualUrlPressed>(_onManualUrlPressed);
     on<ManualUrlChanged>(_onManualUrlChanged);
     on<ManualUrlUnfocused>(_onManualUrlUnfocused);
+    on<ManualToggleRemote>(_onManualToggleRemote);
     on<UrlSelected>(_onUrlSelected);
     on<UrlSubmitted>(_onUrlSubmitted);
     on<HostFound>(_onHostFound, transformer: sequential());
@@ -117,6 +118,13 @@ class HomeAssistantScanBloc
     final url = Url.dirty(state.selectedUrl.value);
     emit(state.copyWith(
       selectedUrl: url,
+    ));
+  }
+
+  void _onManualToggleRemote(
+      ManualToggleRemote event, Emitter<HomeAssistantScanState> emit) {
+    emit(state.copyWith(
+      remoteUrl: !state.remoteUrl,
     ));
   }
 

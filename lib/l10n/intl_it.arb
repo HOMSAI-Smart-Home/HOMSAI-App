@@ -35,6 +35,7 @@
     "homeAssistantScanningError": "Nessuna istanza locale trovata",
     "homeAssistantScanningProgress": "Ricerca...",
     "homeAssistantScanManualLabel": "Inserisci Url",
+    "homeAssistantScanManualCheckbox": "Questo è un URL remoto",
     "homeAssistantScanLabel": "Scansiona",
     "homeAssistantScanManualError": "Url invalido",
     "homeAssistantScanManualAuthError": "Impossibile connettersi a Home Assistant",
