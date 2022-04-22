@@ -96,7 +96,7 @@ class _SearchLocalInstanceState extends State<_SearchLocalInstance> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<HomeAssistantScanBloc>(context).add(ScanPressed());
+    BlocProvider.of<HomeAssistantScanBloc>(context).add(const ScanPressed());
   }
 
   @override
@@ -154,15 +154,9 @@ class _SearchLocalInstanceContainerState
   Widget? buildChildByStatus(HomeAssistantScanState state) {
     switch (state.status) {
       case HomeAssistantScanStatus.scanningInProgress:
-        if (state.scannedUrls.isEmpty) {
-          child = _SearchLocalIntanceScanning(
-            key: UniqueKey(),
-          );
-        } else {
-          child = _SearchLocalIntanceListResults(
-            key: UniqueKey(),
-          );
-        }
+        child = _SearchLocalIntanceScanning(
+          key: UniqueKey(),
+        );
         break;
       case HomeAssistantScanStatus.scanningSuccess:
         child = _SearchLocalIntanceListResults(
@@ -567,7 +561,7 @@ class _ContinueRetryButton extends StatelessWidget {
                     context.read<HomeAssistantScanBloc>().add(UrlSubmitted())
                 : state.status.isScanningFailure
                     ? () =>
-                        context.read<HomeAssistantScanBloc>().add(ScanPressed())
+                        context.read<HomeAssistantScanBloc>().add(const ScanPressed())
                     : null,
             child: AnimatedSwitcher(
               duration: const Duration(milliseconds: 250),
@@ -603,7 +597,7 @@ class _ManualUrlButton extends StatelessWidget {
   void Function()? onPressed(
       BuildContext context, HomeAssistantScanState state) {
     return state.status.isManual
-        ? () => context.read<HomeAssistantScanBloc>().add(ScanPressed())
+        ? () => context.read<HomeAssistantScanBloc>().add(const ScanPressed())
         : () => context.read<HomeAssistantScanBloc>().add(ManualUrlPressed());
   }
 

@@ -7,7 +7,14 @@ abstract class HomeAssistantEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class ScanPressed extends HomeAssistantEvent {}
+class ScanPressed extends HomeAssistantEvent {
+  const ScanPressed({this.timeout = const Duration(seconds: 3)});
+
+  final Duration timeout;
+
+  @override
+  List<Object> get props => [timeout];
+}
 
 class ManualUrlPressed extends HomeAssistantEvent {}
 

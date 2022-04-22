@@ -35,7 +35,6 @@ class HomeAssistantScanBloc
     on<UrlSubmitted>(_onUrlSubmitted);
     on<HostFound>(_onHostFound, transformer: sequential());
     on<ScanFailed>(_onScanFailure);
-    on<ScanCompleted>(_onScanCompleted);
   }
 
   @override
@@ -54,30 +53,35 @@ class HomeAssistantScanBloc
       ScanPressed event, Emitter<HomeAssistantScanState> emit) async {
     emit(state.copyWith(
       selectedUrl: const Url.pure(),
-      scannedUrls: [],
-      status: HomeAssistantScanStatus.scanningInProgress,
+      scannedUrls: state.scannedUrls.isEmpty ? [] : state.scannedUrls,
+      status: state.status != HomeAssistantScanStatus.scanningSuccess
+          ? HomeAssistantScanStatus.scanningInProgress
+          : state.status,
     ));
 
-    _scanSubscription?.cancel();
-    _scanSubscription = await homeAssistantRepository.scan(
+    try {
+      await _scanSubscription?.cancel();
+      _scanSubscription = await homeAssistantRepository.scan(
         onData: (host) => add(HostFound(host: host)),
-        onError: (error, stackTrace) => add(ScanFailed(error: error)));
-    _scanSubscription?.onDone(() {
-      if (state.scannedUrls.isEmpty) {
-        add(ScanFailed(error: Error()));
-      } else {
-        add(ScanCompleted());
-      }
-    });
+        timeout: event.timeout,
+      );
+      _scanSubscription?.onDone(() => add(ScanPressed(
+          timeout: Duration(seconds: event.timeout.inSeconds * 2))));
+    } catch (e) {
+      await Future.delayed(const Duration(seconds: 1));
+      add(ScanFailed(error: Error()));
+    }
   }
 
   void _onHostFound(HostFound hostFound, Emitter<HomeAssistantScanState> emit) {
     List<String> scannedUrls = state.scannedUrls;
     if (!state.status.isManual) {
+      if (scannedUrls.contains(hostFound.host)) return;
+
       scannedUrls.add(hostFound.host);
       emit(state.copyWith(
-        scannedUrls: List.from(scannedUrls),
-      ));
+          scannedUrls: List.from(scannedUrls),
+          status: HomeAssistantScanStatus.scanningSuccess));
       GlobalKeys.scannedUrlsAnimatedList.currentState?.insertItem(
           scannedUrls.length - 1,
           duration: const Duration(milliseconds: 250));
@@ -88,13 +92,6 @@ class HomeAssistantScanBloc
       ScanFailed possibleHostFound, Emitter<HomeAssistantScanState> emit) {
     if (!state.status.isManual) {
       emit(state.copyWith(status: HomeAssistantScanStatus.scanningFailure));
-    }
-  }
-
-  void _onScanCompleted(
-      ScanCompleted scanCompleted, Emitter<HomeAssistantScanState> emit) {
-    if (!state.status.isManual) {
-      emit(state.copyWith(status: HomeAssistantScanStatus.scanningSuccess));
     }
   }
 

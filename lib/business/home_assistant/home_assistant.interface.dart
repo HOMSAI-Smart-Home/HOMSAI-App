@@ -12,6 +12,7 @@ abstract class HomeAssistantInterface {
   Future<StreamSubscription<String>> scan({
     required void Function(String) onData,
     Function? onError,
+    Duration? timeout,
   });
   Future<Uri?> canConnectToHomeAssistant({
     required Uri url,

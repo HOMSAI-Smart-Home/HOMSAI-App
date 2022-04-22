@@ -115,9 +115,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           () => getLocation(configuration!.timezone));
 
       final consumptionInfo =
-          await _getPlotInfoFromSensor(plant.consumptionSensor, plant.url);
+          await _getPlotInfoFromSensor(plant.consumptionSensor, plant.localUrl);
       final productionInfo =
-          await _getPlotInfoFromSensor(plant.productionSensor, plant.url);
+          await _getPlotInfoFromSensor(plant.productionSensor, plant.localUrl);
 
       final productionSensor = await appDatabase.homeAssitantDao
           .findEntity<MesurableSensorEntity>(

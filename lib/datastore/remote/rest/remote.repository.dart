@@ -20,7 +20,7 @@ class RemoteRepository implements RemoteInterface {
     try {
       body = json.decode(response.body);
     } on FormatException {
-      body = {'data': response.bodyBytes};
+      body = {'data': response.body};
     }
 
     bodyList = body;

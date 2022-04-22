@@ -76,13 +76,16 @@ class HomeAssistantRepository implements HomeAssistantInterface {
   Future<StreamSubscription<String>> scan({
     required void Function(String) onData,
     Function? onError,
+    Duration? timeout,
   }) async {
     throwIf(
       await networkManager.getConnectionType() != ConnectivityResult.wifi,
       Exception("Wifi Disabled"),
     );
 
-    return _homeAssistantScanner.scanNetwork().listen(onData, onError: onError);
+    return _homeAssistantScanner
+        .scanNetwork(timeout: timeout ?? const Duration(seconds: 3))
+        .listen(onData, onError: onError);
   }
 
   @override

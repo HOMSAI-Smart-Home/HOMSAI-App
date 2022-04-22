@@ -32,7 +32,7 @@
     "homeAssistantScanDialogTitle": "Connect to the WI-FI!",
     "homeAssistantScanDialogMessage": "To identify the local instance of *Home Assistant*, the smartphone must be connected to the same Wi-Fi as the home automation hub.",
     "homeAssistantScanTitle": "Searching local instance",
-    "homeAssistantScanningError": "No local instances found",
+    "homeAssistantScanningError": "No connection detected",
     "homeAssistantScanningProgress": "Scanning...",
     "homeAssistantScanManualLabel": "Enter Url",
     "homeAssistantScanManualCheckbox": "This is a remote URL",

@@ -1,13 +1,12 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:get_it/get_it.dart';
 import 'package:homsai/business/home_assistant_scanner/home_assistant_scanner.interface.dart';
 import 'package:network_info_plus/network_info_plus.dart';
 
 class HomeAssistantScannerRepository implements HomeAssistantScannerInterface {
   @override
-  Stream<String> scanNetwork({Duration timeout = const Duration(seconds: 3)}) {
+  Stream<String> scanNetwork({required Duration timeout}) {
     late StreamController<String> controller;
     bool cancel = false;
 
@@ -15,11 +14,16 @@ class HomeAssistantScannerRepository implements HomeAssistantScannerInterface {
       String? ip = await (NetworkInfo().getWifiIP());
       String? subMask = await (NetworkInfo().getWifiSubmask());
 
-      throwIf(ip == null, Exception('Invalid ip address'));
-      throwIf(subMask == null || subMask != '255.255.255.0',
-          Exception('Invalid subnet'));
+      if (ip == null) {
+        controller.addError(Error());
+        return;
+      }
+      if (subMask == null || subMask != '255.255.255.0') {
+        controller.addError(Error());
+        return;
+      }
 
-      final String net = ip!.substring(0, ip.lastIndexOf('.'));
+      final String net = ip.substring(0, ip.lastIndexOf('.'));
       const int port = 8123;
 
       int remainingHosts = 253;
