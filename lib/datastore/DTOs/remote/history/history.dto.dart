@@ -6,12 +6,13 @@ part 'history.dto.g.dart';
 @JsonSerializable()
 @DateTimeConverter()
 class HistoryDto {
+  @JsonKey(includeIfNull: false)
   Map<String, dynamic>? attributes;
-  @JsonKey(name: 'entity_id')
+  @JsonKey(name: 'entity_id', includeIfNull: false)
   String? entityId;
   @JsonKey(name: 'last_changed')
   DateTime lastChanged;
-  @JsonKey(name: 'last_updated')
+  @JsonKey(name: 'last_updated', includeIfNull: false)
   DateTime? lastUpdated;
   String state;
 

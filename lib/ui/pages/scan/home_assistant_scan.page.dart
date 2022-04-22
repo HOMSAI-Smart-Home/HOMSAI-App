@@ -521,7 +521,7 @@ class _ContinueRetryButton extends StatelessWidget {
       listenWhen: (previous, current) => previous.status != current.status,
       listener: (context, state) {
         if (state.status.isAuthenticationSuccess) {
-          context.router.popAndPush(AddPlantRoute(onResult: onResult));
+          context.router.replace(AddPlantRoute(onResult: onResult));
         }
       },
       child: BlocBuilder<HomeAssistantScanBloc, HomeAssistantScanState>(

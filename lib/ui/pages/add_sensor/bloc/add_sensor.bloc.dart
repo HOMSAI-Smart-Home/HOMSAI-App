@@ -20,9 +20,7 @@ class AddSensorBloc extends Bloc<AddSensorEvent, AddSensorState> {
     on<ProductionSensorChanged>(_onProductionSensorChanged);
     on<ConsumptionSensorChanged>(_onConsumptionSensorChanged);
     on<OnSubmit>(_onSubmit);
-    webSocketBloc.add(ConnectWebSocket(onWebSocketConnected: () {
-      add(RetrieveSensors());
-    }));
+    add(RetrieveSensors());
   }
 
   @override

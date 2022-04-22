@@ -41,8 +41,8 @@ class _DashboardPageState extends State<DashboardPage> {
               ),
             ],
             appBar: _dashboardAppBar(context),
-            bottomNavigationBar: _DashboardBottomNavigationBar(
-                tabsRouter: AutoTabsRouter.of(context)),
+            // bottomNavigationBar: _DashboardBottomNavigationBar(
+            //    tabsRouter: AutoTabsRouter.of(context)),
             mainAxisAlignment: MainAxisAlignment.center,
             child: FadeTransition(
               opacity: animation,
@@ -81,9 +81,11 @@ class _DashboardAppBarLeading extends StatelessWidget {
 class _DashboardAppBarTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Text(
-      "casa andrea",
-      style: Theme.of(context).textTheme.headline1,
+    return BlocBuilder<DashboardBloc, DashboardState>(
+      builder: (context, state) => Text(
+        state.plantName.toLowerCase(),
+        style: Theme.of(context).textTheme.headline1,
+      ),
     );
   }
 }

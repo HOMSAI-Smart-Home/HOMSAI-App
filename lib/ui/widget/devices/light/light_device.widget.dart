@@ -39,24 +39,23 @@ class _LightDeviceCardState extends State<_LightDeviceCard> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<LightDeviceBloc, LightDeviceState>(
-      buildWhen: (previous, current) => previous.light != current.light,
-      builder: buidDevice
-    );
+        buildWhen: (previous, current) => previous.light != current.light,
+        builder: buidDevice);
   }
 
-  Widget buidDevice(BuildContext context, LightDeviceState state){
+  Widget buidDevice(BuildContext context, LightDeviceState state) {
     return Device(
-        (state.light.isOn) ? DeviceStatus.enabled : DeviceStatus.disabled,
-        baseIcon: Icons.lightbulb,
-        baseColor: HomsaiColors.primaryYellow,
-        title: state.light.attributes.friendlyName,
-        room: "Camera",
-        info: (state.light.isOn) ? "on" : "off",
-        onTap: () {
-          context.read<LightDeviceBloc>().add((state.light.isOn)
-              ? LightOff(state.light)
-              : LightOn(state.light));
-        },
+      (state.light.isOn) ? DeviceStatus.enabled : DeviceStatus.disabled,
+      baseIcon: Icons.lightbulb,
+      baseColor: HomsaiColors.primaryYellow,
+      title: state.light.attributes.friendlyName,
+      room: "Camera",
+      info: (state.light.isOn) ? "on" : "off",
+      onTap: () {
+        context.read<LightDeviceBloc>().add(
+            (state.light.isOn) ? LightOff(state.light) : LightOn(state.light));
+      },
+      /*
         onLongPress: () {
           showModalBottomSheet(
             context: context,
@@ -72,6 +71,7 @@ class _LightDeviceCardState extends State<_LightDeviceCard> {
             useRootNavigator: true,
           );
         },
+        */
     );
   }
 }

@@ -531,7 +531,8 @@ class _$ConfigurationDao extends ConfigurationDao {
 
 class _$HomeAssistantDao extends HomeAssistantDao {
   _$HomeAssistantDao(this.database, this.changeListener)
-      : _homeAssistantEntityInsertionAdapter = InsertionAdapter(
+      : _queryAdapter = QueryAdapter(database),
+        _homeAssistantEntityInsertionAdapter = InsertionAdapter(
             database,
             'Entity',
             (HomeAssistantEntity item) => <String, Object?>{
@@ -562,6 +563,8 @@ class _$HomeAssistantDao extends HomeAssistantDao {
 
   final StreamController<String> changeListener;
 
+  final QueryAdapter _queryAdapter;
+
   final InsertionAdapter<HomeAssistantEntity>
       _homeAssistantEntityInsertionAdapter;
 
@@ -569,6 +572,18 @@ class _$HomeAssistantDao extends HomeAssistantDao {
 
   final DeletionAdapter<HomeAssistantEntity>
       _homeAssistantEntityDeletionAdapter;
+
+  @override
+  Future<HomeAssistantEntity?> findEntityById(
+      int plantId, String entityId) async {
+    return _queryAdapter.query(
+        'SELECT * FROM Entity WHERE plant_id = ?1 AND entity_id LIKE ?2',
+        mapper: (Map<String, Object?> row) => HomeAssistantEntity(
+            row['plant_id'] as int,
+            row['entity_id'] as String,
+            _homeAssistantConverter.decode(row['entity'] as String)),
+        arguments: [plantId, entityId]);
+  }
 
   @override
   Future<int> insertItem(HomeAssistantEntity item) {

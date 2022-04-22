@@ -153,7 +153,9 @@ class HomeAssistantWebSocketRepository {
         if (!_connected) {
           _auth(data);
         } else {
-          _responseHandler(data);
+          try {
+            _responseHandler(data);
+          } catch (e) {}
         }
       },
       onDone: () => connect(url),

@@ -18,7 +18,6 @@ import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.
 import 'package:homsai/datastore/models/home_assistant_auth.model.dart';
 import 'package:homsai/datastore/remote/network/network_manager.interface.dart';
 import 'package:homsai/datastore/remote/rest/remote.Interface.dart';
-import 'package:homsai/crossconcern/helpers/extensions/date_time.extension.dart';
 import 'package:homsai/main.dart';
 
 class HomeAssistantRepository implements HomeAssistantInterface {

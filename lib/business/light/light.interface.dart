@@ -7,6 +7,6 @@ abstract class LightRepositoryInterface {
   void turnOff(LightEntity light);
 
   void turnOn(LightEntity light);
-  
+
   void onChanged(Entity entity, Function(LightEntity) onchanged);
 }

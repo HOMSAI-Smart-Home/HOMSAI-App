@@ -10,7 +10,7 @@
     "emailPendingTitle": "Ancora un po’ di pazienza",
     "emailPendingDescription": "Hai ancora alcuni utenti davanti nella coda. Non temere, ancora poche ore e potrai avere accesso esclusivo alla closed BETA di Homsai.",
     "emailNotRegisteredTitle": "Iscriviti alla Closed BETA",
-    "emailNotRegisteredDescription": "L’indirizzo email *{}* non è ancora nella nostra coda di utenti. Vuoi entrare nella lista d’attesa per provare in esclusiva Homsai?",
+    "emailNotRegisteredDescription": "L’indirizzo email *%1* non è ancora nella nostra coda di utenti. Vuoi entrare nella lista d’attesa per provare in esclusiva Homsai?",
     "emailSubmitError":"Sì, iscrivimi alla Closed BETA",
 
     "password": "Password",
@@ -44,7 +44,7 @@
     "addPlantLocationLabel": "Coordinate GPS",
     "addPlantLocationButtonLabel": "Usa posizione attuale",
     "addPlantLocationInfoTitle": "Perché abbiamo bisogno della posizione?",
-    "addPlantLocationInfoDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum eget dictum eros, non varius velit. Praesent bibendum molestie feugiat.",
+    "addPlantLocationInfoDescription": "La posizione viene recuperata dalla tua istanza di Home Assistant. Grazie a questo dato possiamo fornire previsioni più precise per quanto riguarda il meteo, la produzione del fotovoltaico e il consumo della tua abitazione",
 
     "introductionTitle1": "benvenuto!",
     "introductionTitle2": "accedi e configura!",
@@ -59,5 +59,5 @@
     "introductionButtonText2": "Quali vantaggi ho?",
     "introductionButtonText3": "Voglio provare Homsai",
     "introductionSkip": "Salta",
-    "introductionPageInfo": "Step {} di 3"
+    "introductionPageInfo": "Step %1 di 3"
 }

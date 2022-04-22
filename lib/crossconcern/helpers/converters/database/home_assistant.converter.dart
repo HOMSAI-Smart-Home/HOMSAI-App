@@ -2,18 +2,16 @@ import 'dart:convert';
 
 import 'package:floor/floor.dart';
 import 'package:homsai/crossconcern/helpers/factories/home_assistant_entity.factory.dart';
-import 'package:homsai/datastore/models/entity/base/base.entity.dart'
-    as home_assistant;
+import 'package:homsai/datastore/models/entity/base/base.entity.dart' as hass;
 
-class HomeAssistantConverter
-    extends TypeConverter<home_assistant.Entity, String> {
+class HomeAssistantConverter extends TypeConverter<hass.Entity, String> {
   @override
-  home_assistant.Entity decode(String databaseValue) {
+  hass.Entity decode(String databaseValue) {
     return HomeAssistantEntityFactory.parseFromJson(jsonDecode(databaseValue));
   }
 
   @override
-  String encode(home_assistant.Entity value) {
+  String encode(hass.Entity value) {
     return jsonEncode(value);
   }
 }

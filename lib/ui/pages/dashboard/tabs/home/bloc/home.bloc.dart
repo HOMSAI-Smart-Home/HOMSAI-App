@@ -9,6 +9,7 @@ import 'package:homsai/business/home_assistant/home_assistant.interface.dart';
 import 'package:homsai/crossconcern/components/charts/daily_consumption_chart.widget.dart';
 import 'package:homsai/crossconcern/helpers/extensions/list.extension.dart';
 import 'package:homsai/crossconcern/utilities/util/plot.util.dart';
+import 'package:homsai/datastore/DTOs/remote/ai_service/consumption_optimizations_forecast/consumption_optimizations_forecast.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/ai_service/consumption_optimizations_forecast/consumption_optimizations_forecast_body.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/history/history.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/history/history_body.dto.dart';
@@ -16,7 +17,6 @@ import 'package:homsai/datastore/local/app.database.dart';
 import 'package:homsai/datastore/models/database/configuration.entity.dart';
 import 'package:homsai/datastore/models/entity/base/base.entity.dart';
 import 'package:homsai/datastore/models/entity/sensors/mesurable/mesurable_sensor.entity.dart';
-import 'package:homsai/datastore/models/entity/sensors/sensor.entity.dart';
 import 'package:homsai/datastore/remote/websocket/home_assistant_websocket.repository.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.dart';
 import 'package:homsai/datastore/models/entity/light/light.entity.dart';
@@ -89,7 +89,16 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   void _onToggleConsumptionOptimazedPlot(
       ToggleConsumptionOptimazedPlot event, Emitter<HomeState> emit) {
-    emit(state.copyWith(isPlotOptimized: event.isOptimized));
+    List<FlSpot> autoConsumption;
+    if (event.isOptimized) {
+      autoConsumption =
+          state.optimizedConsumptionPlot!.intersect(state.productionPlot!);
+    } else {
+      autoConsumption = state.consumptionPlot!.intersect(state.productionPlot!);
+    }
+
+    emit(state.copyWith(
+        autoConsumption: autoConsumption, isPlotOptimized: event.isOptimized));
   }
 
   void _onFetchHistory(FetchHistory event, Emitter<HomeState> emit) async {
@@ -102,74 +111,112 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           () => getLocation(configuration!.timezone));
 
       final consumptionInfo =
-          await _getPlotInfo(plant.consumptionSensor, plant.url);
+          await _getPlotInfoFromSensor(plant.consumptionSensor, plant.url);
       final productionInfo =
-          await _getPlotInfo(plant.productionSensor, plant.url);
+          await _getPlotInfoFromSensor(plant.productionSensor, plant.url);
+
+      final productionSensor = await appDatabase.homeAssitantDao
+          .findEntity<MesurableSensorEntity>(
+              plant.id!, plant.productionSensor!);
+      final consumptionSensor = await appDatabase.homeAssitantDao
+          .findEntity<MesurableSensorEntity>(
+              plant.id!, plant.consumptionSensor!);
 
       List<FlSpot> autoConsumption = [];
-      List<FlSpot> autoConsumptionOptimization =
-          DailyConsumptionChart.emptyPlot;
+      ConsumptionOptimizationsForecastDto? consumptionForecast;
+      PlotInfo? optimizedInfo;
       if (consumptionInfo.plot.isNotEmpty && productionInfo.plot.isNotEmpty) {
         autoConsumption = consumptionInfo.plot.intersect(productionInfo.plot);
-        final result = await aiServiceInterface
+        consumptionForecast = await aiServiceInterface
             .getPhotovoltaicSelfConsumptionOptimizerForecast(
                 ConsumptionOptimizationsForecastBodyDto(
                   consumptionInfo.history,
-                  MesurableSensorAttributes.fromJson(
-                          consumptionInfo.history.first.attributes!)
-                      .unit,
+                  consumptionSensor!.unitMesurement,
                   productionInfo.history,
-                  MesurableSensorAttributes.fromJson(
-                          productionInfo.history.first.attributes!)
-                      .unit,
+                  productionSensor!.unitMesurement,
                 ),
                 configuration!.unitSystemType);
+        optimizedInfo =
+            _getPlotInfo(consumptionForecast.optimizedGeneralPowerMeterData);
       }
 
       emit(state.copyWith(
-        consumptionPlot: consumptionInfo.plot,
-        productionPlot: productionInfo.plot,
+        consumptionSensor: consumptionSensor,
+        productionSensor: productionSensor,
+        consumptionPlot: consumptionInfo.plot.isNotEmpty
+            ? consumptionInfo.plot
+            : DailyConsumptionChart.emptyPlot,
+        productionPlot: productionInfo.plot.isNotEmpty
+            ? productionInfo.plot
+            : DailyConsumptionChart.emptyPlot,
+        optimizedConsumptionPlot:
+            optimizedInfo?.plot ?? DailyConsumptionChart.emptyPlot,
         autoConsumption: autoConsumption,
-        autoConsumptionOptimization: autoConsumptionOptimization,
-        minOffset: consumptionInfo.minRange <= productionInfo.minRange
-            ? consumptionInfo.minRange
-            : productionInfo.minRange,
-        maxOffset: consumptionInfo.maxRange <= productionInfo.maxRange
-            ? productionInfo.maxRange
-            : consumptionInfo.maxRange,
+        balance: consumptionForecast?.withoutHomsai,
+        optimizedBalance: consumptionForecast?.withHomsai,
+        minOffset: minOffset(
+          consumptionInfo.minRange,
+          productionInfo.minRange,
+          optimizedInfo?.minRange,
+        ),
+        maxOffset: maxOffset(
+          consumptionInfo.maxRange,
+          productionInfo.maxRange,
+          optimizedInfo?.maxRange,
+        ),
       ));
     }
   }
 
-  Future<PlotInfo> _getPlotInfo(String? sensor, String url) async {
+  Offset minOffset(Offset a, Offset b, Offset? c) {
+    final t = a <= b ? a : b;
+    return c == null || t <= c ? t : c;
+  }
+
+  Offset maxOffset(Offset a, Offset b, Offset? c) {
+    final t = a >= b ? a : b;
+    return c == null || t >= c ? t : c;
+  }
+
+  Future<PlotInfo> _getPlotInfoFromSensor(String? sensor, String url) async {
     PlotInfo info =
         PlotInfo(maxRange: Offset(Duration.minutesPerDay.toDouble(), 4));
     if (sensor == null) return info;
 
-    final historyBodyDto =
-        HistoryBodyDto(sensor, minimalResponse: true, noAttributes: true);
+    final historyBodyDto = HistoryBodyDto(sensor, minimalResponse: true);
     final history = await homeAssistantRepository.getHistory(Uri.parse(url),
         historyBodyDto: historyBodyDto);
-    final plot = await _parsePlot(history);
+
+    return _getPlotInfo(history);
+  }
+
+  PlotInfo _getPlotInfo(List<HistoryDto> history) {
+    PlotInfo info =
+        PlotInfo(maxRange: Offset(Duration.minutesPerDay.toDouble(), 4));
+
+    final plot = _parsePlot(history);
 
     return info.copyWith(
       plot: plot,
       minRange: Offset(plot.first.x, max(0, plot.min.y)),
       maxRange: Offset(plot.last.x, plot.max.y),
-      history: history,
+      history: history
+          .where((entity) => double.tryParse(entity.state) != null)
+          .toList(),
     );
   }
 
-  Future<List<FlSpot>> _parsePlot(List<HistoryDto> results) async {
+  List<FlSpot> _parsePlot(List<HistoryDto> results) {
     final plot = results
         .map(
           (result) => FlSpot(
             (result.lastChanged.minute +
                     result.lastChanged.hour * Duration.minutesPerHour)
                 .toDouble(),
-            double.tryParse(result.state) ?? 0,
+            double.tryParse(result.state) ?? double.negativeInfinity,
           ),
         )
+        .where((spot) => spot.y != double.negativeInfinity)
         .toList();
     return plot.sample(
         plot[0].x, plot[0].x + const Duration(days: 1).inMinutes, 10);

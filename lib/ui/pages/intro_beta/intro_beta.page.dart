@@ -52,7 +52,7 @@ class _IntroBetaContainerState extends State<_IntroBetaContainer> {
       builder: (context, state) {
         return Container(
           alignment: Alignment.center,
-          height: 222,
+          height: 240,
           child: AnimatedSwitcher(
             duration: const Duration(milliseconds: 250),
             transitionBuilder: buildTransition,
@@ -162,7 +162,7 @@ class _NotRegistered extends StatelessWidget {
           _IntroBetaDescription(
             description: HomsaiLocalizations.of(context)!
                 .emailNotRegisteredDescription
-                .replaceFirst('{}', state.email.value),
+                .replaceFirst('%1', state.email.value),
           ),
         ],
       );
@@ -236,9 +236,8 @@ class _IntroBetaDescription extends StatelessWidget {
           text: description,
           style: Theme.of(context).textTheme.bodyText1,
           textAlign: TextAlign.center,
-        ),
-        const SizedBox(
-          height: 24,
+          overflow: TextOverflow.ellipsis,
+          maxLines: 5,
         ),
       ],
     );
@@ -331,37 +330,33 @@ class _IntroBetaSubmit extends StatelessWidget {
               ),
             ),
           )
-        : Text(
-            () {
-              switch (state.introBetaStatus) {
-                case IntroBetaStatus.emailEntry:
-                  return HomsaiLocalizations.of(context)!.next;
-                case IntroBetaStatus.loading:
-                  return HomsaiLocalizations.of(context)!.next;
-                case IntroBetaStatus.pending:
-                  return HomsaiLocalizations.of(context)!.retry;
-                case IntroBetaStatus.notRegistered:
-                  return HomsaiLocalizations.of(context)!.emailSubmitError;
-                default:
-                  return "";
-              }
-            }() as String,
-            key: ValueKey(state.introBetaStatus));
+        : Text(() {
+            switch (state.introBetaStatus) {
+              case IntroBetaStatus.emailEntry:
+                return HomsaiLocalizations.of(context)!.next;
+              case IntroBetaStatus.loading:
+                return HomsaiLocalizations.of(context)!.next;
+              case IntroBetaStatus.pending:
+                return HomsaiLocalizations.of(context)!.retry;
+              case IntroBetaStatus.notRegistered:
+                return HomsaiLocalizations.of(context)!.emailSubmitError;
+              default:
+                return "";
+            }
+          }(), key: ValueKey(state.introBetaStatus));
   }
 
-  VoidCallback? _buttonFunction(BuildContext context, IntroBetaStatus status){
-    switch(status){
+  VoidCallback? _buttonFunction(BuildContext context, IntroBetaStatus status) {
+    switch (status) {
       case IntroBetaStatus.emailEntry:
-        return () => context.read<IntroBetaBloc>()
-          .add(OnSubmit(() => onResult(true)));
+        return () =>
+            context.read<IntroBetaBloc>().add(OnSubmit(() => onResult(true)));
       case IntroBetaStatus.loading:
         return null;
       case IntroBetaStatus.pending:
-        return () => context.read<IntroBetaBloc>()
-          .add(OnSubmitPending());
+        return () => context.read<IntroBetaBloc>().add(OnSubmitPending());
       case IntroBetaStatus.notRegistered:
-        return () => context.read<IntroBetaBloc>()
-          .add(OnSubmitError());
+        return () => context.read<IntroBetaBloc>().add(OnSubmitError());
     }
   }
 }

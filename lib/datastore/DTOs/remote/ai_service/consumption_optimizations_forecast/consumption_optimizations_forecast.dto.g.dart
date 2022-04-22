@@ -9,7 +9,7 @@ part of 'consumption_optimizations_forecast.dto.dart';
 ConsumptionOptimizationsForecastDto
     _$ConsumptionOptimizationsForecastDtoFromJson(Map<String, dynamic> json) =>
         ConsumptionOptimizationsForecastDto(
-          (json['general_power_meter_data'] as List<dynamic>)
+          (json['optimized_general_power_meter_data'] as List<dynamic>)
               .map((e) => HistoryDto.fromJson(e as Map<String, dynamic>))
               .toList(),
           PVBalanceDto.fromJson(json['without_homsai'] as Map<String, dynamic>),
@@ -19,7 +19,8 @@ ConsumptionOptimizationsForecastDto
 Map<String, dynamic> _$ConsumptionOptimizationsForecastDtoToJson(
         ConsumptionOptimizationsForecastDto instance) =>
     <String, dynamic>{
-      'general_power_meter_data': instance.optimizedGeneralPowerMeterData
+      'optimized_general_power_meter_data': instance
+          .optimizedGeneralPowerMeterData
           .map((e) => e.toJson())
           .toList(),
       'without_homsai': instance.withoutHomsai.toJson(),

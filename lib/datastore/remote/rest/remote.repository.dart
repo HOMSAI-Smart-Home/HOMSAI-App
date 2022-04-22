@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:homsai/crossconcern/exceptions/unauthorized.exception.dart';
-import 'package:homsai/crossconcern/helpers/errors/error.parser.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.dart';
 import 'package:homsai/datastore/remote/rest/remote.Interface.dart';
 import 'package:homsai/main.dart';
@@ -83,7 +81,9 @@ class RemoteRepository implements RemoteInterface {
         .put(
           url,
           headers: headers,
-          body: body,
+          body: (headers?[HttpHeaders.contentTypeHeader] == 'application/json')
+              ? jsonEncode(body)
+              : body,
         )
         .timeout(timeout);
     return parseResponse(response);

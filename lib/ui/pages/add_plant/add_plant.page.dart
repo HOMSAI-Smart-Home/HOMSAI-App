@@ -151,6 +151,7 @@ class _AddPlantLocationField extends StatelessWidget {
             style: Theme.of(context).textTheme.bodyText2,
           );
         })),
+        /*
         const SizedBox(height: 16),
         TextButton(
           onPressed: () {},
@@ -162,6 +163,7 @@ class _AddPlantLocationField extends StatelessWidget {
                 ?.copyWith(color: Theme.of(context).colorScheme.primary),
           ),
         ),
+        */
         const SizedBox(height: 16),
         _AddPlantLocationInfo()
       ],

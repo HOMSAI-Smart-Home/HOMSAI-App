@@ -135,14 +135,19 @@ class _DeviceState extends State<Device> {
                                   style: Theme.of(context).textTheme.bodyText2,
                                 ),
                           const SizedBox(height: 12),
-                          Text(
-                            widget.info.toUpperCase(),
-                            style:
-                                Theme.of(context).textTheme.bodyText1?.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                      color: getColor(widget),
-                                    ),
-                          )
+                          FittedBox(
+                            fit: BoxFit.fitWidth,
+                            child: Text(
+                              widget.info.toUpperCase(),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyText1
+                                  ?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: getColor(widget),
+                                  ),
+                            ),
+                          ),
                         ],
                       ),
                       buildIcon(widget)

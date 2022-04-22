@@ -5,7 +5,7 @@ part 'consumption_optimizations_forecast.dto.g.dart';
 
 @JsonSerializable()
 class ConsumptionOptimizationsForecastDto {
-  @JsonKey(name: "general_power_meter_data")
+  @JsonKey(name: "optimized_general_power_meter_data")
   List<HistoryDto> optimizedGeneralPowerMeterData;
   @JsonKey(name: "without_homsai")
   PVBalanceDto withoutHomsai;

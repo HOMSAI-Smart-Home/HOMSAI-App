@@ -16,11 +16,19 @@ HistoryDto _$HistoryDtoFromJson(Map<String, dynamic> json) => HistoryDto(
       json['state'] as String,
     );
 
-Map<String, dynamic> _$HistoryDtoToJson(HistoryDto instance) =>
-    <String, dynamic>{
-      'attributes': instance.attributes,
-      'entity_id': instance.entityId,
-      'last_changed': const DateTimeConverter().toJson(instance.lastChanged),
-      'last_updated': instance.lastUpdated?.toIso8601String(),
-      'state': instance.state,
-    };
+Map<String, dynamic> _$HistoryDtoToJson(HistoryDto instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('attributes', instance.attributes);
+  writeNotNull('entity_id', instance.entityId);
+  val['last_changed'] = const DateTimeConverter().toJson(instance.lastChanged);
+  writeNotNull('last_updated', instance.lastUpdated?.toIso8601String());
+  val['state'] = instance.state;
+  return val;
+}

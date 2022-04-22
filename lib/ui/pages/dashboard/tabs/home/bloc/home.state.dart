@@ -3,41 +3,58 @@ part of 'home.bloc.dart';
 class HomeState extends Equatable {
   const HomeState({
     this.lights = const [],
+    this.consumptionSensor,
+    this.productionSensor,
     this.consumptionPlot,
     this.productionPlot,
     this.autoConsumption,
-    this.autoConsumptionOptimization,
+    this.optimizedConsumptionPlot,
+    this.balance,
+    this.optimizedBalance,
     this.minOffset,
     this.maxOffset,
     this.isPlotOptimized = false,
   });
 
   final List<LightEntity> lights;
+
+  final MesurableSensorEntity? consumptionSensor;
+  final MesurableSensorEntity? productionSensor;
   final List<FlSpot>? consumptionPlot;
   final List<FlSpot>? productionPlot;
   final List<FlSpot>? autoConsumption;
-  final List<FlSpot>? autoConsumptionOptimization;
+  final List<FlSpot>? optimizedConsumptionPlot;
+  final PVBalanceDto? balance;
+  final PVBalanceDto? optimizedBalance;
   final Offset? minOffset;
   final Offset? maxOffset;
   final bool isPlotOptimized;
 
   HomeState copyWith({
     List<LightEntity>? lights,
+    MesurableSensorEntity? consumptionSensor,
+    MesurableSensorEntity? productionSensor,
     List<FlSpot>? consumptionPlot,
     List<FlSpot>? productionPlot,
     List<FlSpot>? autoConsumption,
-    List<FlSpot>? autoConsumptionOptimization,
+    List<FlSpot>? optimizedConsumptionPlot,
+    PVBalanceDto? balance,
+    PVBalanceDto? optimizedBalance,
     Offset? minOffset,
     Offset? maxOffset,
     bool? isPlotOptimized,
   }) {
     return HomeState(
       lights: lights ?? this.lights,
+      consumptionSensor: consumptionSensor ?? this.consumptionSensor,
+      productionSensor: productionSensor ?? this.productionSensor,
       consumptionPlot: consumptionPlot ?? this.consumptionPlot,
       productionPlot: productionPlot ?? this.productionPlot,
       autoConsumption: autoConsumption ?? this.autoConsumption,
-      autoConsumptionOptimization:
-          autoConsumptionOptimization ?? this.autoConsumptionOptimization,
+      optimizedConsumptionPlot:
+          optimizedConsumptionPlot ?? this.optimizedConsumptionPlot,
+      balance: balance ?? this.balance,
+      optimizedBalance: optimizedBalance ?? this.optimizedBalance,
       minOffset: minOffset ?? this.minOffset,
       maxOffset: maxOffset ?? this.maxOffset,
       isPlotOptimized: isPlotOptimized ?? this.isPlotOptimized,
@@ -47,10 +64,12 @@ class HomeState extends Equatable {
   @override
   List<Object?> get props => [
         lights,
+        consumptionSensor,
+        productionSensor,
         consumptionPlot,
         productionPlot,
         autoConsumption,
-        autoConsumptionOptimization,
+        optimizedConsumptionPlot,
         minOffset,
         maxOffset,
         isPlotOptimized,

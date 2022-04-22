@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:homsai/business/ai_service/ai_service.interface.dart';
@@ -48,7 +47,7 @@ class AIServiceRepository implements AIServiceInterface {
         path: ApiProprties.aiServiceLoginPath,
       ),
       headers: headers,
-      body: jsonEncode(loginBodyDto.toJson()),
+      body: loginBodyDto.toJson(),
     );
 
     LoginDto loginDto = LoginDto.fromJson(result);
@@ -89,7 +88,7 @@ class AIServiceRepository implements AIServiceInterface {
         path: ApiProprties.aiServiceSubscribeToBetaPath,
       ),
       headers: _getHeader(),
-      body: jsonEncode(loginBodyDto.toJson()),
+      body: loginBodyDto.toJson(),
     );
 
     LoginDto loginDto = LoginDto.fromJson(result);

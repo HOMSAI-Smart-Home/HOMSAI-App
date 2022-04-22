@@ -6,8 +6,7 @@ import 'package:homsai/datastore/dao/configuration.dao.dart';
 import 'package:homsai/datastore/models/database/configuration.entity.dart';
 import 'package:homsai/datastore/models/database/home_assistant.entity.dart';
 import 'package:homsai/datastore/models/database/plant.entity.dart';
-import 'package:homsai/datastore/models/entity/base/base.entity.dart'
-    as home_assistant;
+import 'package:homsai/datastore/models/entity/base/base.entity.dart' as hass;
 
 @dao
 abstract class PlantDao extends BaseDao<Plant> {
@@ -48,7 +47,7 @@ abstract class PlantDao extends BaseDao<Plant> {
     return configuration;
   }
 
-  Future<List<T>> getEntities<T extends home_assistant.Entity>(int id) async {
+  Future<List<T>> getEntities<T extends hass.Entity>(int id) async {
     final category = HomeAssistantEntityFactory.getCategoryFromType(T);
     final entities = await getEntitiesFromCategory(id, category);
     return entities.getEntities<T>();

@@ -270,7 +270,7 @@ class _InfoPage extends StatelessWidget {
       child: Text(
           HomsaiLocalizations.of(context)!
               .introductionPageInfo
-              .replaceFirst('{}', page.toString()),
+              .replaceFirst('%1', page.toString()),
           style: const TextStyle(
               fontSize: 16,
               fontFamily: 'HelveticaNowText',

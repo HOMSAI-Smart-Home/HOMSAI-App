@@ -1,7 +1,6 @@
 import 'package:floor/floor.dart';
 import 'package:homsai/datastore/models/database/plant.entity.dart';
-import 'package:homsai/datastore/models/entity/base/base.entity.dart'
-    as home_assistant;
+import 'package:homsai/datastore/models/entity/base/base.entity.dart' as hass;
 
 @Entity(tableName: 'Entity', primaryKeys: [
   'entity_id',
@@ -18,7 +17,7 @@ class HomeAssistantEntity {
   final String entityId;
   @ColumnInfo(name: 'plant_id')
   final int plantId;
-  final home_assistant.Entity entity;
+  final hass.Entity entity;
 
   const HomeAssistantEntity(
     this.plantId,

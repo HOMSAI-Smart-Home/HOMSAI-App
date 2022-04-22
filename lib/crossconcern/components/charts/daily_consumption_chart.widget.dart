@@ -40,7 +40,7 @@ class DailyConsumptionChart extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
-                "kWh",
+                "kW",
                 style: TextStyle(
                   color: HomsaiColors.primaryGrey,
                   fontSize: 9,
