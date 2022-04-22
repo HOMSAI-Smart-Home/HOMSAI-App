@@ -426,16 +426,18 @@ class _SearchLocalIntanceManualCheckbox extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       child: SizedBox(
-        child: Row(children: [
-          const CheckboxButton(initialValue: false),
-          const SizedBox(
-            width: 8,
-          ),
-          Text(
-            HomsaiLocalizations.of(context)!.homeAssistantScanManualCheckbox,
-            style: Theme.of(context).textTheme.bodyText1!,
-          ),
-        ]),
+        child: Row(
+          children: [
+            const CheckboxButton(initialValue: false),
+            const SizedBox(
+              width: 8,
+            ),
+            Text(
+              HomsaiLocalizations.of(context)!.homeAssistantScanManualCheckbox,
+              style: Theme.of(context).textTheme.bodyText1!,
+            ),
+          ],
+        ),
       ),
       onTap: () =>
           context.read<HomeAssistantScanBloc>().add(ManualToggleRemote()),
