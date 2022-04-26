@@ -13,11 +13,14 @@ class _AccountsPageState extends State<AccountsPage> {
     return Column(
       children: [
         const _AccountButton(_AccountButtonType.email),
-        const _AccountButton(_AccountButtonType.url),
-        const _AccountButton(_AccountButtonType.sensor),
+        const _AccountButton(_AccountButtonType.localUrl),
+        const _AccountButton(_AccountButtonType.remoteUrl),
+        const _AccountButton(_AccountButtonType.productionSensor),
+        const _AccountButton(_AccountButtonType.consumptionSensors),
         const _AccountButton(_AccountButtonType.name),
         const _AccountButton(_AccountButtonType.position),
         const _AccountButton(_AccountButtonType.version),
+        const SizedBox(height: 16),
         _ChangePlantButton(),
       ],
     );
@@ -26,8 +29,10 @@ class _AccountsPageState extends State<AccountsPage> {
 
 enum _AccountButtonType {
   email,
-  url,
-  sensor,
+  localUrl,
+  remoteUrl,
+  productionSensor,
+  consumptionSensors,
   name,
   position,
   version,
@@ -44,7 +49,7 @@ class _AccountButton extends StatelessWidget {
       child: Row(
         children: [
           Padding(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.only(top: 10, right: 8, left: 8, bottom: 10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -68,10 +73,14 @@ class _AccountButton extends StatelessWidget {
     switch (type) {
       case _AccountButtonType.email:
         return "Email";
-      case _AccountButtonType.url:
-        return "URL Istanza";
-      case _AccountButtonType.sensor:
-        return "Sensori";
+      case _AccountButtonType.localUrl:
+        return "URL Locale";
+      case _AccountButtonType.remoteUrl:
+        return "URL Remote";
+      case _AccountButtonType.productionSensor:
+        return "Sensore di produzione";
+      case _AccountButtonType.consumptionSensors:
+        return "Sensore di consumo";
       case _AccountButtonType.name:
         return "Nome Impianto";
       case _AccountButtonType.position:
@@ -85,10 +94,14 @@ class _AccountButton extends StatelessWidget {
     switch (type) {
       case _AccountButtonType.email:
         return "mariorossi00@mail.com";
-      case _AccountButtonType.url:
-        return "Local: http://:192.168.x.x:8123 Remote: ";
-      case _AccountButtonType.sensor:
-        return "[xxx] - [xxx]";
+      case _AccountButtonType.localUrl:
+        return "http://:192.168.x.x:8123";
+      case _AccountButtonType.remoteUrl:
+        return "http://:192.168.x.x:8123";
+      case _AccountButtonType.productionSensor:
+        return "[xxx]";
+      case _AccountButtonType.consumptionSensors:
+        return "[xxx]";
       case _AccountButtonType.name:
         return "Casa Andrea";
       case _AccountButtonType.position:
