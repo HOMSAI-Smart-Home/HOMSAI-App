@@ -192,15 +192,19 @@ class _IntroBetaIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        width: 48,
-        height: 48,
-        child: isPending
-            ? rive.RiveAnimation.asset(
-                "assets/animations/hourglass.riv",
-                stateMachines: const [''],
-                onInit: _onHouglassInit,
-              )
-            : SvgPicture.asset("assets/icons/error.svg"));
+      width: 48,
+      height: 48,
+      child: isPending
+          ? rive.RiveAnimation.asset(
+              "assets/animations/hourglass.riv",
+              stateMachines: const [''],
+              onInit: _onHouglassInit,
+            )
+          : SvgPicture.asset(
+              "assets/icons/login.svg",
+              color: Theme.of(context).colorScheme.primary,
+            ),
+    );
   }
 }
 
