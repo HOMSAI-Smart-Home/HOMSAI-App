@@ -1,6 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
 
-@JsonSerializable()
 class QueryBoolConverter implements JsonConverter<bool?, String> {
   const QueryBoolConverter();
 

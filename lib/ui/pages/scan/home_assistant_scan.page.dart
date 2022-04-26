@@ -51,7 +51,8 @@ class _HomeAssistantScanPage extends State<HomeAssistantScanPage> {
           create: (_) => CheckboxBloc(false),
         ),
         BlocProvider<HomeAssistantScanBloc>(
-          create: (context) => HomeAssistantScanBloc(context.read<CheckboxBloc>()),
+          create: (context) =>
+              HomeAssistantScanBloc(context.read<CheckboxBloc>()),
         ),
       ],
       children: <Widget>[
@@ -93,12 +94,6 @@ class _SearchLocalInstance extends StatefulWidget {
 }
 
 class _SearchLocalInstanceState extends State<_SearchLocalInstance> {
-  @override
-  void initState() {
-    super.initState();
-    BlocProvider.of<HomeAssistantScanBloc>(context).add(const ScanPressed());
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -426,9 +421,7 @@ class _SearchLocalIntanceManualCheckbox extends StatelessWidget {
     return InkWell(
       child: SizedBox(
         child: Row(children: [
-          const CheckboxButton(
-            initialValue: false
-          ),
+          const CheckboxButton(initialValue: false),
           const SizedBox(
             width: 8,
           ),
@@ -560,8 +553,9 @@ class _ContinueRetryButton extends StatelessWidget {
                 ? () =>
                     context.read<HomeAssistantScanBloc>().add(UrlSubmitted())
                 : state.status.isScanningFailure
-                    ? () =>
-                        context.read<HomeAssistantScanBloc>().add(const ScanPressed())
+                    ? () => context
+                        .read<HomeAssistantScanBloc>()
+                        .add(const ScanPressed())
                     : null,
             child: AnimatedSwitcher(
               duration: const Duration(milliseconds: 250),

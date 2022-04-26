@@ -33,7 +33,8 @@ class HomeAssistantRepository implements HomeAssistantInterface {
   final RemoteInterface remote = getIt.get<RemoteInterface>();
 
   @override
-  Future<HomeAssistantAuth> authenticate({required Uri url, required bool remote}) {
+  Future<HomeAssistantAuth> authenticate(
+      {required Uri url, required bool remote}) {
     return canConnectToHomeAssistant(url: url).then((host) {
       throwIf(host == null, HostsNotFound());
       return authenticateHomeAssistant(url: host!, remote: remote);
@@ -51,7 +52,8 @@ class HomeAssistantRepository implements HomeAssistantInterface {
     return headers;
   }
 
-  Future<HomeAssistantAuth> authenticateHomeAssistant({required Uri url, required bool remote}) {
+  Future<HomeAssistantAuth> authenticateHomeAssistant(
+      {required Uri url, required bool remote}) {
     const String callbackUrlScheme =
         HomeAssistantApiProprties.authCallbackScheme;
 
@@ -231,7 +233,7 @@ class HomeAssistantRepository implements HomeAssistantInterface {
       headers: _getHeader(),
     );
     print(response);
-    final history = HistoryDto.fromList(response["data"]);
+    final history = HistoryDto.fromList(response["data"][0]);
     return history;
   }
 

@@ -35,6 +35,8 @@ class HomeAssistantScanBloc
     on<UrlSubmitted>(_onUrlSubmitted);
     on<HostFound>(_onHostFound, transformer: sequential());
     on<ScanFailed>(_onScanFailure);
+
+    add(const ScanPressed());
   }
 
   @override

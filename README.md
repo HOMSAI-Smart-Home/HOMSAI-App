@@ -25,6 +25,7 @@ HOMSAI Flutter application
 - floor: dependency to handle OMR database for sqlfite.
 - connectivity_plus: allow Flutter apps to know connectivity status.
 - timezone: allow Flutter datetime to handle timezones.
+- flutter_launcher_icons: help to generate flutter app icons. 
 - rive: used to handle .riv animation file.
 - flutter_web_auth: used for handling web authentication like google auth.
 - network_info_plus: allows Flutter apps to discover network info and configure themselves accordingly.
