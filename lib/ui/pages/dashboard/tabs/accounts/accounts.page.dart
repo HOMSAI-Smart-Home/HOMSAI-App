@@ -16,7 +16,7 @@ class _AccountsPageState extends State<AccountsPage> {
         const _AccountButton(_AccountButtonType.localUrl),
         const _AccountButton(_AccountButtonType.remoteUrl),
         const _AccountButton(_AccountButtonType.productionSensor),
-        const _AccountButton(_AccountButtonType.consumptionSensors),
+        const _AccountButton(_AccountButtonType.consumptionSensor),
         const _AccountButton(_AccountButtonType.name),
         const _AccountButton(_AccountButtonType.position),
         const _AccountButton(_AccountButtonType.version),
@@ -32,7 +32,7 @@ enum _AccountButtonType {
   localUrl,
   remoteUrl,
   productionSensor,
-  consumptionSensors,
+  consumptionSensor,
   name,
   position,
   version,
@@ -79,7 +79,7 @@ class _AccountButton extends StatelessWidget {
         return "URL Remote";
       case _AccountButtonType.productionSensor:
         return "Sensore di produzione";
-      case _AccountButtonType.consumptionSensors:
+      case _AccountButtonType.consumptionSensor:
         return "Sensore di consumo";
       case _AccountButtonType.name:
         return "Nome Impianto";
@@ -100,7 +100,7 @@ class _AccountButton extends StatelessWidget {
         return "http://:192.168.x.x:8123";
       case _AccountButtonType.productionSensor:
         return "[xxx]";
-      case _AccountButtonType.consumptionSensors:
+      case _AccountButtonType.consumptionSensor:
         return "[xxx]";
       case _AccountButtonType.name:
         return "Casa Andrea";
