@@ -42,10 +42,12 @@ class Plant extends BaseEntity {
   Plant copyWith({
     String? productionSensor,
     String? consumptionSensor,
+    String? localUrl,
+    String? remoteUrl,
   }) =>
       Plant(
-        localUrl,
-        remoteUrl,
+        localUrl ?? this.localUrl,
+        remoteUrl ?? this.remoteUrl,
         name,
         latitude,
         longitude,

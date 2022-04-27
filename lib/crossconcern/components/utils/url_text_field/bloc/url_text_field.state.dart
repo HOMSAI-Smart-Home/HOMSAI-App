@@ -3,17 +3,17 @@ part of 'url_text_field.bloc.dart';
 class UrlTextFieldState extends Equatable {
   const UrlTextFieldState({
     this.url = const Url.pure(),
-    this.initialUrl = const Url.pure(),
+    this.initialUrl = "",
     this.status = FormzStatus.pure,
   });
 
   final Url url;
-  final Url initialUrl;
+  final String initialUrl;
   final FormzStatus status;
 
   UrlTextFieldState copyWith({
     Url? url,
-    Url? initialUrl,
+    String? initialUrl,
     FormzStatus? status,
   }) {
     return UrlTextFieldState(

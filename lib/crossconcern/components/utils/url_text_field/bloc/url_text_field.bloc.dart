@@ -15,34 +15,32 @@ class UrlTextFieldBloc extends Bloc<UrlTextFieldEvent, UrlTextFieldState> {
 
   void _onUrlAutocomplete(
       UrlAutoComplete event, Emitter<UrlTextFieldState> emit) {
-    print("yoo: ${event.url}");
-
     final url = Url.dirty(event.url);
     emit(state.copyWith(
-      initialUrl: url.valid ? url : Url.pure(event.url),
-      url: url.valid ? url : Url.pure(event.url)
+      initialUrl: event.url,
+      url: url.valid ? url : Url.pure(event.url),
+      status: _isUrlValid(url: url),
     ));
   }
 
   void _onUrlChanged(UrlChanged event, Emitter<UrlTextFieldState> emit) {
-    final url = Url.dirty(event.url);
+    final urlDirty = Url.dirty(event.url);
     emit(state.copyWith(
-      url: url.valid ? url : Url.pure(event.url),
-      status: _isFormValidate(url: url),
+      url: urlDirty.valid ? urlDirty : Url.pure(event.url),
+      status: _isUrlValid(url: urlDirty),
     ));
   }
 
   void _onUrlUnfocused(UrlUnfocused event, Emitter<UrlTextFieldState> emit) {
-    final url = Url.dirty(state.url.value);
     emit(state.copyWith(
-      url: url,
-      status: _isFormValidate(url: url),
+      status: _isUrlValid(url: state.url),
     ));
   }
 
-  FormzStatus _isFormValidate({
+  FormzStatus _isUrlValid({
     Url? url,
   }) {
+    if (url?.value == "") return FormzStatus.valid;
     return Formz.validate([url ?? state.url]);
   }
 }

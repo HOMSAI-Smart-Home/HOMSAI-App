@@ -4,41 +4,49 @@ import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
 import 'package:formz/formz.dart';
 import 'package:homsai/crossconcern/components/utils/url_text_field/bloc/url_text_field.bloc.dart';
 
-class UrlTextField extends StatelessWidget {
+class UrlTextField<Bloc extends UrlTextFieldBloc> extends StatelessWidget {
   final FocusNode? focusNode;
   final String? errorText;
   final String? labelText;
+  final TextInputAction? textInputAction;
+  final Function(String)? onChange;
 
   const UrlTextField({
     Key? key,
     this.focusNode,
     this.errorText,
     this.labelText,
+    this.textInputAction,
+    this.onChange,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => UrlTextFieldBloc(),
-      child: _UrlTextField(
-        focusNode: focusNode ?? FocusNode(),
-        errorText: errorText,
-        labelText: labelText,
-      ),
+    return _UrlTextField<Bloc>(
+      focusNode: focusNode ?? FocusNode(),
+      errorText: errorText,
+      labelText: labelText,
+      textInputAction: textInputAction,
+      onChange: onChange,
     );
   }
+
 }
 
-class _UrlTextField extends StatelessWidget {
+class _UrlTextField<Bloc extends UrlTextFieldBloc> extends StatelessWidget {
   final FocusNode focusNode;
   final String? errorText;
   final String? labelText;
+  final TextInputAction? textInputAction;
+  final Function(String)? onChange;
 
   const _UrlTextField({
     Key? key,
     required this.focusNode,
     this.errorText,
     this.labelText,
+    this.textInputAction,
+    this.onChange
   }) : super(key: key);
 
   Color _color(BuildContext context, UrlTextFieldState state) {
@@ -49,35 +57,35 @@ class _UrlTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<UrlTextFieldBloc, UrlTextFieldState>(
-        buildWhen: (previous, current) =>
-            previous.initialUrl.value != current.initialUrl.value ||
-            previous.status != current.status,
+    return BlocBuilder<Bloc, UrlTextFieldState>(
+        //buildWhen: (previous, current) =>
+        //    previous.initialUrl != current.initialUrl ||
+        //    previous.status != current.status,
         builder: (context, state) {
-          return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8),
-              child: TextFormField(
-                key: ValueKey(state.initialUrl.value),
-                initialValue: state.initialUrl.value,
-                focusNode: focusNode,
-                keyboardType: TextInputType.url,
-                onChanged: (value) {
-                  context.read<UrlTextFieldBloc>().add(UrlChanged(url: value));
-                },
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.link, color: _color(context, state)),
-                  errorText: state.status.isInvalid
-                      ? errorText ??
-                          HomsaiLocalizations.of(context)!
-                              .homeAssistantScanManualError
-                      : null,
-                  labelText:
-                      labelText ?? HomsaiLocalizations.of(context)!.urlLabel,
+      return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          child: TextFormField(
+            key: ValueKey(state.initialUrl),
+            initialValue: state.initialUrl,
+            focusNode: focusNode,
+            keyboardType: TextInputType.url,
+            textInputAction: textInputAction,
+            onChanged: onChange == null
+            ? (value) => context.read<Bloc>().add(UrlChanged(url: value))
+            : (value) => onChange!(value),
+            decoration: InputDecoration(
+              prefixIcon: Icon(Icons.link, color: _color(context, state)),
+              errorText: state.status.isValid
+                  ? null
+                  : errorText ??
+                    HomsaiLocalizations.of(context)!
+                      .homeAssistantScanManualError,
+              labelText: labelText ?? HomsaiLocalizations.of(context)!.urlLabel,
+            ),
+            style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                  color: Theme.of(context).colorScheme.onBackground,
                 ),
-                style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                      color: Theme.of(context).colorScheme.onBackground,
-                    ),
-              ));
-        });
+          ));
+    });
   }
 }

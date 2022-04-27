@@ -1,34 +1,30 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:formz/formz.dart';
 import 'package:homsai/crossconcern/components/common/scaffold/homsai_bloc_scaffold.widget.dart';
 import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
 import 'package:homsai/crossconcern/components/utils/url_text_field/bloc/url_text_field.bloc.dart';
 import 'package:homsai/crossconcern/components/utils/url_text_field/url_text_field.widget.dart';
 import 'package:homsai/ui/pages/url_update/bloc/url_update.bloc.dart';
 
-class UrlUpdatePage extends StatefulWidget {
+class UrlUpdatePage extends StatelessWidget {
   const UrlUpdatePage({Key? key}) : super(key: key);
 
-  @override
-  State<UrlUpdatePage> createState() => _UrlUpdatePageState();
-}
-
-class _UrlUpdatePageState extends State<UrlUpdatePage> {
   @override
   Widget build(BuildContext context) {
     return HomsaiBlocScaffold(
       providers: [
-        BlocProvider<LocalUrlTextFieldBlock>(
-          create: (context) => LocalUrlTextFieldBlock(),
+        BlocProvider<LocalUrlTextFieldBloc>(
+          create: (context) => LocalUrlTextFieldBloc(),
         ),
-        BlocProvider<RemoteUrlTextFieldBlock>(
-          create: (context) => RemoteUrlTextFieldBlock(),
+        BlocProvider<RemoteUrlTextFieldBloc>(
+          create: (context) => RemoteUrlTextFieldBloc(),
         ),
         BlocProvider<UrlUpdateBloc>(
           create: (context) => UrlUpdateBloc(
-            BlocProvider.of<LocalUrlTextFieldBlock>(context),
-            BlocProvider.of<RemoteUrlTextFieldBlock>(context),
+            BlocProvider.of<LocalUrlTextFieldBloc>(context),
+            BlocProvider.of<RemoteUrlTextFieldBloc>(context),
           ),
         ),
       ],
@@ -71,13 +67,13 @@ class _UrlsFormState extends State<_UrlsForm> {
     super.initState();
     _localUrlFocus.addListener(() {
       if (!_localUrlFocus.hasFocus) {
-        context.read<LocalUrlTextFieldBlock>().add(UrlUnfocused());
+        context.read<LocalUrlTextFieldBloc>().add(UrlUnfocused());
       }
     });
 
     _remoteUrlFocus.addListener(() {
-      if (!_localUrlFocus.hasFocus) {
-        context.read<RemoteUrlTextFieldBlock>().add(UrlUnfocused());
+      if (!_remoteUrlFocus.hasFocus) {
+        context.read<RemoteUrlTextFieldBloc>().add(UrlUnfocused());
       }
     });
   }
@@ -107,14 +103,14 @@ class _LocalUrlTextTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<UrlUpdateBloc, UrlUpdateState>(
-      buildWhen: (previous, current) => previous.status != current.status,
-      builder: (context, state) {
-        return UrlTextField(
-          focusNode: focusNode,
-          labelText: "Inserisci l'Url locale",
-        );
-      },
+    return BlocProvider.value(
+      value: BlocProvider.of<LocalUrlTextFieldBloc>(context),
+      child: UrlTextField<LocalUrlTextFieldBloc>(
+        focusNode: focusNode,
+        labelText: "Inserisci l'Url locale",
+        textInputAction: TextInputAction.next,
+        onChange: (url) => context.read<UrlUpdateBloc>().add(LocalUrlChanged(url: url)),
+        )
     );
   }
 }
@@ -126,14 +122,13 @@ class _RemoteUrlTextTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<UrlUpdateBloc, UrlUpdateState>(
-      buildWhen: (previous, current) => previous.status != current.status,
-      builder: (context, state) {
-        return UrlTextField(
+    return BlocProvider.value(
+      value: BlocProvider.of<RemoteUrlTextFieldBloc>(context),
+      child: UrlTextField<RemoteUrlTextFieldBloc>(
           focusNode: focusNode,
           labelText: "Inserisci l'Url remoto",
-        );
-      },
+          onChange: (url) => context.read<UrlUpdateBloc>().add(RemoteUrlChanged(url: url)),
+      )
     );
   }
 }
@@ -141,13 +136,19 @@ class _RemoteUrlTextTextField extends StatelessWidget {
 class _UrlUpdateSave extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () {
-        context.read<UrlUpdateBloc>().add(UrlSubmitted(
-              onSubmit: () => context.router.pop(),
-            ));
-      },
-      child: Text(HomsaiLocalizations.of(context)!.next),
-    );
+    return BlocBuilder<UrlUpdateBloc, UrlUpdateState>(
+        buildWhen: (previous, current) => previous.status != current.status,
+        builder: (context, state) {
+          return ElevatedButton(
+            onPressed: 
+              state.status.isValid
+                  ? () => context.read<UrlUpdateBloc>().add(UrlSubmitted(
+                        onSubmit: () => context.router.pop(),
+                      ))
+                  : null
+            ,
+            child: Text(HomsaiLocalizations.of(context)!.next),
+          );
+        });
   }
 }
