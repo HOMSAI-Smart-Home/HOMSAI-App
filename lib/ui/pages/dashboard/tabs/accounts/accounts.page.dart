@@ -1,4 +1,6 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:homsai/app.router.dart';
 
 class AccountsPage extends StatefulWidget {
   const AccountsPage({Key? key}) : super(key: key);
@@ -12,14 +14,14 @@ class _AccountsPageState extends State<AccountsPage> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const _AccountButton(_AccountButtonType.email),
-        const _AccountButton(_AccountButtonType.localUrl),
-        const _AccountButton(_AccountButtonType.remoteUrl),
-        const _AccountButton(_AccountButtonType.productionSensor),
-        const _AccountButton(_AccountButtonType.consumptionSensor),
-        const _AccountButton(_AccountButtonType.name),
-        const _AccountButton(_AccountButtonType.position),
-        const _AccountButton(_AccountButtonType.version),
+        const _EmailButton(),
+        _LocalUrlButton(),
+        _RemoteUrlButton(),
+        _ProductionSensorButton(),
+        _ConsumptionSensorButton(),
+        const _NameButton(),
+        const _PositionButton(),
+        const _VersionButton(),
         const SizedBox(height: 16),
         _ChangePlantButton(),
       ],
@@ -27,38 +29,109 @@ class _AccountsPageState extends State<AccountsPage> {
   }
 }
 
-enum _AccountButtonType {
-  email,
-  localUrl,
-  remoteUrl,
-  productionSensor,
-  consumptionSensor,
-  name,
-  position,
-  version,
+class _EmailButton extends _AccountButton {
+  const _EmailButton()
+      : super(
+          title: 'Email',
+          caption: 'mariorossi00@mail.com',
+          onTap: null,
+        );
 }
 
-class _AccountButton extends StatelessWidget {
-  final _AccountButtonType type;
+class _LocalUrlButton extends _AccountButton {
+  _LocalUrlButton()
+      : super(
+          title: 'URL Locale',
+          caption: 'http://:192.168.x.x:8123',
+          onTap: (context) => context.router.push(const UrlUpdateRoute()),
+        );
+}
 
-  const _AccountButton(this.type);
+class _RemoteUrlButton extends _AccountButton {
+  _RemoteUrlButton()
+      : super(
+          title: 'URL Remoto',
+          caption: 'http://:192.168.x.x:8123',
+          onTap: (context) => context.router.push(const UrlUpdateRoute()),
+        );
+}
+
+class _ProductionSensorButton extends _AccountButton {
+  _ProductionSensorButton()
+      : super(
+          title: 'Sensore di produzione',
+          caption: '[xxx]',
+          onTap: (context) => context.router
+              .push(AddSensorRoute(onResult: (_) => context.router.pop())),
+        );
+}
+
+class _ConsumptionSensorButton extends _AccountButton {
+  _ConsumptionSensorButton()
+      : super(
+          title: 'Sensore di consumo',
+          caption: '[xxx]',
+          onTap: (context) => context.router
+              .push(AddSensorRoute(onResult: (_) => context.router.pop())),
+        );
+}
+
+class _NameButton extends _AccountButton {
+  const _NameButton()
+      : super(
+          title: 'Nome Impianto',
+          caption: 'Casa Andrea',
+          onTap: null,
+        );
+}
+
+class _PositionButton extends _AccountButton {
+  const _PositionButton()
+      : super(
+          title: 'Posizione Impianto',
+          caption: 'Via Verdi, 165 - Roma - Italy',
+          onTap: null,
+        );
+}
+
+class _VersionButton extends _AccountButton {
+  const _VersionButton()
+      : super(
+          title: 'Versione App',
+          caption: '1.0',
+          onTap: null,
+        );
+}
+
+abstract class _AccountButton extends StatelessWidget {
+  final String title;
+  final String caption;
+  final Function(BuildContext)? onTap;
+
+  const _AccountButton({
+    required this.title,
+    required this.caption,
+    this.onTap,
+  });
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => print("Tap: ${_getTitle(type)} ${_getCaption(type)}"),
+      onTap: () => onTap != null ? onTap!(context) : null,
       child: Row(
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 10, right: 8, left: 8, bottom: 10),
+            padding:
+                const EdgeInsets.only(top: 10, right: 8, left: 8, bottom: 10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  _getTitle(type),
+                  title,
                   style: Theme.of(context).textTheme.headline4,
                 ),
                 Text(
-                  _getCaption(type),
+                  caption,
                   style: Theme.of(context).textTheme.caption,
                 ),
               ],
@@ -67,48 +140,6 @@ class _AccountButton extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  String _getTitle(_AccountButtonType type) {
-    switch (type) {
-      case _AccountButtonType.email:
-        return "Email";
-      case _AccountButtonType.localUrl:
-        return "URL Locale";
-      case _AccountButtonType.remoteUrl:
-        return "URL Remote";
-      case _AccountButtonType.productionSensor:
-        return "Sensore di produzione";
-      case _AccountButtonType.consumptionSensor:
-        return "Sensore di consumo";
-      case _AccountButtonType.name:
-        return "Nome Impianto";
-      case _AccountButtonType.position:
-        return "Posizione Impianto";
-      case _AccountButtonType.version:
-        return "Versione App";
-    }
-  }
-
-  String _getCaption(_AccountButtonType type) {
-    switch (type) {
-      case _AccountButtonType.email:
-        return "mariorossi00@mail.com";
-      case _AccountButtonType.localUrl:
-        return "http://:192.168.x.x:8123";
-      case _AccountButtonType.remoteUrl:
-        return "http://:192.168.x.x:8123";
-      case _AccountButtonType.productionSensor:
-        return "[xxx]";
-      case _AccountButtonType.consumptionSensor:
-        return "[xxx]";
-      case _AccountButtonType.name:
-        return "Casa Andrea";
-      case _AccountButtonType.position:
-        return "Via Verdi, 165 - Roma - Italy";
-      case _AccountButtonType.version:
-        return "1.0";
-    }
   }
 }
 

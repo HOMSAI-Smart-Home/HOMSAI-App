@@ -504,7 +504,7 @@ class _SearchLocalIntanceManualTextFieldState
                           .homeAssistantScanManualError
                       : null,
               labelText:
-                  HomsaiLocalizations.of(context)!.homeAssistantScanManualLabel,
+                  HomsaiLocalizations.of(context)!.urlLabel,
             ),
             style: Theme.of(context).textTheme.bodyText1!.copyWith(
                   color: Theme.of(context).colorScheme.onBackground,
@@ -616,7 +616,7 @@ class _ManualUrlButton extends StatelessWidget {
               state.status.isManual
                   ? HomsaiLocalizations.of(context)!.homeAssistantScanLabel
                   : HomsaiLocalizations.of(context)!
-                      .homeAssistantScanManualLabel,
+                      .urlLabel,
               key: ValueKey(state.status.isManual),
             ),
           ),

@@ -56,6 +56,10 @@ class _$AppRouter extends RootStackRouter {
           routeData: routeData,
           child: IntroBetaPage(key: args.key, onResult: args.onResult));
     },
+    UrlUpdateRoute.name: (routeData) {
+      return CupertinoPageX<dynamic>(
+          routeData: routeData, child: const UrlUpdatePage());
+    },
     HomeRoute.name: (routeData) {
       return CupertinoPageX<dynamic>(
           routeData: routeData, child: const HomePage());
@@ -99,7 +103,8 @@ class _$AppRouter extends RootStackRouter {
               path: 'accounts', parent: DashboardRoute.name)
         ]),
         RouteConfig(IntroductionRoute.name, path: '/introduction'),
-        RouteConfig(IntroBetaRoute.name, path: '/intro-beta')
+        RouteConfig(IntroBetaRoute.name, path: '/intro-beta'),
+        RouteConfig(UrlUpdateRoute.name, path: '/url-update')
       ];
 }
 
@@ -236,6 +241,14 @@ class IntroBetaRouteArgs {
   String toString() {
     return 'IntroBetaRouteArgs{key: $key, onResult: $onResult}';
   }
+}
+
+/// generated route for
+/// [UrlUpdatePage]
+class UrlUpdateRoute extends PageRouteInfo<void> {
+  const UrlUpdateRoute() : super(UrlUpdateRoute.name, path: '/url-update');
+
+  static const String name = 'UrlUpdateRoute';
 }
 
 /// generated route for

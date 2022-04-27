@@ -29,12 +29,13 @@
     "loginTitle2": "casa\n",
     "notSignUp": "First time on Homsai?",
 
+    "urlLabel": "Inserisci Url",
+
     "homeAssistantScanDialogTitle": "Connettiti al WI-FI!",
     "homeAssistantScanDialogMessage": "Per individuare l’istanza locale di *Home Assistant* è necessario che lo smartphone sia connesso alla stessa Wi-Fi dell’hub domotico.",
     "homeAssistantScanTitle": "Ricerca istanza locale",
     "homeAssistantScanningError": "Nessuna connessione rilevata",
     "homeAssistantScanningProgress": "Ricerca...",
-    "homeAssistantScanManualLabel": "Inserisci Url",
     "homeAssistantScanManualCheckbox": "Questo è un URL remoto",
     "homeAssistantScanLabel": "Scansiona",
     "homeAssistantScanManualError": "Url invalido",

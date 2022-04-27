@@ -16,6 +16,7 @@ import 'package:homsai/ui/pages/intro_beta/intro_beta.page.dart';
 import 'package:homsai/ui/pages/introduction/introduction.page.dart';
 import 'package:homsai/ui/pages/scan/home_assistant_scan.page.dart';
 import 'package:timezone/timezone.dart';
+import 'package:homsai/ui/pages/url_update/url_update.page.dart';
 
 part 'app.router.gr.dart';
 part 'package:homsai/ui/pages/add_sensor/add_sensor.router.dart';
@@ -28,6 +29,7 @@ part 'package:homsai/ui/pages/add_plant/add_plant.router.dart';
 part 'package:homsai/ui/pages/scan/home_assistant_scan.router.dart';
 part 'package:homsai/ui/pages/introduction/introduction.routes.dart';
 part 'package:homsai/ui/pages/intro_beta/intro_beta.router.dart';
+part 'package:homsai/ui/pages/url_update/url_update.router.dart';
 
 @CupertinoAutoRouter(
   replaceInRouteName: 'Page,Route',
@@ -52,7 +54,11 @@ part 'package:homsai/ui/pages/intro_beta/intro_beta.router.dart';
     AutoRoute(
       path: introBetaPath,
       page: IntroBetaPage,
-    )
+    ),
+    AutoRoute(
+      path: urlUpdatePath,
+      page: UrlUpdatePage,
+    ),
   ],
 )
 class AppRouter extends _$AppRouter {
