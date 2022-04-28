@@ -55,6 +55,12 @@ class _HomeAssistantScanPage extends State<HomeAssistantScanPage> {
               HomeAssistantScanBloc(context.read<CheckboxBloc>()),
         ),
       ],
+      padding: EdgeInsets.only(
+        bottom: MediaQuery.of(context).viewInsets.bottom,
+        top: 8,
+        left: 8,
+        right: 8,
+      ),
       children: <Widget>[
         _HomeAssistantScanDialog(),
         const SizedBox(height: 40),

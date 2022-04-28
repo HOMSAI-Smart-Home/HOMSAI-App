@@ -12,6 +12,7 @@ class HomsaiBlocScaffold extends StatefulWidget {
       this.mainAxisAlignment = MainAxisAlignment.start,
       this.extendBodyBehindAppBar = false,
       this.resizeToAvoidBottomInset = true,
+      this.scrollable = true,
       this.appBar,
       this.bottomNavigationBar,
       this.bottomSheet})
@@ -23,6 +24,7 @@ class HomsaiBlocScaffold extends StatefulWidget {
   final MainAxisAlignment mainAxisAlignment;
   final bool extendBodyBehindAppBar;
   final bool resizeToAvoidBottomInset;
+  final bool scrollable;
   final Widget? child;
   final PreferredSizeWidget? appBar;
   final Widget? bottomNavigationBar;
@@ -62,6 +64,7 @@ class _HomsaiBlocScaffoldState extends State<HomsaiBlocScaffold> {
           mainAxisAlignment: widget.mainAxisAlignment,
           extendBodyBehindAppBar: widget.extendBodyBehindAppBar,
           resizeToAvoidBottomInset: widget.resizeToAvoidBottomInset,
+          scrollable: widget.scrollable,
           appBar: widget.appBar,
           bottomNavigationBar: widget.bottomNavigationBar,
           bottomSheet: widget.bottomSheet,

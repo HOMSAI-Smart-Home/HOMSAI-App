@@ -12,6 +12,7 @@ class HomsaiScaffold extends StatefulWidget {
       this.mainAxisAlignment = MainAxisAlignment.start,
       this.extendBodyBehindAppBar = false,
       this.resizeToAvoidBottomInset = true,
+      this.scrollable = true,
       this.appBar,
       this.bottomNavigationBar,
       this.bottomSheet})
@@ -22,6 +23,7 @@ class HomsaiScaffold extends StatefulWidget {
   final MainAxisAlignment mainAxisAlignment;
   final bool extendBodyBehindAppBar;
   final bool resizeToAvoidBottomInset;
+  final bool scrollable;
   final Widget? child;
   final PreferredSizeWidget? appBar;
   final Widget? bottomNavigationBar;
@@ -71,7 +73,7 @@ class _HomsaiScaffoldState extends State<HomsaiScaffold> {
         extendBodyBehindAppBar: widget.extendBodyBehindAppBar,
         resizeToAvoidBottomInset: widget.resizeToAvoidBottomInset,
         body: SafeArea(
-          child: (widget.resizeToAvoidBottomInset)
+          child: widget.resizeToAvoidBottomInset && widget.scrollable
               ? SingleChildScrollView(
                   child: _HomsaiScaffoldBody(
                     padding: widget.padding,

@@ -27,7 +27,7 @@ class _IntroBetaPageState extends State<IntroBetaPage> {
         ),
       ],
       mainAxisAlignment: MainAxisAlignment.center,
-      resizeToAvoidBottomInset: false,
+      scrollable: false,
       children: <Widget>[
         _IntroBetaContainer(),
         const SizedBox(height: 16),
@@ -50,9 +50,15 @@ class _IntroBetaContainerState extends State<_IntroBetaContainer> {
           previous.introBetaStatus != current.introBetaStatus &&
           current.introBetaStatus != IntroBetaStatus.loading,
       builder: (context, state) {
-        return Container(
-          alignment: Alignment.center,
-          height: 240,
+        return Padding(
+          //alignment: Alignment.center,
+          //height: 240,
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+            top: 8,
+            left: 8,
+            right: 8,
+          ),
           child: AnimatedSwitcher(
             duration: const Duration(milliseconds: 250),
             transitionBuilder: buildTransition,
@@ -115,7 +121,7 @@ class _EmailEntry extends StatelessWidget {
           description: HomsaiLocalizations.of(context)!.emailEntryDescription,
         ),
         const SizedBox(height: 16),
-        _IntroBetaForm(),
+        _EmailAddressTextField(),
       ],
     );
   }
@@ -229,32 +235,12 @@ class _IntroBetaDescription extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        SuperRichText(
-          text: description,
-          style: Theme.of(context).textTheme.bodyText1,
-          textAlign: TextAlign.center,
-          overflow: TextOverflow.ellipsis,
-          maxLines: 5,
-        ),
-      ],
-    );
-  }
-}
-
-class _IntroBetaForm extends StatefulWidget {
-  @override
-  State<_IntroBetaForm> createState() => _IntroBetaFormState();
-}
-
-class _IntroBetaFormState extends State<_IntroBetaForm> {
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[_EmailAddressTextField()],
+    return SuperRichText(
+      text: description,
+      style: Theme.of(context).textTheme.bodyText1,
+      textAlign: TextAlign.center,
+      overflow: TextOverflow.ellipsis,
+      maxLines: 5,
     );
   }
 }
