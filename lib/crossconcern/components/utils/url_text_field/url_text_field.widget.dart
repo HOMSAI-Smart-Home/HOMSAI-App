@@ -58,9 +58,6 @@ class _UrlTextField<Bloc extends UrlTextFieldBloc> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<Bloc, UrlTextFieldState>(
-        //buildWhen: (previous, current) =>
-        //    previous.initialUrl != current.initialUrl ||
-        //    previous.status != current.status,
         builder: (context, state) {
       return Padding(
           padding: const EdgeInsets.symmetric(vertical: 8),
@@ -75,7 +72,7 @@ class _UrlTextField<Bloc extends UrlTextFieldBloc> extends StatelessWidget {
             : (value) => onChange!(value),
             decoration: InputDecoration(
               prefixIcon: Icon(Icons.link, color: _color(context, state)),
-              errorText: state.status.isValid
+              errorText: state.status != UrlTextFieldStatus.invalid
                   ? null
                   : errorText ??
                     HomsaiLocalizations.of(context)!

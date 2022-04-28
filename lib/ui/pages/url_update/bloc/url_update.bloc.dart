@@ -52,7 +52,6 @@ class UrlUpdateBloc extends Bloc<UrlUpdateEvent, UrlUpdateState> {
     LocalUrlChanged event,
     Emitter<UrlUpdateState> emit,
   ) {
-    localUrlTextFieldBloc.add(UrlChanged(url: event.url));
     emit(state.copyWith(status: _isFormValidate()));
   }
 
@@ -60,7 +59,6 @@ class UrlUpdateBloc extends Bloc<UrlUpdateEvent, UrlUpdateState> {
     RemoteUrlChanged event,
     Emitter<UrlUpdateState> emit,
   ) {
-    remoteUrlTextFieldBloc.add(UrlChanged(url: event.url));
     emit(state.copyWith(status: _isFormValidate()));
   }
 
@@ -70,18 +68,16 @@ class UrlUpdateBloc extends Bloc<UrlUpdateEvent, UrlUpdateState> {
       remoteUrl: remoteUrlTextFieldBloc.state.url.value,
     );
 
-    //if (plant != null) await appDatabase.plantDao.updateItem(plant!);
-
-    print('plant: ${plant!.localUrl} - ${plant!.remoteUrl}');
+    if (plant != null) await appDatabase.plantDao.updateItem(plant!);
 
     event.onSubmit();
   }
 
   FormzStatus _isFormValidate() {
-    print('local [${localUrlTextFieldBloc.state.status}]\tremote [${remoteUrlTextFieldBloc.state.status}]');
-    
-    if (localUrlTextFieldBloc.state.status.isValid &&
-        remoteUrlTextFieldBloc.state.status.isValid) {
+    if (localUrlTextFieldBloc.state.status != UrlTextFieldStatus.invalid &&
+        remoteUrlTextFieldBloc.state.status != UrlTextFieldStatus.invalid  &&
+        (localUrlTextFieldBloc.state.status != UrlTextFieldStatus.empity ||
+            remoteUrlTextFieldBloc.state.status != UrlTextFieldStatus.empity)) {
       return FormzStatus.valid;
     }
 

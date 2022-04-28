@@ -19,7 +19,7 @@ class UrlTextFieldBloc extends Bloc<UrlTextFieldEvent, UrlTextFieldState> {
     emit(state.copyWith(
       initialUrl: event.url,
       url: url.valid ? url : Url.pure(event.url),
-      status: _isUrlValid(url: url),
+      status: _isUrlValid(url),
     ));
   }
 
@@ -27,20 +27,20 @@ class UrlTextFieldBloc extends Bloc<UrlTextFieldEvent, UrlTextFieldState> {
     final urlDirty = Url.dirty(event.url);
     emit(state.copyWith(
       url: urlDirty.valid ? urlDirty : Url.pure(event.url),
-      status: _isUrlValid(url: urlDirty),
+      status: _isUrlValid(urlDirty),
     ));
   }
 
   void _onUrlUnfocused(UrlUnfocused event, Emitter<UrlTextFieldState> emit) {
     emit(state.copyWith(
-      status: _isUrlValid(url: state.url),
+      status: _isUrlValid(state.url),
     ));
   }
 
-  FormzStatus _isUrlValid({
-    Url? url,
-  }) {
-    if (url?.value == "") return FormzStatus.valid;
-    return Formz.validate([url ?? state.url]);
+  UrlTextFieldStatus _isUrlValid(Url url) {
+    if (url.value == "") return UrlTextFieldStatus.empity;
+    return Formz.validate([url]) == FormzStatus.valid
+        ? UrlTextFieldStatus.valid
+        : UrlTextFieldStatus.invalid;
   }
 }

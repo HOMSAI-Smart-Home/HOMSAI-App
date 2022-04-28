@@ -105,12 +105,17 @@ class _LocalUrlTextTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider.value(
       value: BlocProvider.of<LocalUrlTextFieldBloc>(context),
-      child: UrlTextField<LocalUrlTextFieldBloc>(
-        focusNode: focusNode,
-        labelText: "Inserisci l'Url locale",
-        textInputAction: TextInputAction.next,
-        onChange: (url) => context.read<UrlUpdateBloc>().add(LocalUrlChanged(url: url)),
-        )
+      child: BlocListener<LocalUrlTextFieldBloc, UrlTextFieldState>(
+        listenWhen: (previous, current) => previous.url != current.url,
+        listener: (context, state) => context
+            .read<UrlUpdateBloc>()
+            .add(LocalUrlChanged(url: state.url.value)),
+        child: UrlTextField<LocalUrlTextFieldBloc>(
+          focusNode: focusNode,
+          labelText: "Inserisci l'Url locale",
+          textInputAction: TextInputAction.next,
+        ),
+      ),
     );
   }
 }
@@ -124,11 +129,16 @@ class _RemoteUrlTextTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider.value(
       value: BlocProvider.of<RemoteUrlTextFieldBloc>(context),
-      child: UrlTextField<RemoteUrlTextFieldBloc>(
+      child: BlocListener<RemoteUrlTextFieldBloc, UrlTextFieldState>(
+        listenWhen: (previous, current) => previous.url != current.url,
+        listener: (context, state) => context
+            .read<UrlUpdateBloc>()
+            .add(RemoteUrlChanged(url: state.url.value)),
+        child: UrlTextField<RemoteUrlTextFieldBloc>(
           focusNode: focusNode,
           labelText: "Inserisci l'Url remoto",
-          onChange: (url) => context.read<UrlUpdateBloc>().add(RemoteUrlChanged(url: url)),
-      )
+        ),
+      ),
     );
   }
 }
@@ -140,13 +150,11 @@ class _UrlUpdateSave extends StatelessWidget {
         buildWhen: (previous, current) => previous.status != current.status,
         builder: (context, state) {
           return ElevatedButton(
-            onPressed: 
-              state.status.isValid
-                  ? () => context.read<UrlUpdateBloc>().add(UrlSubmitted(
-                        onSubmit: () => context.router.pop(),
-                      ))
-                  : null
-            ,
+            onPressed: state.status.isValid
+                ? () => context.read<UrlUpdateBloc>().add(UrlSubmitted(
+                      onSubmit: () => context.router.pop(),
+                    ))
+                : null,
             child: Text(HomsaiLocalizations.of(context)!.next),
           );
         });
