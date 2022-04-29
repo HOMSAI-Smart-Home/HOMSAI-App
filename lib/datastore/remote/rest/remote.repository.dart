@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:get_it/get_it.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.dart';
 import 'package:homsai/datastore/remote/rest/remote.Interface.dart';
 import 'package:homsai/main.dart';
@@ -31,18 +33,40 @@ class RemoteRepository implements RemoteInterface {
     return body;
   }
 
+  T _fallback<T>(
+    Uri url, {
+    Uri? fallbackUrl,
+    required T Function(Uri) function,
+  }) {
+    try {
+      return function(url);
+    } on TimeoutException catch (e) {
+      try {
+        throwIf(fallbackUrl == null, e);
+        return function(fallbackUrl!);
+      } on TimeoutException {
+        rethrow;
+      }
+    }
+  }
+
   @override
   Future<Map<String, dynamic>> get(
     Uri url, {
     Map<String, String>? headers,
     Duration timeout = _timeout,
+    Uri? fallbackUrl,
   }) async {
-    final Response response = await client
-        .get(
-          url,
-          headers: headers,
-        )
-        .timeout(timeout);
+    final Response response = await _fallback<Future<Response>>(
+      url,
+      fallbackUrl: fallbackUrl,
+      function: (url) => client
+          .get(
+            url,
+            headers: headers,
+          )
+          .timeout(timeout),
+    );
     return parseResponse(response);
   }
 
@@ -53,19 +77,23 @@ class RemoteRepository implements RemoteInterface {
     Object? body,
     Encoding? encoding,
     Duration timeout = const Duration(seconds: 120),
+    Uri? fallbackUrl,
   }) async {
-    final Response response = await client
-        .post(
-          url,
-          headers: headers,
-          body: (headers?[HttpHeaders.contentTypeHeader] == 'application/json')
-              ? jsonEncode(body)
-              : body,
-          encoding: encoding,
-        )
-        .timeout(timeout);
-    final h = jsonEncode(body);
-    print(h);
+    final Response response = await _fallback<Future<Response>>(
+      url,
+      fallbackUrl: fallbackUrl,
+      function: (url) => client
+          .post(
+            url,
+            headers: headers,
+            body:
+                (headers?[HttpHeaders.contentTypeHeader] == 'application/json')
+                    ? jsonEncode(body)
+                    : body,
+            encoding: encoding,
+          )
+          .timeout(timeout),
+    );
     return parseResponse(response);
   }
 
@@ -76,16 +104,22 @@ class RemoteRepository implements RemoteInterface {
     Object? body,
     Encoding? encoding,
     Duration timeout = _timeout,
+    Uri? fallbackUrl,
   }) async {
-    final Response response = await client
-        .put(
-          url,
-          headers: headers,
-          body: (headers?[HttpHeaders.contentTypeHeader] == 'application/json')
-              ? jsonEncode(body)
-              : body,
-        )
-        .timeout(timeout);
+    final Response response = await _fallback<Future<Response>>(
+      url,
+      fallbackUrl: fallbackUrl,
+      function: (url) => client
+          .put(
+            url,
+            headers: headers,
+            body:
+                (headers?[HttpHeaders.contentTypeHeader] == 'application/json')
+                    ? jsonEncode(body)
+                    : body,
+          )
+          .timeout(timeout),
+    );
     return parseResponse(response);
   }
 
@@ -96,13 +130,17 @@ class RemoteRepository implements RemoteInterface {
     Object? body,
     Encoding? encoding,
     Duration timeout = _timeout,
+    Uri? fallbackUrl,
   }) async {
-    final Response response = await client
+    final Response response = await _fallback<Future<Response>>(
+      url,
+      fallbackUrl: fallbackUrl,
+      function: (url) => client
         .delete(
           url,
           headers: headers,
         )
-        .timeout(timeout);
+        .timeout(timeout),);
     return parseResponse(response);
   }
 }

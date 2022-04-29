@@ -1,5 +1,8 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:get_it/get_it.dart';
 import 'package:homsai/business/home_assistant/home_assistant.interface.dart';
 import 'package:homsai/crossconcern/utilities/properties/api.proprties.dart';
 import 'package:homsai/datastore/DTOs/websocket/configuration/configuration_body.dto.dart';
@@ -54,6 +57,8 @@ class WebSocketSubscribersHandler {
   }
 }
 
+enum HomeAssistantWebSocketStatus { disconnected, connected, error }
+
 class HomeAssistantWebSocketRepository {
   final AppPreferencesInterface appPreferencesInterface =
       getIt.get<AppPreferencesInterface>();
@@ -63,20 +68,49 @@ class HomeAssistantWebSocketRepository {
   WebSocketChannel? webSocket;
   HomeAssistantAuth? homeAssistantAuth;
   int id = 2;
-  bool _connected = false;
+  HomeAssistantWebSocketStatus status =
+      HomeAssistantWebSocketStatus.disconnected;
   final List<String> _message = [];
 
-  //TODO: Remove and take it from global.
   late Uri url;
 
   static Map<String, int> eventsId = {};
   static Map<int, WebSocketSubscribersHandler> events = {};
 
   bool isConnected() {
-    return _connected;
+    return status == HomeAssistantWebSocketStatus.connected;
   }
 
-  Future<void> connect(Uri url) async {
+  T _fallback<T>(
+    Uri? url,
+    Uri? fallbackUrl,
+    T Function(Uri) function,
+  ) {
+    try {
+      throwIf(url == null, SocketException);
+      return function(url!);
+    } on SocketException catch (e) {
+      try {
+        throwIf(fallbackUrl == null, e);
+        return function(fallbackUrl!);
+      } on SocketException {
+        rethrow;
+      }
+    }
+  }
+
+  Future<void> connect(
+    Uri? url,
+    Uri? fallbackUrl,
+  ) {
+    return _fallback<Future<void>>(
+      url,
+      fallbackUrl,
+      _connect,
+    );
+  }
+
+  Future<void> _connect(Uri url) async {
     String scheme;
 
     homeAssistantAuth = appPreferencesInterface.getHomeAssistantToken();
@@ -98,7 +132,10 @@ class HomeAssistantWebSocketRepository {
 
     _message.insert(
       0,
-      jsonEncode({"type": "auth", "access_token": homeAssistantAuth!.token}),
+      jsonEncode({
+        "type": "auth",
+        "access_token": homeAssistantAuth!.token,
+      }),
     );
 
     getIt.get<HomeAssistantBroker>().connect();
@@ -113,7 +150,7 @@ class HomeAssistantWebSocketRepository {
         break;
 
       case HomeAssistantApiProprties.authOk:
-        _connected = true;
+        status = HomeAssistantWebSocketStatus.connected;
         _send(flush: true);
         return;
 
@@ -150,16 +187,38 @@ class HomeAssistantWebSocketRepository {
 
         data = jsonDecode(data);
 
-        if (!_connected) {
-          _auth(data);
-        } else {
-          try {
-            _responseHandler(data);
-          } catch (e) {}
+        switch (status) {
+          case HomeAssistantWebSocketStatus.disconnected:
+            _auth(data);
+            break;
+          case HomeAssistantWebSocketStatus.connected:
+            try {
+              _responseHandler(data);
+            } catch (e) {
+              //TODO: remove
+              print(data);
+              print(e);
+            }
+            break;
+          default:
         }
       },
-      onDone: () => connect(url),
-      onError: (e) => connect(url),
+      onDone: () {
+        if (status == HomeAssistantWebSocketStatus.connected) {
+          status = HomeAssistantWebSocketStatus.disconnected;
+          _connect(url);
+        }
+      },
+      onError: (e) {
+        if (e is WebSocketChannelException) {
+          var error = e.inner;
+          if (error is WebSocketChannelException) {
+            if (error.inner is SocketException) throw error.inner as SocketException;
+          }
+
+          status = HomeAssistantWebSocketStatus.error;
+        }
+      },
     );
   }
 
@@ -167,7 +226,7 @@ class HomeAssistantWebSocketRepository {
     bool flush = false,
     bool force = false,
   }) {
-    if (!_connected && !force) return;
+    if (status == HomeAssistantWebSocketStatus.disconnected && !force) return;
     if (!flush) return webSocket?.sink.add(_message.removeAt(0));
 
     while (_message.isNotEmpty) {
@@ -176,7 +235,7 @@ class HomeAssistantWebSocketRepository {
   }
 
   void logOut() {
-    _connected = false;
+    status = HomeAssistantWebSocketStatus.disconnected;
     webSocket?.sink.close();
     homeAssistantRepository.revokeToken(url: url);
   }

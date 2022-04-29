@@ -36,15 +36,12 @@ class WebSocketBloc extends Bloc<WebSocketEvent, WebSocketState> {
       ConnectWebSocket event, Emitter<WebSocketState> emit) async {
     HomeAssistantAuth? auth = appPreferencesInterface.getHomeAssistantToken();
     if (auth != null) {
-      await webSocketRepository.connect(_getUrl(auth.localUrl, auth.remoteUrl));
+      await webSocketRepository.connect(
+        auth.localUrl != '' ? Uri.parse(auth.localUrl) : null,
+        auth.remoteUrl != '' ? Uri.parse(auth.remoteUrl) : null,
+      );
       event.onWebSocketConnected();
     }
-  }
-
-  Uri _getUrl(String localUrl, String remoteUrl) {
-    return localUrl != ""
-        ? Uri.parse(localUrl)
-        : Uri.parse(remoteUrl);
   }
 
   void _onFetchConfig(FetchConfig event, Emitter<WebSocketState> emit) {
