@@ -31,7 +31,7 @@ class _HomePageState extends State<HomePage> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Alert(
+          /*Alert(
             AlertType.tips,
             icon: const Icon(Icons.tips_and_updates_rounded),
             title: Text(
@@ -43,7 +43,7 @@ class _HomePageState extends State<HomePage> {
               style: Theme.of(context).textTheme.bodyText2,
             ),
             action: AlertAction("Details", () {}),
-          ),
+          ),*/
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 10),
             child: DailyConsumptionChartInfo(),
