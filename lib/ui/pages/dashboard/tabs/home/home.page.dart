@@ -1,4 +1,7 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:homsai/crossconcern/components/charts/daily_consumption_chart.widget.dart';
 import 'package:homsai/crossconcern/components/utils/shadow.widget.dart';
@@ -42,11 +45,13 @@ class _HomePageState extends State<HomePage> {
             AlertType.tips,
             icon: const Icon(Icons.tips_and_updates_rounded),
             title: Text(
-              "Miglioramento disponibile",
+              HomsaiLocalizations.of(context)!
+                  .homePageImprovementAvailableLabel,
               style: Theme.of(context).textTheme.headline3,
             ),
             message: SuperRichText(
-              text: "Potresti spegnere *Lampadario Salotto* alle 19.",
+              text: HomsaiLocalizations.of(context)!
+                  .homePageMockTurnOffLightLabel,
               style: Theme.of(context).textTheme.bodyText2,
             ),
             action: AlertAction("Details", () {}),
@@ -105,8 +110,10 @@ class DailyConsumptionChartInfo extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 30),
                     child: ToggleText(
                       key: ValueKey(state.isPlotOptimized),
-                      first: "Consumo attuale",
-                      second: "Consumo ottimizzato",
+                      first: HomsaiLocalizations.of(context)!
+                          .homePageCurrentConsumptionLabel,
+                      second: HomsaiLocalizations.of(context)!
+                          .homePageOptimizedConsumptionLabel,
                       onChanged: (isNormalPlot) {
                         context.read<HomeBloc>().add(
                             ToggleConsumptionOptimazedPlot(
@@ -125,16 +132,6 @@ class DailyConsumptionChartInfo extends StatelessWidget {
                     min: state.minOffset,
                   ),
                   const DailyConsumptionBalanceInfo(),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 50, vertical: 10),
-                    child: SizedBox.fromSize(
-                      size: const Size.fromHeight(38),
-                      child: OutlinedButton(
-                          onPressed: () {},
-                          child: const Text("Cosa significa?")),
-                    ),
-                  ),
                 ],
               ),
             ),
@@ -152,6 +149,11 @@ class DailyConsumptionBalanceInfo extends StatelessWidget {
     return (state.isPlotOptimized) ? state.optimizedBalance : state.balance;
   }
 
+  double balanceWithHomesai(HomeState state) {
+    return double.parse(state.optimizedBalance!.balance.toStringAsFixed(2)) -
+        double.parse(state.balance!.balance.toStringAsFixed(2));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -162,23 +164,30 @@ class DailyConsumptionBalanceInfo extends StatelessWidget {
           children: [
             if (balance(state) != null)
               DailyConsumptionBalanceItemInfo(
-                "Energia Acquistata",
+                HomsaiLocalizations.of(context)!.homePagePurchasedEnergyLabel,
                 amount: balance(state)!.boughtEnergyExpense,
                 power: balance(state)!.boughtEnergy,
                 unit: state.consumptionSensor!.unitMesurement,
               ),
             if (balance(state) != null)
               DailyConsumptionBalanceItemInfo(
-                "Energia Immessa",
+                HomsaiLocalizations.of(context)!.homePageEnergyInjectedLabel,
                 amount: balance(state)!.soldEnergyEarning,
                 power: balance(state)!.soldEnergy,
                 unit: state.productionSensor!.unitMesurement,
               ),
             if (balance(state) != null)
               DailyConsumptionBalanceItemInfo(
-                "Saldo",
+                HomsaiLocalizations.of(context)!.homePageBalanceLabel,
                 amount: balance(state)!.balance,
                 colored: true,
+              ),
+            if (balance(state) != null)
+              DailyConsumptionBalanceItemInfo(
+                HomsaiLocalizations.of(context)!.homePageEarnWithHomesaiLabel,
+                amount: balanceWithHomesai(state),
+                backgroundColor: HomsaiColors.primaryGreen,
+                textColor: HomsaiColors.primaryWhite,
               ),
           ],
         ),
@@ -195,6 +204,8 @@ class DailyConsumptionBalanceItemInfo extends StatelessWidget {
     this.power,
     this.unit,
     this.colored = false,
+    this.backgroundColor,
+    this.textColor,
   }) : super(key: key);
 
   final String label;
@@ -202,6 +213,8 @@ class DailyConsumptionBalanceItemInfo extends StatelessWidget {
   final double? power;
   final String? unit;
   final bool colored;
+  final Color? backgroundColor;
+  final Color? textColor;
 
   Color? getColored(BuildContext context) {
     if (colored && amount != 0) {
@@ -213,7 +226,7 @@ class DailyConsumptionBalanceItemInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Theme.of(context).colorScheme.background,
+      color: backgroundColor ?? Theme.of(context).colorScheme.background,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(5),
       ),
@@ -228,7 +241,8 @@ class DailyConsumptionBalanceItemInfo extends StatelessWidget {
                 label,
                 style: Theme.of(context).textTheme.bodyText1?.copyWith(
                     fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.onSurfaceVariant),
+                    color: textColor ??
+                        Theme.of(context).colorScheme.onSurfaceVariant),
               ),
               Column(
                 mainAxisSize: MainAxisSize.min,

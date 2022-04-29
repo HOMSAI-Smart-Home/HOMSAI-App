@@ -61,5 +61,14 @@
     "introductionButtonText2": "What advantages do I have?",
     "introductionButtonText3": "I want to try Homsai",
     "introductionSkip": "Skip",
-    "introductionPageInfo": "Step %1 of 3"
+    "introductionPageInfo": "Step %1 of 3",
+
+    "homePageEarnWithHomesaiLabel": "Earn with Homsai",
+    "homePageImprovementAvailableLabel": "Improvement available",
+    "homePageMockTurnOffLightLabel": "Potresti spegnere *Lampadario Salotto* alle 19.",
+    "homePageCurrentConsumptionLabel": "Current consumption",
+    "homePageOptimizedConsumptionLabel": "Optimized consumption",
+    "homePagePurchasedEnergyLabel": "Purchased Energy",
+    "homePageEnergyInjectedLabel": "Energy Injected",
+    "homePageBalanceLabel": "Balance"
 }
