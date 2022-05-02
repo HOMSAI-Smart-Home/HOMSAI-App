@@ -121,7 +121,6 @@ class AuthGuardBuilder {
   void next(NavigationResolver resolver, StackRouter router,
       {void Function()? onSuccess}) {
     final build = _buildRedirect(resolver, router, (success) {
-      //router.popUntilRoot();
       if (success && onSuccess != null) onSuccess();
       resolver.next(success);
     });

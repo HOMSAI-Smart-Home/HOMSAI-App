@@ -11,6 +11,8 @@ import 'package:homsai/datastore/DTOs/remote/ai_service/consumption_optimization
 import 'package:homsai/themes/colors.theme.dart';
 import 'package:homsai/ui/pages/dashboard/tabs/home/bloc/home.bloc.dart';
 import 'package:homsai/ui/widget/devices/light/light_device.widget.dart';
+import 'package:super_rich_text/super_rich_text.dart';
+import 'package:flutter_svg/svg.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -183,11 +185,13 @@ class DailyConsumptionBalanceInfo extends StatelessWidget {
                 colored: true,
               ),
             if (balance(state) != null)
-              DailyConsumptionBalanceItemInfo(
+              EarnWithHomsaiItemInfo(
                 HomsaiLocalizations.of(context)!.homePageEarnWithHomesaiLabel,
                 amount: balanceWithHomesai(state),
-                backgroundColor: HomsaiColors.primaryGreen,
-                textColor: HomsaiColors.primaryWhite,
+                alertTextContent: HomsaiLocalizations.of(context)!
+                    .homePageBalanceAlertContent,
+                alertTextTitle:
+                    HomsaiLocalizations.of(context)!.homePageBalanceAlertTitle,
               ),
           ],
         ),
@@ -274,3 +278,88 @@ class DailyConsumptionBalanceItemInfo extends StatelessWidget {
     );
   }
 }
+
+class EarnWithHomsaiItemInfo extends StatelessWidget {
+  const EarnWithHomsaiItemInfo(
+    this.label, {
+    Key? key,
+    required this.amount,
+    this.alertTextContent,
+    this.alertTextTitle,
+  }) : super(key: key);
+
+  final String label;
+  final double amount;
+  final String? alertTextContent;
+  final String? alertTextTitle;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      color: HomsaiColors.primaryGreen,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(5),
+      ),
+      child: SizedBox.fromSize(
+        size: const Size.fromHeight(38),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 2),
+          child: TextButton(
+            style: ButtonStyle(
+                backgroundColor: MaterialStateColor.resolveWith(
+                    (states) => HomsaiColors.primaryGreen)),
+            onPressed: () => {
+              showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                        content: Text(
+                          alertTextContent ??
+                              HomsaiLocalizations.of(context)!
+                                  .homePageBalanceAlertContentDefault,
+                          style: TextStyle(color: HomsaiColors.primaryWhite),
+                        ),
+                        title: Text(
+                          alertTextTitle ??
+                              HomsaiLocalizations.of(context)!
+                                  .homePageBalanceAlertTitleDefault,
+                          style: TextStyle(color: HomsaiColors.primaryWhite),
+                        ),
+                        backgroundColor:
+                            Theme.of(context).colorScheme.background,
+                      ))
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      label,
+                      style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: HomsaiColors.primaryWhite),
+                    ),
+                    SvgPicture.asset("assets/icons/help.svg"),
+                  ],
+                ),
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      "${amount.toStringAsFixed(2)} €",
+                      style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                          fontWeight: FontWeight.w400,
+                          color: HomsaiColors.primaryWhite),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class Boolean {}
