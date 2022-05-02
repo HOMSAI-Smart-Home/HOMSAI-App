@@ -36,7 +36,7 @@ class UrlUpdateBloc extends Bloc<UrlUpdateEvent, UrlUpdateState> {
     AutoComplete event,
     Emitter<UrlUpdateState> emit,
   ) async {
-    plant = await appDatabase.plantDao.getActivePlant();
+    plant = await appDatabase.getPlant();
 
     if (plant != null) {
       localUrlTextFieldBloc.add(UrlAutoComplete(url: plant!.localUrl));
@@ -75,7 +75,7 @@ class UrlUpdateBloc extends Bloc<UrlUpdateEvent, UrlUpdateState> {
 
   FormzStatus _isFormValidate() {
     if (localUrlTextFieldBloc.state.status != UrlTextFieldStatus.invalid &&
-        remoteUrlTextFieldBloc.state.status != UrlTextFieldStatus.invalid  &&
+        remoteUrlTextFieldBloc.state.status != UrlTextFieldStatus.invalid &&
         (localUrlTextFieldBloc.state.status != UrlTextFieldStatus.empity ||
             remoteUrlTextFieldBloc.state.status != UrlTextFieldStatus.empity)) {
       return FormzStatus.valid;
