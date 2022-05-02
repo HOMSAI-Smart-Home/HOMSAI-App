@@ -221,7 +221,7 @@ class DailyConsumptionBalanceItemInfo extends StatelessWidget {
                 label,
                 style: Theme.of(context).textTheme.bodyText1?.copyWith(
                     fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.surface),
+                    color: Theme.of(context).colorScheme.onSurfaceVariant),
               ),
               Column(
                 mainAxisSize: MainAxisSize.min,

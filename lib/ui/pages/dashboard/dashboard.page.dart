@@ -94,7 +94,13 @@ class _DashboardAppBarExitAction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      onPressed: () {},
+      onPressed: () {
+        context.read<DashboardBloc>().add(
+              Logout(
+                () => context.router.popAndPush(const DashboardRoute()),
+              ),
+            );
+      },
       icon: Icon(
         Icons.exit_to_app_outlined,
         color: Theme.of(context).colorScheme.onBackground,

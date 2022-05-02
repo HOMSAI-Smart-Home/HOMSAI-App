@@ -11,6 +11,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
 
   DashboardBloc() : super(const DashboardState()) {
     on<RetrievePlantName>(_onRetrievePlantName);
+    on<Logout>(_onLogout);
     add(RetrievePlantName());
   }
 
@@ -21,7 +22,12 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
 
   void _onRetrievePlantName(
       RetrievePlantName event, Emitter<DashboardState> emit) async {
-    final plant = await appDatabase.plantDao.getActivePlant();
+    final plant = await appDatabase.getPlant();
     emit(state.copyWith(plantName: plant?.name));
+  }
+
+  void _onLogout(Logout event, Emitter<DashboardState> emit) async {
+    await appDatabase.logout();
+    event.onLogout();
   }
 }

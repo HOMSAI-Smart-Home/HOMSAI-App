@@ -120,7 +120,9 @@ class AddPlantBloc extends Bloc<AddPlantEvent, AddPlantState> {
       double.parse(longitude),
       configurationId,
     ));
-    await appDatabase.plantDao.setActive(plantId);
+
+    await appDatabase.updatePlant(plantId);
+
     if (state.entities.isNotEmpty) {
       await appDatabase.homeAssitantDao.insertEntities(
         plantId,

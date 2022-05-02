@@ -17,8 +17,6 @@ class Plant extends BaseEntity {
   final String name;
   final double latitude;
   final double longitude;
-  @ColumnInfo(name: 'active')
-  final bool isActive;
   @ColumnInfo(name: 'configuration_id')
   final int configurationId;
 
@@ -39,11 +37,9 @@ class Plant extends BaseEntity {
     int? id,
     this.productionSensor,
     this.consumptionSensor,
-    this.isActive = false,
   }) : super(id);
 
   Plant copyWith({
-    bool? isActive,
     String? productionSensor,
     String? consumptionSensor,
   }) =>
@@ -57,6 +53,5 @@ class Plant extends BaseEntity {
         id: id,
         productionSensor: productionSensor ?? this.productionSensor,
         consumptionSensor: consumptionSensor ?? this.consumptionSensor,
-        isActive: isActive ?? this.isActive,
       );
 }

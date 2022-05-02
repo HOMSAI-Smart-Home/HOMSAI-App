@@ -17,6 +17,8 @@ abstract class AppPreferencesInterface {
   void resetAiServiceToken();
 
   void resetUserId();
-  void setUserId(int id);
-  int? getUserId();
+  void setUserId(String id);
+  String? getUserId();
+
+  void logout();
 }

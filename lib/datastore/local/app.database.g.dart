@@ -88,13 +88,15 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `User` (`email` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT)');
+            'CREATE TABLE IF NOT EXISTS `User` (`id` TEXT NOT NULL, `email` TEXT NOT NULL, `plant_id` INTEGER, FOREIGN KEY (`plant_id`) REFERENCES `Plant` (`id`) ON UPDATE NO ACTION ON DELETE NO ACTION, PRIMARY KEY (`id`))');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `Plant` (`local_url` TEXT NOT NULL, `remote_url` TEXT NOT NULL, `name` TEXT NOT NULL, `latitude` REAL NOT NULL, `longitude` REAL NOT NULL, `active` INTEGER NOT NULL, `configuration_id` INTEGER NOT NULL, `production_sensor_id` TEXT, `consumption_sensor_id` TEXT, `id` INTEGER PRIMARY KEY AUTOINCREMENT, FOREIGN KEY (`configuration_id`) REFERENCES `Configuration` (`id`) ON UPDATE NO ACTION ON DELETE NO ACTION)');
+            'CREATE TABLE IF NOT EXISTS `Plant` (`local_url` TEXT NOT NULL, `remote_url` TEXT NOT NULL, `name` TEXT NOT NULL, `latitude` REAL NOT NULL, `longitude` REAL NOT NULL, `configuration_id` INTEGER NOT NULL, `production_sensor_id` TEXT, `consumption_sensor_id` TEXT, `id` INTEGER PRIMARY KEY AUTOINCREMENT, FOREIGN KEY (`configuration_id`) REFERENCES `Configuration` (`id`) ON UPDATE NO ACTION ON DELETE NO ACTION)');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `Configuration` (`latitude` REAL NOT NULL, `longitude` REAL NOT NULL, `elevation` REAL NOT NULL, `locationName` TEXT NOT NULL, `version` TEXT NOT NULL, `state` TEXT NOT NULL, `currency` TEXT NOT NULL, `source` TEXT NOT NULL, `dir` TEXT NOT NULL, `timezone` TEXT NOT NULL, `isSafeMode` INTEGER NOT NULL, `externalUrl` TEXT, `internalUrl` TEXT, `whitelistExternalDirs` TEXT NOT NULL, `allowExternalDirs` TEXT NOT NULL, `allowExternalUrls` TEXT NOT NULL, `components` TEXT NOT NULL, `unitSystem` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT)');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `Entity` (`entity_id` TEXT NOT NULL, `plant_id` INTEGER NOT NULL, `entity` TEXT NOT NULL, FOREIGN KEY (`plant_id`) REFERENCES `Plant` (`id`) ON UPDATE NO ACTION ON DELETE NO ACTION, PRIMARY KEY (`entity_id`, `plant_id`))');
+        await database.execute(
+            'CREATE UNIQUE INDEX `index_User_email` ON `User` (`email`)');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -131,20 +133,29 @@ class _$UserDao extends UserDao {
         _userInsertionAdapter = InsertionAdapter(
             database,
             'User',
-            (User item) =>
-                <String, Object?>{'email': item.email, 'id': item.id}),
+            (User item) => <String, Object?>{
+                  'id': item.id,
+                  'email': item.email,
+                  'plant_id': item.plantId
+                }),
         _userUpdateAdapter = UpdateAdapter(
             database,
             'User',
             ['id'],
-            (User item) =>
-                <String, Object?>{'email': item.email, 'id': item.id}),
+            (User item) => <String, Object?>{
+                  'id': item.id,
+                  'email': item.email,
+                  'plant_id': item.plantId
+                }),
         _userDeletionAdapter = DeletionAdapter(
             database,
             'User',
             ['id'],
-            (User item) =>
-                <String, Object?>{'email': item.email, 'id': item.id});
+            (User item) => <String, Object?>{
+                  'id': item.id,
+                  'email': item.email,
+                  'plant_id': item.plantId
+                });
 
   final sqflite.DatabaseExecutor database;
 
@@ -159,18 +170,28 @@ class _$UserDao extends UserDao {
   final DeletionAdapter<User> _userDeletionAdapter;
 
   @override
-  Future<User?> findUserById(int id) async {
+  Future<User?> findUserById(String id) async {
     return _queryAdapter.query('SELECT * FROM User WHERE id = ?1',
-        mapper: (Map<String, Object?> row) =>
-            User(row['email'] as String, id: row['id'] as int?),
+        mapper: (Map<String, Object?> row) => User(
+            row['id'] as String, row['email'] as String,
+            plantId: row['plant_id'] as int?),
         arguments: [id]);
+  }
+
+  @override
+  Future<List<User>> findAll() async {
+    return _queryAdapter.queryList('SELECT * FROM User',
+        mapper: (Map<String, Object?> row) => User(
+            row['id'] as String, row['email'] as String,
+            plantId: row['plant_id'] as int?));
   }
 
   @override
   Future<User?> findUserByEmail(String email) async {
     return _queryAdapter.query('SELECT * FROM User WHERE email = ?1',
-        mapper: (Map<String, Object?> row) =>
-            User(row['email'] as String, id: row['id'] as int?),
+        mapper: (Map<String, Object?> row) => User(
+            row['id'] as String, row['email'] as String,
+            plantId: row['plant_id'] as int?),
         arguments: [email]);
   }
 
@@ -187,8 +208,9 @@ class _$UserDao extends UserDao {
   }
 
   @override
-  Future<void> updateItem(User item) async {
-    await _userUpdateAdapter.update(item, OnConflictStrategy.abort);
+  Future<int> updateItem(User item) {
+    return _userUpdateAdapter.updateAndReturnChangedRows(
+        item, OnConflictStrategy.abort);
   }
 
   @override
@@ -214,7 +236,6 @@ class _$PlantDao extends PlantDao {
                   'name': item.name,
                   'latitude': item.latitude,
                   'longitude': item.longitude,
-                  'active': item.isActive ? 1 : 0,
                   'configuration_id': item.configurationId,
                   'production_sensor_id': item.productionSensor,
                   'consumption_sensor_id': item.consumptionSensor,
@@ -230,7 +251,6 @@ class _$PlantDao extends PlantDao {
                   'name': item.name,
                   'latitude': item.latitude,
                   'longitude': item.longitude,
-                  'active': item.isActive ? 1 : 0,
                   'configuration_id': item.configurationId,
                   'production_sensor_id': item.productionSensor,
                   'consumption_sensor_id': item.consumptionSensor,
@@ -246,7 +266,6 @@ class _$PlantDao extends PlantDao {
                   'name': item.name,
                   'latitude': item.latitude,
                   'longitude': item.longitude,
-                  'active': item.isActive ? 1 : 0,
                   'configuration_id': item.configurationId,
                   'production_sensor_id': item.productionSensor,
                   'consumption_sensor_id': item.consumptionSensor,
@@ -277,8 +296,7 @@ class _$PlantDao extends PlantDao {
             row['configuration_id'] as int,
             id: row['id'] as int?,
             productionSensor: row['production_sensor_id'] as String?,
-            consumptionSensor: row['consumption_sensor_id'] as String?,
-            isActive: (row['active'] as int) != 0));
+            consumptionSensor: row['consumption_sensor_id'] as String?));
   }
 
   @override
@@ -293,43 +311,7 @@ class _$PlantDao extends PlantDao {
             row['configuration_id'] as int,
             id: row['id'] as int?,
             productionSensor: row['production_sensor_id'] as String?,
-            consumptionSensor: row['consumption_sensor_id'] as String?,
-            isActive: (row['active'] as int) != 0),
-        arguments: [id]);
-  }
-
-  @override
-  Future<Plant?> getActivePlant() async {
-    return _queryAdapter.query('SELECT * FROM Plant WHERE active = 1 LIMIT 1',
-        mapper: (Map<String, Object?> row) => Plant(
-            row['local_url'] as String,
-            row['remote_url'] as String,
-            row['name'] as String,
-            row['latitude'] as double,
-            row['longitude'] as double,
-            row['configuration_id'] as int,
-            id: row['id'] as int?,
-            productionSensor: row['production_sensor_id'] as String?,
-            consumptionSensor: row['consumption_sensor_id'] as String?,
-            isActive: (row['active'] as int) != 0));
-  }
-
-  @override
-  Future<List<HomeAssistantEntity>> getEntitiesFromCategory(
-      int id, String category) async {
-    return _queryAdapter.queryList(
-        'SELECT * FROM Entity WHERE plant_id = ?1 AND entity_id LIKE ?2 || \'.%\'',
-        mapper: (Map<String, Object?> row) => HomeAssistantEntity(row['plant_id'] as int, row['entity_id'] as String, _homeAssistantConverter.decode(row['entity'] as String)),
-        arguments: [id, category]);
-  }
-
-  @override
-  Future<List<HomeAssistantEntity>> getAllEntities(int id) async {
-    return _queryAdapter.queryList('SELECT * FROM Entity WHERE plant_id = ?1',
-        mapper: (Map<String, Object?> row) => HomeAssistantEntity(
-            row['plant_id'] as int,
-            row['entity_id'] as String,
-            _homeAssistantConverter.decode(row['entity'] as String)),
+            consumptionSensor: row['consumption_sensor_id'] as String?),
         arguments: [id]);
   }
 
@@ -346,8 +328,9 @@ class _$PlantDao extends PlantDao {
   }
 
   @override
-  Future<void> updateItem(Plant item) async {
-    await _plantUpdateAdapter.update(item, OnConflictStrategy.abort);
+  Future<int> updateItem(Plant item) {
+    return _plantUpdateAdapter.updateAndReturnChangedRows(
+        item, OnConflictStrategy.abort);
   }
 
   @override
@@ -358,20 +341,6 @@ class _$PlantDao extends PlantDao {
   @override
   Future<void> deleteItem(Plant item) async {
     await _plantDeletionAdapter.delete(item);
-  }
-
-  @override
-  Future<void> setActive(int id) async {
-    if (database is sqflite.Transaction) {
-      await super.setActive(id);
-    } else {
-      await (database as sqflite.Database)
-          .transaction<void>((transaction) async {
-        final transactionDatabase = _$AppDatabase(changeListener)
-          ..database = transaction;
-        await transactionDatabase.plantDao.setActive(id);
-      });
-    }
   }
 }
 
@@ -513,8 +482,9 @@ class _$ConfigurationDao extends ConfigurationDao {
   }
 
   @override
-  Future<void> updateItem(Configuration item) async {
-    await _configurationUpdateAdapter.update(item, OnConflictStrategy.abort);
+  Future<int> updateItem(Configuration item) {
+    return _configurationUpdateAdapter.updateAndReturnChangedRows(
+        item, OnConflictStrategy.abort);
   }
 
   @override
@@ -586,6 +556,31 @@ class _$HomeAssistantDao extends HomeAssistantDao {
   }
 
   @override
+  Future<List<HomeAssistantEntity>> getEntitiesFromCategory(
+      int id, String category) async {
+    return _queryAdapter.queryList(
+        'SELECT * FROM Entity WHERE plant_id = ?1 AND entity_id LIKE ?2 || \'.%\'',
+        mapper: (Map<String, Object?> row) => HomeAssistantEntity(row['plant_id'] as int, row['entity_id'] as String, _homeAssistantConverter.decode(row['entity'] as String)),
+        arguments: [id, category]);
+  }
+
+  @override
+  Future<List<HomeAssistantEntity>> getAllEntities(int id) async {
+    return _queryAdapter.queryList('SELECT * FROM Entity WHERE plant_id = ?1',
+        mapper: (Map<String, Object?> row) => HomeAssistantEntity(
+            row['plant_id'] as int,
+            row['entity_id'] as String,
+            _homeAssistantConverter.decode(row['entity'] as String)),
+        arguments: [id]);
+  }
+
+  @override
+  Future<List<int>> insertEntitiesReplace(List<HomeAssistantEntity> items) {
+    return _homeAssistantEntityInsertionAdapter.insertListAndReturnIds(
+        items, OnConflictStrategy.replace);
+  }
+
+  @override
   Future<int> insertItem(HomeAssistantEntity item) {
     return _homeAssistantEntityInsertionAdapter.insertAndReturnId(
         item, OnConflictStrategy.abort);
@@ -598,8 +593,8 @@ class _$HomeAssistantDao extends HomeAssistantDao {
   }
 
   @override
-  Future<void> updateItem(HomeAssistantEntity item) async {
-    await _homeAssistantEntityUpdateAdapter.update(
+  Future<int> updateItem(HomeAssistantEntity item) {
+    return _homeAssistantEntityUpdateAdapter.updateAndReturnChangedRows(
         item, OnConflictStrategy.abort);
   }
 

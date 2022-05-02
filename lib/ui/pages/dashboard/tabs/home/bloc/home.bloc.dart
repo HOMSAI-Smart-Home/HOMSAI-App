@@ -22,7 +22,6 @@ import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.
 import 'package:homsai/datastore/models/entity/light/light.entity.dart';
 import 'package:homsai/datastore/models/home_assistant_auth.model.dart';
 import 'package:homsai/main.dart';
-import 'package:timezone/timezone.dart';
 
 part 'home.event.dart';
 part 'home.state.dart';
@@ -76,8 +75,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   void _onFetchedLights(FetchedLights event, Emitter<HomeState> emit) async {
-    final plant = await appDatabase.plantDao.getActivePlant();
-    final entities = await appDatabase.plantDao.getAllEntities(plant!.id!);
+    final plant = await appDatabase.getPlant();
+    final entities =
+        await appDatabase.homeAssitantDao.getAllEntities(plant!.id!);
     List<LightEntity> lights;
     if (entities.isEmpty) {
       await appDatabase.homeAssitantDao
@@ -106,13 +106,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   void _onFetchHistory(FetchHistory event, Emitter<HomeState> emit) async {
-    final plant = await appDatabase.plantDao.getActivePlant();
+    final plant = await appDatabase.getPlant();
     if (plant != null) {
-      Configuration? configuration = await appDatabase.plantDao
-          .getConfiguration(plant.id!, appDatabase.configurationDao);
-
-      getIt.registerLazySingleton<Location>(
-          () => getLocation(configuration!.timezone));
+      Configuration? configuration = await appDatabase.getConfiguration();
 
       final consumptionInfo =
           await _getPlotInfoFromSensor(plant.consumptionSensor, plant.localUrl);

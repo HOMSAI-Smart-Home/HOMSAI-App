@@ -17,25 +17,28 @@ class AppPreferences implements AppPreferencesInterface {
 
   @override
   HomeAssistantAuth? getHomeAssistantToken() {
-    return HomeAssistantAuth.fromJson(jsonDecode(
-        preferences?.getString(AppPreferencesProperties.prefKeyHomeAssistantAccessToken) ??
-            "{}"));
+    return HomeAssistantAuth.fromJson(jsonDecode(preferences?.getString(
+            AppPreferencesProperties.prefKeyHomeAssistantAccessToken) ??
+        "{}"));
   }
 
   @override
   void resetHomeAssistantToken() {
-    preferences?.remove(AppPreferencesProperties.prefKeyHomeAssistantAccessToken);
+    preferences
+        ?.remove(AppPreferencesProperties.prefKeyHomeAssistantAccessToken);
   }
 
   @override
   void setHomeAssistantToken(HomeAssistantAuth token) {
     preferences?.setString(
-        AppPreferencesProperties.prefKeyHomeAssistantAccessToken, jsonEncode(token));
+        AppPreferencesProperties.prefKeyHomeAssistantAccessToken,
+        jsonEncode(token));
   }
 
   @override
   bool canSkipIntroduction() {
-    return preferences?.getBool(AppPreferencesProperties.prefKeySkipIntroduction) ??
+    return preferences
+            ?.getBool(AppPreferencesProperties.prefKeySkipIntroduction) ??
         false;
   }
 
@@ -56,22 +59,20 @@ class AppPreferences implements AppPreferencesInterface {
   }
 
   @override
-  void setUserId(int id) {
-    preferences?.setInt(
-        AppPreferencesProperties.prefKeyUserId, id);
+  void setUserId(String id) {
+    preferences?.setString(AppPreferencesProperties.prefKeyUserId, id);
   }
 
   @override
-  int? getUserId() {
-    return preferences?.getInt(
-        AppPreferencesProperties.prefKeyUserId);
+  String? getUserId() {
+    return preferences?.getString(AppPreferencesProperties.prefKeyUserId);
   }
 
   @override
   AiServiceAuth? getAiServiceToken() {
-    return AiServiceAuth.fromJson(jsonDecode(
-        preferences?.getString(AppPreferencesProperties.prefKeyAiServiceAccessToken) ??
-            "{}"));
+    return AiServiceAuth.fromJson(jsonDecode(preferences
+            ?.getString(AppPreferencesProperties.prefKeyAiServiceAccessToken) ??
+        "{}"));
   }
 
   @override
@@ -81,7 +82,14 @@ class AppPreferences implements AppPreferencesInterface {
 
   @override
   void setAiServicetToken(AiServiceAuth token) {
-    preferences?.setString(
-        AppPreferencesProperties.prefKeyAiServiceAccessToken, jsonEncode(token));
+    preferences?.setString(AppPreferencesProperties.prefKeyAiServiceAccessToken,
+        jsonEncode(token));
+  }
+
+  @override
+  void logout() {
+    resetUserId();
+    resetHomeAssistantToken();
+    resetAiServiceToken();
   }
 }

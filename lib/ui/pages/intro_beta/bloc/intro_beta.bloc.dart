@@ -9,6 +9,8 @@ import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.
 import 'package:homsai/datastore/models/ai_service_auth.model.dart';
 import 'package:homsai/datastore/models/database/user.entity.dart';
 import 'package:homsai/main.dart';
+import 'package:uuid/uuid.dart';
+import 'package:uuid/uuid_util.dart';
 
 part 'intro_beta.event.dart';
 part 'intro_beta.state.dart';
@@ -88,10 +90,14 @@ class IntroBetaBloc extends Bloc<IntroBetaEvent, IntroBetaState> {
 
     User? user = await appDatabase.userDao.findUserByEmail(email.value);
     if (user == null) {
-      user = User(email.value);
-      user.id = await appDatabase.userDao.insertItem(User(email.value));
+      user = User(
+          const Uuid(options: {
+            'grng': UuidUtil.cryptoRNG,
+          }).v4(),
+          email.value);
+      await appDatabase.userDao.insertItem(user);
     }
-    appPreferencesInterface.setUserId(user.id!);
+    appPreferencesInterface.setUserId(user.id);
 
     event.onSubmit();
   }

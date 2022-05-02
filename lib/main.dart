@@ -39,14 +39,14 @@ Future<void> setup() async {
   // It enables to reassign an implementation of an interface, for example in Unit tests
   getIt.allowReassignment = true;
 
-  // Local interfaces
-  final database =
-      await $FloorAppDatabase.databaseBuilder(DatabaseProperties.name).build();
-  getIt.registerLazySingleton<AppDatabase>(() => database);
   // Wait asynchronous AppPreferences initialization
   final AppPreferencesInterface appPreferences = AppPreferences();
   await appPreferences.initialize();
   getIt.registerLazySingleton<AppPreferencesInterface>(() => appPreferences);
+  // Local interfaces
+  final database =
+      await $FloorAppDatabase.databaseBuilder(DatabaseProperties.name).build();
+  getIt.registerLazySingleton<AppDatabase>(() => database);
   getIt.registerLazySingleton<UserLocalInterface>(() => UserLocalRepository());
   getIt.registerLazySingleton<NetworkManagerInterface>(() => NetworkManager());
 

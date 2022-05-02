@@ -30,17 +30,13 @@ class AddSensorBloc extends Bloc<AddSensorEvent, AddSensorState> {
 
   void _onRetrieveSensors(
       RetrieveSensors event, Emitter<AddSensorState> emit) async {
-    final plant = await appDatabase.plantDao.getActivePlant();
-    if (plant != null) {
-      final sensors =
-          await appDatabase.plantDao.getEntities<SensorEntity>(plant.id!);
-      final powerSensors = sensors
-          .filterSensorByDeviceClass<MesurableSensorEntity>(DeviceClass.power);
-      emit(state.copyWith(
-        productionSensors: List<MesurableSensorEntity>.from(powerSensors),
-        consumptionSensors: List<MesurableSensorEntity>.from(powerSensors),
-      ));
-    }
+    final sensors = await appDatabase.getEntities<SensorEntity>();
+    final powerSensors = sensors
+        .filterSensorByDeviceClass<MesurableSensorEntity>(DeviceClass.power);
+    emit(state.copyWith(
+      productionSensors: List<MesurableSensorEntity>.from(powerSensors),
+      consumptionSensors: List<MesurableSensorEntity>.from(powerSensors),
+    ));
   }
 
   void _onProductionSensorChanged(
@@ -58,7 +54,7 @@ class AddSensorBloc extends Bloc<AddSensorEvent, AddSensorState> {
   }
 
   void _onSubmit(OnSubmit event, Emitter<AddSensorState> emit) async {
-    final plant = await appDatabase.plantDao.getActivePlant();
+    final plant = await appDatabase.getPlant();
     final newPlant = plant?.copyWith(
       productionSensor: state.selectedProductionSensor?.entityId,
       consumptionSensor: state.selectedConsumptionSensor?.entityId,

@@ -8,3 +8,12 @@ abstract class DashboardEvent extends Equatable {
 }
 
 class RetrievePlantName extends DashboardEvent {}
+
+class Logout extends DashboardEvent {
+  const Logout(this.onLogout);
+
+  final void Function() onLogout;
+
+  @override
+  List<Object> get props => [onLogout];
+}

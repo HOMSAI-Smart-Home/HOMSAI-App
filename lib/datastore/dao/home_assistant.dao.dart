@@ -16,8 +16,19 @@ abstract class HomeAssistantDao extends BaseDao<HomeAssistantEntity> {
     return hassEntity?.entity as T;
   }
 
+  @Query(
+      "SELECT * FROM Entity WHERE plant_id = :id AND entity_id LIKE :category || '.%'")
+  Future<List<HomeAssistantEntity>> getEntitiesFromCategory(
+      int id, String category);
+
+  @Query("SELECT * FROM Entity WHERE plant_id = :id")
+  Future<List<HomeAssistantEntity>> getAllEntities(int id);
+
+  @Insert(onConflict: OnConflictStrategy.replace)
+  Future<List<int>> insertEntitiesReplace(List<HomeAssistantEntity> items);
+
   Future<List<int>> insertEntities(int plantId, List<hass.Entity> entities) {
-    return insertItems(entities
+    return insertEntitiesReplace(entities
         .getEntities<hass.Entity>()
         .map((entity) => HomeAssistantEntity(plantId, entity.entityId, entity))
         .toList());

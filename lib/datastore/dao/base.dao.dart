@@ -8,7 +8,7 @@ abstract class BaseDao<T> {
   Future<List<int>> insertItems(List<T> items);
 
   @update
-  Future<void> updateItem(T item);
+  Future<int> updateItem(T item);
 
   @update
   Future<void> updateItems(List<T> item);
