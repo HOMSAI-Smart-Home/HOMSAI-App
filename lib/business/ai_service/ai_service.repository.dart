@@ -9,6 +9,7 @@ import 'package:homsai/datastore/DTOs/remote/ai_service/daily_plan/daily_plan_bo
 import 'package:homsai/datastore/DTOs/remote/ai_service/daily_plan/log.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/ai_service/login/login.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/ai_service/login/login_body.dto.dart';
+import 'package:homsai/datastore/DTOs/remote/history/history.dto.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.dart';
 import 'package:homsai/datastore/models/ai_service_auth.model.dart';
 import 'package:homsai/datastore/remote/rest/remote.Interface.dart';
@@ -68,6 +69,12 @@ class AIServiceRepository implements AIServiceInterface {
     ConsumptionOptimizationsForecastBodyDto optimizationsForecastBody,
     String unit,
   ) async {
+    final forecasts = appPreferences.getOptimizationForecast();
+    if (forecasts != null &&
+        forecasts.optimizedGeneralPowerMeterData.isNotEmpty &&
+        _checkFirstForecastDate(forecasts.optimizedGeneralPowerMeterData[0])) {
+      return forecasts;
+    }
     Map<String, dynamic> result = await remoteInterface.post(
       Uri.parse(ApiProprties.aIServiceBaseUrl).replace(
         path:
@@ -77,8 +84,16 @@ class AIServiceRepository implements AIServiceInterface {
       headers: _getHeader(),
       body: optimizationsForecastBody.toJson(),
     );
-
+    appPreferences.setOptimizationForecast(
+        ConsumptionOptimizationsForecastDto.fromJson(result));
     return ConsumptionOptimizationsForecastDto.fromJson(result);
+  }
+
+  bool _checkFirstForecastDate(HistoryDto element) {
+    // Check if the forecast date is yesterday
+    var yesterday = DateTime.now().subtract(const Duration(days: 1));
+    yesterday = DateTime(yesterday.year, yesterday.month, yesterday.day);
+    return element.lastChanged.isAtSameMomentAs(yesterday);
   }
 
   @override
@@ -108,7 +123,6 @@ class AIServiceRepository implements AIServiceInterface {
     List<String> entitysType,
   ) async {
     dailyPlanBodyDto = _anonymizeDayliPlanBodyDto(dailyPlanBodyDto);
-
     Map<String, dynamic> result = await remoteInterface.post(
       Uri.parse(ApiProprties.aIServiceBaseUrl).replace(
         path: ApiProprties.aiServiceDailyPlanPath,

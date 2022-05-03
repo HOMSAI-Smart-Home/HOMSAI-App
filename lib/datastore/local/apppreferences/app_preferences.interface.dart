@@ -1,3 +1,4 @@
+import 'package:homsai/datastore/DTOs/remote/ai_service/consumption_optimizations_forecast/consumption_optimizations_forecast.dto.dart';
 import 'package:homsai/datastore/models/ai_service_auth.model.dart';
 import 'package:homsai/datastore/models/home_assistant_auth.model.dart';
 
@@ -21,4 +22,8 @@ abstract class AppPreferencesInterface {
   String? getUserId();
 
   void logout();
+
+  void setOptimizationForecast(ConsumptionOptimizationsForecastDto forecastDto);
+  ConsumptionOptimizationsForecastDto? getOptimizationForecast();
+  void resetOptimizationForecast();
 }

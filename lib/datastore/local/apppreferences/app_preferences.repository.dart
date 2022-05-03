@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:homsai/crossconcern/utilities/properties/app_preference.proprties.dart';
+import 'package:homsai/datastore/DTOs/remote/ai_service/consumption_optimizations_forecast/consumption_optimizations_forecast.dto.dart';
 import 'package:homsai/datastore/models/ai_service_auth.model.dart';
 import 'package:homsai/datastore/models/home_assistant_auth.model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -91,5 +92,26 @@ class AppPreferences implements AppPreferencesInterface {
     resetUserId();
     resetHomeAssistantToken();
     resetAiServiceToken();
+  }
+
+  @override
+  void setOptimizationForecast(
+      ConsumptionOptimizationsForecastDto forecastDto) {
+    preferences?.setString(AppPreferencesProperties.prefOptimizationForecast,
+        jsonEncode(forecastDto));
+  }
+
+  @override
+  ConsumptionOptimizationsForecastDto? getOptimizationForecast() {
+    final forecast = preferences
+        ?.getString(AppPreferencesProperties.prefOptimizationForecast);
+    return forecast != null
+        ? ConsumptionOptimizationsForecastDto.fromJson(jsonDecode(forecast))
+        : null;
+  }
+
+  @override
+  void resetOptimizationForecast() {
+    preferences?.remove(AppPreferencesProperties.prefOptimizationForecast);
   }
 }
