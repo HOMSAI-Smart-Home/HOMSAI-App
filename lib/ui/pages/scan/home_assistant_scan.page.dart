@@ -503,8 +503,7 @@ class _SearchLocalIntanceManualTextFieldState
                       ? HomsaiLocalizations.of(context)!
                           .homeAssistantScanManualError
                       : null,
-              labelText:
-                  HomsaiLocalizations.of(context)!.urlLabel,
+              labelText: HomsaiLocalizations.of(context)!.urlLabel,
             ),
             style: Theme.of(context).textTheme.bodyText1!.copyWith(
                   color: Theme.of(context).colorScheme.onBackground,
@@ -545,11 +544,17 @@ class _ContinueRetryButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocListener<HomeAssistantScanBloc, HomeAssistantScanState>(
-      listenWhen: (previous, current) => previous.status != current.status,
+      listenWhen: (previous, current) =>
+          previous.status != current.status &&
+          current.status.isAuthenticationSuccess,
       listener: (context, state) {
-        if (state.status.isAuthenticationSuccess) {
-          context.router.replace(AddPlantRoute(onResult: onResult));
-        }
+        context.router.replace(
+          AddPlantRoute(
+            onResult: onResult,
+            url: Uri.parse(state.selectedUrl.value),
+            remote: state.remoteUrl,
+          ),
+        );
       },
       child: BlocBuilder<HomeAssistantScanBloc, HomeAssistantScanState>(
         buildWhen: (previous, current) =>
@@ -615,8 +620,7 @@ class _ManualUrlButton extends StatelessWidget {
             child: Text(
               state.status.isManual
                   ? HomsaiLocalizations.of(context)!.homeAssistantScanLabel
-                  : HomsaiLocalizations.of(context)!
-                      .urlLabel,
+                  : HomsaiLocalizations.of(context)!.urlLabel,
               key: ValueKey(state.status.isManual),
             ),
           ),

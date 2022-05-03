@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:homsai/business/ai_service/ai_service.interface.dart';
 import 'package:homsai/business/home_assistant/home_assistant.interface.dart';
 import 'package:homsai/crossconcern/components/charts/daily_consumption_chart.widget.dart';
@@ -15,20 +16,21 @@ import 'package:homsai/datastore/DTOs/remote/history/history.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/history/history_body.dto.dart';
 import 'package:homsai/datastore/local/app.database.dart';
 import 'package:homsai/datastore/models/database/configuration.entity.dart';
+import 'package:homsai/datastore/models/database/plant.entity.dart';
 import 'package:homsai/datastore/models/entity/base/base.entity.dart';
 import 'package:homsai/datastore/models/entity/sensors/mesurable/mesurable_sensor.entity.dart';
+import 'package:homsai/datastore/remote/websocket/home_assistant_websocket.interface.dart';
 import 'package:homsai/datastore/remote/websocket/home_assistant_websocket.repository.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.dart';
 import 'package:homsai/datastore/models/entity/light/light.entity.dart';
-import 'package:homsai/datastore/models/home_assistant_auth.model.dart';
 import 'package:homsai/main.dart';
 
 part 'home.event.dart';
 part 'home.state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
-  final HomeAssistantWebSocketRepository webSocketRepository =
-      getIt.get<HomeAssistantWebSocketRepository>();
+  final HomeAssistantWebSocketInterface webSocketRepository =
+      getIt.get<HomeAssistantWebSocketInterface>();
 
   final AIServiceInterface aiServiceInterface = getIt.get<AIServiceInterface>();
 
@@ -41,7 +43,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final AppDatabase appDatabase = getIt.get<AppDatabase>();
 
   HomeBloc() : super(const HomeState()) {
-    on<ConnectWebSocket>(_onWebsocketConnect);
     on<FetchStates>(_onFetchState);
     on<FetchedLights>(_onFetchedLights);
     on<FetchHistory>(_onFetchHistory);
@@ -52,17 +53,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   @override
   void onTransition(Transition<HomeEvent, HomeState> transition) {
     super.onTransition(transition);
-  }
-
-  void _onWebsocketConnect(
-      ConnectWebSocket event, Emitter<HomeState> emit) async {
-    HomeAssistantAuth? auth = appPreferencesInterface.getHomeAssistantToken();
-    if (!webSocketRepository.isConnected() && auth != null) {
-      webSocketRepository.connect(
-        auth.localUrl != '' ? Uri.parse(auth.localUrl) : null,
-        auth.remoteUrl != '' ? Uri.parse(auth.remoteUrl) : null,
-      );
-    }
   }
 
   void _onFetchState(FetchStates event, Emitter<HomeState> emit) {
@@ -110,9 +100,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       Configuration? configuration = await appDatabase.getConfiguration();
 
       final consumptionInfo =
-          await _getPlotInfoFromSensor(plant.consumptionSensor, plant.localUrl);
+          await _getPlotInfoFromSensor(plant.consumptionSensor, plant);
       final productionInfo =
-          await _getPlotInfoFromSensor(plant.productionSensor, plant.localUrl);
+          await _getPlotInfoFromSensor(plant.productionSensor, plant);
 
       final productionSensor = await appDatabase.homeAssitantDao
           .findEntity<MesurableSensorEntity>(
@@ -177,14 +167,16 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     return c == null || t >= c ? t : c;
   }
 
-  Future<PlotInfo> _getPlotInfoFromSensor(String? sensor, String url) async {
+  Future<PlotInfo> _getPlotInfoFromSensor(String? sensor, Plant plant) async {
     PlotInfo info =
         PlotInfo(maxRange: Offset(Duration.minutesPerDay.toDouble(), 4));
     if (sensor == null) return info;
 
     final historyBodyDto = HistoryBodyDto(sensor, minimalResponse: true);
-    final history = await homeAssistantRepository.getHistory(Uri.parse(url),
-        historyBodyDto: historyBodyDto);
+    final history = await homeAssistantRepository.getHistory(
+      plant: plant,
+      historyBodyDto: historyBodyDto,
+    );
 
     return _getPlotInfo(history);
   }

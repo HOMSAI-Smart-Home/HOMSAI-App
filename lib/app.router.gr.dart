@@ -31,7 +31,11 @@ class _$AppRouter extends RootStackRouter {
       final args = routeData.argsAs<AddPlantRouteArgs>();
       return CupertinoPageX<dynamic>(
           routeData: routeData,
-          child: AddPlantPage(key: args.key, onResult: args.onResult));
+          child: AddPlantPage(
+              key: args.key,
+              onResult: args.onResult,
+              url: args.url,
+              remote: args.remote));
     },
     AddSensorRoute.name: (routeData) {
       final args = routeData.argsAs<AddSensorRouteArgs>();
@@ -135,24 +139,37 @@ class HomeAssistantScanRouteArgs {
 /// generated route for
 /// [AddPlantPage]
 class AddPlantRoute extends PageRouteInfo<AddPlantRouteArgs> {
-  AddPlantRoute({Key? key, required void Function(bool) onResult})
+  AddPlantRoute(
+      {Key? key,
+      required void Function(bool) onResult,
+      required Uri url,
+      required bool remote})
       : super(AddPlantRoute.name,
             path: '/add-plant',
-            args: AddPlantRouteArgs(key: key, onResult: onResult));
+            args: AddPlantRouteArgs(
+                key: key, onResult: onResult, url: url, remote: remote));
 
   static const String name = 'AddPlantRoute';
 }
 
 class AddPlantRouteArgs {
-  const AddPlantRouteArgs({this.key, required this.onResult});
+  const AddPlantRouteArgs(
+      {this.key,
+      required this.onResult,
+      required this.url,
+      required this.remote});
 
   final Key? key;
 
   final void Function(bool) onResult;
 
+  final Uri url;
+
+  final bool remote;
+
   @override
   String toString() {
-    return 'AddPlantRouteArgs{key: $key, onResult: $onResult}';
+    return 'AddPlantRouteArgs{key: $key, onResult: $onResult, url: $url, remote: $remote}';
   }
 }
 

@@ -90,7 +90,7 @@ class _$AppDatabase extends AppDatabase {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `User` (`id` TEXT NOT NULL, `email` TEXT NOT NULL, `plant_id` INTEGER, FOREIGN KEY (`plant_id`) REFERENCES `Plant` (`id`) ON UPDATE NO ACTION ON DELETE NO ACTION, PRIMARY KEY (`id`))');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `Plant` (`local_url` TEXT NOT NULL, `remote_url` TEXT NOT NULL, `name` TEXT NOT NULL, `latitude` REAL NOT NULL, `longitude` REAL NOT NULL, `configuration_id` INTEGER NOT NULL, `production_sensor_id` TEXT, `consumption_sensor_id` TEXT, `id` INTEGER PRIMARY KEY AUTOINCREMENT, FOREIGN KEY (`configuration_id`) REFERENCES `Configuration` (`id`) ON UPDATE NO ACTION ON DELETE NO ACTION)');
+            'CREATE TABLE IF NOT EXISTS `Plant` (`local_url` TEXT, `remote_url` TEXT, `name` TEXT NOT NULL, `latitude` REAL NOT NULL, `longitude` REAL NOT NULL, `configuration_id` INTEGER NOT NULL, `production_sensor_id` TEXT, `consumption_sensor_id` TEXT, `id` INTEGER PRIMARY KEY AUTOINCREMENT, FOREIGN KEY (`configuration_id`) REFERENCES `Configuration` (`id`) ON UPDATE NO ACTION ON DELETE NO ACTION)');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `Configuration` (`latitude` REAL NOT NULL, `longitude` REAL NOT NULL, `elevation` REAL NOT NULL, `locationName` TEXT NOT NULL, `version` TEXT NOT NULL, `state` TEXT NOT NULL, `currency` TEXT NOT NULL, `source` TEXT NOT NULL, `dir` TEXT NOT NULL, `timezone` TEXT NOT NULL, `isSafeMode` INTEGER NOT NULL, `externalUrl` TEXT, `internalUrl` TEXT, `whitelistExternalDirs` TEXT NOT NULL, `allowExternalDirs` TEXT NOT NULL, `allowExternalUrls` TEXT NOT NULL, `components` TEXT NOT NULL, `unitSystem` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT)');
         await database.execute(
@@ -288,8 +288,8 @@ class _$PlantDao extends PlantDao {
   Future<List<Plant>> findAllPlants() async {
     return _queryAdapter.queryList('SELECT * FROM Plant',
         mapper: (Map<String, Object?> row) => Plant(
-            row['local_url'] as String,
-            row['remote_url'] as String,
+            row['local_url'] as String?,
+            row['remote_url'] as String?,
             row['name'] as String,
             row['latitude'] as double,
             row['longitude'] as double,
@@ -303,8 +303,8 @@ class _$PlantDao extends PlantDao {
   Future<Plant?> findPlantById(int id) async {
     return _queryAdapter.query('SELECT * FROM Plant WHERE id = ?1',
         mapper: (Map<String, Object?> row) => Plant(
-            row['local_url'] as String,
-            row['remote_url'] as String,
+            row['local_url'] as String?,
+            row['remote_url'] as String?,
             row['name'] as String,
             row['latitude'] as double,
             row['longitude'] as double,

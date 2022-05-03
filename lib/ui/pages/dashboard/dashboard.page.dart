@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:homsai/app.router.dart';
 import 'package:homsai/crossconcern/components/common/scaffold/homsai_bloc_scaffold.widget.dart';
+import 'package:homsai/crossconcern/helpers/blocs/websocket/websocket.bloc.dart';
 import 'package:homsai/themes/colors.theme.dart';
 import 'package:homsai/ui/pages/dashboard/bloc/dashboard.bloc.dart';
 import 'package:homsai/ui/pages/dashboard/tabs/home/bloc/home.bloc.dart';
@@ -33,6 +34,9 @@ class _DashboardPageState extends State<DashboardPage> {
         builder: (context, child, animation) {
           return HomsaiBlocScaffold(
             providers: [
+              BlocProvider<WebSocketBloc>(
+                create: (BuildContext context) => WebSocketBloc(),
+              ),
               BlocProvider<DashboardBloc>(
                 create: (BuildContext context) => DashboardBloc(),
               ),

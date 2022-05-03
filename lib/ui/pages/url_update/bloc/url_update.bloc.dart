@@ -39,8 +39,8 @@ class UrlUpdateBloc extends Bloc<UrlUpdateEvent, UrlUpdateState> {
     plant = await appDatabase.getPlant();
 
     if (plant != null) {
-      localUrlTextFieldBloc.add(UrlAutoComplete(url: plant!.localUrl));
-      remoteUrlTextFieldBloc.add(UrlAutoComplete(url: plant!.remoteUrl));
+      localUrlTextFieldBloc.add(UrlAutoComplete(url: plant!.localUrl ?? ''));
+      remoteUrlTextFieldBloc.add(UrlAutoComplete(url: plant!.remoteUrl ?? ''));
 
       emit(
         state.copyWith(status: _isFormValidate()),

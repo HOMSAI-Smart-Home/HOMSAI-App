@@ -15,6 +15,7 @@ import 'package:homsai/datastore/DTOs/remote/history/history_body.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/logbook/logbook.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/logbook/logbook_body.dto.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.dart';
+import 'package:homsai/datastore/models/database/plant.entity.dart';
 import 'package:homsai/datastore/models/home_assistant_auth.model.dart';
 import 'package:homsai/datastore/remote/network/network_manager.interface.dart';
 import 'package:homsai/datastore/remote/rest/remote.Interface.dart';
@@ -99,27 +100,33 @@ class HomeAssistantRepository implements HomeAssistantInterface {
         url: url, timeout: timeout);
   }
 
-  Future<Map<String, dynamic>> _tokenReqest(
-    Duration timeout,
-    Uri url,
-    Map<String, dynamic> body,
-  ) async {
+  Future<Map<String, dynamic>> _tokenReqest({
+    required Duration timeout,
+    required Uri baseurl,
+    Uri? fallback,
+    required Map<String, dynamic> body,
+  }) async {
     Map<String, dynamic> response = {};
     HttpClient client = HttpClient();
     client.connectionTimeout = timeout;
 
-    url = url.replace(
+    baseurl = baseurl.replace(
+      path: HomeAssistantApiProprties.tokenPath,
+      queryParameters: {},
+    );
+    fallback = fallback?.replace(
       path: HomeAssistantApiProprties.tokenPath,
       queryParameters: {},
     );
 
     response = await remote.post(
-      url,
+      baseurl,
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
       },
       body: body,
       encoding: Encoding.getByName('utf-8'),
+      fallbackUrl: fallback,
     );
 
     throwIf(
@@ -131,11 +138,12 @@ class HomeAssistantRepository implements HomeAssistantInterface {
     return response;
   }
 
-  Future<HomeAssistantAuth> _getToken(
-      {required Uri url,
-      required String result,
-      required bool remote,
-      Duration timeout = const Duration(seconds: 2)}) async {
+  Future<HomeAssistantAuth> _getToken({
+    required Uri url,
+    required String result,
+    required bool remote,
+    Duration timeout = const Duration(seconds: 2),
+  }) async {
     Map<String, dynamic> data;
     Map<String, dynamic> body;
     int now;
@@ -150,13 +158,11 @@ class HomeAssistantRepository implements HomeAssistantInterface {
       'client_id': HomeAssistantApiProprties.authClientId
     };
 
-    data = await _tokenReqest(timeout, url, body);
+    data = await _tokenReqest(timeout: timeout, baseurl: url, body: body);
 
     now = DateTime.now().millisecondsSinceEpoch ~/ 1000;
 
     return HomeAssistantAuth(
-        !remote ? url.origin : "",
-        remote ? url.origin : "",
         data['access_token'],
         now + int.parse(data['expires_in'].toString()),
         data["refresh_token"],
@@ -174,7 +180,9 @@ class HomeAssistantRepository implements HomeAssistantInterface {
     int now;
 
     url = url.replace(
-        path: HomeAssistantApiProprties.tokenPath, queryParameters: {});
+      path: HomeAssistantApiProprties.tokenPath,
+      queryParameters: {},
+    );
 
     body = {
       'grant_type': HomeAssistantApiProprties.tokenRefresh,
@@ -182,7 +190,11 @@ class HomeAssistantRepository implements HomeAssistantInterface {
       'client_id': HomeAssistantApiProprties.authClientId,
     };
 
-    data = await _tokenReqest(timeout, url, body);
+    data = await _tokenReqest(
+      timeout: timeout,
+      baseurl: url,
+      body: body,
+    );
 
     now = DateTime.now().millisecondsSinceEpoch ~/ 1000;
 
@@ -210,48 +222,65 @@ class HomeAssistantRepository implements HomeAssistantInterface {
       'token': auth!.token,
     };
 
-    await _tokenReqest(timeout, url, body);
-
+    await _tokenReqest(
+      timeout: timeout,
+      baseurl: url,
+      body: body,
+    );
     appPreferences.resetHomeAssistantToken();
   }
 
   @override
-  Future<List<HistoryDto>> getHistory(
-    Uri url, {
+  Future<List<HistoryDto>> getHistory({
+    required Plant plant,
     HistoryBodyDto? historyBodyDto,
   }) async {
     Map<String, dynamic> response;
 
-    url = url.replace(
-      path: HomeAssistantApiProprties.historyPath +
-          "/${historyBodyDto?.start?.toIso8601String() ?? ""}",
-      queryParameters: historyBodyDto?.toJson(),
-    );
+    final baseUrl = plant.getBaseUrl().replace(
+          path: HomeAssistantApiProprties.historyPath +
+              "/${historyBodyDto?.start?.toIso8601String() ?? ""}",
+          queryParameters: historyBodyDto?.toJson(),
+        );
+    final fallback = plant.getFallbackUrl()?.replace(
+          path: HomeAssistantApiProprties.historyPath +
+              "/${historyBodyDto?.start?.toIso8601String() ?? ""}",
+          queryParameters: historyBodyDto?.toJson(),
+        );
 
     response = await remote.get(
-      url,
+      baseUrl,
       headers: _getHeader(),
+      fallbackUrl: fallback,
     );
+
     print(response);
     final history = HistoryDto.fromList(response["data"][0]);
     return history;
   }
 
-  Future<LogbookDto> getLogBook(
-    Uri url, {
+  @override
+  Future<LogbookDto> getLogBook({
+    required Plant plant,
     LogbookBodyDto? logbookBodyDto,
   }) async {
     Map<String, dynamic> response;
 
-    url = url.replace(
-      path: HomeAssistantApiProprties.logbookPath +
-          (logbookBodyDto?.start?.toIso8601String() ?? ""),
-      queryParameters: logbookBodyDto?.toJson(),
-    );
+    final baseUrl = plant.getBaseUrl().replace(
+          path: HomeAssistantApiProprties.logbookPath +
+              (logbookBodyDto?.start?.toIso8601String() ?? ""),
+          queryParameters: logbookBodyDto?.toJson(),
+        );
+    final fallback = plant.getFallbackUrl()?.replace(
+          path: HomeAssistantApiProprties.logbookPath +
+              (logbookBodyDto?.start?.toIso8601String() ?? ""),
+          queryParameters: logbookBodyDto?.toJson(),
+        );
 
     response = await remote.get(
-      url,
+      baseUrl,
       headers: _getHeader(),
+      fallbackUrl: fallback,
     );
 
     return LogbookDto.fromJson(response);

@@ -2,6 +2,9 @@ import 'dart:async';
 
 import 'package:homsai/datastore/DTOs/remote/history/history.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/history/history_body.dto.dart';
+import 'package:homsai/datastore/DTOs/remote/logbook/logbook.dto.dart';
+import 'package:homsai/datastore/DTOs/remote/logbook/logbook_body.dto.dart';
+import 'package:homsai/datastore/models/database/plant.entity.dart';
 import 'package:homsai/datastore/models/home_assistant_auth.model.dart';
 
 abstract class HomeAssistantInterface {
@@ -18,10 +21,6 @@ abstract class HomeAssistantInterface {
     required Uri url,
     Duration timeout = const Duration(seconds: 2),
   });
-  Future<List<HistoryDto>> getHistory(
-    Uri url, {
-    HistoryBodyDto? historyBodyDto,
-  });
   Future<HomeAssistantAuth> refreshToken({
     required Uri url,
     Duration timeout = const Duration(seconds: 2),
@@ -29,5 +28,13 @@ abstract class HomeAssistantInterface {
   Future revokeToken({
     required Uri url,
     Duration timeout = const Duration(seconds: 2),
+  });
+  Future<List<HistoryDto>> getHistory({
+    required Plant plant,
+    required HistoryBodyDto historyBodyDto,
+  });
+  Future<LogbookDto> getLogBook({
+    required Plant plant,
+    LogbookBodyDto? logbookBodyDto,
   });
 }

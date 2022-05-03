@@ -3,12 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:homsai/crossconcern/components/charts/daily_consumption_chart.widget.dart';
 import 'package:homsai/crossconcern/components/utils/shadow.widget.dart';
 import 'package:homsai/crossconcern/components/utils/toggle_text.widget.dart';
+import 'package:homsai/crossconcern/helpers/blocs/websocket/websocket.bloc.dart';
 import 'package:homsai/datastore/DTOs/remote/ai_service/consumption_optimizations_forecast/consumption_optimizations_forecast.dto.dart';
 import 'package:homsai/themes/colors.theme.dart';
 import 'package:homsai/ui/pages/dashboard/tabs/home/bloc/home.bloc.dart';
-import 'package:homsai/crossconcern/components/alerts/alert.widget.dart';
 import 'package:homsai/ui/widget/devices/light/light_device.widget.dart';
-import 'package:super_rich_text/super_rich_text.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -21,8 +20,14 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    context.read<HomeBloc>().add(ConnectWebSocket());
     context.read<HomeBloc>().add(FetchStates());
+    if(!context.read<WebSocketBloc>().webSocketRepository.isConnected()) {
+      context.read<WebSocketBloc>().add(ConnectWebSocket(onWebSocketConnected: () {}));
+    }
+    /*
+    BlocListener<WebSocketBloc, WebSocketState>(
+      listenWhen: (previous, current) => previous,
+      listener: (context, state) => context.read<HomeBloc>().add(FetchStates()),);*/
   }
 
   @override

@@ -9,8 +9,15 @@ import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
 
 class AddPlantPage extends StatefulWidget {
   final void Function(bool) onResult;
+  final Uri url;
+  final bool remote;
 
-  const AddPlantPage({Key? key, required this.onResult}) : super(key: key);
+  const AddPlantPage({
+    Key? key,
+    required this.onResult,
+    required this.url,
+    required this.remote,
+  }) : super(key: key);
 
   @override
   State<AddPlantPage> createState() => _AddPlantPageState();
@@ -23,7 +30,7 @@ class _AddPlantPageState extends State<AddPlantPage> {
       providers: [
         BlocProvider<WebSocketBloc>(create: (_) => WebSocketBloc()),
         BlocProvider<AddPlantBloc>(
-          create: (context) => AddPlantBloc(context.read<WebSocketBloc>()),
+          create: (context) => AddPlantBloc(context.read<WebSocketBloc>(), widget.url),
         ),
       ],
       mainAxisAlignment: MainAxisAlignment.center,
@@ -32,7 +39,7 @@ class _AddPlantPageState extends State<AddPlantPage> {
         _AddPlantTitle(),
         _AddPlantForm(),
         const SizedBox(height: 24),
-        _AddPlantSubmit(widget.onResult),
+        _AddPlantSubmit(widget.onResult, widget.url, widget.remote),
         const SizedBox(height: 24),
       ],
     );
@@ -198,8 +205,10 @@ class _AddPlantLocationInfo extends StatelessWidget {
 
 class _AddPlantSubmit extends StatelessWidget {
   final void Function(bool) onResult;
+  final Uri url;
+  final bool remote;
 
-  const _AddPlantSubmit(this.onResult);
+  const _AddPlantSubmit(this.onResult, this.url, this.remote,);
 
   @override
   Widget build(BuildContext context) {
@@ -208,8 +217,9 @@ class _AddPlantSubmit extends StatelessWidget {
         onPressed: state.entities.isNotEmpty
             ? () => context.read<AddPlantBloc>().add(
                   OnSubmit(
-                    () =>
-                        context.router.push(AddSensorRoute(onResult: onResult)),
+                    () => context.router.push(AddSensorRoute(onResult: onResult)),
+                    url,
+                    remote,
                   ),
                 )
             : null,

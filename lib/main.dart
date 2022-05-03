@@ -20,6 +20,7 @@ import 'package:homsai/datastore/remote/rest/remote.repository.dart';
 import 'package:homsai/crossconcern/utilities/properties/database.properties.dart';
 import 'package:homsai/datastore/local/app.database.dart';
 import 'package:homsai/datastore/remote/websocket/home_assistant.broker.dart';
+import 'package:homsai/datastore/remote/websocket/home_assistant_websocket.interface.dart';
 import 'package:homsai/datastore/remote/websocket/home_assistant_websocket.repository.dart';
 import 'package:homsai/business/light/light.repository.dart';
 import 'package:homsai/crossconcern/utilities/properties/constants.util.dart';
@@ -59,7 +60,7 @@ Future<void> setup() async {
 
   getIt.registerLazySingleton<AIServiceInterface>(() => AIServiceRepository());
 
-  getIt.registerLazySingleton<HomeAssistantWebSocketRepository>(
+  getIt.registerLazySingleton<HomeAssistantWebSocketInterface>(
       () => HomeAssistantWebSocketRepository());
 
   getIt.registerLazySingleton<HomeAssistantBroker>(() => HomeAssistantBroker());

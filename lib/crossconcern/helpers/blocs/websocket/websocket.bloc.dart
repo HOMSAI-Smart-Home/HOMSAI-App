@@ -5,7 +5,7 @@ import 'package:homsai/datastore/DTOs/websocket/configuration/configuration.dto.
 import 'package:homsai/datastore/local/app.database.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.dart';
 import 'package:homsai/datastore/models/entity/base/base.entity.dart';
-import 'package:homsai/datastore/models/home_assistant_auth.model.dart';
+import 'package:homsai/datastore/remote/websocket/home_assistant_websocket.interface.dart';
 import 'package:homsai/datastore/remote/websocket/home_assistant_websocket.repository.dart';
 import 'package:homsai/main.dart';
 
@@ -13,8 +13,8 @@ part 'websocket.event.dart';
 part 'websocket.state.dart';
 
 class WebSocketBloc extends Bloc<WebSocketEvent, WebSocketState> {
-  final HomeAssistantWebSocketRepository webSocketRepository =
-      getIt.get<HomeAssistantWebSocketRepository>();
+  final HomeAssistantWebSocketInterface webSocketRepository =
+      getIt.get<HomeAssistantWebSocketInterface>();
 
   final AppPreferencesInterface appPreferencesInterface =
       getIt.get<AppPreferencesInterface>();
@@ -34,12 +34,12 @@ class WebSocketBloc extends Bloc<WebSocketEvent, WebSocketState> {
 
   void _onWebsocketConnect(
       ConnectWebSocket event, Emitter<WebSocketState> emit) async {
-    HomeAssistantAuth? auth = appPreferencesInterface.getHomeAssistantToken();
-    if (auth != null) {
-      await webSocketRepository.connect(
-        auth.localUrl != '' ? Uri.parse(auth.localUrl) : null,
-        auth.remoteUrl != '' ? Uri.parse(auth.remoteUrl) : null,
-      );
+    if(event.url.isNotEmpty){
+      await webSocketRepository.connect(url:Uri.parse(event.url));
+      event.onWebSocketConnected();
+    }
+    else{
+      await webSocketRepository.connect();
       event.onWebSocketConnected();
     }
   }

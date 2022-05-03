@@ -10,8 +10,7 @@ import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.
 import 'package:homsai/datastore/models/database/configuration.entity.dart';
 import 'package:homsai/datastore/models/database/plant.entity.dart';
 import 'package:homsai/datastore/models/entity/base/base.entity.dart';
-import 'package:homsai/datastore/models/home_assistant_auth.model.dart';
-import 'package:homsai/datastore/remote/websocket/home_assistant_websocket.repository.dart';
+import 'package:homsai/datastore/remote/websocket/home_assistant_websocket.interface.dart';
 import 'package:homsai/main.dart';
 import 'package:timezone/timezone.dart';
 
@@ -19,16 +18,17 @@ part 'add_plant.event.dart';
 part 'add_plant.state.dart';
 
 class AddPlantBloc extends Bloc<AddPlantEvent, AddPlantState> {
-  final HomeAssistantWebSocketRepository webSocketRepository =
-      getIt.get<HomeAssistantWebSocketRepository>();
+  final HomeAssistantWebSocketInterface webSocketRepository =
+      getIt.get<HomeAssistantWebSocketInterface>();
 
   final AppPreferencesInterface appPreferencesInterface =
       getIt.get<AppPreferencesInterface>();
 
   final AppDatabase appDatabase = getIt.get<AppDatabase>();
   final WebSocketBloc webSocketBloc;
+  final Uri url;
 
-  AddPlantBloc(this.webSocketBloc) : super(const AddPlantState()) {
+  AddPlantBloc(this.webSocketBloc, this.url) : super(const AddPlantState()) {
     on<ConfigurationFetched>(_onConfigurationFetched);
     on<StatesFetched>(_onStatesFetched);
     on<PlantNameChanged>(_onPlantNameChanged);
@@ -36,7 +36,7 @@ class AddPlantBloc extends Bloc<AddPlantEvent, AddPlantState> {
     on<CoordinateChanged>(_onCoordinateChanged);
     on<CoordinateUnfocused>(_onCoordinateUnfocused);
     on<OnSubmit>(_onSubmit);
-    webSocketBloc.add(ConnectWebSocket(onWebSocketConnected: () {}));
+    webSocketBloc.add(ConnectWebSocket(onWebSocketConnected: () {}, url: url.toString()));
   }
 
   @override
@@ -106,15 +106,14 @@ class AddPlantBloc extends Bloc<AddPlantEvent, AddPlantState> {
   }
 
   void _onSubmit(OnSubmit event, Emitter<AddPlantState> emit) async {
-    HomeAssistantAuth? auth = appPreferencesInterface.getHomeAssistantToken();
     List<String> coordinates = state.coordinate.value.split(";");
     final latitude = coordinates.first;
     final longitude = coordinates.last;
     final configurationId =
         await appDatabase.configurationDao.insertItem(state.configuration!);
     final plantId = await appDatabase.plantDao.insertItem(Plant(
-      (auth?.localUrl ?? ""),
-      (auth?.remoteUrl ?? ""),
+      !event.remote ? event.url.toString() : null,
+      event.remote ? event.url.toString() : null,
       state.plantName.value,
       double.parse(latitude),
       double.parse(longitude),

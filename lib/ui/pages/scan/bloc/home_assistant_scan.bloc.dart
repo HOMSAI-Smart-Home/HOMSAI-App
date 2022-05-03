@@ -142,9 +142,11 @@ class HomeAssistantScanBloc
   void _onUrlSubmitted(
       UrlSubmitted event, Emitter<HomeAssistantScanState> emit) async {
     final url = Url.dirty(state.selectedUrl.value);
+    final remote = state.remoteUrl;
     emit(state.copyWith(
       selectedUrl: url,
     ));
+    
     if (state.selectedUrl.invalid) return;
 
     emit(state.copyWith(
@@ -152,14 +154,20 @@ class HomeAssistantScanBloc
 
     try {
       final authResult = await homeAssistantRepository.authenticate(
-          url: Uri.parse(
-            state.selectedUrl.value,
-          ),
-          remote: state.remoteUrl);
-      appPreferencesInterface.setHomeAssistantToken(authResult);
-      emit(
-        state.copyWith(status: HomeAssistantScanStatus.authenticationSuccess),
+        url: Uri.parse(url.value),
+        remote: remote,
       );
+
+      appPreferencesInterface.setHomeAssistantToken(authResult);
+
+      emit(
+        state.copyWith(
+          status: HomeAssistantScanStatus.authenticationSuccess,
+          remoteUrl: remote,
+          selectedUrl: url
+        ),
+      );
+      
     } catch (e) {
       emit(state.copyWith(
           status: HomeAssistantScanStatus.authenticationFailure));

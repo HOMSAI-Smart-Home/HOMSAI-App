@@ -1,6 +1,7 @@
 import 'package:homsai/crossconcern/utilities/properties/api.proprties.dart';
 import 'package:homsai/datastore/DTOs/websocket/change/change.dto.dart';
 import 'package:homsai/datastore/models/entity/base/base.entity.dart';
+import 'package:homsai/datastore/remote/websocket/home_assistant_websocket.interface.dart';
 import 'package:homsai/datastore/remote/websocket/home_assistant_websocket.repository.dart';
 import 'package:homsai/main.dart';
 
@@ -40,11 +41,11 @@ class BrokerSubscribersHandler {
 }
 
 class HomeAssistantBroker {
-  HomeAssistantWebSocketRepository? webSocket;
+  HomeAssistantWebSocketInterface? webSocket;
   Map<String, BrokerSubscribersHandler> eventHandler = {};
 
   void connect() {
-    webSocket = getIt.get<HomeAssistantWebSocketRepository>();
+    webSocket = getIt.get<HomeAssistantWebSocketInterface>();
     webSocket!.subscribeEvent(HomeAssistantApiProprties.eventStateChanged,
         WebSocketSubscriber(onChange));
   }

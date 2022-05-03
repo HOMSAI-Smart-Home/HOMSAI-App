@@ -62,10 +62,12 @@ class CoordinateUnfocused extends AddPlantEvent {
 }
 
 class OnSubmit extends AddPlantEvent {
-  const OnSubmit(this.onSubmit);
+  const OnSubmit(this.onSubmit, this.url, this.remote);
 
   final void Function() onSubmit;
+  final Uri url;
+  final bool remote;
 
   @override
-  List<Object> get props => [onSubmit];
+  List<Object> get props => [onSubmit, url, remote];
 }

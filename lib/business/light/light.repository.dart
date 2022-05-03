@@ -1,5 +1,6 @@
 import 'package:homsai/datastore/models/entity/base/base.entity.dart';
 import 'package:homsai/datastore/remote/websocket/home_assistant.broker.dart';
+import 'package:homsai/datastore/remote/websocket/home_assistant_websocket.interface.dart';
 import 'package:homsai/datastore/remote/websocket/home_assistant_websocket.repository.dart';
 import 'package:homsai/datastore/DTOs/websocket/service/service_body.dto.dart';
 import 'package:homsai/datastore/models/entity/light/light.entity.dart';
@@ -8,8 +9,8 @@ import 'package:homsai/main.dart';
 import 'light.interface.dart';
 
 class LightRepository extends LightRepositoryInterface {
-  HomeAssistantWebSocketRepository webSocket =
-      getIt.get<HomeAssistantWebSocketRepository>();
+  HomeAssistantWebSocketInterface webSocket =
+      getIt.get<HomeAssistantWebSocketInterface>();
   HomeAssistantBroker homeAssistantBroker = getIt.get<HomeAssistantBroker>();
 
   @override

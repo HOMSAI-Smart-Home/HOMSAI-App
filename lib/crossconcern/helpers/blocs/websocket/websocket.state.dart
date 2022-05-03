@@ -1,12 +1,22 @@
 part of 'websocket.bloc.dart';
 
 class WebSocketState extends Equatable {
-  const WebSocketState();
+  const WebSocketState({
+    this.status = HomeAssistantWebSocketStatus.disconnected,
+  });
 
-  WebSocketState copyWith() {
-    return const WebSocketState();
+  final HomeAssistantWebSocketStatus status;
+
+  WebSocketState copyWith(
+    HomeAssistantWebSocketStatus? status,
+  ) {
+    return WebSocketState(
+      status: status ?? this.status,
+    );
   }
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [status];
 }
+
+enum HomeAssistantWebSocketStatus { disconnected, connected, retry, error }

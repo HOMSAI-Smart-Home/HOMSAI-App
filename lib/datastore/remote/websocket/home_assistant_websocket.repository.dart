@@ -2,22 +2,28 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:get_it/get_it.dart';
 import 'package:homsai/business/home_assistant/home_assistant.interface.dart';
+import 'package:homsai/crossconcern/helpers/blocs/websocket/websocket.bloc.dart';
 import 'package:homsai/crossconcern/utilities/properties/api.proprties.dart';
 import 'package:homsai/datastore/DTOs/websocket/configuration/configuration_body.dto.dart';
 import 'package:homsai/datastore/DTOs/websocket/error/error.dto.dart';
 import 'package:homsai/datastore/DTOs/websocket/response/response.dto.dart';
 import 'package:homsai/datastore/DTOs/websocket/service/service_body.dto.dart';
 import 'package:homsai/datastore/DTOs/websocket/trigger/trigger_body.dto.dart';
+import 'package:homsai/datastore/local/app.database.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.dart';
+import 'package:homsai/datastore/models/database/plant.entity.dart';
 import 'package:homsai/datastore/models/home_assistant_auth.model.dart';
 import 'package:homsai/datastore/remote/websocket/home_assistant.broker.dart';
+import 'package:homsai/datastore/remote/websocket/home_assistant_websocket.interface.dart';
 import 'package:homsai/main.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
+import 'package:web_socket_channel/io.dart';
 
-class WebSocketSubscriber {
+class WebSocketSubscriber implements WebSocketSubscriberInterface {
+  @override
   Function(dynamic) onDone;
+  @override
   Function(ErrorDto)? onError;
 
   WebSocketSubscriber(
@@ -26,8 +32,10 @@ class WebSocketSubscriber {
   });
 }
 
-class WebSocketSubscribersHandler {
-  Map<Function(Map<String, dynamic>), WebSocketSubscriber> subscribers = {};
+class WebSocketSubscribersHandler
+    implements WebSocketSubscribersHandlerInterface {
+  Map<Function(Map<String, dynamic>), WebSocketSubscriberInterface>
+      subscribers = {};
   bool isfetch;
   String event;
 
@@ -36,14 +44,17 @@ class WebSocketSubscribersHandler {
     this.event,
   );
 
-  void subscribe(WebSocketSubscriber subscriber) {
+  @override
+  void subscribe(WebSocketSubscriberInterface subscriber) {
     subscribers[subscriber.onDone] = subscriber;
   }
 
-  void unsubscribe(WebSocketSubscriber subscriber) {
+  @override
+  void unsubscribe(WebSocketSubscriberInterface subscriber) {
     subscribers.remove(subscriber.onDone);
   }
 
+  @override
   void publish(dynamic result) {
     if (result == null) return;
 
@@ -57,13 +68,13 @@ class WebSocketSubscribersHandler {
   }
 }
 
-enum HomeAssistantWebSocketStatus { disconnected, connected, error }
-
-class HomeAssistantWebSocketRepository {
+class HomeAssistantWebSocketRepository
+    implements HomeAssistantWebSocketInterface {
   final AppPreferencesInterface appPreferencesInterface =
       getIt.get<AppPreferencesInterface>();
   final HomeAssistantInterface homeAssistantRepository =
       getIt.get<HomeAssistantInterface>();
+  final AppDatabase appDatabase = getIt.get<AppDatabase>();
 
   WebSocketChannel? webSocket;
   HomeAssistantAuth? homeAssistantAuth;
@@ -72,46 +83,26 @@ class HomeAssistantWebSocketRepository {
       HomeAssistantWebSocketStatus.disconnected;
   final List<String> _message = [];
 
-  late Uri url;
+  Plant? _plant;
+  Uri? _url;
 
   static Map<String, int> eventsId = {};
   static Map<int, WebSocketSubscribersHandler> events = {};
 
+  @override
   bool isConnected() {
     return status == HomeAssistantWebSocketStatus.connected;
   }
 
-  T _fallback<T>(
-    Uri? url,
-    Uri? fallbackUrl,
-    T Function(Uri) function,
-  ) {
-    try {
-      throwIf(url == null, SocketException);
-      return function(url!);
-    } on SocketException catch (e) {
-      try {
-        throwIf(fallbackUrl == null, e);
-        return function(fallbackUrl!);
-      } on SocketException {
-        rethrow;
-      }
-    }
+  @override
+  Future<void> connect({Uri? url}) async {
+    if (url != null) return _listen(url);
+    _plant = await appDatabase.getPlant();
+    if (_plant != null) return _listen(_plant!.getBaseUrl());
   }
 
-  Future<void> connect(
-    Uri? url,
-    Uri? fallbackUrl,
-  ) {
-    return _fallback<Future<void>>(
-      url,
-      fallbackUrl,
-      _connect,
-    );
-  }
-
-  Future<void> _connect(Uri url) async {
-    String scheme;
+  Future<Uri> _connect(Uri url) async {
+    String scheme = url.scheme.contains('s') ? 'wss' : 'ws';
 
     homeAssistantAuth = appPreferencesInterface.getHomeAssistantToken();
 
@@ -121,14 +112,12 @@ class HomeAssistantWebSocketRepository {
       appPreferencesInterface.setHomeAssistantToken(homeAssistantAuth!);
     }
 
-    scheme = url.scheme.contains('s') ? 'wss' : 'ws';
-
     url = url.replace(
       path: HomeAssistantApiProprties.webSocketPath,
       scheme: scheme,
     );
 
-    this.url = url;
+    _url = url;
 
     _message.insert(
       0,
@@ -140,7 +129,7 @@ class HomeAssistantWebSocketRepository {
 
     getIt.get<HomeAssistantBroker>().connect();
 
-    _listen();
+    return url;
   }
 
   void _auth(Map<String, dynamic> data) {
@@ -177,9 +166,19 @@ class HomeAssistantWebSocketRepository {
     }
   }
 
-  void _listen() {
-    webSocket = WebSocketChannel.connect(url);
+  Future<void> _listen(Uri url) async {
+    url = await _connect(url);
 
+    try {
+      webSocket = IOWebSocketChannel(
+        await WebSocket.connect(url.toString())
+            .timeout(const Duration(seconds: 3)),
+      );
+    } on TimeoutException {
+      return _retry(url);
+    }
+
+    //webSocket = WebSocketChannel.connect();
     webSocket?.stream.listen(
       (data) {
         //TODO: remove
@@ -188,6 +187,7 @@ class HomeAssistantWebSocketRepository {
         data = jsonDecode(data);
 
         switch (status) {
+          case HomeAssistantWebSocketStatus.retry:
           case HomeAssistantWebSocketStatus.disconnected:
             _auth(data);
             break;
@@ -203,23 +203,36 @@ class HomeAssistantWebSocketRepository {
           default:
         }
       },
-      onDone: () {
+      onDone: () async {
         if (status == HomeAssistantWebSocketStatus.connected) {
           status = HomeAssistantWebSocketStatus.disconnected;
-          _connect(url);
+          await Future.delayed(const Duration(seconds: 1));
+          _listen(url);
         }
       },
       onError: (e) {
         if (e is WebSocketChannelException) {
           var error = e.inner;
           if (error is WebSocketChannelException) {
-            if (error.inner is SocketException) throw error.inner as SocketException;
+            if (error.inner is SocketException) {
+              return;
+            }
           }
-
-          status = HomeAssistantWebSocketStatus.error;
         }
+
+        print(e);
+        status = HomeAssistantWebSocketStatus.error;
       },
     );
+  }
+
+  void _retry(Uri url) {
+    if (_plant != null && url.host == _plant!.getBaseUrl().host) {}
+    final fallback = _plant?.getFallbackUrl();
+    if (fallback != null) {
+      status = HomeAssistantWebSocketStatus.retry;
+      _listen(fallback);
+    }
   }
 
   void _send({
@@ -235,14 +248,15 @@ class HomeAssistantWebSocketRepository {
   }
 
   void logOut() {
+    if (_url == null) return;
     status = HomeAssistantWebSocketStatus.disconnected;
     webSocket?.sink.close();
-    homeAssistantRepository.revokeToken(url: url);
+    homeAssistantRepository.revokeToken(url: _url!);
   }
 
   void _addSubscriber(
     String event,
-    WebSocketSubscriber subscriber,
+    WebSocketSubscriberInterface subscriber,
     bool isfetch,
     Map<String, dynamic> payload,
   ) {
@@ -268,9 +282,10 @@ class HomeAssistantWebSocketRepository {
     }
   }
 
+  @override
   void removeSubscription(
     String event,
-    WebSocketSubscriber subscriber,
+    WebSocketSubscriberInterface subscriber,
   ) {
     if (eventsId.containsKey(event) &&
         events[eventsId[event]]!.subscribers.isNotEmpty) {
@@ -282,9 +297,10 @@ class HomeAssistantWebSocketRepository {
   // Subscriptions
   ///////////////////
 
+  @override
   void subscribeEvent(
     String event,
-    WebSocketSubscriber subscriber,
+    WebSocketSubscriberInterface subscriber,
   ) {
     Map<String, dynamic> payload = {};
 
@@ -300,9 +316,10 @@ class HomeAssistantWebSocketRepository {
     );
   }
 
+  @override
   void subscribeTrigger(
     String event,
-    WebSocketSubscriber subscriber,
+    WebSocketSubscriberInterface subscriber,
     TriggerBodyDto trigger,
   ) {
     Map<String, dynamic> payload = {};
@@ -322,9 +339,10 @@ class HomeAssistantWebSocketRepository {
     );
   }
 
+  @override
   void unsubscribingFromEvents(
     String event,
-    WebSocketSubscriber subscriber,
+    WebSocketSubscriberInterface subscriber,
   ) {
     Map<String, dynamic> payload = {};
 
@@ -345,8 +363,9 @@ class HomeAssistantWebSocketRepository {
     );
   }
 
+  @override
   void fireAnEvent(
-    WebSocketSubscriber subscriber,
+    WebSocketSubscriberInterface subscriber,
     String eventType, {
     Map<String, String>? eventData,
   }) {
@@ -367,8 +386,9 @@ class HomeAssistantWebSocketRepository {
     );
   }
 
+  @override
   void callingAService(
-    WebSocketSubscriber subscriber,
+    WebSocketSubscriberInterface subscriber,
     String domain,
     String service,
     ServiceBodyDto serviceBodyDto,
@@ -391,7 +411,8 @@ class HomeAssistantWebSocketRepository {
     );
   }
 
-  void fetchingStates(WebSocketSubscriber subscriber) {
+  @override
+  void fetchingStates(WebSocketSubscriberInterface subscriber) {
     Map<String, dynamic> payload = {};
 
     payload['id'] =
@@ -408,7 +429,8 @@ class HomeAssistantWebSocketRepository {
     );
   }
 
-  void fetchingConfig(WebSocketSubscriber subscriber) {
+  @override
+  void fetchingConfig(WebSocketSubscriberInterface subscriber) {
     Map<String, dynamic> payload = {};
 
     payload['id'] =
@@ -425,7 +447,8 @@ class HomeAssistantWebSocketRepository {
     );
   }
 
-  void fetchingServices(WebSocketSubscriber subscriber) {
+  @override
+  void fetchingServices(WebSocketSubscriberInterface subscriber) {
     Map<String, dynamic> payload = {};
 
     payload['id'] =
@@ -442,8 +465,9 @@ class HomeAssistantWebSocketRepository {
     );
   }
 
+  @override
   void fetchingMediaPlayerThumbnails(
-    WebSocketSubscriber subscriber,
+    WebSocketSubscriberInterface subscriber,
     String entityId,
   ) {
     Map<String, dynamic> payload = {};
@@ -463,8 +487,9 @@ class HomeAssistantWebSocketRepository {
     );
   }
 
+  @override
   void validateConfig(
-    WebSocketSubscriber subscriber,
+    WebSocketSubscriberInterface subscriber,
     String entityId,
     ConfigurationBodyDto configurationBodyDto,
   ) {

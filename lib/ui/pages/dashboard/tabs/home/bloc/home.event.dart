@@ -7,8 +7,6 @@ abstract class HomeEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class ConnectWebSocket extends HomeEvent {}
-
 class FetchStates extends HomeEvent {}
 
 class FetchedLights extends HomeEvent {
