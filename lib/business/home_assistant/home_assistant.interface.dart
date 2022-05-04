@@ -19,19 +19,20 @@ abstract class HomeAssistantInterface {
   });
   Future<Uri?> canConnectToHomeAssistant({
     required Uri url,
-    Duration timeout = const Duration(seconds: 2),
+    Duration timeout,
   });
   Future<HomeAssistantAuth> refreshToken({
     required Uri url,
-    Duration timeout = const Duration(seconds: 2),
+    Duration timeout,
   });
   Future revokeToken({
     required Uri url,
-    Duration timeout = const Duration(seconds: 2),
+    Duration timeout,
   });
   Future<List<HistoryDto>> getHistory({
     required Plant plant,
     required HistoryBodyDto historyBodyDto,
+    Duration timeout,
   });
   Future<LogbookDto> getLogBook({
     required Plant plant,

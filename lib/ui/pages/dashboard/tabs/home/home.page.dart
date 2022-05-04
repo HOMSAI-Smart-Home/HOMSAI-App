@@ -21,13 +21,16 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     context.read<HomeBloc>().add(FetchStates());
-    if(!context.read<WebSocketBloc>().webSocketRepository.isConnected()) {
-      context.read<WebSocketBloc>().add(ConnectWebSocket(onWebSocketConnected: () {}));
+    if (!context.read<WebSocketBloc>().webSocketRepository.isConnected()) {
+      context.read<WebSocketBloc>().add(ConnectWebSocket(
+        onWebSocketConnected: () {
+          print('yo');
+          context.read<HomeBloc>().add(FetchHistory());
+        },
+      ));
+    } else {
+      context.read<HomeBloc>().add(FetchHistory());
     }
-    /*
-    BlocListener<WebSocketBloc, WebSocketState>(
-      listenWhen: (previous, current) => previous,
-      listener: (context, state) => context.read<HomeBloc>().add(FetchStates()),);*/
   }
 
   @override

@@ -33,20 +33,26 @@ class RemoteRepository implements RemoteInterface {
     return body;
   }
 
-  T _fallback<T>(
+  Future<T> _fallback<T>(
     Uri url, {
     Uri? fallbackUrl,
-    required T Function(Uri) function,
-  }) {
+    required Future<T> Function(Uri) function,
+  }) async {
     try {
-      return function(url);
-    } on TimeoutException catch (e) {
-      try {
-        throwIf(fallbackUrl == null, e);
-        return function(fallbackUrl!);
-      } on TimeoutException {
-        rethrow;
+      print("try base");
+      return await function(url);
+    } catch (e) {
+      print("try fallback");
+      if (e is TimeoutException || e is SocketException) {
+        try {
+          throwIf(fallbackUrl == null, e);
+          return await function(fallbackUrl!);
+        } catch (_) {
+          print("nope");
+          rethrow;
+        }
       }
+      rethrow;
     }
   }
 
@@ -57,7 +63,7 @@ class RemoteRepository implements RemoteInterface {
     Duration timeout = _timeout,
     Uri? fallbackUrl,
   }) async {
-    final Response response = await _fallback<Future<Response>>(
+    final Response response = await _fallback<Response>(
       url,
       fallbackUrl: fallbackUrl,
       function: (url) => client
@@ -79,7 +85,7 @@ class RemoteRepository implements RemoteInterface {
     Duration timeout = const Duration(seconds: 120),
     Uri? fallbackUrl,
   }) async {
-    final Response response = await _fallback<Future<Response>>(
+    final Response response = await _fallback<Response>(
       url,
       fallbackUrl: fallbackUrl,
       function: (url) => client
@@ -106,7 +112,7 @@ class RemoteRepository implements RemoteInterface {
     Duration timeout = _timeout,
     Uri? fallbackUrl,
   }) async {
-    final Response response = await _fallback<Future<Response>>(
+    final Response response = await _fallback<Response>(
       url,
       fallbackUrl: fallbackUrl,
       function: (url) => client
@@ -132,15 +138,16 @@ class RemoteRepository implements RemoteInterface {
     Duration timeout = _timeout,
     Uri? fallbackUrl,
   }) async {
-    final Response response = await _fallback<Future<Response>>(
+    final Response response = await _fallback<Response>(
       url,
       fallbackUrl: fallbackUrl,
       function: (url) => client
-        .delete(
-          url,
-          headers: headers,
-        )
-        .timeout(timeout),);
+          .delete(
+            url,
+            headers: headers,
+          )
+          .timeout(timeout),
+    );
     return parseResponse(response);
   }
 }

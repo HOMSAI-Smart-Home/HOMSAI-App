@@ -4,7 +4,6 @@ import 'package:homsai/datastore/DTOs/websocket/configuration/configuration_body
 import 'package:homsai/datastore/DTOs/websocket/error/error.dto.dart';
 import 'package:homsai/datastore/DTOs/websocket/service/service_body.dto.dart';
 import 'package:homsai/datastore/DTOs/websocket/trigger/trigger_body.dto.dart';
-import 'package:homsai/datastore/models/database/plant.entity.dart';
 
 abstract class WebSocketSubscriberInterface {
   Function(dynamic) onDone;
@@ -27,7 +26,10 @@ abstract class WebSocketSubscribersHandlerInterface {
 abstract class HomeAssistantWebSocketInterface {
   bool isConnected();
 
-  Future<void> connect({Uri? url});
+  Future<void> connect({
+    Uri? url,
+    Function? onConnected,
+  });
 
   void removeSubscription(
     String event,

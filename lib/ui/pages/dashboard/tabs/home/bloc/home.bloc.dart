@@ -47,7 +47,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<FetchedLights>(_onFetchedLights);
     on<FetchHistory>(_onFetchHistory);
     on<ToggleConsumptionOptimazedPlot>(_onToggleConsumptionOptimazedPlot);
-    add(FetchHistory());
   }
 
   @override
@@ -176,6 +175,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     final history = await homeAssistantRepository.getHistory(
       plant: plant,
       historyBodyDto: historyBodyDto,
+      timeout: const Duration(seconds: 2),
     );
 
     return _getPlotInfo(history);

@@ -95,20 +95,26 @@ class HomeAssistantWebSocketRepository
   }
 
   @override
-  Future<void> connect({Uri? url}) async {
-    if (url != null) return _listen(url);
+  Future<void> connect({Uri? url, Function? onConnected}) async {
+    if (url != null) return _listen(url, onConnected: onConnected,);
     _plant = await appDatabase.getPlant();
-    if (_plant != null) return _listen(_plant!.getBaseUrl());
+    if (_plant != null) return _listen(_plant!.getBaseUrl(), onConnected: onConnected,);
   }
 
-  Future<Uri> _connect(Uri url) async {
+  Future<Uri> _connect(
+    Uri url, {
+    Duration timeout = const Duration(seconds: 1),
+  }) async {
     String scheme = url.scheme.contains('s') ? 'wss' : 'ws';
 
     homeAssistantAuth = appPreferencesInterface.getHomeAssistantToken();
 
     if (homeAssistantAuth!.expires <
         DateTime.now().millisecondsSinceEpoch ~/ 1000) {
-      homeAssistantAuth = await homeAssistantRepository.refreshToken(url: url);
+      homeAssistantAuth = await homeAssistantRepository.refreshToken(
+        url: url,
+        timeout: timeout,
+      );
       appPreferencesInterface.setHomeAssistantToken(homeAssistantAuth!);
     }
 
@@ -166,19 +172,20 @@ class HomeAssistantWebSocketRepository
     }
   }
 
-  Future<void> _listen(Uri url) async {
-    url = await _connect(url);
-
+  Future<void> _listen(Uri url, {Function? onConnected}) async {
     try {
+      url = await _connect(url);
       webSocket = IOWebSocketChannel(
         await WebSocket.connect(url.toString())
             .timeout(const Duration(seconds: 3)),
       );
-    } on TimeoutException {
-      return _retry(url);
+    } catch (e) {
+      if (e is SocketException || e is TimeoutException) return _retry(url, onConnected: onConnected,);
+      rethrow;
     }
 
-    //webSocket = WebSocketChannel.connect();
+    if (onConnected != null) onConnected();
+
     webSocket?.stream.listen(
       (data) {
         //TODO: remove
@@ -226,12 +233,12 @@ class HomeAssistantWebSocketRepository
     );
   }
 
-  void _retry(Uri url) {
+  void _retry(Uri url, {Function? onConnected}) {
     if (_plant != null && url.host == _plant!.getBaseUrl().host) {}
     final fallback = _plant?.getFallbackUrl();
     if (fallback != null) {
       status = HomeAssistantWebSocketStatus.retry;
-      _listen(fallback);
+      _listen(fallback, onConnected: onConnected);
     }
   }
 

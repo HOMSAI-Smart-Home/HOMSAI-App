@@ -127,6 +127,7 @@ class HomeAssistantRepository implements HomeAssistantInterface {
       body: body,
       encoding: Encoding.getByName('utf-8'),
       fallbackUrl: fallback,
+      timeout: timeout,
     );
 
     throwIf(
@@ -234,6 +235,7 @@ class HomeAssistantRepository implements HomeAssistantInterface {
   Future<List<HistoryDto>> getHistory({
     required Plant plant,
     HistoryBodyDto? historyBodyDto,
+    Duration timeout = const Duration(seconds: 10),
   }) async {
     Map<String, dynamic> response;
 
@@ -252,6 +254,7 @@ class HomeAssistantRepository implements HomeAssistantInterface {
       baseUrl,
       headers: _getHeader(),
       fallbackUrl: fallback,
+      timeout: timeout,
     );
 
     print(response);
