@@ -74,9 +74,8 @@ class _DashboardAppBarLeading extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       onPressed: () {},
-      icon: Icon(
-        Icons.help_outline_rounded,
-        color: Theme.of(context).colorScheme.onBackground,
+      icon: SvgPicture.asset(
+        "assets/icons/settings.svg",
       ),
     );
   }
@@ -105,9 +104,8 @@ class _DashboardAppBarExitAction extends StatelessWidget {
               ),
             );
       },
-      icon: Icon(
-        Icons.exit_to_app_outlined,
-        color: Theme.of(context).colorScheme.onBackground,
+      icon: SvgPicture.asset(
+        "assets/icons/logout.svg",
       ),
     );
   }

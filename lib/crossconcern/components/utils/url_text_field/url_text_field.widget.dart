@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:formz/formz.dart';
 import 'package:homsai/crossconcern/components/utils/url_text_field/bloc/url_text_field.bloc.dart';
 
@@ -71,7 +72,11 @@ class _UrlTextField<Bloc extends UrlTextFieldBloc> extends StatelessWidget {
             ? (value) => context.read<Bloc>().add(UrlChanged(url: value))
             : (value) => onChange!(value),
             decoration: InputDecoration(
-              prefixIcon: Icon(Icons.link, color: _color(context, state)),
+              prefixIcon: Padding(
+                  padding: const EdgeInsets.all(14.0),
+                  child: SvgPicture.asset(
+                    "assets/icons/link.svg",
+                  )),
               errorText: state.status != UrlTextFieldStatus.invalid
                   ? null
                   : errorText ??

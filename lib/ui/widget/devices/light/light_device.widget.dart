@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:homsai/datastore/models/entity/light/light.entity.dart';
 import 'package:homsai/themes/colors.theme.dart';
 import 'package:homsai/ui/widget/devices/device.widget.dart';
@@ -46,7 +47,7 @@ class _LightDeviceCardState extends State<_LightDeviceCard> {
   Widget buidDevice(BuildContext context, LightDeviceState state) {
     return Device(
       (state.light.isOn) ? DeviceStatus.enabled : DeviceStatus.disabled,
-      baseIcon: Icons.lightbulb,
+      iconPath: "assets/icons/bulb.svg",
       baseColor: HomsaiColors.primaryYellow,
       title: state.light.attributes.friendlyName,
       room: "Camera",

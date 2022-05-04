@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:homsai/crossconcern/components/common/checkbox/checkbox.widget.dart';
 import 'package:homsai/crossconcern/components/common/checkbox/checkbox_bloc.widget.dart';
 import 'package:homsai/crossconcern/components/common/radio.widget.dart';
@@ -75,7 +76,7 @@ class _HomeAssistantScanDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return Alert(
       AlertType.tips,
-      icon: const Icon(Icons.wifi_rounded),
+      icon: SvgPicture.asset("assets/icons/wifi.svg"),
       title: Text(
         HomsaiLocalizations.of(context)!.homeAssistantScanDialogTitle,
         style: Theme.of(context).textTheme.headline4,
@@ -495,7 +496,11 @@ class _SearchLocalIntanceManualTextFieldState
             },
             enabled: !state.status.isAuthenticationInProgress,
             decoration: InputDecoration(
-              prefixIcon: Icon(Icons.link, color: _color(context, state)),
+              prefixIcon: Padding(
+                  padding: const EdgeInsets.all(14.0),
+                  child: SvgPicture.asset(
+                    "assets/icons/link.svg",
+                  )),
               errorText: state.status.isAuthenticationFailure
                   ? HomsaiLocalizations.of(context)!
                       .homeAssistantScanManualAuthError

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:homsai/themes/colors.theme.dart';
 import 'package:homsai/crossconcern/components/utils/shadow.widget.dart';
 
@@ -12,7 +13,7 @@ class Device extends StatefulWidget {
   const Device(
     this.status, {
     Key? key,
-    required this.baseIcon,
+    required this.iconPath,
     required this.baseColor,
     required this.title,
     required this.room,
@@ -22,7 +23,7 @@ class Device extends StatefulWidget {
   }) : super(key: key);
 
   final DeviceStatus status;
-  final IconData baseIcon;
+  final String iconPath;
   final Color baseColor;
   final String title;
   final String room;
@@ -40,22 +41,22 @@ class _DeviceState extends State<Device> {
       case DeviceStatus.group:
       case DeviceStatus.disabled:
       case DeviceStatus.enabled:
-        return Icon(
-          device.baseIcon,
-          size: 38,
+        return SvgPicture.asset(
+          device.iconPath,
           color: getColor(device),
+          height: 38,
         );
       case DeviceStatus.warning:
-        return Icon(
-          Icons.info_rounded,
-          size: 38,
+        return SvgPicture.asset(
+          "assets/icons/info.svg",
           color: getColor(device),
+          height: 38,
         );
       case DeviceStatus.error:
-        return Icon(
-          Icons.warning_rounded,
-          size: 38,
+        return SvgPicture.asset(
+          "assets/icons/warning.svg",
           color: getColor(device),
+          height: 38,
         );
     }
   }
@@ -88,7 +89,7 @@ class _DeviceState extends State<Device> {
           splashColor: getColor(widget).withOpacity(0.5),
           borderRadius: BorderRadius.circular(10),
           child: Padding(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(10),
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -104,7 +105,7 @@ class _DeviceState extends State<Device> {
                   Row(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,

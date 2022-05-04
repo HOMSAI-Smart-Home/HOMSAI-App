@@ -45,7 +45,9 @@ class _HomePageState extends State<HomePage> {
         children: [
           /*Alert(
             AlertType.tips,
-            icon: const Icon(Icons.tips_and_updates_rounded),
+            icon: SvgPicture.asset(
+                    "assets/icons/tips.svg",
+                  ),
             title: Text(
               HomsaiLocalizations.of(context)!
                   .homePageImprovementAvailableLabel,

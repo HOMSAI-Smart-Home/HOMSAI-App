@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:homsai/app.router.dart';
 import 'package:homsai/crossconcern/components/common/scaffold/homsai_bloc_scaffold.widget.dart';
 import 'package:homsai/crossconcern/helpers/blocs/websocket/websocket.bloc.dart';
@@ -119,10 +120,11 @@ class _AddPlantNameField extends StatelessWidget {
             initialValue: state.initialPlantName,
             textInputAction: TextInputAction.next,
             decoration: InputDecoration(
-              prefixIcon: Icon(
-                Icons.house_rounded,
-                color: Theme.of(context).colorScheme.onBackground,
-              ),
+              prefixIcon: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  child: SvgPicture.asset(
+                    "assets/icons/home.svg",
+                  )),
               labelText: HomsaiLocalizations.of(context)!.addPlantNameLabel,
             ),
             style: Theme.of(context).textTheme.bodyText1,
@@ -149,10 +151,11 @@ class _AddPlantLocationField extends StatelessWidget {
             initialValue: state.coordinate.value,
             textInputAction: TextInputAction.done,
             decoration: InputDecoration(
-              prefixIcon: Icon(
-                Icons.place_rounded,
-                color: Theme.of(context).colorScheme.onBackground,
-              ),
+              prefixIcon: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  child: SvgPicture.asset(
+                    "assets/icons/place.svg",
+                  )),
               labelText: HomsaiLocalizations.of(context)!.addPlantLocationLabel,
             ),
             style: Theme.of(context).textTheme.bodyText2,

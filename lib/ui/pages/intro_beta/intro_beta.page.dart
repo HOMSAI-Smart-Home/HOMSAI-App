@@ -269,10 +269,11 @@ class _EmailAddressTextField extends StatelessWidget {
               context.read<IntroBetaBloc>().add(EmailChanged(email: value));
             },
             decoration: InputDecoration(
-              prefixIcon: Icon(
-                Icons.email_rounded,
-                color: Theme.of(context).colorScheme.onBackground,
-              ),
+              prefixIcon: Padding(
+                  padding: const EdgeInsets.all(14.0),
+                  child: SvgPicture.asset(
+                    "assets/icons/email.svg",
+                  )),
               labelText: HomsaiLocalizations.of(context)!.emailAddress,
               errorText: state.email.invalid
                   ? HomsaiLocalizations.of(context)!.invalidEmail
