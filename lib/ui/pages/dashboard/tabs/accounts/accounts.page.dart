@@ -1,6 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:homsai/app.router.dart';
+import 'package:homsai/themes/colors.theme.dart';
 
 class AccountsPage extends StatefulWidget {
   const AccountsPage({Key? key}) : super(key: key);
@@ -14,13 +16,13 @@ class _AccountsPageState extends State<AccountsPage> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const _EmailButton(),
         _LocalUrlButton(),
         _RemoteUrlButton(),
         _ProductionSensorButton(),
         _ConsumptionSensorButton(),
         const _NameButton(),
         const _PositionButton(),
+        const _EmailButton(),
         const _VersionButton(),
         const SizedBox(height: 16),
         _ChangePlantButton(),
@@ -44,6 +46,7 @@ class _LocalUrlButton extends _AccountButton {
           title: 'URL Locale',
           caption: 'http://:192.168.x.x:8123',
           onTap: (context) => context.router.push(const UrlUpdateRoute()),
+          showModifyIcon: true,
         );
 }
 
@@ -53,6 +56,7 @@ class _RemoteUrlButton extends _AccountButton {
           title: 'URL Remoto',
           caption: 'http://:192.168.x.x:8123',
           onTap: (context) => context.router.push(const UrlUpdateRoute()),
+          showModifyIcon: true,
         );
 }
 
@@ -63,6 +67,7 @@ class _ProductionSensorButton extends _AccountButton {
           caption: '[xxx]',
           onTap: (context) => context.router
               .push(AddSensorRoute(onResult: (_) => context.router.pop())),
+          showModifyIcon: true,
         );
 }
 
@@ -73,6 +78,7 @@ class _ConsumptionSensorButton extends _AccountButton {
           caption: '[xxx]',
           onTap: (context) => context.router
               .push(AddSensorRoute(onResult: (_) => context.router.pop())),
+          showModifyIcon: true,
         );
 }
 
@@ -82,6 +88,7 @@ class _NameButton extends _AccountButton {
           title: 'Nome Impianto',
           caption: 'Casa Andrea',
           onTap: null,
+          showModifyIcon: true,
         );
 }
 
@@ -91,6 +98,7 @@ class _PositionButton extends _AccountButton {
           title: 'Posizione Impianto',
           caption: 'Via Verdi, 165 - Roma - Italy',
           onTap: null,
+          showModifyIcon: true,
         );
 }
 
@@ -106,11 +114,13 @@ class _VersionButton extends _AccountButton {
 abstract class _AccountButton extends StatelessWidget {
   final String title;
   final String caption;
+  final bool? showModifyIcon;
   final Function(BuildContext)? onTap;
 
   const _AccountButton({
     required this.title,
     required this.caption,
+    this.showModifyIcon,
     this.onTap,
   });
 
@@ -119,6 +129,7 @@ abstract class _AccountButton extends StatelessWidget {
     return InkWell(
       onTap: () => onTap != null ? onTap!(context) : null,
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Padding(
             padding:
@@ -137,6 +148,15 @@ abstract class _AccountButton extends StatelessWidget {
               ],
             ),
           ),
+          if (showModifyIcon == true)
+            Padding(
+              padding:
+                  const EdgeInsets.only(top: 10, right: 8, left: 8, bottom: 10),
+              child: Icon(
+                Icons.edit,
+                color: HomsaiColors.primaryWhite,
+              ),
+            ),
         ],
       ),
     );
