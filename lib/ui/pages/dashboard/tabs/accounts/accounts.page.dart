@@ -147,6 +147,7 @@ class _ChangePlantButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return OutlinedButton(
+      //TODO: add logic -> scanner
       onPressed: () => print("ChangePlant"),
       child: const AnimatedSwitcher(
         duration: Duration(milliseconds: 250),

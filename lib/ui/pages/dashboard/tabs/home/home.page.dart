@@ -24,7 +24,6 @@ class _HomePageState extends State<HomePage> {
     if (!context.read<WebSocketBloc>().webSocketRepository.isConnected()) {
       context.read<WebSocketBloc>().add(ConnectWebSocket(
         onWebSocketConnected: () {
-          print('yo');
           context.read<HomeBloc>().add(FetchHistory());
         },
       ));

@@ -39,16 +39,13 @@ class RemoteRepository implements RemoteInterface {
     required Future<T> Function(Uri) function,
   }) async {
     try {
-      print("try base");
       return await function(url);
     } catch (e) {
-      print("try fallback");
       if (e is TimeoutException || e is SocketException) {
         try {
           throwIf(fallbackUrl == null, e);
           return await function(fallbackUrl!);
         } catch (_) {
-          print("nope");
           rethrow;
         }
       }

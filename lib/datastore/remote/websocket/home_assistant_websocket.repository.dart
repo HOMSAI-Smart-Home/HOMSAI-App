@@ -226,8 +226,6 @@ class HomeAssistantWebSocketRepository
             }
           }
         }
-
-        print(e);
         status = HomeAssistantWebSocketStatus.error;
       },
     );
