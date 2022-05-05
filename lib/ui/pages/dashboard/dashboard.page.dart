@@ -47,8 +47,10 @@ class _DashboardPageState extends State<DashboardPage> {
               ),
             ],
             appBar: _dashboardAppBar(context),
+            /*
             bottomNavigationBar: _DashboardBottomNavigationBar(
-                tabsRouter: AutoTabsRouter.of(context)),
+              tabsRouter: AutoTabsRouter.of(context)),
+            */
             mainAxisAlignment: MainAxisAlignment.center,
             child: FadeTransition(
               opacity: animation,
@@ -83,7 +85,7 @@ class _DashboardAppBarLeading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      onPressed: () {},
+      onPressed: () => context.router.push(const AccountsRoute()),
       icon: SvgPicture.asset(
         "assets/icons/settings.svg",
       ),
@@ -148,8 +150,8 @@ class _DashboardBottomNavigationBarState
         return const Icon(Icons.history_rounded);
       case DashboardNavigation.search:
         return const Icon(Icons.search_rounded);
-      case DashboardNavigation.accounts:
-        return const Icon(Icons.manage_accounts_rounded);
+      /*case DashboardNavigation.accounts:
+        return const Icon(Icons.manage_accounts_rounded);*/
     }
   }
 

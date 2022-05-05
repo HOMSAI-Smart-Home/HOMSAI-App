@@ -1,16 +1,41 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:homsai/app.router.dart';
+import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
+import 'package:homsai/crossconcern/components/common/scaffold/homsai_bloc_scaffold.widget.dart';
 import 'package:homsai/themes/colors.theme.dart';
+import 'package:homsai/ui/pages/dashboard/tabs/accounts/bloc/accounts.bloc.dart';
 
-class AccountsPage extends StatefulWidget {
+class AccountsPage extends StatelessWidget {
   const AccountsPage({Key? key}) : super(key: key);
 
   @override
-  State<AccountsPage> createState() => _AccountsPageState();
+  Widget build(BuildContext context) {
+    return HomsaiBlocScaffold(
+      providers: [
+        BlocProvider<AccountsBloc>(
+          create: (BuildContext context) => AccountsBloc(),
+        ),
+      ],
+      appBar: AppBar(
+        centerTitle: true,
+        iconTheme: IconThemeData(
+          color: Theme.of(context).colorScheme.onBackground,
+        ),
+        title: Text(
+          HomsaiLocalizations.of(context)!.settings,
+          style: Theme.of(context).textTheme.headline1,
+        ),
+      ),
+      child: const _AccountsPage(),
+    );
+  }
 }
 
-class _AccountsPageState extends State<AccountsPage> {
+class _AccountsPage extends StatelessWidget {
+  const _AccountsPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -21,100 +46,172 @@ class _AccountsPageState extends State<AccountsPage> {
         _ConsumptionSensorButton(),
         _NameButton(),
         _PositionButton(),
-        const _EmailButton(),
-        const _VersionButton(),
-        const SizedBox(height: 16),
-        _ChangePlantButton(),
+        _EmailButton(),
+        _VersionButton(),
+        /*const SizedBox(height: 16),
+        _ChangePlantButton(),*/
       ],
     );
   }
 }
 
-class _EmailButton extends _AccountButton {
-  const _EmailButton()
-      : super(
+class _EmailButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<AccountsBloc, AccountsState>(
+      builder: (context, state) {
+        return _AccountButton(
           title: 'Email',
-          caption: 'mariorossi00@mail.com',
+          caption: state.email,
           onTap: null,
         );
+      },
+    );
+  }
 }
 
-class _LocalUrlButton extends _AccountButton {
-  _LocalUrlButton()
-      : super(
+class _LocalUrlButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<AccountsBloc, AccountsState>(
+      builder: (context, state) {
+        return _AccountButton(
           title: 'URL Locale',
-          caption: 'http://:192.168.x.x:8123',
-          onTap: (context) => context.router.push(const UrlUpdateRoute()),
+          caption: state.localUrl,
+          onTap: (context) => context.router.push(UrlUpdateRoute(
+            onResult: (_) {
+              context.router.pop();
+              context.read<AccountsBloc>().add(Update());
+            },
+            wizard: false,
+          )),
         );
+      },
+    );
+  }
 }
 
-class _RemoteUrlButton extends _AccountButton {
-  _RemoteUrlButton()
-      : super(
+class _RemoteUrlButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<AccountsBloc, AccountsState>(
+      builder: (context, state) {
+        return _AccountButton(
           title: 'URL Remoto',
-          caption: 'http://:192.168.x.x:8123',
-          onTap: (context) => context.router.push(const UrlUpdateRoute()),
+          caption: state.remoteUrl,
+          onTap: (context) => context.router.push(UrlUpdateRoute(
+            onResult: (_) {
+              context.router.pop();
+              context.read<AccountsBloc>().add(Update());
+            },
+            wizard: false,
+          )),
         );
+      },
+    );
+  }
 }
 
-class _ProductionSensorButton extends _AccountButton {
-  _ProductionSensorButton()
-      : super(
+class _ProductionSensorButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<AccountsBloc, AccountsState>(
+      builder: (context, state) {
+        return _AccountButton(
           title: 'Sensore di produzione',
-          caption: '[xxx]',
+          caption: state.productionSensor,
           onTap: (context) => context.router.push(AddSensorRoute(
-            onResult: (_) => context.router.pop(),
+            onResult: (_) {
+              context.router.pop();
+              context.read<AccountsBloc>().add(Update());
+            },
             wizard: false,
           )),
         );
+      },
+    );
+  }
 }
 
-class _ConsumptionSensorButton extends _AccountButton {
-  _ConsumptionSensorButton()
-      : super(
+class _ConsumptionSensorButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<AccountsBloc, AccountsState>(
+      builder: (context, state) {
+        return _AccountButton(
           title: 'Sensore di consumo',
-          caption: '[xxx]',
+          caption: state.consumptionSensor,
           onTap: (context) => context.router.push(AddSensorRoute(
-            onResult: (_) => context.router.pop(),
+            onResult: (_) {
+              context.router.pop();
+              context.read<AccountsBloc>().add(Update());
+            },
             wizard: false,
           )),
         );
+      },
+    );
+  }
 }
 
-class _NameButton extends _AccountButton {
-  _NameButton()
-      : super(
+class _NameButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<AccountsBloc, AccountsState>(
+      builder: (context, state) {
+        return _AccountButton(
           title: 'Nome Impianto',
-          caption: 'Casa Andrea',
+          caption: state.plantName,
           onTap: (context) => context.router.push(AddPlantRoute(
-            onResult: (_) => context.router.pop(),
+            onResult: (_) {
+              context.router.pop();
+              context.read<AccountsBloc>().add(Update());
+            },
             wizard: false,
           )),
         );
+      },
+    );
+  }
 }
 
-class _PositionButton extends _AccountButton {
-  _PositionButton()
-      : super(
+class _PositionButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<AccountsBloc, AccountsState>(
+      builder: (context, state) {
+        return _AccountButton(
           title: 'Posizione Impianto',
-          caption: 'Via Verdi, 165 - Roma - Italy',
+          caption: state.position,
           onTap: (context) => context.router.push(AddPlantRoute(
-            onResult: (_) => context.router.pop(),
+            onResult: (_) {
+              context.router.pop();
+              context.read<AccountsBloc>().add(Update());
+            },
             wizard: false,
           )),
         );
+      },
+    );
+  }
 }
 
-class _VersionButton extends _AccountButton {
-  const _VersionButton()
-      : super(
+class _VersionButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<AccountsBloc, AccountsState>(
+      builder: (context, state) {
+        return _AccountButton(
           title: 'Versione App',
-          caption: '1.0',
+          caption: state.version,
           onTap: null,
         );
+      },
+    );
+  }
 }
 
-abstract class _AccountButton extends StatelessWidget {
+class _AccountButton extends StatelessWidget {
   final String title;
   final String caption;
   final Function(BuildContext)? onTap;

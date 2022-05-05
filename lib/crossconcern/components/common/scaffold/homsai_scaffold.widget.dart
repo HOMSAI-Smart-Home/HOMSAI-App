@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:homsai/main.dart';
 
 class HomsaiScaffold extends StatefulWidget {
   const HomsaiScaffold(
@@ -91,16 +90,6 @@ class _HomsaiScaffoldState extends State<HomsaiScaffold> {
         ),
         bottomNavigationBar: widget.bottomNavigationBar,
         bottomSheet: widget.bottomSheet,
-      ),
-      Align(
-        alignment: AlignmentDirectional.bottomCenter,
-        child: Padding(
-          padding: const EdgeInsets.all(8),
-          child: Text(
-            appVersion!,
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
-        ),
       ),
     ]);
   }

@@ -44,8 +44,14 @@ part 'package:homsai/ui/pages/url_update/url_update.router.dart';
       path: homeAssistantScanPath,
       page: HomeAssistantScanPage,
     ),
-    AutoRoute(path: addPlantPath, page: AddPlantPage),
-    AutoRoute(path: addSensorPath, page: AddSensorPage),
+    AutoRoute(
+      path: addPlantPath,
+      page: AddPlantPage,
+    ),
+    AutoRoute(
+      path: addSensorPath,
+      page: AddSensorPage,
+    ),
     AutoRoute(
       path: dashboardPath,
       page: DashboardPage,
@@ -64,6 +70,10 @@ part 'package:homsai/ui/pages/url_update/url_update.router.dart';
     AutoRoute(
       path: urlUpdatePath,
       page: UrlUpdatePage,
+    ),
+    AutoRoute(
+      path: accountsPath,
+      page: AccountsPage,
     ),
   ],
 )

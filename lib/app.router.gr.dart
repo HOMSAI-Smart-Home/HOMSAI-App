@@ -63,8 +63,15 @@ class _$AppRouter extends RootStackRouter {
           child: IntroBetaPage(key: args.key, onResult: args.onResult));
     },
     UrlUpdateRoute.name: (routeData) {
+      final args = routeData.argsAs<UrlUpdateRouteArgs>();
       return CupertinoPageX<dynamic>(
-          routeData: routeData, child: const UrlUpdatePage());
+          routeData: routeData,
+          child: UrlUpdatePage(
+              key: args.key, onResult: args.onResult, wizard: args.wizard));
+    },
+    AccountsRoute.name: (routeData) {
+      return CupertinoPageX<dynamic>(
+          routeData: routeData, child: const AccountsPage());
     },
     HomeRoute.name: (routeData) {
       return CupertinoPageX<dynamic>(
@@ -77,10 +84,6 @@ class _$AppRouter extends RootStackRouter {
     SearchRoute.name: (routeData) {
       return CupertinoPageX<dynamic>(
           routeData: routeData, child: const SearchPage());
-    },
-    AccountsRoute.name: (routeData) {
-      return CupertinoPageX<dynamic>(
-          routeData: routeData, child: const AccountsPage());
     }
   };
 
@@ -104,13 +107,12 @@ class _$AppRouter extends RootStackRouter {
           RouteConfig(HistoryRoute.name,
               path: 'history', parent: DashboardRoute.name),
           RouteConfig(SearchRoute.name,
-              path: 'search', parent: DashboardRoute.name),
-          RouteConfig(AccountsRoute.name,
-              path: 'accounts', parent: DashboardRoute.name)
+              path: 'search', parent: DashboardRoute.name)
         ]),
         RouteConfig(IntroductionRoute.name, path: '/introduction'),
         RouteConfig(IntroBetaRoute.name, path: '/intro-beta'),
-        RouteConfig(UrlUpdateRoute.name, path: '/url-update')
+        RouteConfig(UrlUpdateRoute.name, path: '/url-update'),
+        RouteConfig(AccountsRoute.name, path: 'accounts')
       ];
 }
 
@@ -277,10 +279,39 @@ class IntroBetaRouteArgs {
 
 /// generated route for
 /// [UrlUpdatePage]
-class UrlUpdateRoute extends PageRouteInfo<void> {
-  const UrlUpdateRoute() : super(UrlUpdateRoute.name, path: '/url-update');
+class UrlUpdateRoute extends PageRouteInfo<UrlUpdateRouteArgs> {
+  UrlUpdateRoute(
+      {Key? key, required void Function(bool) onResult, bool wizard = true})
+      : super(UrlUpdateRoute.name,
+            path: '/url-update',
+            args: UrlUpdateRouteArgs(
+                key: key, onResult: onResult, wizard: wizard));
 
   static const String name = 'UrlUpdateRoute';
+}
+
+class UrlUpdateRouteArgs {
+  const UrlUpdateRouteArgs(
+      {this.key, required this.onResult, this.wizard = true});
+
+  final Key? key;
+
+  final void Function(bool) onResult;
+
+  final bool wizard;
+
+  @override
+  String toString() {
+    return 'UrlUpdateRouteArgs{key: $key, onResult: $onResult, wizard: $wizard}';
+  }
+}
+
+/// generated route for
+/// [AccountsPage]
+class AccountsRoute extends PageRouteInfo<void> {
+  const AccountsRoute() : super(AccountsRoute.name, path: 'accounts');
+
+  static const String name = 'AccountsRoute';
 }
 
 /// generated route for
@@ -305,12 +336,4 @@ class SearchRoute extends PageRouteInfo<void> {
   const SearchRoute() : super(SearchRoute.name, path: 'search');
 
   static const String name = 'SearchRoute';
-}
-
-/// generated route for
-/// [AccountsPage]
-class AccountsRoute extends PageRouteInfo<void> {
-  const AccountsRoute() : super(AccountsRoute.name, path: 'accounts');
-
-  static const String name = 'AccountsRoute';
 }

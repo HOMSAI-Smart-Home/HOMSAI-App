@@ -7,14 +7,14 @@ enum DashboardNavigation {
   home,
   history,
   search,
-  accounts,
+  //accounts,
 }
 
 const Map<DashboardNavigation, PageRouteInfo<dynamic>> dashboardTabRoutes = {
   DashboardNavigation.home: HomeRoute(),
   DashboardNavigation.history: HistoryRoute(),
   DashboardNavigation.search: SearchRoute(),
-  DashboardNavigation.accounts: AccountsRoute(),
+  //DashboardNavigation.accounts: AccountsRoute(),
 };
 
 const List<AutoRoute<dynamic>> dashboardChildrenRoutes = [
@@ -22,5 +22,5 @@ const List<AutoRoute<dynamic>> dashboardChildrenRoutes = [
   AutoRoute(path: homePath, page: HomePage),
   AutoRoute(path: historyPath, page: HistoryPage),
   AutoRoute(path: searchPath, page: SearchPage),
-  AutoRoute(path: accountsPath, page: AccountsPage),
+  //AutoRoute(path: accountsPath, page: AccountsPage),
 ];
