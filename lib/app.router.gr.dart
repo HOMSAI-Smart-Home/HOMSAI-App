@@ -35,13 +35,15 @@ class _$AppRouter extends RootStackRouter {
               key: args.key,
               onResult: args.onResult,
               url: args.url,
-              remote: args.remote));
+              remote: args.remote,
+              wizard: args.wizard));
     },
     AddSensorRoute.name: (routeData) {
       final args = routeData.argsAs<AddSensorRouteArgs>();
       return CupertinoPageX<dynamic>(
           routeData: routeData,
-          child: AddSensorPage(key: args.key, onResult: args.onResult));
+          child: AddSensorPage(
+              key: args.key, onResult: args.onResult, wizard: args.wizard));
     },
     DashboardRoute.name: (routeData) {
       return CupertinoPageX<dynamic>(
@@ -142,12 +144,17 @@ class AddPlantRoute extends PageRouteInfo<AddPlantRouteArgs> {
   AddPlantRoute(
       {Key? key,
       required void Function(bool) onResult,
-      required Uri url,
-      required bool remote})
+      Uri? url,
+      bool? remote,
+      bool wizard = true})
       : super(AddPlantRoute.name,
             path: '/add-plant',
             args: AddPlantRouteArgs(
-                key: key, onResult: onResult, url: url, remote: remote));
+                key: key,
+                onResult: onResult,
+                url: url,
+                remote: remote,
+                wizard: wizard));
 
   static const String name = 'AddPlantRoute';
 }
@@ -156,44 +163,52 @@ class AddPlantRouteArgs {
   const AddPlantRouteArgs(
       {this.key,
       required this.onResult,
-      required this.url,
-      required this.remote});
+      this.url,
+      this.remote,
+      this.wizard = true});
 
   final Key? key;
 
   final void Function(bool) onResult;
 
-  final Uri url;
+  final Uri? url;
 
-  final bool remote;
+  final bool? remote;
+
+  final bool wizard;
 
   @override
   String toString() {
-    return 'AddPlantRouteArgs{key: $key, onResult: $onResult, url: $url, remote: $remote}';
+    return 'AddPlantRouteArgs{key: $key, onResult: $onResult, url: $url, remote: $remote, wizard: $wizard}';
   }
 }
 
 /// generated route for
 /// [AddSensorPage]
 class AddSensorRoute extends PageRouteInfo<AddSensorRouteArgs> {
-  AddSensorRoute({Key? key, required void Function(bool) onResult})
+  AddSensorRoute(
+      {Key? key, required void Function(bool) onResult, bool wizard = true})
       : super(AddSensorRoute.name,
             path: '/add-sensor',
-            args: AddSensorRouteArgs(key: key, onResult: onResult));
+            args: AddSensorRouteArgs(
+                key: key, onResult: onResult, wizard: wizard));
 
   static const String name = 'AddSensorRoute';
 }
 
 class AddSensorRouteArgs {
-  const AddSensorRouteArgs({this.key, required this.onResult});
+  const AddSensorRouteArgs(
+      {this.key, required this.onResult, this.wizard = true});
 
   final Key? key;
 
   final void Function(bool) onResult;
 
+  final bool wizard;
+
   @override
   String toString() {
-    return 'AddSensorRouteArgs{key: $key, onResult: $onResult}';
+    return 'AddSensorRouteArgs{key: $key, onResult: $onResult, wizard: $wizard}';
   }
 }
 

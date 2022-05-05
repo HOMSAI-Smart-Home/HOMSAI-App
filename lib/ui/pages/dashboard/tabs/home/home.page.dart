@@ -11,7 +11,6 @@ import 'package:homsai/datastore/DTOs/remote/ai_service/consumption_optimization
 import 'package:homsai/themes/colors.theme.dart';
 import 'package:homsai/ui/pages/dashboard/tabs/home/bloc/home.bloc.dart';
 import 'package:homsai/ui/widget/devices/light/light_device.widget.dart';
-import 'package:super_rich_text/super_rich_text.dart';
 import 'package:flutter_svg/svg.dart';
 
 class HomePage extends StatefulWidget {

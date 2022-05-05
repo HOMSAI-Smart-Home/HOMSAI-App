@@ -26,7 +26,7 @@ class AddPlantBloc extends Bloc<AddPlantEvent, AddPlantState> {
 
   final AppDatabase appDatabase = getIt.get<AppDatabase>();
   final WebSocketBloc webSocketBloc;
-  final Uri url;
+  final Uri? url;
 
   AddPlantBloc(this.webSocketBloc, this.url) : super(const AddPlantState()) {
     on<ConfigurationFetched>(_onConfigurationFetched);
@@ -36,7 +36,9 @@ class AddPlantBloc extends Bloc<AddPlantEvent, AddPlantState> {
     on<CoordinateChanged>(_onCoordinateChanged);
     on<CoordinateUnfocused>(_onCoordinateUnfocused);
     on<OnSubmit>(_onSubmit);
-    webSocketBloc.add(ConnectWebSocket(onWebSocketConnected: () {}, url: url.toString()));
+    if (!webSocketRepository.isConnected()) {
+      webSocketBloc.add(ConnectWebSocket(onWebSocketConnected: () {}, url: url?.toString() ?? ''));
+    }
   }
 
   @override

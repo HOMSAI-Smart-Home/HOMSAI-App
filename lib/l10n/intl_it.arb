@@ -41,12 +41,16 @@
     "homeAssistantScanManualError": "Url invalido",
     "homeAssistantScanManualAuthError": "Impossibile connettersi a Home Assistant",
 
-    "addPlantTitle": "Configura nuovo impianto",
+    "addPlantTitleWizard": "Configura nuovo impianto",
+    "addPlantTitleEdit": "Modifica impianto",
     "addPlantNameLabel": "Nome impianto",
     "addPlantLocationLabel": "Coordinate GPS",
     "addPlantLocationButtonLabel": "Usa posizione attuale",
     "addPlantLocationInfoTitle": "Perché abbiamo bisogno della posizione?",
     "addPlantLocationInfoDescription": "La posizione viene recuperata dalla tua istanza di Home Assistant. Grazie a questo dato possiamo fornire previsioni più precise per quanto riguarda il meteo, la produzione del fotovoltaico e il consumo della tua abitazione",
+
+    "addUrlTitleWizard": "Configura url",
+    "addUrlTitleEdit": "Modifica url",
 
     "introductionTitle1": "benvenuto!",
     "introductionTitle2": "accedi e configura!",

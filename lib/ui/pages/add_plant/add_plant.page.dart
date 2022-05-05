@@ -10,14 +10,16 @@ import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
 
 class AddPlantPage extends StatefulWidget {
   final void Function(bool) onResult;
-  final Uri url;
-  final bool remote;
+  final Uri? url;
+  final bool? remote;
+  final bool wizard;
 
   const AddPlantPage({
     Key? key,
     required this.onResult,
-    required this.url,
-    required this.remote,
+    this.url,
+    this.remote,
+    this.wizard = true,
   }) : super(key: key);
 
   @override
@@ -31,16 +33,18 @@ class _AddPlantPageState extends State<AddPlantPage> {
       providers: [
         BlocProvider<WebSocketBloc>(create: (_) => WebSocketBloc()),
         BlocProvider<AddPlantBloc>(
-          create: (context) => AddPlantBloc(context.read<WebSocketBloc>(), widget.url),
+          create: (context) =>
+              AddPlantBloc(context.read<WebSocketBloc>(), widget.url),
         ),
       ],
       mainAxisAlignment: MainAxisAlignment.center,
       resizeToAvoidBottomInset: false,
       children: <Widget>[
-        _AddPlantTitle(),
+        _AddPlantTitle(widget.wizard),
         _AddPlantForm(),
         const SizedBox(height: 24),
-        _AddPlantSubmit(widget.onResult, widget.url, widget.remote),
+        _AddPlantSubmit(
+            widget.onResult, widget.url, widget.remote, widget.wizard),
         const SizedBox(height: 24),
       ],
     );
@@ -48,13 +52,19 @@ class _AddPlantPageState extends State<AddPlantPage> {
 }
 
 class _AddPlantTitle extends StatelessWidget {
+  final bool wizard;
+
+  const _AddPlantTitle(this.wizard);
+
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         Text(
-          HomsaiLocalizations.of(context)!.addPlantTitle,
+          wizard
+              ? HomsaiLocalizations.of(context)!.addPlantTitleWizard
+              : HomsaiLocalizations.of(context)!.addPlantTitleEdit,
           style: Theme.of(context).textTheme.headline3,
         ),
         const SizedBox(
@@ -161,19 +171,6 @@ class _AddPlantLocationField extends StatelessWidget {
             style: Theme.of(context).textTheme.bodyText2,
           );
         })),
-        /*
-        const SizedBox(height: 16),
-        TextButton(
-          onPressed: () {},
-          child: Text(
-            HomsaiLocalizations.of(context)!.addPlantLocationButtonLabel,
-            style: Theme.of(context)
-                .textTheme
-                .headline3
-                ?.copyWith(color: Theme.of(context).colorScheme.primary),
-          ),
-        ),
-        */
         const SizedBox(height: 16),
         _AddPlantLocationInfo()
       ],
@@ -208,23 +205,32 @@ class _AddPlantLocationInfo extends StatelessWidget {
 
 class _AddPlantSubmit extends StatelessWidget {
   final void Function(bool) onResult;
-  final Uri url;
-  final bool remote;
+  final Uri? url;
+  final bool? remote;
+  final bool wizard;
 
-  const _AddPlantSubmit(this.onResult, this.url, this.remote,);
+  const _AddPlantSubmit(
+    this.onResult,
+    this.url,
+    this.remote,
+    this.wizard,
+  );
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AddPlantBloc, AddPlantState>(
       builder: (context, state) => ElevatedButton(
         onPressed: state.entities.isNotEmpty
-            ? () => context.read<AddPlantBloc>().add(
-                  OnSubmit(
-                    () => context.router.push(AddSensorRoute(onResult: onResult)),
-                    url,
-                    remote,
-                  ),
-                )
+            ? () => wizard
+                ? context.read<AddPlantBloc>().add(
+                      OnSubmit(
+                        () => context.router
+                            .push(AddSensorRoute(onResult: onResult)),
+                        url!,
+                        remote!,
+                      ),
+                    )
+                : onResult(true)
             : null,
         child: Text(HomsaiLocalizations.of(context)!.next),
       ),

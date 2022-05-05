@@ -10,8 +10,13 @@ import '../../../crossconcern/components/common/scaffold/homsai_bloc_scaffold.wi
 
 class AddSensorPage extends StatefulWidget {
   final void Function(bool) onResult;
+  final bool wizard;
 
-  const AddSensorPage({Key? key, required this.onResult}) : super(key: key);
+  const AddSensorPage({
+    Key? key,
+    required this.onResult,
+    this.wizard = true,
+  }) : super(key: key);
 
   @override
   State<AddSensorPage> createState() => _AddSensorPageState();
@@ -32,7 +37,7 @@ class _AddSensorPageState extends State<AddSensorPage> {
       mainAxisAlignment: MainAxisAlignment.center,
       resizeToAvoidBottomInset: false,
       children: <Widget>[
-        _AddSensorTitle(),
+        _AddSensorTitle(widget.wizard),
         _ProductionSensorsSelect(),
         const SizedBox(
           height: 24,
@@ -41,19 +46,25 @@ class _AddSensorPageState extends State<AddSensorPage> {
         const SizedBox(
           height: 24,
         ),
-        _AddSensorSubmit(widget.onResult)
+        _AddSensorSubmit(widget.onResult, widget.wizard)
       ],
     );
   }
 }
 
 class _AddSensorTitle extends StatelessWidget {
+  final bool wizard;
+
+  const _AddSensorTitle(this.wizard);
+
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        Text(HomsaiLocalizations.of(context)!.addPlantTitle,
+        Text(wizard
+          ? HomsaiLocalizations.of(context)!.addPlantTitleWizard
+          : HomsaiLocalizations.of(context)!.addPlantTitleEdit,
             style: Theme.of(context).textTheme.headline3),
         const SizedBox(
           height: 24,
@@ -113,17 +124,18 @@ class _ConsumptionSensorsSelect extends StatelessWidget {
 
 class _AddSensorSubmit extends StatelessWidget {
   final void Function(bool) onResult;
+  final bool wizard;
 
-  const _AddSensorSubmit(this.onResult);
+  const _AddSensorSubmit(this.onResult, this.wizard);
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: () {
-        context.read<AddSensorBloc>().add(OnSubmit(
-              () => onResult(true),
-            ));
-      },
+      onPressed: () => wizard
+          ? context.read<AddSensorBloc>().add(OnSubmit(
+                () => onResult(true),
+              ))
+          : onResult(true),
       child: Text(HomsaiLocalizations.of(context)!.next),
     );
   }

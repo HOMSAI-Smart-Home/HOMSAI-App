@@ -48,7 +48,7 @@ class UrlUpdatePage extends StatelessWidget {
 class _UrlUpdateTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Text(HomsaiLocalizations.of(context)!.addPlantTitle,
+    return Text(HomsaiLocalizations.of(context)!.addUrlTitleEdit,
         style: Theme.of(context).textTheme.headline3);
   }
 }

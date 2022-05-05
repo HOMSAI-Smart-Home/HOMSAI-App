@@ -1,6 +1,5 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:homsai/app.router.dart';
 import 'package:homsai/themes/colors.theme.dart';
 
@@ -20,8 +19,8 @@ class _AccountsPageState extends State<AccountsPage> {
         _RemoteUrlButton(),
         _ProductionSensorButton(),
         _ConsumptionSensorButton(),
-        const _NameButton(),
-        const _PositionButton(),
+        _NameButton(),
+        _PositionButton(),
         const _EmailButton(),
         const _VersionButton(),
         const SizedBox(height: 16),
@@ -46,7 +45,6 @@ class _LocalUrlButton extends _AccountButton {
           title: 'URL Locale',
           caption: 'http://:192.168.x.x:8123',
           onTap: (context) => context.router.push(const UrlUpdateRoute()),
-          showModifyIcon: true,
         );
 }
 
@@ -56,7 +54,6 @@ class _RemoteUrlButton extends _AccountButton {
           title: 'URL Remoto',
           caption: 'http://:192.168.x.x:8123',
           onTap: (context) => context.router.push(const UrlUpdateRoute()),
-          showModifyIcon: true,
         );
 }
 
@@ -65,9 +62,10 @@ class _ProductionSensorButton extends _AccountButton {
       : super(
           title: 'Sensore di produzione',
           caption: '[xxx]',
-          onTap: (context) => context.router
-              .push(AddSensorRoute(onResult: (_) => context.router.pop())),
-          showModifyIcon: true,
+          onTap: (context) => context.router.push(AddSensorRoute(
+            onResult: (_) => context.router.pop(),
+            wizard: false,
+          )),
         );
 }
 
@@ -76,29 +74,34 @@ class _ConsumptionSensorButton extends _AccountButton {
       : super(
           title: 'Sensore di consumo',
           caption: '[xxx]',
-          onTap: (context) => context.router
-              .push(AddSensorRoute(onResult: (_) => context.router.pop())),
-          showModifyIcon: true,
+          onTap: (context) => context.router.push(AddSensorRoute(
+            onResult: (_) => context.router.pop(),
+            wizard: false,
+          )),
         );
 }
 
 class _NameButton extends _AccountButton {
-  const _NameButton()
+  _NameButton()
       : super(
           title: 'Nome Impianto',
           caption: 'Casa Andrea',
-          onTap: null,
-          showModifyIcon: true,
+          onTap: (context) => context.router.push(AddPlantRoute(
+            onResult: (_) => context.router.pop(),
+            wizard: false,
+          )),
         );
 }
 
 class _PositionButton extends _AccountButton {
-  const _PositionButton()
+  _PositionButton()
       : super(
           title: 'Posizione Impianto',
           caption: 'Via Verdi, 165 - Roma - Italy',
-          onTap: null,
-          showModifyIcon: true,
+          onTap: (context) => context.router.push(AddPlantRoute(
+            onResult: (_) => context.router.pop(),
+            wizard: false,
+          )),
         );
 }
 
@@ -114,13 +117,11 @@ class _VersionButton extends _AccountButton {
 abstract class _AccountButton extends StatelessWidget {
   final String title;
   final String caption;
-  final bool? showModifyIcon;
   final Function(BuildContext)? onTap;
 
   const _AccountButton({
     required this.title,
     required this.caption,
-    this.showModifyIcon,
     this.onTap,
   });
 
@@ -148,7 +149,7 @@ abstract class _AccountButton extends StatelessWidget {
               ],
             ),
           ),
-          if (showModifyIcon == true)
+          if (onTap != null)
             Padding(
               padding:
                   const EdgeInsets.only(top: 10, right: 8, left: 8, bottom: 10),

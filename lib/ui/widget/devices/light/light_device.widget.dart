@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:homsai/datastore/models/entity/light/light.entity.dart';
 import 'package:homsai/themes/colors.theme.dart';
 import 'package:homsai/ui/widget/devices/device.widget.dart';
