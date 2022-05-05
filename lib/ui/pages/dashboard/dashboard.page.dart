@@ -46,7 +46,7 @@ class _DashboardPageState extends State<DashboardPage> {
             ],
             appBar: _dashboardAppBar(context),
             bottomNavigationBar: _DashboardBottomNavigationBar(
-              tabsRouter: AutoTabsRouter.of(context)),
+                tabsRouter: AutoTabsRouter.of(context)),
             mainAxisAlignment: MainAxisAlignment.center,
             child: FadeTransition(
               opacity: animation,

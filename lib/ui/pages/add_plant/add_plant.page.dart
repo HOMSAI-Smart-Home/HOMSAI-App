@@ -86,12 +86,12 @@ class _AddPlantFormState extends State<_AddPlantForm> {
     context.read<WebSocketBloc>().add(FetchConfig(
       onConfigurationFetched: (config) {
         context.read<AddPlantBloc>().add(ConfigurationFetched(config));
-        context.read<WebSocketBloc>().add(FetchEntites(
-              onEntitiesFetched: (entities) =>
-                  context.read<AddPlantBloc>().add(StatesFetched(entities)),
-            ));
       },
     ));
+    context.read<WebSocketBloc>().add(FetchEntites(
+          onEntitiesFetched: (entities) =>
+              context.read<AddPlantBloc>().add(StatesFetched(entities)),
+        ));
     super.initState();
   }
 

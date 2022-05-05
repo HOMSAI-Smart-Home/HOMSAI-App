@@ -33,4 +33,16 @@ abstract class HomeAssistantDao extends BaseDao<HomeAssistantEntity> {
         .map((entity) => HomeAssistantEntity(plantId, entity.entityId, entity))
         .toList());
   }
+
+  Future<void> refreshPlantEntities(
+      int plantId, List<hass.Entity> entities) async {
+    final oldEntities = await getAllEntities(plantId);
+    final newEntities = entities
+        .map((entity) => HomeAssistantEntity(plantId, entity.entityId, entity))
+        .toList();
+
+    await deleteItems(
+        oldEntities.where((entity) => !newEntities.contains(entity)).toList());
+    await insertEntitiesReplace(newEntities);
+  }
 }

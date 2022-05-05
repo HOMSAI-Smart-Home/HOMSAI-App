@@ -54,7 +54,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     super.onTransition(transition);
   }
 
-  void _onFetchState(FetchStates event, Emitter<HomeState> emit) {
+  void _onFetchState(FetchStates event, Emitter<HomeState> emit) async {
+    final lights = await appDatabase.getEntities<LightEntity>();
+    emit(state.copyWith(lights: lights));
     webSocketRepository.fetchingStates(
       WebSocketSubscriber((res) {
         add(FetchedLights(entities: res));
@@ -64,19 +66,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   void _onFetchedLights(FetchedLights event, Emitter<HomeState> emit) async {
     final plant = await appDatabase.getPlant();
-    final entities =
-        await appDatabase.homeAssitantDao.getAllEntities(plant!.id!);
-    List<LightEntity> lights;
-    if (entities.isEmpty) {
-      await appDatabase.homeAssitantDao
-          .insertEntities(plant.id!, event.entities.getEntities<Entity>());
-
-      lights = event.entities.getEntities<LightEntity>();
-    } else {
-      lights = entities.getEntities<LightEntity>();
+    if (plant != null && plant.id != null) {
+      await appDatabase.homeAssitantDao.refreshPlantEntities(
+          plant.id!, event.entities.getEntities<Entity>());
     }
 
-    emit(state.copyWith(lights: lights));
+    emit(state.copyWith(lights: event.entities.getEntities<LightEntity>()));
   }
 
   void _onToggleConsumptionOptimazedPlot(

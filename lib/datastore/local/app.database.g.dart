@@ -214,13 +214,18 @@ class _$UserDao extends UserDao {
   }
 
   @override
-  Future<void> updateItems(List<User> item) async {
-    await _userUpdateAdapter.updateList(item, OnConflictStrategy.abort);
+  Future<void> updateItems(List<User> items) async {
+    await _userUpdateAdapter.updateList(items, OnConflictStrategy.abort);
   }
 
   @override
   Future<void> deleteItem(User item) async {
     await _userDeletionAdapter.delete(item);
+  }
+
+  @override
+  Future<void> deleteItems(List<User> items) async {
+    await _userDeletionAdapter.deleteList(items);
   }
 }
 
@@ -334,13 +339,18 @@ class _$PlantDao extends PlantDao {
   }
 
   @override
-  Future<void> updateItems(List<Plant> item) async {
-    await _plantUpdateAdapter.updateList(item, OnConflictStrategy.abort);
+  Future<void> updateItems(List<Plant> items) async {
+    await _plantUpdateAdapter.updateList(items, OnConflictStrategy.abort);
   }
 
   @override
   Future<void> deleteItem(Plant item) async {
     await _plantDeletionAdapter.delete(item);
+  }
+
+  @override
+  Future<void> deleteItems(List<Plant> items) async {
+    await _plantDeletionAdapter.deleteList(items);
   }
 }
 
@@ -488,14 +498,19 @@ class _$ConfigurationDao extends ConfigurationDao {
   }
 
   @override
-  Future<void> updateItems(List<Configuration> item) async {
+  Future<void> updateItems(List<Configuration> items) async {
     await _configurationUpdateAdapter.updateList(
-        item, OnConflictStrategy.abort);
+        items, OnConflictStrategy.abort);
   }
 
   @override
   Future<void> deleteItem(Configuration item) async {
     await _configurationDeletionAdapter.delete(item);
+  }
+
+  @override
+  Future<void> deleteItems(List<Configuration> items) async {
+    await _configurationDeletionAdapter.deleteList(items);
   }
 }
 
@@ -599,14 +614,19 @@ class _$HomeAssistantDao extends HomeAssistantDao {
   }
 
   @override
-  Future<void> updateItems(List<HomeAssistantEntity> item) async {
+  Future<void> updateItems(List<HomeAssistantEntity> items) async {
     await _homeAssistantEntityUpdateAdapter.updateList(
-        item, OnConflictStrategy.abort);
+        items, OnConflictStrategy.abort);
   }
 
   @override
   Future<void> deleteItem(HomeAssistantEntity item) async {
     await _homeAssistantEntityDeletionAdapter.delete(item);
+  }
+
+  @override
+  Future<void> deleteItems(List<HomeAssistantEntity> items) async {
+    await _homeAssistantEntityDeletionAdapter.deleteList(items);
   }
 }
 

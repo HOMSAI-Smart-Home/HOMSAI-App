@@ -11,8 +11,11 @@ abstract class BaseDao<T> {
   Future<int> updateItem(T item);
 
   @update
-  Future<void> updateItems(List<T> item);
+  Future<void> updateItems(List<T> items);
 
   @delete
   Future<void> deleteItem(T item);
+
+  @delete
+  Future<void> deleteItems(List<T> items);
 }

@@ -1,9 +1,14 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:homsai/crossconcern/helpers/extensions/list.extension.dart';
+import 'package:homsai/datastore/DTOs/websocket/configuration/configuration.dto.dart';
 import 'package:homsai/datastore/local/app.database.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.dart';
 import 'package:homsai/datastore/models/database/configuration.entity.dart';
 import 'package:homsai/datastore/models/database/user.entity.dart';
+import 'package:homsai/datastore/models/entity/base/base.entity.dart';
+import 'package:homsai/datastore/models/home_assistant_auth.model.dart';
+import 'package:homsai/datastore/remote/websocket/home_assistant_websocket.repository.dart';
 import 'package:homsai/main.dart';
 import 'package:homsai/ui/pages/add_plant/add_plant.page.dart';
 import 'package:homsai/ui/pages/add_sensor/add_sensor.page.dart';
@@ -95,15 +100,48 @@ class AuthGuard extends AutoRouteGuard {
       resolver,
       router,
       onSuccess: () async {
-        final appDatabase = getIt.get<AppDatabase>();
-        Configuration? configuration = await appDatabase.getConfiguration();
-        if (configuration != null) {
-          getIt.registerLazySingleton<Location>(
-              () => getLocation(configuration.timezone));
+        final HomeAssistantWebSocketRepository webSocketRepository =
+            getIt.get<HomeAssistantWebSocketRepository>();
+        final AppPreferencesInterface appPreferencesInterface =
+            getIt.get<AppPreferencesInterface>();
+        final AppDatabase appDatabase = getIt.get<AppDatabase>();
+        final plant = await appDatabase.getPlant();
+
+        HomeAssistantAuth? auth =
+            appPreferencesInterface.getHomeAssistantToken();
+        if (!webSocketRepository.isConnected() && auth != null) {
+          await webSocketRepository
+              .connect(_getUrl(auth.localUrl, auth.remoteUrl));
+        }
+
+        if (plant != null) {
+          webSocketRepository.fetchingConfig(
+            WebSocketSubscriber(
+              (data) async {
+                final configuration =
+                    Configuration.fromDto(ConfigurationDto.fromJson(data));
+                await appDatabase.configurationDao.updateItem(
+                  configuration,
+                );
+                getIt.registerLazySingleton<Location>(
+                    () => getLocation(configuration.timezone));
+              },
+            ),
+          );
+
+          Configuration? configuration = await appDatabase.getConfiguration();
+          if (configuration != null) {
+            getIt.registerLazySingleton<Location>(
+                () => getLocation(configuration.timezone));
+          }
         }
       },
     );
   }
+}
+
+Uri _getUrl(String localUrl, String remoteUrl) {
+  return localUrl != "" ? Uri.parse(localUrl) : Uri.parse(remoteUrl);
 }
 
 typedef CallbackRoute = PageRouteInfo<dynamic> Function(void Function(bool));
@@ -120,7 +158,7 @@ class AuthGuardBuilder {
 
   void next(NavigationResolver resolver, StackRouter router,
       {void Function()? onSuccess}) {
-    final build = _buildRedirect(resolver, router, (success) async {
+    final build = _buildRedirect(resolver, router, (success) {
       router.removeUntil((route) => false);
       if (success && onSuccess != null) onSuccess();
       resolver.next(success);
