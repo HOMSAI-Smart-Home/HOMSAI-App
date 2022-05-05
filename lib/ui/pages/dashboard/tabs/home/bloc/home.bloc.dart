@@ -1,3 +1,4 @@
+import 'dart:isolate';
 import 'dart:math';
 
 import 'package:bloc/bloc.dart';
@@ -162,6 +163,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           productionInfo.maxRange,
           optimizedInfo?.maxRange,
         ),
+          isLoading: false
       ));
     }
   }

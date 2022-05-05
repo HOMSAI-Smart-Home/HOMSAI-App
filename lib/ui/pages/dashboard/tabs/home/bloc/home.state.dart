@@ -1,20 +1,20 @@
 part of 'home.bloc.dart';
 
 class HomeState extends Equatable {
-  const HomeState({
-    this.lights = const [],
-    this.consumptionSensor,
-    this.productionSensor,
-    this.consumptionPlot,
-    this.productionPlot,
-    this.autoConsumption,
-    this.optimizedConsumptionPlot,
-    this.balance,
-    this.optimizedBalance,
-    this.minOffset,
-    this.maxOffset,
-    this.isPlotOptimized = false,
-  });
+  const HomeState(
+      {this.lights = const [],
+      this.consumptionSensor,
+      this.productionSensor,
+      this.consumptionPlot,
+      this.productionPlot,
+      this.autoConsumption,
+      this.optimizedConsumptionPlot,
+      this.balance,
+      this.optimizedBalance,
+      this.minOffset,
+      this.maxOffset,
+      this.isPlotOptimized = false,
+      this.isLoading = true});
 
   final List<LightEntity> lights;
 
@@ -29,6 +29,7 @@ class HomeState extends Equatable {
   final Offset? minOffset;
   final Offset? maxOffset;
   final bool isPlotOptimized;
+  final bool isLoading;
 
   HomeState copyWith({
     List<LightEntity>? lights,
@@ -43,6 +44,7 @@ class HomeState extends Equatable {
     Offset? minOffset,
     Offset? maxOffset,
     bool? isPlotOptimized,
+      bool? isLoading
   }) {
     return HomeState(
       lights: lights ?? this.lights,
@@ -58,6 +60,7 @@ class HomeState extends Equatable {
       minOffset: minOffset ?? this.minOffset,
       maxOffset: maxOffset ?? this.maxOffset,
       isPlotOptimized: isPlotOptimized ?? this.isPlotOptimized,
+        isLoading: isLoading ?? true
     );
   }
 

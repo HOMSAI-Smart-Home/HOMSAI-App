@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,6 +10,7 @@ import 'package:homsai/themes/colors.theme.dart';
 import 'package:homsai/ui/pages/dashboard/tabs/home/bloc/home.bloc.dart';
 import 'package:homsai/ui/widget/devices/light/light_device.widget.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:rive/rive.dart' as rive;
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -125,15 +124,7 @@ class DailyConsumptionChartInfo extends StatelessWidget {
                       isFirstEnabled: !state.isPlotOptimized,
                     ),
                   ),
-                  DailyConsumptionChart(
-                    autoConsumptionPlot: state.autoConsumption,
-                    consumptionPlot: (state.isPlotOptimized)
-                        ? state.optimizedConsumptionPlot
-                        : state.consumptionPlot,
-                    productionPlot: state.productionPlot,
-                    max: state.maxOffset,
-                    min: state.minOffset,
-                  ),
+                  test(state),
                   const DailyConsumptionBalanceInfo(),
                 ],
               ),
@@ -141,6 +132,52 @@ class DailyConsumptionChartInfo extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+Widget test(HomeState state) {
+  return state.isLoading
+      ? const SizedBox(
+          height: 100,
+          width: 100,
+          child: _HourglassIcon(),
+        )
+      : DailyConsumptionChart(
+          autoConsumptionPlot: state.autoConsumption,
+          consumptionPlot: (state.isPlotOptimized)
+              ? state.optimizedConsumptionPlot
+              : state.consumptionPlot,
+          productionPlot: state.productionPlot,
+          max: state.maxOffset,
+          min: state.minOffset,
+        );
+}
+
+class _HourglassIcon extends StatefulWidget {
+  const _HourglassIcon({Key? key}) : super(key: key);
+
+  @override
+  _HourglassIconState createState() => _HourglassIconState();
+}
+
+class _HourglassIconState extends State<_HourglassIcon> {
+  rive.SMIInput<bool>? _error;
+
+  void _onHouglassInit(rive.Artboard artboard) {
+    rive.StateMachineController.fromArtboard(artboard, 'spin');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 48,
+      height: 48,
+      child: rive.RiveAnimation.asset(
+        "assets/animations/hourglass.riv",
+        stateMachines: const [''],
+        onInit: _onHouglassInit,
+      ),
     );
   }
 }
