@@ -33,6 +33,7 @@ abstract class HomeAssistantInterface {
     required Plant plant,
     required HistoryBodyDto historyBodyDto,
     Duration timeout,
+      required bool isConsumption
   });
   Future<LogbookDto> getLogBook({
     required Plant plant,

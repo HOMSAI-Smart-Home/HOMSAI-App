@@ -88,15 +88,22 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         autoConsumption: autoConsumption, isPlotOptimized: event.isOptimized));
   }
 
+  bool _checkIfDateIsYesterday(DateTime date) {
+    // Check if the forecast date is yesterday
+    var yesterday = DateTime.now().subtract(const Duration(days: 1));
+    yesterday = DateTime(yesterday.year, yesterday.month, yesterday.day);
+    return date.isAtSameMomentAs(yesterday);
+  }
+
   void _onFetchHistory(FetchHistory event, Emitter<HomeState> emit) async {
     final plant = await appDatabase.getPlant();
     if (plant != null) {
       Configuration? configuration = await appDatabase.getConfiguration();
 
       final consumptionInfo =
-          await _getPlotInfoFromSensor(plant.consumptionSensor, plant);
+          await _getPlotInfoFromSensor(plant.consumptionSensor, plant, true);
       final productionInfo =
-          await _getPlotInfoFromSensor(plant.productionSensor, plant);
+          await _getPlotInfoFromSensor(plant.productionSensor, plant, false);
 
       final productionSensor = await appDatabase.homeAssitantDao
           .findEntity<MesurableSensorEntity>(
@@ -110,15 +117,23 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       PlotInfo? optimizedInfo;
       if (consumptionInfo.plot.isNotEmpty && productionInfo.plot.isNotEmpty) {
         autoConsumption = consumptionInfo.plot.intersect(productionInfo.plot);
-        consumptionForecast = await aiServiceInterface
-            .getPhotovoltaicSelfConsumptionOptimizerForecast(
-                ConsumptionOptimizationsForecastBodyDto(
-                  consumptionInfo.history,
-                  consumptionSensor!.unitMesurement,
-                  productionInfo.history,
-                  productionSensor!.unitMesurement,
-                ),
-                configuration!.unitSystemType);
+        final forecasts = appPreferencesInterface.getOptimizationForecast();
+        if (forecasts != null &&
+            forecasts.optimizedGeneralPowerMeterData.isNotEmpty &&
+            _checkIfDateIsYesterday(
+                forecasts.optimizedGeneralPowerMeterData[0].lastChanged)) {
+          consumptionForecast = forecasts;
+        } else {
+          consumptionForecast = await aiServiceInterface
+              .getPhotovoltaicSelfConsumptionOptimizerForecast(
+                  ConsumptionOptimizationsForecastBodyDto(
+                    consumptionInfo.history,
+                    consumptionSensor!.unitMesurement,
+                    productionInfo.history,
+                    productionSensor!.unitMesurement,
+                  ),
+                  configuration!.unitSystemType);
+        }
         optimizedInfo =
             _getPlotInfo(consumptionForecast.optimizedGeneralPowerMeterData);
       }
@@ -161,19 +176,34 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     return c == null || t >= c ? t : c;
   }
 
-  Future<PlotInfo> _getPlotInfoFromSensor(String? sensor, Plant plant) async {
+  Future<PlotInfo> _getPlotInfoFromSensor(
+      String? sensor, Plant plant, bool isConsumption) async {
     PlotInfo info =
         PlotInfo(maxRange: Offset(Duration.minutesPerDay.toDouble(), 4));
     if (sensor == null) return info;
 
     final historyBodyDto = HistoryBodyDto(sensor, minimalResponse: true);
-    final history = await homeAssistantRepository.getHistory(
-      plant: plant,
-      historyBodyDto: historyBodyDto,
-      timeout: const Duration(seconds: 2),
-    );
-
+    List<HistoryDto>? historyCached = getHistoryCached(isConsumption);
+    List<HistoryDto> history;
+    if (historyCached != null &&
+        historyCached.isNotEmpty &&
+        _checkIfDateIsYesterday(historyCached[0].lastChanged)) {
+      history = historyCached;
+    } else {
+      history = await homeAssistantRepository.getHistory(
+          plant: plant,
+          historyBodyDto: historyBodyDto,
+          timeout: const Duration(seconds: 2),
+          isConsumption: isConsumption);
+    }
     return _getPlotInfo(history);
+  }
+
+  List<HistoryDto>? getHistoryCached(bool isConsumption) {
+    if (isConsumption) {
+      return appPreferencesInterface.getConsumptionInfo();
+    }
+    return appPreferencesInterface.getProductionInfo();
   }
 
   PlotInfo _getPlotInfo(List<HistoryDto> history) {

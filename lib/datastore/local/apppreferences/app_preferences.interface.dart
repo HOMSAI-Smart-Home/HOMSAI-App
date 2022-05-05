@@ -1,4 +1,5 @@
 import 'package:homsai/datastore/DTOs/remote/ai_service/consumption_optimizations_forecast/consumption_optimizations_forecast.dto.dart';
+import 'package:homsai/datastore/DTOs/remote/history/history.dto.dart';
 import 'package:homsai/datastore/models/ai_service_auth.model.dart';
 import 'package:homsai/datastore/models/home_assistant_auth.model.dart';
 
@@ -26,4 +27,13 @@ abstract class AppPreferencesInterface {
   void setOptimizationForecast(ConsumptionOptimizationsForecastDto forecastDto);
   ConsumptionOptimizationsForecastDto? getOptimizationForecast();
   void resetOptimizationForecast();
+
+  void setConsumptionInfo(List<HistoryDto> consumptionInfo);
+  List<HistoryDto>? getConsumptionInfo();
+  void resetConsumptionInfo();
+
+  void setProductionInfo(List<HistoryDto> productionInfo);
+  List<HistoryDto>? getProductionInfo();
+  void resetProductionInfo();
+  
 }

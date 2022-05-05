@@ -232,11 +232,11 @@ class HomeAssistantRepository implements HomeAssistantInterface {
   }
 
   @override
-  Future<List<HistoryDto>> getHistory({
-    required Plant plant,
-    HistoryBodyDto? historyBodyDto,
-    Duration timeout = const Duration(seconds: 10),
-  }) async {
+  Future<List<HistoryDto>> getHistory(
+      {required Plant plant,
+      HistoryBodyDto? historyBodyDto,
+      Duration timeout = const Duration(seconds: 10),
+      required bool isConsumption}) async {
     Map<String, dynamic> response;
 
     final baseUrl = plant.getBaseUrl().replace(
@@ -257,9 +257,12 @@ class HomeAssistantRepository implements HomeAssistantInterface {
       timeout: timeout,
     );
 
-    //TODO:remove
-    print(response);
     final history = HistoryDto.fromList(response["data"][0]);
+    if (isConsumption == true) {
+      appPreferences.setConsumptionInfo(history);
+    } else {
+      appPreferences.setProductionInfo(history);
+    }
     return history;
   }
 

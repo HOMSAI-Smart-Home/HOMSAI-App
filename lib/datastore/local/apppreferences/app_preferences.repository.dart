@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:homsai/crossconcern/utilities/properties/app_preference.proprties.dart';
 import 'package:homsai/datastore/DTOs/remote/ai_service/consumption_optimizations_forecast/consumption_optimizations_forecast.dto.dart';
+import 'package:homsai/datastore/DTOs/remote/history/history.dto.dart';
 import 'package:homsai/datastore/models/ai_service_auth.model.dart';
 import 'package:homsai/datastore/models/home_assistant_auth.model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -113,5 +114,45 @@ class AppPreferences implements AppPreferencesInterface {
   @override
   void resetOptimizationForecast() {
     preferences?.remove(AppPreferencesProperties.prefOptimizationForecast);
+  }
+
+  @override
+  void setConsumptionInfo(List<HistoryDto> consumptionInfo) {
+    preferences?.setString(AppPreferencesProperties.prefConsumptionInfo,
+        jsonEncode(consumptionInfo));
+  }
+
+  @override
+  List<HistoryDto>? getConsumptionInfo() {
+    final consumptionInfo =
+        preferences?.getString(AppPreferencesProperties.prefConsumptionInfo);
+    return consumptionInfo != null
+        ? HistoryDto.fromList(jsonDecode(consumptionInfo))
+        : null;
+  }
+
+  @override
+  void resetConsumptionInfo() {
+    preferences?.remove(AppPreferencesProperties.prefConsumptionInfo);
+  }
+
+  @override
+  void setProductionInfo(List<HistoryDto> productionInfo) {
+    preferences?.setString(AppPreferencesProperties.prefProductionInfo,
+        jsonEncode(productionInfo));
+  }
+
+  @override
+  List<HistoryDto>? getProductionInfo() {
+    final productionInfo =
+        preferences?.getString(AppPreferencesProperties.prefProductionInfo);
+    return productionInfo != null
+        ? HistoryDto.fromList(jsonDecode(productionInfo))
+        : null;
+  }
+
+  @override
+  void resetProductionInfo() {
+    preferences?.remove(AppPreferencesProperties.prefProductionInfo);
   }
 }

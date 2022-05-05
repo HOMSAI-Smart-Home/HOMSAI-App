@@ -69,12 +69,6 @@ class AIServiceRepository implements AIServiceInterface {
     ConsumptionOptimizationsForecastBodyDto optimizationsForecastBody,
     String unit,
   ) async {
-    final forecasts = appPreferences.getOptimizationForecast();
-    if (forecasts != null &&
-        forecasts.optimizedGeneralPowerMeterData.isNotEmpty &&
-        _checkFirstForecastDate(forecasts.optimizedGeneralPowerMeterData[0])) {
-      return forecasts;
-    }
     Map<String, dynamic> result = await remoteInterface.post(
       Uri.parse(ApiProprties.aIServiceBaseUrl).replace(
         path:
@@ -87,13 +81,6 @@ class AIServiceRepository implements AIServiceInterface {
     appPreferences.setOptimizationForecast(
         ConsumptionOptimizationsForecastDto.fromJson(result));
     return ConsumptionOptimizationsForecastDto.fromJson(result);
-  }
-
-  bool _checkFirstForecastDate(HistoryDto element) {
-    // Check if the forecast date is yesterday
-    var yesterday = DateTime.now().subtract(const Duration(days: 1));
-    yesterday = DateTime(yesterday.year, yesterday.month, yesterday.day);
-    return element.lastChanged.isAtSameMomentAs(yesterday);
   }
 
   @override
