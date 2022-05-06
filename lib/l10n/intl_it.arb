@@ -74,6 +74,7 @@
     "homePageOptimizedConsumptionLabel": "Consumo ottimizzato",
     "homePagePurchasedEnergyLabel": "Energia Acquistata",
     "homePageEnergyInjectedLabel": "Energia Immessa",
+    "homePageBalanceDefaultPlaceholder": "--",
     "homePageBalanceLabel": "Saldo",
     "homePageBalanceAlertTitle": "Titolo",
     "homePageBalanceAlertTitleDefault": "Titolo",

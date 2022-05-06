@@ -86,7 +86,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     }
 
     emit(state.copyWith(
-        autoConsumption: autoConsumption, isPlotOptimized: event.isOptimized));
+      autoConsumption: autoConsumption,
+      isPlotOptimized: event.isOptimized,
+    ));
   }
 
   bool _checkIfDateIsYesterday(DateTime date) {
@@ -97,6 +99,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   void _onFetchHistory(FetchHistory event, Emitter<HomeState> emit) async {
+    emit(state.copyWith(isLoading: true));
     final plant = await appDatabase.getPlant();
     if (plant != null) {
       Configuration? configuration = await appDatabase.getConfiguration();
@@ -140,31 +143,30 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       }
 
       emit(state.copyWith(
-        consumptionSensor: consumptionSensor,
-        productionSensor: productionSensor,
-        consumptionPlot: consumptionInfo.plot.isNotEmpty
-            ? consumptionInfo.plot
-            : DailyConsumptionChart.emptyPlot,
-        productionPlot: productionInfo.plot.isNotEmpty
-            ? productionInfo.plot
-            : DailyConsumptionChart.emptyPlot,
-        optimizedConsumptionPlot:
-            optimizedInfo?.plot ?? DailyConsumptionChart.emptyPlot,
-        autoConsumption: autoConsumption,
-        balance: consumptionForecast?.withoutHomsai,
-        optimizedBalance: consumptionForecast?.withHomsai,
-        minOffset: minOffset(
-          consumptionInfo.minRange,
-          productionInfo.minRange,
-          optimizedInfo?.minRange,
-        ),
-        maxOffset: maxOffset(
-          consumptionInfo.maxRange,
-          productionInfo.maxRange,
-          optimizedInfo?.maxRange,
-        ),
-          isLoading: false
-      ));
+          consumptionSensor: consumptionSensor,
+          productionSensor: productionSensor,
+          consumptionPlot: consumptionInfo.plot.isNotEmpty
+              ? consumptionInfo.plot
+              : DailyConsumptionChart.emptyPlot,
+          productionPlot: productionInfo.plot.isNotEmpty
+              ? productionInfo.plot
+              : DailyConsumptionChart.emptyPlot,
+          optimizedConsumptionPlot:
+              optimizedInfo?.plot ?? DailyConsumptionChart.emptyPlot,
+          autoConsumption: autoConsumption,
+          balance: consumptionForecast?.withoutHomsai,
+          optimizedBalance: consumptionForecast?.withHomsai,
+          minOffset: minOffset(
+            consumptionInfo.minRange,
+            productionInfo.minRange,
+            optimizedInfo?.minRange,
+          ),
+          maxOffset: maxOffset(
+            consumptionInfo.maxRange,
+            productionInfo.maxRange,
+            optimizedInfo?.maxRange,
+          ),
+          isLoading: false));
     }
   }
 

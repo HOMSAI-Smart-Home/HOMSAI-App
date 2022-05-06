@@ -60,7 +60,7 @@ class HomeState extends Equatable {
       minOffset: minOffset ?? this.minOffset,
       maxOffset: maxOffset ?? this.maxOffset,
       isPlotOptimized: isPlotOptimized ?? this.isPlotOptimized,
-        isLoading: isLoading ?? true
+        isLoading: isLoading ?? this.isLoading
     );
   }
 
@@ -76,5 +76,6 @@ class HomeState extends Equatable {
         minOffset,
         maxOffset,
         isPlotOptimized,
+        isLoading
       ];
 }

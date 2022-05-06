@@ -124,7 +124,10 @@ class DailyConsumptionChartInfo extends StatelessWidget {
                       isFirstEnabled: !state.isPlotOptimized,
                     ),
                   ),
-                  test(state),
+                  SizedBox(
+                    height: 193,
+                    child: generateChartGraphics(state, context),
+                  ),
                   const DailyConsumptionBalanceInfo(),
                 ],
               ),
@@ -136,14 +139,24 @@ class DailyConsumptionChartInfo extends StatelessWidget {
   }
 }
 
-Widget test(HomeState state) {
-  return state.isLoading
-      ? const SizedBox(
-          height: 100,
-          width: 100,
-          child: _HourglassIcon(),
+Widget generateChartGraphics(HomeState state, BuildContext context) {
+  if (state.isLoading) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const _HourglassIcon(),
+        const SizedBox(height: 5),
+        Text(
+          "Recupero dati...",
+          style: Theme.of(context).textTheme.caption,
         )
-      : DailyConsumptionChart(
+      ],
+    );
+  }
+  return (state.optimizedConsumptionPlot != null &&
+          state.consumptionPlot != null &&
+          state.productionPlot != null)
+      ? DailyConsumptionChart(
           autoConsumptionPlot: state.autoConsumption,
           consumptionPlot: (state.isPlotOptimized)
               ? state.optimizedConsumptionPlot
@@ -151,6 +164,20 @@ Widget test(HomeState state) {
           productionPlot: state.productionPlot,
           max: state.maxOffset,
           min: state.minOffset,
+        )
+      : Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: 250,
+              child: Text(
+                "Dati grafico non disponibili. Assicurati di aver collegato i sensori di consumo e produzione.",
+                style: Theme.of(context).textTheme.caption,
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ],
         );
 }
 
@@ -164,19 +191,14 @@ class _HourglassIcon extends StatefulWidget {
 class _HourglassIconState extends State<_HourglassIcon> {
   rive.SMIInput<bool>? _error;
 
-  void _onHouglassInit(rive.Artboard artboard) {
-    rive.StateMachineController.fromArtboard(artboard, 'spin');
-  }
-
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return const SizedBox(
       width: 48,
       height: 48,
       child: rive.RiveAnimation.asset(
         "assets/animations/hourglass.riv",
-        stateMachines: const [''],
-        onInit: _onHouglassInit,
+        stateMachines: ['spin'],
       ),
     );
   }
@@ -189,9 +211,12 @@ class DailyConsumptionBalanceInfo extends StatelessWidget {
     return (state.isPlotOptimized) ? state.optimizedBalance : state.balance;
   }
 
-  double balanceWithHomesai(HomeState state) {
-    return double.parse(state.optimizedBalance!.balance.toStringAsFixed(2)) -
-        double.parse(state.balance!.balance.toStringAsFixed(2));
+  double? balanceWithHomesai(HomeState state) {
+    if (state.optimizedBalance != null && state.balance != null) {
+      return double.parse(state.optimizedBalance!.balance.toStringAsFixed(2)) -
+          double.parse(state.balance!.balance.toStringAsFixed(2));
+    }
+    return null;
   }
 
   @override
@@ -202,35 +227,31 @@ class DailyConsumptionBalanceInfo extends StatelessWidget {
         builder: (context, state) => Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (balance(state) != null)
-              DailyConsumptionBalanceItemInfo(
-                HomsaiLocalizations.of(context)!.homePagePurchasedEnergyLabel,
-                amount: balance(state)!.boughtEnergyExpense,
-                power: balance(state)!.boughtEnergy,
-                unit: state.consumptionSensor!.unitMesurement,
-              ),
-            if (balance(state) != null)
-              DailyConsumptionBalanceItemInfo(
-                HomsaiLocalizations.of(context)!.homePageEnergyInjectedLabel,
-                amount: balance(state)!.soldEnergyEarning,
-                power: balance(state)!.soldEnergy,
-                unit: state.productionSensor!.unitMesurement,
-              ),
-            if (balance(state) != null)
-              DailyConsumptionBalanceItemInfo(
-                HomsaiLocalizations.of(context)!.homePageBalanceLabel,
-                amount: balance(state)!.balance,
-                colored: true,
-              ),
-            if (balance(state) != null)
-              EarnWithHomsaiItemInfo(
-                HomsaiLocalizations.of(context)!.homePageEarnWithHomesaiLabel,
-                amount: balanceWithHomesai(state),
-                alertTextContent: HomsaiLocalizations.of(context)!
-                    .homePageBalanceAlertContent,
-                alertTextTitle:
-                    HomsaiLocalizations.of(context)!.homePageBalanceAlertTitle,
-              ),
+            DailyConsumptionBalanceItemInfo(
+              HomsaiLocalizations.of(context)!.homePagePurchasedEnergyLabel,
+              amount: balance(state)?.boughtEnergyExpense,
+              power: balance(state)?.boughtEnergy,
+              unit: state.consumptionSensor?.unitMesurement,
+            ),
+            DailyConsumptionBalanceItemInfo(
+              HomsaiLocalizations.of(context)!.homePageEnergyInjectedLabel,
+              amount: balance(state)?.soldEnergyEarning,
+              power: balance(state)?.soldEnergy,
+              unit: state.productionSensor?.unitMesurement,
+            ),
+            DailyConsumptionBalanceItemInfo(
+              HomsaiLocalizations.of(context)!.homePageBalanceLabel,
+              amount: balance(state)?.balance,
+              colored: true,
+            ),
+            EarnWithHomsaiItemInfo(
+              HomsaiLocalizations.of(context)!.homePageEarnWithHomesaiLabel,
+              alertTextContent:
+                  HomsaiLocalizations.of(context)!.homePageBalanceAlertContent,
+              alertTextTitle:
+                  HomsaiLocalizations.of(context)!.homePageBalanceAlertTitle,
+              amount: balanceWithHomesai(state),
+            ),
           ],
         ),
       ),
@@ -242,7 +263,7 @@ class DailyConsumptionBalanceItemInfo extends StatelessWidget {
   const DailyConsumptionBalanceItemInfo(
     this.label, {
     Key? key,
-    required this.amount,
+    this.amount,
     this.power,
     this.unit,
     this.colored = false,
@@ -251,7 +272,7 @@ class DailyConsumptionBalanceItemInfo extends StatelessWidget {
   }) : super(key: key);
 
   final String label;
-  final double amount;
+  final double? amount;
   final double? power;
   final String? unit;
   final bool colored;
@@ -259,8 +280,10 @@ class DailyConsumptionBalanceItemInfo extends StatelessWidget {
   final Color? textColor;
 
   Color? getColored(BuildContext context) {
-    if (colored && amount != 0) {
-      return (amount < 0) ? HomsaiColors.primaryRed : HomsaiColors.primaryGreen;
+    if (colored && amount != null && amount != 0) {
+      return (amount! < 0)
+          ? HomsaiColors.primaryRed
+          : HomsaiColors.primaryGreen;
     }
     return null;
   }
@@ -290,14 +313,16 @@ class DailyConsumptionBalanceItemInfo extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    "${amount.toStringAsFixed(2)} €",
+                    (amount != null) ? "${amount!.toStringAsFixed(2)} €" : "--",
                     style: Theme.of(context).textTheme.bodyText1?.copyWith(
                         fontWeight: FontWeight.w400,
                         color: getColored(context)),
                   ),
                   if (power != null)
                     Text(
-                      "${power!.toStringAsFixed(1)} $unit",
+                      (power != null && unit != null)
+                          ? "${power!.toStringAsFixed(1)} $unit"
+                          : "--",
                       style: Theme.of(context).textTheme.bodyText2?.copyWith(
                             fontWeight: FontWeight.w400,
                             fontSize: 10,
@@ -321,13 +346,13 @@ class EarnWithHomsaiItemInfo extends StatelessWidget {
   const EarnWithHomsaiItemInfo(
     this.label, {
     Key? key,
-    required this.amount,
+    this.amount,
     this.alertTextContent,
     this.alertTextTitle,
   }) : super(key: key);
 
   final String label;
-  final double amount;
+  final double? amount;
   final String? alertTextContent;
   final String? alertTextTitle;
 
@@ -384,7 +409,9 @@ class EarnWithHomsaiItemInfo extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      "${amount.toStringAsFixed(2)} €",
+                      (amount != null)
+                          ? "${amount!.toStringAsFixed(2)} €"
+                          : "--",
                       style: Theme.of(context).textTheme.bodyText1?.copyWith(
                           fontWeight: FontWeight.w400,
                           color: HomsaiColors.primaryWhite),

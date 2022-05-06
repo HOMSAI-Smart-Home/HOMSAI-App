@@ -127,6 +127,8 @@ abstract class _AccountButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final titleTheme = Theme.of(context).textTheme.headline4;
+    final captionTheme = Theme.of(context).textTheme.caption;
     return InkWell(
       onTap: () => onTap != null ? onTap!(context) : null,
       child: Row(
@@ -140,24 +142,21 @@ abstract class _AccountButton extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: Theme.of(context).textTheme.headline4,
+                  style: onTap != null
+                      ? titleTheme
+                      : titleTheme?.copyWith(
+                          color: titleTheme.color?.withOpacity(0.5)),
                 ),
                 Text(
                   caption,
-                  style: Theme.of(context).textTheme.caption,
+                  style: onTap != null
+                      ? captionTheme
+                      : captionTheme?.copyWith(
+                          color: captionTheme.color?.withOpacity(0.5)),
                 ),
               ],
             ),
           ),
-          if (onTap != null)
-            Padding(
-              padding:
-                  const EdgeInsets.only(top: 10, right: 8, left: 8, bottom: 10),
-              child: Icon(
-                Icons.edit,
-                color: HomsaiColors.primaryWhite,
-              ),
-            ),
         ],
       ),
     );
