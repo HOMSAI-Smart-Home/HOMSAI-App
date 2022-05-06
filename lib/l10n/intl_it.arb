@@ -67,7 +67,6 @@
     "introductionSkip": "Salta",
     "introductionPageInfo": "Step %1 di 3",
 
-    "homePageEarnWithHomesaiLabel": "Guadagno con Homsai",
     "homePageImprovementAvailableLabel": "Miglioramento disponibile",
     "homePageMockTurnOffLightLabel": "Potresti spegnere *Lampadario Salotto* alle 19.",
     "homePageCurrentConsumptionLabel": "Consumo attuale",
@@ -79,5 +78,12 @@
     "homePageBalanceAlertTitle": "Titolo",
     "homePageBalanceAlertTitleDefault": "Titolo",
     "homePageBalanceAlertContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-    "homePageBalanceAlertContentDefault": "Contenuto"
+    "homePageBalanceAlertContentDefault": "Contenuto",
+    "homePageEarnWithHomesaiLabel": "Guadagno con Homsai",
+    "homePageEarnWithHomesaiDialogP1Title": "Cosa stai vedendo",
+    "homePageEarnWithHomesaiDialogP1Content": "Il widget dei Consumi Ottimizzati mostra la differenza dei consumi all'interno di una giornata con e senza ottimizzazione, scoprendo il vantaggio economico di utilizzare Homsai.",
+    "homePageEarnWithHomesaiDialogP2Title": "Consumo attuale",
+    "homePageEarnWithHomesaiDialogP2Content": "Mostra l'andamento dei consumi reali della tua casa nella giornata di ieri misurati con i sensori di consumo configurati.",
+    "homePageEarnWithHomesaiDialogP3Title": "Consumo ottimizzato",
+    "homePageEarnWithHomesaiDialogP3Content": "Sulla base dei consumi mostrati in \"Consumo attuale\", Homsai mostra la stima dei valori ottenibili grazie alla sua ottimizzazione dei consumi, tenendo conto del meteo per efficentare la gestione della climatizzazione e prevedere la produzione di energia. Grazie ai suoi algoritmi, Homsai è in grado di migliorare nel tempo l’efficenza di tale ottimizzazione, sfruttando sempre più l’energia prodotta dai pannelli fotovoltaici e utilizzando meno energia acquistata."
 }

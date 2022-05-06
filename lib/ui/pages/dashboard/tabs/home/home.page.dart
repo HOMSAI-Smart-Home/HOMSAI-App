@@ -372,12 +372,7 @@ class EarnWithHomsaiItemInfo extends StatelessWidget {
               showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
-                        content: Text(
-                          alertTextContent ??
-                              HomsaiLocalizations.of(context)!
-                                  .homePageBalanceAlertContentDefault,
-                          style: TextStyle(color: HomsaiColors.primaryWhite),
-                        ),
+                        content: earnWithHomsaiDialogContent(context),
                         title: Text(
                           alertTextTitle ??
                               HomsaiLocalizations.of(context)!
@@ -423,5 +418,47 @@ class EarnWithHomsaiItemInfo extends StatelessWidget {
     );
   }
 }
+
+Widget earnWithHomsaiDialogContent(BuildContext context) {
+  return SingleChildScrollView(
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ...generateEarnWithHomsaiParagraph(
+          HomsaiLocalizations.of(context)!.homePageEarnWithHomesaiDialogP1Title,
+          HomsaiLocalizations.of(context)!
+              .homePageEarnWithHomesaiDialogP1Content,
+        ),
+        ...generateEarnWithHomsaiParagraph(
+          HomsaiLocalizations.of(context)!.homePageEarnWithHomesaiDialogP2Title,
+          HomsaiLocalizations.of(context)!
+              .homePageEarnWithHomesaiDialogP2Content,
+        ),
+        ...generateEarnWithHomsaiParagraph(
+          HomsaiLocalizations.of(context)!.homePageEarnWithHomesaiDialogP3Title,
+          HomsaiLocalizations.of(context)!
+              .homePageEarnWithHomesaiDialogP3Content,
+        ),
+      ],
+    ),
+  );
+}
+
+List<Widget> generateEarnWithHomsaiParagraph(String title, String content) {
+  return [
+    Text(
+      title,
+      textAlign: TextAlign.left,
+      style: TextStyle(color: HomsaiColors.primaryGreen),
+    ),
+    const SizedBox(height: 5),
+    Text(content,
+        textAlign: TextAlign.left,
+        style: TextStyle(color: HomsaiColors.primaryWhite)),
+    const SizedBox(height: 15),
+  ];
+}
+
+//List<Widget> generateEarnWithHomsaiBulletedList(BuildContext context)
 
 class Boolean {}
