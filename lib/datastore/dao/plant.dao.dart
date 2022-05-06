@@ -9,4 +9,7 @@ abstract class PlantDao extends BaseDao<Plant> {
 
   @Query('SELECT * FROM Plant WHERE id = :id')
   Future<Plant?> findPlantById(int id);
+
+  @Insert(onConflict: OnConflictStrategy.replace)
+  Future<int> insertPlantReplace(Plant items);
 }

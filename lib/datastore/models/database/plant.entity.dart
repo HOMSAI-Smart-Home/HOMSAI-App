@@ -40,18 +40,23 @@ class Plant extends BaseEntity {
   }) : super(id);
 
   Plant copyWith({
-    String? productionSensor,
-    String? consumptionSensor,
-    String? localUrl,
-    String? remoteUrl,
+     String? localUrl,
+   String? remoteUrl,
+   String? name,
+   double? latitude,
+   double? longitude,
+   int? configurationId,
+   String? productionSensor,
+   String? consumptionSensor,
+
   }) =>
       Plant(
         localUrl == null ? this.localUrl : localUrl.isEmpty ? null : localUrl,
         remoteUrl == null ? this.remoteUrl : remoteUrl.isEmpty ? null : remoteUrl,
-        name,
-        latitude,
-        longitude,
-        configurationId,
+        name ?? this.name,
+        latitude ?? this.latitude,
+        longitude ?? this.longitude,
+        configurationId ?? this.configurationId,
         id: id,
         productionSensor: productionSensor ?? this.productionSensor,
         consumptionSensor: consumptionSensor ?? this.consumptionSensor,

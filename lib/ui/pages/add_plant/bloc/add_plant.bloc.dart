@@ -37,7 +37,8 @@ class AddPlantBloc extends Bloc<AddPlantEvent, AddPlantState> {
     on<CoordinateUnfocused>(_onCoordinateUnfocused);
     on<OnSubmit>(_onSubmit);
     if (!webSocketRepository.isConnected()) {
-      webSocketBloc.add(ConnectWebSocket(onWebSocketConnected: () {}, url: url?.toString() ?? ''));
+      webSocketBloc.add(ConnectWebSocket(
+          onWebSocketConnected: () {}, url: url?.toString() ?? ''));
     }
   }
 
@@ -108,20 +109,32 @@ class AddPlantBloc extends Bloc<AddPlantEvent, AddPlantState> {
   }
 
   void _onSubmit(OnSubmit event, Emitter<AddPlantState> emit) async {
+    Plant? plant = await appDatabase.getPlant();
+
     List<String> coordinates = state.coordinate.value.split(";");
     final latitude = coordinates.first;
     final longitude = coordinates.last;
-    final configurationId =
-        await appDatabase.configurationDao.insertItem(state.configuration!);
-    final plantId = await appDatabase.plantDao.insertItem(Plant(
-      !event.remote ? event.url.toString() : null,
-      event.remote ? event.url.toString() : null,
-      state.plantName.value,
-      double.parse(latitude),
-      double.parse(longitude),
-      configurationId,
-    ));
 
+    if (plant != null) {
+      plant = plant.copyWith(
+        name: state.plantName.value,
+        latitude: double.parse(latitude),
+        longitude: double.parse(longitude),
+      );
+    } else {
+      final configurationId =
+          await appDatabase.configurationDao.insertItem(state.configuration!);
+      plant = Plant(
+        !event.remote ? event.url.toString() : null,
+        event.remote ? event.url.toString() : null,
+        state.plantName.value,
+        double.parse(latitude),
+        double.parse(longitude),
+        configurationId,
+      );
+    }
+
+    final plantId = await appDatabase.plantDao.insertPlantReplace(plant);
     await appDatabase.updatePlant(plantId);
 
     if (state.entities.isNotEmpty) {

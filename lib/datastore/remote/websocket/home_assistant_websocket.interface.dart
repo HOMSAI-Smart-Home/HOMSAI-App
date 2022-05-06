@@ -31,7 +31,11 @@ abstract class HomeAssistantWebSocketInterface {
     Function? onConnected,
   });
 
-  void logout();
+  Future<void> reconnect({
+    Function? onConnected,
+  });
+
+  Future<void> logOut();
 
   void removeSubscription(
     String event,

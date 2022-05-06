@@ -10,3 +10,5 @@ abstract class AccountsEvent extends Equatable {
 class Autocomplete extends AccountsEvent {}
 
 class Update extends AccountsEvent {}
+
+class Exit extends AccountsEvent {}

@@ -223,10 +223,12 @@ class _AddPlantSubmit extends StatelessWidget {
         onPressed: state.entities.isNotEmpty
             ? () => context.read<AddPlantBloc>().add(
                   OnSubmit(
-                    () =>
-                        context.router.push(AddSensorRoute(onResult: onResult)),
-                    url!,
-                    remote!,
+                    () => wizard
+                    ?
+                      context.router.push(AddSensorRoute(onResult: onResult))
+                    : onResult(true),
+                    url?.toString() ?? '',
+                    remote ?? true,
                   ),
                 )
             : null,

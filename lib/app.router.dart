@@ -10,6 +10,7 @@ import 'package:homsai/datastore/models/entity/base/base.entity.dart';
 import 'package:homsai/datastore/models/home_assistant_auth.model.dart';
 import 'package:homsai/datastore/remote/websocket/home_assistant_websocket.interface.dart';
 import 'package:homsai/datastore/remote/websocket/home_assistant_websocket.repository.dart';
+import 'package:homsai/datastore/models/home_assistant_auth.model.dart';
 import 'package:homsai/main.dart';
 import 'package:homsai/ui/pages/add_plant/add_plant.page.dart';
 import 'package:homsai/ui/pages/add_sensor/add_sensor.page.dart';
@@ -93,19 +94,24 @@ class AuthGuard extends AutoRouteGuard {
     final String? userId = _appPreferences.getUserId();
     final User? user = await _appDatabase.userDao.findUserById(userId ?? "");
     if (userId == null || user == null) {
-      builder.guard((onResult) => IntroBetaRoute(onResult: onResult));
+      builder.guard((onResult) async => IntroBetaRoute(onResult: onResult));
     }
 
     if (!_appPreferences.canSkipIntroduction()) {
       builder.guard(
-        (onResult) => IntroductionRoute(onResult: onResult),
+        (onResult) async => IntroductionRoute(onResult: onResult),
         optional: () => _appPreferences.setIntroduction(true),
       );
     }
 
-    if (user == null || user.isPlantNotAvailable) {
-      builder.guard((onResult) => HomeAssistantScanRoute(onResult: onResult));
-    }
+    builder.guard((onResult) async {
+      final User? user = await _appDatabase.getUser();
+      final HomeAssistantAuth? token = _appPreferences.getHomeAssistantToken();
+      if (token == null || user == null || user.isPlantNotAvailable) {
+        return HomeAssistantScanRoute(onResult: onResult);
+      }
+      return null;
+    });
 
     builder.next(
       resolver,
@@ -149,7 +155,8 @@ class AuthGuard extends AutoRouteGuard {
   }
 }
 
-typedef CallbackRoute = PageRouteInfo<dynamic> Function(void Function(bool));
+typedef CallbackRoute = Future<PageRouteInfo<dynamic>?> Function(
+    void Function(bool));
 
 class AuthGuardBuilder {
   final List<CallbackRoute> routes = [];
@@ -162,30 +169,34 @@ class AuthGuardBuilder {
   }
 
   void next(NavigationResolver resolver, StackRouter router,
-      {void Function()? onSuccess}) {
+      {void Function()? onSuccess}) async {
     final build = _buildRedirect(resolver, router, (success) {
       router.removeUntil((route) => false);
       if (success && onSuccess != null) onSuccess();
       resolver.next(success);
     });
-    build(true);
+    (await build)(true);
   }
 
-  void Function(bool) _buildRedirect(NavigationResolver resolver,
-      StackRouter router, void Function(bool) previous) {
+  Future<void Function(bool p1)> _buildRedirect(NavigationResolver resolver,
+      StackRouter router, void Function(bool) previous) async {
     if (routes.isEmpty) return previous;
     final redirect = routes.removeLast();
     final optional = optionals.removeLast();
+    
+    onResult(success) {
+      if (optional != null) optional();
+      previous(success);
+    }
+
     return _buildRedirect(
       resolver,
       router,
       (success) async {
-        router.pop();
-        final route = redirect((success) {
-          if (optional != null) optional();
-          previous(success);
-        });
-        await router.replace(route);
+        final redirectRoute = await redirect(onResult);
+        redirectRoute != null
+            ? router.replace(redirectRoute)
+            : onResult(success);
       },
     );
   }

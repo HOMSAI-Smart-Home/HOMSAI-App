@@ -321,6 +321,12 @@ class _$PlantDao extends PlantDao {
   }
 
   @override
+  Future<int> insertPlantReplace(Plant items) {
+    return _plantInsertionAdapter.insertAndReturnId(
+        items, OnConflictStrategy.replace);
+  }
+
+  @override
   Future<int> insertItem(Plant item) {
     return _plantInsertionAdapter.insertAndReturnId(
         item, OnConflictStrategy.abort);

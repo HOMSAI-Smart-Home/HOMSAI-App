@@ -65,7 +65,7 @@ class OnSubmit extends AddPlantEvent {
   const OnSubmit(this.onSubmit, this.url, this.remote);
 
   final void Function() onSubmit;
-  final Uri url;
+  final String url;
   final bool remote;
 
   @override

@@ -84,8 +84,8 @@ abstract class AppDatabase extends FloorDatabase {
   Future<void> logout() async {
     final user = await getUser();
     if (user == null) return;
-    user.plantId = null;
-    await userDao.updateItem(user);
+    //user.plantId = null;
+    //await userDao.updateItem(user);
     _appPreferences.logout();
   }
 }

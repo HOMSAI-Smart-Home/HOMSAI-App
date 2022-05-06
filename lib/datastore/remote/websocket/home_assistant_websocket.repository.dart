@@ -84,10 +84,11 @@ class HomeAssistantWebSocketRepository
   final List<String> _message = [];
 
   Plant? _plant;
-  Uri? _url;
 
   static Map<String, int> eventsId = {};
   static Map<int, WebSocketSubscribersHandler> events = {};
+
+  Function? onConnected;
 
   @override
   bool isConnected() {
@@ -96,17 +97,34 @@ class HomeAssistantWebSocketRepository
 
   @override
   Future<void> connect({Uri? url, Function? onConnected}) async {
-    if (url != null)
+    if (url != null) {
       return _listen(
         url,
         onConnected: onConnected,
       );
+    }
     _plant = await appDatabase.getPlant();
-    if (_plant != null)
+    this.onConnected = onConnected;
+    if (_plant != null) {
       return _listen(
         _plant!.getBaseUrl(),
         onConnected: onConnected,
       );
+    }
+  }
+
+  @override
+  Future<void> reconnect({Function? onConnected}) async {
+    _plant = await appDatabase.getPlant();
+    await logOut();
+
+    this.onConnected = onConnected ?? this.onConnected;
+    if (_plant != null) {
+      return _listen(
+        _plant!.getBaseUrl(),
+        onConnected: this.onConnected,
+      );
+    }
   }
 
   Future<Uri> _connect(
@@ -130,8 +148,6 @@ class HomeAssistantWebSocketRepository
       path: HomeAssistantApiProprties.webSocketPath,
       scheme: scheme,
     );
-
-    _url = url;
 
     _message.insert(
       0,
@@ -192,11 +208,12 @@ class HomeAssistantWebSocketRepository
             .timeout(const Duration(seconds: 3)),
       );
     } catch (e) {
-      if (e is SocketException || e is TimeoutException)
+      if (e is SocketException || e is TimeoutException) {
         return _retry(
           url,
           onConnected: onConnected,
         );
+      }
       rethrow;
     }
 
@@ -270,12 +287,10 @@ class HomeAssistantWebSocketRepository
 
   @override
   void logout() {
-    if (_url == null) return;
     events = {};
     eventsId = {};
     status = HomeAssistantWebSocketStatus.disconnected;
-    webSocket?.sink.close();
-    homeAssistantRepository.revokeToken(url: _url!);
+    await webSocket?.sink.close();
   }
 
   void _addSubscriber(
