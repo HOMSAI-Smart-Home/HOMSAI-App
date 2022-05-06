@@ -54,7 +54,7 @@ class DailyConsumptionChart extends StatelessWidget {
                     _legenda("Panelli solari", HomsaiColors.primaryGreen),
                     _legenda("Consumo", HomsaiColors.secondaryYellow),
                     _legenda("Autoconsumo", HomsaiColors.primaryBlue),
-                    _legenda("Aquistata", HomsaiColors.secondaryRed),
+                    _legenda("Acquistata", HomsaiColors.secondaryRed),
                   ],
                 ),
               ),

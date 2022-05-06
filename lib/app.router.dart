@@ -8,6 +8,7 @@ import 'package:homsai/datastore/models/database/configuration.entity.dart';
 import 'package:homsai/datastore/models/database/user.entity.dart';
 import 'package:homsai/datastore/models/entity/base/base.entity.dart';
 import 'package:homsai/datastore/models/home_assistant_auth.model.dart';
+import 'package:homsai/datastore/remote/websocket/home_assistant_websocket.interface.dart';
 import 'package:homsai/datastore/remote/websocket/home_assistant_websocket.repository.dart';
 import 'package:homsai/main.dart';
 import 'package:homsai/ui/pages/add_plant/add_plant.page.dart';
@@ -100,8 +101,8 @@ class AuthGuard extends AutoRouteGuard {
       resolver,
       router,
       onSuccess: () async {
-        final HomeAssistantWebSocketRepository webSocketRepository =
-            getIt.get<HomeAssistantWebSocketRepository>();
+        final HomeAssistantWebSocketInterface webSocketRepository =
+            getIt.get<HomeAssistantWebSocketInterface>();
         final AppPreferencesInterface appPreferencesInterface =
             getIt.get<AppPreferencesInterface>();
         final AppDatabase appDatabase = getIt.get<AppDatabase>();
@@ -110,25 +111,23 @@ class AuthGuard extends AutoRouteGuard {
         HomeAssistantAuth? auth =
             appPreferencesInterface.getHomeAssistantToken();
         if (!webSocketRepository.isConnected() && auth != null) {
-          await webSocketRepository
-              .connect(_getUrl(auth.localUrl, auth.remoteUrl));
+          await webSocketRepository.connect(
+              onConnected: () => webSocketRepository.fetchingConfig(
+                    WebSocketSubscriber(
+                      (data) async {
+                        final configuration = Configuration.fromDto(
+                            ConfigurationDto.fromJson(data));
+                        await appDatabase.configurationDao.updateItem(
+                          configuration,
+                        );
+                        getIt.registerLazySingleton<Location>(
+                            () => getLocation(configuration.timezone));
+                      },
+                    ),
+                  ));
         }
 
         if (plant != null) {
-          webSocketRepository.fetchingConfig(
-            WebSocketSubscriber(
-              (data) async {
-                final configuration =
-                    Configuration.fromDto(ConfigurationDto.fromJson(data));
-                await appDatabase.configurationDao.updateItem(
-                  configuration,
-                );
-                getIt.registerLazySingleton<Location>(
-                    () => getLocation(configuration.timezone));
-              },
-            ),
-          );
-
           Configuration? configuration = await appDatabase.getConfiguration();
           if (configuration != null) {
             getIt.registerLazySingleton<Location>(
@@ -138,10 +137,6 @@ class AuthGuard extends AutoRouteGuard {
       },
     );
   }
-}
-
-Uri _getUrl(String localUrl, String remoteUrl) {
-  return localUrl != "" ? Uri.parse(localUrl) : Uri.parse(remoteUrl);
 }
 
 typedef CallbackRoute = PageRouteInfo<dynamic> Function(void Function(bool));

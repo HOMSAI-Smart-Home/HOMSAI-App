@@ -124,10 +124,7 @@ class DailyConsumptionChartInfo extends StatelessWidget {
                       isFirstEnabled: !state.isPlotOptimized,
                     ),
                   ),
-                  SizedBox(
-                    height: 193,
-                    child: generateChartGraphics(state, context),
-                  ),
+                  generateChartGraphics(state, context),
                   const DailyConsumptionBalanceInfo(),
                 ],
               ),
@@ -141,16 +138,19 @@ class DailyConsumptionChartInfo extends StatelessWidget {
 
 Widget generateChartGraphics(HomeState state, BuildContext context) {
   if (state.isLoading) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const _HourglassIcon(),
-        const SizedBox(height: 5),
-        Text(
-          "Recupero dati...",
-          style: Theme.of(context).textTheme.caption,
-        )
-      ],
+    return SizedBox(
+      height: 193,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const _HourglassIcon(),
+          const SizedBox(height: 5),
+          Text(
+            "Recupero dati...",
+            style: Theme.of(context).textTheme.caption,
+          )
+        ],
+      ),
     );
   }
   return (state.optimizedConsumptionPlot != null &&
