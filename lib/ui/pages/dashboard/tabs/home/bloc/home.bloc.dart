@@ -210,7 +210,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         .where((spot) => spot.y != double.negativeInfinity)
         .toList();
     return plot.sample(
-        plot[0].x, plot[0].x + const Duration(days: 1).inMinutes, 10);
+        plot[0].x, plot[0].x + const Duration(days: 1).inMinutes, 20);
   }
 }
 

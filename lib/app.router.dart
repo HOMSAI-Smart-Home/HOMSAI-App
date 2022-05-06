@@ -120,7 +120,8 @@ class AuthGuardBuilder {
 
   void next(NavigationResolver resolver, StackRouter router,
       {void Function()? onSuccess}) {
-    final build = _buildRedirect(resolver, router, (success) {
+    final build = _buildRedirect(resolver, router, (success) async {
+      router.removeUntil((route) => false);
       if (success && onSuccess != null) onSuccess();
       resolver.next(success);
     });
@@ -135,10 +136,14 @@ class AuthGuardBuilder {
     return _buildRedirect(
       resolver,
       router,
-      (success) => router.replace(redirect((success) {
-        if (optional != null) optional();
-        previous(success);
-      })),
+      (success) async {
+        router.pop();
+        final route = redirect((success) {
+          if (optional != null) optional();
+          previous(success);
+        });
+        await router.replace(route);
+      },
     );
   }
 }
