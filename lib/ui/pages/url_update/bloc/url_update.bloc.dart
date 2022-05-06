@@ -64,7 +64,7 @@ class UrlUpdateBloc extends Bloc<UrlUpdateEvent, UrlUpdateState> {
 
   void _onUrlSubmitted(UrlSubmitted event, Emitter<UrlUpdateState> emit) async {
     plant = plant?.copyWith(
-      localUrl: localUrlTextFieldBloc.state.url.value,
+      localUrl:  localUrlTextFieldBloc.state.url.value,
       remoteUrl: remoteUrlTextFieldBloc.state.url.value,
     );
 

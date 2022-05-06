@@ -221,16 +221,14 @@ class _AddPlantSubmit extends StatelessWidget {
     return BlocBuilder<AddPlantBloc, AddPlantState>(
       builder: (context, state) => ElevatedButton(
         onPressed: state.entities.isNotEmpty
-            ? () => wizard
-                ? context.read<AddPlantBloc>().add(
-                      OnSubmit(
-                        () => context.router
-                            .push(AddSensorRoute(onResult: onResult)),
-                        url!,
-                        remote!,
-                      ),
-                    )
-                : onResult(true)
+            ? () => context.read<AddPlantBloc>().add(
+                  OnSubmit(
+                    () =>
+                        context.router.push(AddSensorRoute(onResult: onResult)),
+                    url!,
+                    remote!,
+                  ),
+                )
             : null,
         child: Text(HomsaiLocalizations.of(context)!.next),
       ),

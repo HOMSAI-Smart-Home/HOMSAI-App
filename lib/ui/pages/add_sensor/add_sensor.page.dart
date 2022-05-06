@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:homsai/crossconcern/components/common/dropdown.widget.dart';
 import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
+import 'package:homsai/crossconcern/components/common/scaffold/homsai_bloc_scaffold.widget.dart';
 import 'package:homsai/crossconcern/helpers/blocs/websocket/websocket.bloc.dart';
 import 'package:homsai/datastore/models/entity/sensors/mesurable/mesurable_sensor.entity.dart';
 import 'package:homsai/ui/pages/add_sensor/bloc/add_sensor.bloc.dart';
-
-import '../../../crossconcern/components/common/scaffold/homsai_bloc_scaffold.widget.dart';
 
 class AddSensorPage extends StatefulWidget {
   final void Function(bool) onResult;
@@ -62,9 +61,10 @@ class _AddSensorTitle extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
-        Text(wizard
-          ? HomsaiLocalizations.of(context)!.addPlantTitleWizard
-          : HomsaiLocalizations.of(context)!.addPlantTitleEdit,
+        Text(
+            wizard
+                ? HomsaiLocalizations.of(context)!.addPlantTitleWizard
+                : HomsaiLocalizations.of(context)!.addPlantTitleEdit,
             style: Theme.of(context).textTheme.headline3),
         const SizedBox(
           height: 24,
@@ -131,11 +131,12 @@ class _AddSensorSubmit extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: () => wizard
-          ? context.read<AddSensorBloc>().add(OnSubmit(
-                () => onResult(true),
-              ))
-          : onResult(true),
+      onPressed: () {
+        final bloc = context.read<AddSensorBloc>();
+        bloc.add(OnSubmit(
+          () => onResult(true)
+        ));
+      },
       child: Text(HomsaiLocalizations.of(context)!.next),
     );
   }

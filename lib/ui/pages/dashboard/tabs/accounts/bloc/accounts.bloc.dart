@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:homsai/datastore/local/app.database.dart';
-import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.dart';
+import 'package:homsai/datastore/models/entity/sensors/sensor.entity.dart';
 import 'package:homsai/main.dart';
 
 part 'accounts.event.dart';
@@ -23,21 +23,38 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
   }
 
   Future<void> _onAutocomplete(
-      Autocomplete event, Emitter<AccountsState> emit) async {
+    Autocomplete event,
+    Emitter<AccountsState> emit,
+  ) async {
+    SensorEntity? consumptionSensor;
+    SensorEntity? productionSensor;
     final plant = await appDatabase.getPlant();
+    if (plant == null) return;
+
+    if (plant.consumptionSensor != null) {
+      consumptionSensor =
+          await appDatabase.getEntity<SensorEntity>(plant.consumptionSensor!);
+    }
+    if (plant.productionSensor != null) {
+      productionSensor =
+        await appDatabase.getEntity<SensorEntity>(plant.productionSensor!);
+    }
+    
     final user = await appDatabase.getUser();
+
+    if (user == null) return;
 
     emit(
       state.copyWith(
-        localUrl: plant?.localUrl,
-        remoteUrl: plant?.remoteUrl,
-        consumptionSensor: plant?.consumptionSensor,
-        productionSensor: plant?.productionSensor,
-        plantName: plant?.name,
-        position: (plant != null ? plant.latitude : 0).toStringAsFixed(5) +
+        localUrl: plant.localUrl ?? '',
+        remoteUrl: plant.remoteUrl ?? '',
+        consumptionSensor: consumptionSensor?.name,
+        productionSensor: productionSensor?.name,
+        plantName: plant.name,
+        position: (plant.latitude).toStringAsFixed(5) +
             ', ' +
-            (plant != null ? plant.longitude : 0).toStringAsFixed(5),
-        email: user?.email,
+            (plant.longitude).toStringAsFixed(5),
+        email: user.email,
         version: appVersion,
       ),
     );

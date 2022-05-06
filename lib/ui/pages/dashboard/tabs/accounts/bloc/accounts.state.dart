@@ -2,24 +2,24 @@ part of 'accounts.bloc.dart';
 
 class AccountsState extends Equatable {
   const AccountsState({
-    this.localUrl = 'http://:192.168.x.x:8123',
-    this.remoteUrl = 'http://:192.168.x.x:8123',
-    this.consumptionSensor = '[xxx]',
-    this.productionSensor = '[xxx]',
-    this.plantName = 'Casa Andrea',
-    this.position = 'Via Verdi, 165 - Roma - Italy',
-    this.email = 'mariorossi00@mail.com',
-    this.version = '0.0',
+    this.localUrl,
+    this.remoteUrl,
+    this.consumptionSensor,
+    this.productionSensor,
+    this.plantName,
+    this.position,
+    this.email,
+    this.version,
   });
 
-  final String localUrl;
-  final String remoteUrl;
-  final String consumptionSensor;
-  final String productionSensor;
-  final String plantName;
-  final String position;
-  final String email;
-  final String version;
+  final String? localUrl;
+  final String? remoteUrl;
+  final String? consumptionSensor;
+  final String? productionSensor;
+  final String? plantName;
+  final String? position;
+  final String? email;
+  final String? version;
 
   AccountsState copyWith({
     String? localUrl,
@@ -32,8 +32,16 @@ class AccountsState extends Equatable {
     String? version,
   }) {
     return AccountsState(
-      localUrl: localUrl ?? this.localUrl,
-      remoteUrl: remoteUrl ?? this.remoteUrl,
+      localUrl: localUrl == null
+          ? this.localUrl
+          : localUrl.isEmpty
+              ? null
+              : localUrl,
+      remoteUrl: remoteUrl == null
+          ? this.remoteUrl
+          : remoteUrl.isEmpty
+              ? null
+              : remoteUrl,
       consumptionSensor: consumptionSensor ?? this.consumptionSensor,
       productionSensor: productionSensor ?? this.productionSensor,
       plantName: plantName ?? this.plantName,

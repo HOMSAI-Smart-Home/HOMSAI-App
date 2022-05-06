@@ -62,7 +62,7 @@ class _EmailButton extends StatelessWidget {
       builder: (context, state) {
         return _AccountButton(
           title: 'Email',
-          caption: state.email,
+          caption: state.email ?? 'mariorossi00@mail.com',
           onTap: null,
         );
       },
@@ -77,7 +77,7 @@ class _LocalUrlButton extends StatelessWidget {
       builder: (context, state) {
         return _AccountButton(
           title: 'URL Locale',
-          caption: state.localUrl,
+          caption: state.localUrl ?? 'http[s]://x.x.x.x[:8123]',
           onTap: (context) => context.router.push(UrlUpdateRoute(
             onResult: (_) {
               context.router.pop();
@@ -98,7 +98,7 @@ class _RemoteUrlButton extends StatelessWidget {
       builder: (context, state) {
         return _AccountButton(
           title: 'URL Remoto',
-          caption: state.remoteUrl,
+          caption: state.remoteUrl ?? 'http[s]://x.x.x.x[:8123]',
           onTap: (context) => context.router.push(UrlUpdateRoute(
             onResult: (_) {
               context.router.pop();
@@ -119,7 +119,7 @@ class _ProductionSensorButton extends StatelessWidget {
       builder: (context, state) {
         return _AccountButton(
           title: 'Sensore di produzione',
-          caption: state.productionSensor,
+          caption: state.productionSensor ?? '[xxx]',
           onTap: (context) => context.router.push(AddSensorRoute(
             onResult: (_) {
               context.router.pop();
@@ -140,7 +140,7 @@ class _ConsumptionSensorButton extends StatelessWidget {
       builder: (context, state) {
         return _AccountButton(
           title: 'Sensore di consumo',
-          caption: state.consumptionSensor,
+          caption: state.consumptionSensor ?? '[xxx]',
           onTap: (context) => context.router.push(AddSensorRoute(
             onResult: (_) {
               context.router.pop();
@@ -161,7 +161,7 @@ class _NameButton extends StatelessWidget {
       builder: (context, state) {
         return _AccountButton(
           title: 'Nome Impianto',
-          caption: state.plantName,
+          caption: state.plantName ?? 'Casa',
           onTap: (context) => context.router.push(AddPlantRoute(
             onResult: (_) {
               context.router.pop();
@@ -182,7 +182,7 @@ class _PositionButton extends StatelessWidget {
       builder: (context, state) {
         return _AccountButton(
           title: 'Posizione Impianto',
-          caption: state.position,
+          caption: state.position ?? '0.00000, 0.00000',
           onTap: (context) => context.router.push(AddPlantRoute(
             onResult: (_) {
               context.router.pop();
@@ -203,7 +203,7 @@ class _VersionButton extends StatelessWidget {
       builder: (context, state) {
         return _AccountButton(
           title: 'Versione App',
-          caption: state.version,
+          caption: state.version ?? '0.0',
           onTap: null,
         );
       },

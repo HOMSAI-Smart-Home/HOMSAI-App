@@ -73,6 +73,14 @@ abstract class AppDatabase extends FloorDatabase {
     return null;
   }
 
+  Future<T?> getEntity<T extends hass.Entity>(String entityId) async {
+    final plant = await getPlant();
+    if (plant == null) return null;
+
+    final homeAssistantEntity = await homeAssitantDao.findEntityById(plant.id!, entityId);
+    return homeAssistantEntity?.entity as T;
+  }
+
   Future<void> logout() async {
     final user = await getUser();
     if (user == null) return;

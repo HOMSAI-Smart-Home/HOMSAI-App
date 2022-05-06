@@ -165,18 +165,16 @@ class _UrlUpdateSave extends StatelessWidget {
           return ElevatedButton(
             onPressed: state.status.isValid
                 ? () {
-                  context.read<UrlUpdateBloc>().add(UrlSubmitted(
-                    onSubmit:
-                    wizard
-                    ? //TODO: if wizard
-                      () => context.router.replace(
-                        AddPlantRoute(
-                          onResult: onResult,
-                        ),
-                      )
-                    : () => onResult(true),
-                    ));
-                }
+                    context.read<UrlUpdateBloc>().add(UrlSubmitted(
+                        onSubmit: () => 
+                        wizard
+                        ? context.router.replace(
+                              AddPlantRoute(
+                                onResult: onResult,
+                              ),
+                            )
+                        : onResult(true)));
+                  }
                 : null,
             child: Text(HomsaiLocalizations.of(context)!.next),
           );
