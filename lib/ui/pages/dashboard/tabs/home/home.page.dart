@@ -24,15 +24,12 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     context.read<HomeBloc>().add(FetchStates());
-    if (!context.read<WebSocketBloc>().webSocketRepository.isConnected()) {
-      context.read<WebSocketBloc>().add(ConnectWebSocket(
-        onWebSocketConnected: () {
-          context.read<HomeBloc>().add(FetchHistory());
-        },
-      ));
-    } else {
-      context.read<HomeBloc>().add(FetchHistory());
-    }
+    context.read<WebSocketBloc>().add(ConnectWebSocket(
+      onWebSocketConnected: () {
+        context.read<HomeBloc>().add(FetchStates());
+        context.read<HomeBloc>().add(FetchHistory());
+      },
+    ));
   }
 
   @override

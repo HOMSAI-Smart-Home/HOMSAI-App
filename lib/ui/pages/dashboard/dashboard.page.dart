@@ -6,6 +6,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:homsai/app.router.dart';
 import 'package:homsai/crossconcern/components/common/scaffold/homsai_bloc_scaffold.widget.dart';
 import 'package:homsai/crossconcern/helpers/blocs/websocket/websocket.bloc.dart';
+import 'package:homsai/datastore/remote/websocket/home_assistant_websocket.interface.dart';
+import 'package:homsai/main.dart';
 import 'package:homsai/themes/colors.theme.dart';
 import 'package:homsai/ui/pages/dashboard/bloc/dashboard.bloc.dart';
 import 'package:homsai/ui/pages/dashboard/tabs/home/bloc/home.bloc.dart';
@@ -56,6 +58,14 @@ class _DashboardPageState extends State<DashboardPage> {
         },
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    final HomeAssistantWebSocketInterface webSocketRepository =
+        getIt.get<HomeAssistantWebSocketInterface>();
+    webSocketRepository.logout();
   }
 }
 

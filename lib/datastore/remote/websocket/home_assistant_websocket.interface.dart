@@ -31,6 +31,8 @@ abstract class HomeAssistantWebSocketInterface {
     Function? onConnected,
   });
 
+  void logout();
+
   void removeSubscription(
     String event,
     WebSocketSubscriberInterface subscriber,

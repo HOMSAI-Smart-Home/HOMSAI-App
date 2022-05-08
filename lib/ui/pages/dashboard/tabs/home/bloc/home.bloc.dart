@@ -56,8 +56,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   void _onFetchState(FetchStates event, Emitter<HomeState> emit) async {
-    final lights = await appDatabase.getEntities<LightEntity>();
-    emit(state.copyWith(lights: lights));
     webSocketRepository.fetchingStates(
       WebSocketSubscriber((res) {
         add(FetchedLights(entities: res));

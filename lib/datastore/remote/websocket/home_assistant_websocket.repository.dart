@@ -96,9 +96,17 @@ class HomeAssistantWebSocketRepository
 
   @override
   Future<void> connect({Uri? url, Function? onConnected}) async {
-    if (url != null) return _listen(url, onConnected: onConnected,);
+    if (url != null)
+      return _listen(
+        url,
+        onConnected: onConnected,
+      );
     _plant = await appDatabase.getPlant();
-    if (_plant != null) return _listen(_plant!.getBaseUrl(), onConnected: onConnected,);
+    if (_plant != null)
+      return _listen(
+        _plant!.getBaseUrl(),
+        onConnected: onConnected,
+      );
   }
 
   Future<Uri> _connect(
@@ -173,6 +181,10 @@ class HomeAssistantWebSocketRepository
   }
 
   Future<void> _listen(Uri url, {Function? onConnected}) async {
+    if (isConnected()) {
+      if (onConnected != null) onConnected();
+      return;
+    }
     try {
       url = await _connect(url);
       webSocket = IOWebSocketChannel(
@@ -180,7 +192,11 @@ class HomeAssistantWebSocketRepository
             .timeout(const Duration(seconds: 3)),
       );
     } catch (e) {
-      if (e is SocketException || e is TimeoutException) return _retry(url, onConnected: onConnected,);
+      if (e is SocketException || e is TimeoutException)
+        return _retry(
+          url,
+          onConnected: onConnected,
+        );
       rethrow;
     }
 
@@ -252,8 +268,11 @@ class HomeAssistantWebSocketRepository
     }
   }
 
-  void logOut() {
+  @override
+  void logout() {
     if (_url == null) return;
+    events = {};
+    eventsId = {};
     status = HomeAssistantWebSocketStatus.disconnected;
     webSocket?.sink.close();
     homeAssistantRepository.revokeToken(url: _url!);
