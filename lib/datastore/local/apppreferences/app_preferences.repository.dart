@@ -19,9 +19,10 @@ class AppPreferences implements AppPreferencesInterface {
 
   @override
   HomeAssistantAuth? getHomeAssistantToken() {
-    return HomeAssistantAuth.fromJson(jsonDecode(preferences?.getString(
-            AppPreferencesProperties.prefKeyHomeAssistantAccessToken) ??
-        "{}"));
+    final json = preferences?.getString(
+            AppPreferencesProperties.prefKeyHomeAssistantAccessToken);
+    if(json == null) return null;
+    return HomeAssistantAuth.fromJson(jsonDecode(json));
   }
 
   @override
@@ -72,9 +73,10 @@ class AppPreferences implements AppPreferencesInterface {
 
   @override
   AiServiceAuth? getAiServiceToken() {
-    return AiServiceAuth.fromJson(jsonDecode(preferences
-            ?.getString(AppPreferencesProperties.prefKeyAiServiceAccessToken) ??
-        "{}"));
+    final json = preferences?.getString(
+            AppPreferencesProperties.prefKeyAiServiceAccessToken);
+    if(json == null) return null;
+    return AiServiceAuth.fromJson(jsonDecode(json));
   }
 
   @override
