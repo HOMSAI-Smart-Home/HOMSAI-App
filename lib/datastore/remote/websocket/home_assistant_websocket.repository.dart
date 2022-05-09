@@ -209,7 +209,10 @@ class HomeAssistantWebSocketRepository
     if (status == HomeAssistantWebSocketStatus.connecting) return;
 
     try {
-      status = HomeAssistantWebSocketStatus.connecting;
+      if (status != HomeAssistantWebSocketStatus.retry) {
+        status = HomeAssistantWebSocketStatus.connecting;
+      }
+
       url = await _connect(url);
       webSocket = IOWebSocketChannel(
         await WebSocket.connect(url.toString())
@@ -228,6 +231,7 @@ class HomeAssistantWebSocketRepository
           data = jsonDecode(data);
 
           switch (status) {
+            case HomeAssistantWebSocketStatus.retry:
             case HomeAssistantWebSocketStatus.connecting:
               _auth(data);
               break;
@@ -265,20 +269,23 @@ class HomeAssistantWebSocketRepository
     } catch (e) {
       if ((e is SocketException || e is TimeoutException) &&
           status != HomeAssistantWebSocketStatus.error) {
-        return _retry(url);
+        return _retry(url, e as Exception);
       }
       rethrow;
     }
   }
 
-  void _retry(Uri url) {
+  void _retry(Uri url, Exception e) {
     print('retry: $status');
-    if (_plant != null && url.host == _plant!.getBaseUrl().host) {}
-    final fallback = _plant?.getFallbackUrl();
-    if (fallback != null) {
-      status = HomeAssistantWebSocketStatus.retry;
-      _listen(fallback);
+    if (_plant != null && status != HomeAssistantWebSocketStatus.retry) {
+      final fallback = _plant?.getFallbackUrl();
+      if (fallback != null) {
+        status = HomeAssistantWebSocketStatus.retry;
+        _listen(fallback);
+        return;
+      }
     }
+    throw e;
   }
 
   void _send({

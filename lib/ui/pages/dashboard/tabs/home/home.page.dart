@@ -22,7 +22,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    context.read<HomeBloc>().add(FetchStates());
+    //context.read<HomeBloc>().add(FetchStates());
     context.read<WebSocketBloc>().add(ConnectWebSocket(
       onWebSocketConnected: () {
         context.read<HomeBloc>().add(FetchStates());
