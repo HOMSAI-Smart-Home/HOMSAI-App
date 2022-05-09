@@ -88,7 +88,21 @@
     "homePageEarnWithHomesaiDialogP2Title": "Current consumption",
     "homePageEarnWithHomesaiDialogP2Content": "Shows the trend of the real consumption of your home yesterday measured with the configured consumption sensors.",
     "homePageEarnWithHomesaiDialogP3Title": "Optimized consumption",
-    "homePageEarnWithHomesaiDialogP3Content": "On the basis of the consumption shown in “Current consumption”, Homsai shows the estimate of the values ​​obtainable thanks to its optimization of consumption, taking into account the weather to efficiently manage air conditioning and predict energy production. Thanks to its algorithms, Homsai is able to improve the efficiency of this optimization over time, exploiting more and more the energy produced by photovoltaic panels and using less purchased energy.",
+    "homePageEarnWithHomesaiDialogP3Content": "On the basis of the consumption shown in “Current consumption”, Homsai shows the estimate of the values ​​obtainable thanks to its optimization of consumption, taking into account the weather to efficiently manage air conditioning and predict energy production. \nThanks to its algorithms, Homsai is able to improve the efficiency of this optimization over time, exploiting more and more the energy produced by photovoltaic panels and using less purchased energy.",
     "homePageEarnWithHomesaiDialogP4Title": "Legend",
-    "homePageEarnWithHomesaiDialogP4Content": "Lines"
+    "homePageEarnWithHomesaiDialogP4Content": "Lines",
+    "homePageEarnWithHomesaiDialogBulletListTitle1": "Solar panels",
+    "homePageEarnWithHomesaiDialogBulletListContent1": ": Energy produced by photovoltaic panels",
+    "homePageEarnWithHomesaiDialogBulletListTitle2": "Consumption",
+    "homePageEarnWithHomesaiDialogBulletListContent2": ": Total energy consumed",
+    "homePageEarnWithHomesaiDialogP5Content": "Areas",
+    "homePageEarnWithHomesaiDialogBulletListTitle3": "Available",
+    "homePageEarnWithHomesaiDialogBulletListContent3": ": residual energy produced",
+    "homePageEarnWithHomesaiDialogBulletListTitle4": "Self-consumption",
+    "homePageEarnWithHomesaiDialogBulletListContent4": ": consumption of energy produced",
+    "homePageEarnWithHomesaiDialogBulletListTitle5": "Purchased",
+    "homePageEarnWithHomesaiDialogBulletListContent5": ": consumption of purchased energy",
+    "homePageEarnWithHomesaiDialogP6Content": "Balance = Energy Injected * - Energy Purchased *",
+    "homePageEarnWithHomesaiDialogP7Content": "Earnings with Homsai = Estimated Balance - Current Balance",
+    "homePageEarnWithHomesaiDialogP8Content": "* The cost of energy is calculated on the average price of energy considering € 0.35 for the one purchased and € 0.04 for the energy injected."
 }

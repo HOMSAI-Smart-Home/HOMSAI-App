@@ -359,13 +359,30 @@ class EarnWithHomsaiItemInfo extends StatelessWidget {
                   context: context,
                   builder: (context) => AlertDialog(
                         content: earnWithHomsaiDialogContent(context),
-                        title: Text(
-                          HomsaiLocalizations.of(context)!
-                              .homePageEarnWithHomesaiDialogTitle,
-                          style: TextStyle(color: HomsaiColors.primaryWhite),
+                        title: Row(
+                          children: [
+                            Text(
+                              HomsaiLocalizations.of(context)!
+                                  .homePageEarnWithHomesaiDialogTitle,
+                              style:
+                                  TextStyle(color: HomsaiColors.primaryWhite),
+                            ),
+                            SizedBox(
+                                width: 30,
+                                height: 30,
+                                child: OutlinedButton(
+                                    onPressed: () =>
+                                        {Navigator.of(context).pop()},
+                                    child: Text(
+                                      "X",
+                                      style: TextStyle(
+                                          color: HomsaiColors.primaryWhite),
+                                    )))
+                          ],
                         ),
                         backgroundColor:
                             Theme.of(context).colorScheme.background,
+                        
                       ))
             },
             child: Row(
@@ -411,34 +428,84 @@ Widget earnWithHomsaiDialogContent(BuildContext context) {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ...generateEarnWithHomsaiParagraph(
-          HomsaiLocalizations.of(context)!.homePageEarnWithHomesaiDialogP1Title,
           HomsaiLocalizations.of(context)!
               .homePageEarnWithHomesaiDialogP1Content,
+          title: HomsaiLocalizations.of(context)!
+              .homePageEarnWithHomesaiDialogP1Title,
         ),
         ...generateEarnWithHomsaiParagraph(
-          HomsaiLocalizations.of(context)!.homePageEarnWithHomesaiDialogP2Title,
           HomsaiLocalizations.of(context)!
               .homePageEarnWithHomesaiDialogP2Content,
+          title: HomsaiLocalizations.of(context)!
+              .homePageEarnWithHomesaiDialogP2Title,
         ),
         ...generateEarnWithHomsaiParagraph(
-          HomsaiLocalizations.of(context)!.homePageEarnWithHomesaiDialogP3Title,
           HomsaiLocalizations.of(context)!
               .homePageEarnWithHomesaiDialogP3Content,
+          title: HomsaiLocalizations.of(context)!
+              .homePageEarnWithHomesaiDialogP3Title,
         ),
         ...generateEarnWithHomsaiParagraph(
             HomsaiLocalizations.of(context)!
+                .homePageEarnWithHomesaiDialogP4Content,
+            title: HomsaiLocalizations.of(context)!
                 .homePageEarnWithHomesaiDialogP4Title,
+            removeBottomPadding: true),
+        generateEarnWithHomsaiBulletListItem(
+            HomsaiColors.primaryGreen,
             HomsaiLocalizations.of(context)!
-                .homePageEarnWithHomesaiDialogP4Content),
-        generateEarnWithHomsaiBulletListItem(HomsaiColors.primaryGreen,
-            "Pannelli solari", ": Energia prodotta dai pannelli solari")
+                .homePageEarnWithHomesaiDialogBulletListTitle1,
+            HomsaiLocalizations.of(context)!
+                .homePageEarnWithHomesaiDialogBulletListContent1),
+        generateEarnWithHomsaiBulletListItem(
+            HomsaiColors.primaryYellow,
+            HomsaiLocalizations.of(context)!
+                .homePageEarnWithHomesaiDialogBulletListTitle2,
+            HomsaiLocalizations.of(context)!
+                .homePageEarnWithHomesaiDialogBulletListContent2),
+        ...generateEarnWithHomsaiParagraph(
+            HomsaiLocalizations.of(context)!
+                .homePageEarnWithHomesaiDialogP5Content,
+            removeBottomPadding: true),
+        generateEarnWithHomsaiBulletListItem(
+            HomsaiColors.primaryGreen,
+            HomsaiLocalizations.of(context)!
+                .homePageEarnWithHomesaiDialogBulletListTitle3,
+            HomsaiLocalizations.of(context)!
+                .homePageEarnWithHomesaiDialogBulletListContent3),
+        generateEarnWithHomsaiBulletListItem(
+            HomsaiColors.primaryBlue,
+            HomsaiLocalizations.of(context)!
+                .homePageEarnWithHomesaiDialogBulletListTitle4,
+            HomsaiLocalizations.of(context)!
+                .homePageEarnWithHomesaiDialogBulletListContent4),
+        generateEarnWithHomsaiBulletListItem(
+            HomsaiColors.primaryRed,
+            HomsaiLocalizations.of(context)!
+                .homePageEarnWithHomesaiDialogBulletListTitle5,
+            HomsaiLocalizations.of(context)!
+                .homePageEarnWithHomesaiDialogBulletListContent5),
+        const SizedBox(height: 15),
+        ...generateEarnWithHomsaiParagraph(
+            HomsaiLocalizations.of(context)!
+                .homePageEarnWithHomesaiDialogP6Content,
+            removeBottomPadding: true),
+        ...generateEarnWithHomsaiParagraph(HomsaiLocalizations.of(context)!
+            .homePageEarnWithHomesaiDialogP7Content),
+        ...generateEarnWithHomsaiParagraph(HomsaiLocalizations.of(context)!
+            .homePageEarnWithHomesaiDialogP8Content),
       ],
     ),
   );
 }
 
-List<Widget> generateEarnWithHomsaiParagraph(String title, String content) {
+List<Widget> generateEarnWithHomsaiParagraph(
+  String content, {
+  bool? removeBottomPadding,
+  String? title,
+}) {
   return [
+    if (title != null)
     Text(
       title,
       textAlign: TextAlign.left,
@@ -448,14 +515,21 @@ List<Widget> generateEarnWithHomsaiParagraph(String title, String content) {
     Text(content,
         textAlign: TextAlign.left,
         style: TextStyle(color: HomsaiColors.primaryWhite)),
-    const SizedBox(height: 15),
+    if (removeBottomPadding != true) const SizedBox(height: 15),
   ];
 }
 
 Widget generateEarnWithHomsaiBulletListItem(
     Color color, String title, String content) {
   return ListTile(
-      leading: const Bullet(),
+      leading: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: const [
+          Bullet(),
+        ],
+      ),
+      horizontalTitleGap: -25,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 10.0),
       title: Text.rich(TextSpan(children: [
         TextSpan(
           text: title,
@@ -471,8 +545,8 @@ class Bullet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 5.0,
-      width: 5.0,
+      height: 2.5,
+      width: 2.5,
       decoration: BoxDecoration(
         color: HomsaiColors.primaryWhite,
       ),
