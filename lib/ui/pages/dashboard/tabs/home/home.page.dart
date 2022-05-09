@@ -241,14 +241,7 @@ class DailyConsumptionBalanceInfo extends StatelessWidget {
               amount: balance(state)?.balance,
               colored: true,
             ),
-            EarnWithHomsaiItemInfo(
-              HomsaiLocalizations.of(context)!.homePageEarnWithHomesaiLabel,
-              alertTextContent:
-                  HomsaiLocalizations.of(context)!.homePageBalanceAlertContent,
-              alertTextTitle:
-                  HomsaiLocalizations.of(context)!.homePageBalanceAlertTitle,
-              amount: balanceWithHomesai(state),
-            ),
+            EarnWithHomsaiItemInfo(amount: balanceWithHomesai(state)),
           ],
         ),
       ),
@@ -340,18 +333,11 @@ class DailyConsumptionBalanceItemInfo extends StatelessWidget {
 }
 
 class EarnWithHomsaiItemInfo extends StatelessWidget {
-  const EarnWithHomsaiItemInfo(
-    this.label, {
+  const EarnWithHomsaiItemInfo({
     Key? key,
     this.amount,
-    this.alertTextContent,
-    this.alertTextTitle,
   }) : super(key: key);
-
-  final String label;
   final double? amount;
-  final String? alertTextContent;
-  final String? alertTextTitle;
 
   @override
   Widget build(BuildContext context) {
@@ -374,9 +360,8 @@ class EarnWithHomsaiItemInfo extends StatelessWidget {
                   builder: (context) => AlertDialog(
                         content: earnWithHomsaiDialogContent(context),
                         title: Text(
-                          alertTextTitle ??
-                              HomsaiLocalizations.of(context)!
-                                  .homePageBalanceAlertTitleDefault,
+                          HomsaiLocalizations.of(context)!
+                              .homePageEarnWithHomesaiDialogTitle,
                           style: TextStyle(color: HomsaiColors.primaryWhite),
                         ),
                         backgroundColor:
@@ -389,7 +374,8 @@ class EarnWithHomsaiItemInfo extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      label,
+                      HomsaiLocalizations.of(context)!
+                          .homePageEarnWithHomesaiLabel,
                       style: Theme.of(context).textTheme.bodyText1?.copyWith(
                           fontWeight: FontWeight.bold,
                           color: HomsaiColors.primaryWhite),
@@ -439,6 +425,13 @@ Widget earnWithHomsaiDialogContent(BuildContext context) {
           HomsaiLocalizations.of(context)!
               .homePageEarnWithHomesaiDialogP3Content,
         ),
+        ...generateEarnWithHomsaiParagraph(
+            HomsaiLocalizations.of(context)!
+                .homePageEarnWithHomesaiDialogP4Title,
+            HomsaiLocalizations.of(context)!
+                .homePageEarnWithHomesaiDialogP4Content),
+        generateEarnWithHomsaiBulletListItem(HomsaiColors.primaryGreen,
+            "Pannelli solari", ": Energia prodotta dai pannelli solari")
       ],
     ),
   );
@@ -457,6 +450,34 @@ List<Widget> generateEarnWithHomsaiParagraph(String title, String content) {
         style: TextStyle(color: HomsaiColors.primaryWhite)),
     const SizedBox(height: 15),
   ];
+}
+
+Widget generateEarnWithHomsaiBulletListItem(
+    Color color, String title, String content) {
+  return ListTile(
+      leading: const Bullet(),
+      title: Text.rich(TextSpan(children: [
+        TextSpan(
+          text: title,
+          style: TextStyle(color: color),
+        ),
+        TextSpan(
+            text: content, style: TextStyle(color: HomsaiColors.primaryWhite)),
+      ])));
+}
+
+class Bullet extends StatelessWidget {
+  const Bullet({Key? key}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 5.0,
+      width: 5.0,
+      decoration: BoxDecoration(
+        color: HomsaiColors.primaryWhite,
+      ),
+    );
+  }
 }
 
 //List<Widget> generateEarnWithHomsaiBulletedList(BuildContext context)

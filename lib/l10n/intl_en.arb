@@ -76,14 +76,17 @@
     "homePageBalanceDefaultPlaceholder": "--",
     "homePageBalanceLabel": "Balance",
     "homePageBalanceAlertTitle": "Title",
-    "homePageBalanceAlertTitleDefault": "Title",
     "homePageBalanceAlertContent": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
     "homePageBalanceAlertContentDefault": "Contenuto",
+
     "homePageEarnWithHomesaiLabel": "Earn with Homsai",
-    "homePageEarnWithHomesaiDialogP1Title": "Cosa stai vedendo",
-    "homePageEarnWithHomesaiDialogP1Content": "Il widget dei Consumi Ottimizzati mostra la differenza dei consumi all'interno di una giornata con e senza ottimizzazione, scoprendo il vantaggio economico di utilizzare Homsai.",
-    "homePageEarnWithHomesaiDialogP2Title": "Consumo attuale",
-    "homePageEarnWithHomesaiDialogP2Content": "Mostra l'andamento dei consumi reali della tua casa nella giornata di ieri misurati con i sensori di consumo configurati.",
-    "homePageEarnWithHomesaiDialogP3Title": "Consumo ottimizzato",
-    "homePageEarnWithHomesaiDialogP3Content": "Sulla base dei consumi mostrati in \"Consumo attuale\", Homsai mostra la stima dei valori ottenibili grazie alla sua ottimizzazione dei consumi, tenendo conto del meteo per efficentare la gestione della climatizzazione e prevedere la produzione di energia. Grazie ai suoi algoritmi, Homsai è in grado di migliorare nel tempo l’efficenza di tale ottimizzazione, sfruttando sempre più l’energia prodotta dai pannelli fotovoltaici e utilizzando meno energia acquistata."
+    "homePageEarnWithHomesaiDialogTitle": "Consumption optimization",
+    "homePageEarnWithHomesaiDialogP1Title": "What are you seeing",
+    "homePageEarnWithHomesaiDialogP1Content": "The Optimized Consumption widget shows the difference in consumption within a day with and without optimization, discovering the economic advantage of using Homsai.",
+    "homePageEarnWithHomesaiDialogP2Title": "Current consumption",
+    "homePageEarnWithHomesaiDialogP2Content": "Shows the trend of the real consumption of your home yesterday measured with the configured consumption sensors.",
+    "homePageEarnWithHomesaiDialogP3Title": "Optimized consumption",
+    "homePageEarnWithHomesaiDialogP3Content": "On the basis of the consumption shown in “Current consumption”, Homsai shows the estimate of the values ​​obtainable thanks to its optimization of consumption, taking into account the weather to efficiently manage air conditioning and predict energy production. Thanks to its algorithms, Homsai is able to improve the efficiency of this optimization over time, exploiting more and more the energy produced by photovoltaic panels and using less purchased energy.",
+    "homePageEarnWithHomesaiDialogP4Title": "Legend",
+    "homePageEarnWithHomesaiDialogP4Content": "Lines"
 }
