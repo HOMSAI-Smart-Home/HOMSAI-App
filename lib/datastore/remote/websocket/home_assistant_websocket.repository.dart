@@ -286,7 +286,7 @@ class HomeAssistantWebSocketRepository
   }
 
   @override
-  void logout() {
+  Future<void> logOut() async {
     events = {};
     eventsId = {};
     status = HomeAssistantWebSocketStatus.disconnected;

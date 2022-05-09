@@ -67,7 +67,7 @@ class _DashboardPageState extends State<DashboardPage> {
     super.dispose();
     final HomeAssistantWebSocketInterface webSocketRepository =
         getIt.get<HomeAssistantWebSocketInterface>();
-    webSocketRepository.logout();
+    webSocketRepository.logOut();
   }
 }
 
