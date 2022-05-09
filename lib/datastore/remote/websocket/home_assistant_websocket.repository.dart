@@ -97,17 +97,18 @@ class HomeAssistantWebSocketRepository
 
   @override
   bool isConnecting() {
-    return status == HomeAssistantWebSocketStatus.connecting;
+    return status == HomeAssistantWebSocketStatus.connecting ||
+        status == HomeAssistantWebSocketStatus.retry;
   }
 
   @override
   Future<void> connect({Uri? url, Function? onConnected}) async {
+    if (onConnected != null) this.onConnected.add(onConnected);
+
     if (url != null) {
       return _listen(url);
     }
     _plant = await appDatabase.getPlant();
-
-    if (onConnected != null) this.onConnected.add(onConnected);
 
     if (_plant != null) {
       return _listen(_plant!.getBaseUrl());
@@ -120,6 +121,7 @@ class HomeAssistantWebSocketRepository
     await logOut();
 
     if (onConnected != null) this.onConnected.add(onConnected);
+
     if (_plant != null) {
       return _listen(
         _plant!.getBaseUrl(),
@@ -204,7 +206,7 @@ class HomeAssistantWebSocketRepository
       return;
     }
 
-    if (isConnecting()) return;
+    if (status == HomeAssistantWebSocketStatus.connecting) return;
 
     try {
       status = HomeAssistantWebSocketStatus.connecting;
@@ -213,67 +215,68 @@ class HomeAssistantWebSocketRepository
         await WebSocket.connect(url.toString())
             .timeout(const Duration(seconds: 3)),
       );
+
+      while (onConnected.isNotEmpty) {
+        onConnected.removeAt(0)();
+      }
+
+      webSocket?.stream.listen(
+        (data) {
+          //TODO: remove
+          print(data);
+
+          data = jsonDecode(data);
+
+          switch (status) {
+            case HomeAssistantWebSocketStatus.connecting:
+              _auth(data);
+              break;
+            case HomeAssistantWebSocketStatus.connected:
+              try {
+                _responseHandler(data);
+              } catch (e) {
+                //TODO: remove
+                print(data);
+                print(e);
+              }
+              break;
+            default:
+          }
+        },
+        onDone: () async {
+          if (status == HomeAssistantWebSocketStatus.connected) {
+            status = HomeAssistantWebSocketStatus.disconnected;
+            await Future.delayed(const Duration(seconds: 1));
+            _listen(url);
+          }
+        },
+        onError: (e) {
+          if (e is WebSocketChannelException) {
+            var error = e.inner;
+            if (error is WebSocketChannelException) {
+              if (error.inner is SocketException) {
+                return;
+              }
+            }
+          }
+          status = HomeAssistantWebSocketStatus.error;
+        },
+      );
     } catch (e) {
-      if (e is SocketException || e is TimeoutException) {
+      if ((e is SocketException || e is TimeoutException) &&
+          status != HomeAssistantWebSocketStatus.error) {
         return _retry(url);
       }
       rethrow;
     }
-
-    while (onConnected.isNotEmpty) {
-      onConnected.removeAt(0)();
-    }
-
-    webSocket?.stream.listen(
-      (data) {
-        //TODO: remove
-        print(data);
-
-        data = jsonDecode(data);
-
-        switch (status) {
-          case HomeAssistantWebSocketStatus.connecting:
-          case HomeAssistantWebSocketStatus.disconnected:
-            _auth(data);
-            break;
-          case HomeAssistantWebSocketStatus.connected:
-            try {
-              _responseHandler(data);
-            } catch (e) {
-              //TODO: remove
-              print(data);
-              print(e);
-            }
-            break;
-          default:
-        }
-      },
-      onDone: () async {
-        if (status == HomeAssistantWebSocketStatus.connected) {
-          status = HomeAssistantWebSocketStatus.disconnected;
-          await Future.delayed(const Duration(seconds: 1));
-          _listen(url);
-        }
-      },
-      onError: (e) {
-        if (e is WebSocketChannelException) {
-          var error = e.inner;
-          if (error is WebSocketChannelException) {
-            if (error.inner is SocketException) {
-              return;
-            }
-          }
-        }
-        status = HomeAssistantWebSocketStatus.error;
-      },
-    );
   }
 
   void _retry(Uri url) {
+    print('retry: $status');
     if (_plant != null && url.host == _plant!.getBaseUrl().host) {}
     final fallback = _plant?.getFallbackUrl();
     if (fallback != null) {
-      status = HomeAssistantWebSocketStatus.connecting;
+      status = HomeAssistantWebSocketStatus.retry;
       _listen(fallback);
     }
   }
