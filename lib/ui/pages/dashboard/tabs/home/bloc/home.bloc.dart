@@ -2,12 +2,16 @@ import 'dart:isolate';
 import 'dart:math';
 
 import 'package:bloc/bloc.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:equatable/equatable.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:homsai/business/ai_service/ai_service.interface.dart';
 import 'package:homsai/business/home_assistant/home_assistant.interface.dart';
+import 'package:homsai/crossconcern/components/alerts/alert.widget.dart';
+import 'package:homsai/crossconcern/components/alerts/general_alert.widget.dart';
 import 'package:homsai/crossconcern/components/charts/daily_consumption_chart.widget.dart';
 import 'package:homsai/crossconcern/helpers/extensions/list.extension.dart';
 import 'package:homsai/crossconcern/utilities/util/plot.util.dart';
@@ -20,16 +24,23 @@ import 'package:homsai/datastore/models/database/configuration.entity.dart';
 import 'package:homsai/datastore/models/database/plant.entity.dart';
 import 'package:homsai/datastore/models/entity/base/base.entity.dart';
 import 'package:homsai/datastore/models/entity/sensors/mesurable/mesurable_sensor.entity.dart';
+import 'package:homsai/datastore/remote/network/network.manager.dart';
 import 'package:homsai/datastore/remote/websocket/home_assistant_websocket.interface.dart';
 import 'package:homsai/datastore/remote/websocket/home_assistant_websocket.repository.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.dart';
 import 'package:homsai/datastore/models/entity/light/light.entity.dart';
 import 'package:homsai/main.dart';
-
+import 'package:homsai/datastore/remote/network/network_manager.interface.dart';
+import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
+import 'package:homsai/themes/colors.theme.dart';
+import 'package:super_rich_text/super_rich_text.dart';
 part 'home.event.dart';
 part 'home.state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
+  final NetworkManagerInterface _networkManagerInterface =
+      getIt.get<NetworkManagerInterface>();
+
   final HomeAssistantWebSocketInterface webSocketRepository =
       getIt.get<HomeAssistantWebSocketInterface>();
 
@@ -44,12 +55,16 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final AppDatabase appDatabase = getIt.get<AppDatabase>();
 
   HomeBloc() : super(const HomeState()) {
+    _networkManagerInterface.subscribe(NetworkManagerSubscriber((result) => {
+          if (result == ConnectivityResult.wifi)
+            {add(const AddAlert(NoInternetConnectionAlert()))}
+        }));
     on<FetchStates>(_onFetchState);
     on<FetchedLights>(_onFetchedLights);
     on<FetchHistory>(_onFetchHistory);
     on<ToggleConsumptionOptimazedPlot>(_onToggleConsumptionOptimazedPlot);
+    on<AddAlert>(_onAddAlert);
   }
-
   @override
   void onTransition(Transition<HomeEvent, HomeState> transition) {
     super.onTransition(transition);
@@ -61,6 +76,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         add(FetchedLights(entities: res));
       }),
     );
+  }
+
+  void _onAddAlert(AddAlert event, Emitter<HomeState> emit) async {
+    List<Widget> alerts = state.alerts.add(event.alert);
+    emit(state.copyWith(alerts: alerts));
   }
 
   void _onFetchedLights(FetchedLights event, Emitter<HomeState> emit) async {

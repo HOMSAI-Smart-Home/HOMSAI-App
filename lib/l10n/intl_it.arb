@@ -70,6 +70,8 @@
     "introductionSkip": "Salta",
     "introductionPageInfo": "Step %1 di 3",
 
+    "homePageNoInternetConnectionAlertTitle": "Connessione internet assente",
+    "homePageNoInternetConnectionAlertContent": "Le funzionalità non sono disponibili riconnettiti per continuare ad usare l’app.",
     "homePageImprovementAvailableLabel": "Miglioramento disponibile",
     "homePageMockTurnOffLightLabel": "Potresti spegnere *Lampadario Salotto* alle 19.",
     "homePageYesterdayConsumptionLabel": "I tuoi consumi di ieri",

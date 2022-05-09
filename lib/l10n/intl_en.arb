@@ -70,6 +70,8 @@
     "introductionSkip": "Skip",
     "introductionPageInfo": "Step %1 of 3",
 
+    "homePageNoInternetConnectionAlertTitle": "No internet connection",
+    "homePageNoInternetConnectionAlertContent": "The features are not available reconnect to continue using the app.",
     "homePageImprovementAvailableLabel": "Improvement available",
     "homePageMockTurnOffLightLabel": "Potresti spegnere *Lampadario Salotto* alle 19.",
     "homePageYesterdayConsumptionLabel": "Your consumption yesterday",

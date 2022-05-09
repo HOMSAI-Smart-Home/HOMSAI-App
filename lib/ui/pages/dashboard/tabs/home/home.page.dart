@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -75,6 +76,7 @@ class _HomePageState extends State<HomePage>  with WidgetsBindingObserver {
             ),
             action: AlertAction("Details", () {}),
           ),*/
+          ...const HomeState().alerts,
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 10),
             child: DailyConsumptionChartInfo(),

@@ -14,7 +14,8 @@ class HomeState extends Equatable {
       this.minOffset,
       this.maxOffset,
       this.isPlotOptimized = false,
-      this.isLoading = true});
+      this.isLoading = true,
+      this.alerts = const []});
 
   final List<LightEntity> lights;
 
@@ -30,22 +31,24 @@ class HomeState extends Equatable {
   final Offset? maxOffset;
   final bool isPlotOptimized;
   final bool isLoading;
+  final List<Widget> alerts;
 
-  HomeState copyWith({
-    List<LightEntity>? lights,
-    MesurableSensorEntity? consumptionSensor,
-    MesurableSensorEntity? productionSensor,
-    List<FlSpot>? consumptionPlot,
-    List<FlSpot>? productionPlot,
-    List<FlSpot>? autoConsumption,
-    List<FlSpot>? optimizedConsumptionPlot,
-    PVBalanceDto? balance,
-    PVBalanceDto? optimizedBalance,
-    Offset? minOffset,
-    Offset? maxOffset,
-    bool? isPlotOptimized,
-      bool? isLoading
-  }) {
+  HomeState copyWith(
+      {List<LightEntity>? lights,
+      MesurableSensorEntity? consumptionSensor,
+      MesurableSensorEntity? productionSensor,
+      List<FlSpot>? consumptionPlot,
+      List<FlSpot>? productionPlot,
+      List<FlSpot>? autoConsumption,
+      List<FlSpot>? optimizedConsumptionPlot,
+      PVBalanceDto? balance,
+      PVBalanceDto? optimizedBalance,
+      Offset? minOffset,
+      Offset? maxOffset,
+      bool? isPlotOptimized,
+      bool? isLoading,
+      List<Widget>? alert}) {
+    
     return HomeState(
       lights: lights ?? this.lights,
       consumptionSensor: consumptionSensor ?? this.consumptionSensor,
@@ -60,7 +63,8 @@ class HomeState extends Equatable {
       minOffset: minOffset ?? this.minOffset,
       maxOffset: maxOffset ?? this.maxOffset,
       isPlotOptimized: isPlotOptimized ?? this.isPlotOptimized,
-        isLoading: isLoading ?? this.isLoading
+      isLoading: isLoading ?? this.isLoading,
+      alerts: alerts.add(alerts),
     );
   }
 
@@ -76,6 +80,7 @@ class HomeState extends Equatable {
         minOffset,
         maxOffset,
         isPlotOptimized,
-        isLoading
+        isLoading,
+        alerts
       ];
 }
