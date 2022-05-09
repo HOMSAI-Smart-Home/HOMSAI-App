@@ -88,7 +88,7 @@ class HomeAssistantWebSocketRepository
   static Map<String, int> eventsId = {};
   static Map<int, WebSocketSubscribersHandler> events = {};
 
-  Function? onConnected;
+  List<Function> onConnected = [];
 
   @override
   bool isConnected() {
@@ -96,20 +96,21 @@ class HomeAssistantWebSocketRepository
   }
 
   @override
+  bool isConnecting() {
+    return status == HomeAssistantWebSocketStatus.connecting;
+  }
+
+  @override
   Future<void> connect({Uri? url, Function? onConnected}) async {
     if (url != null) {
-      return _listen(
-        url,
-        onConnected: onConnected,
-      );
+      return _listen(url);
     }
     _plant = await appDatabase.getPlant();
-    this.onConnected = onConnected;
+
+    if (onConnected != null) this.onConnected.add(onConnected);
+
     if (_plant != null) {
-      return _listen(
-        _plant!.getBaseUrl(),
-        onConnected: onConnected,
-      );
+      return _listen(_plant!.getBaseUrl());
     }
   }
 
@@ -118,11 +119,10 @@ class HomeAssistantWebSocketRepository
     _plant = await appDatabase.getPlant();
     await logOut();
 
-    this.onConnected = onConnected ?? this.onConnected;
+    if (onConnected != null) this.onConnected.add(onConnected);
     if (_plant != null) {
       return _listen(
         _plant!.getBaseUrl(),
-        onConnected: this.onConnected,
       );
     }
   }
@@ -196,12 +196,18 @@ class HomeAssistantWebSocketRepository
     }
   }
 
-  Future<void> _listen(Uri url, {Function? onConnected}) async {
+  Future<void> _listen(Uri url) async {
     if (isConnected()) {
-      if (onConnected != null) onConnected();
+      while (onConnected.isNotEmpty) {
+        onConnected.removeAt(0)();
+      }
       return;
     }
+
+    if (isConnecting()) return;
+
     try {
+      status = HomeAssistantWebSocketStatus.connecting;
       url = await _connect(url);
       webSocket = IOWebSocketChannel(
         await WebSocket.connect(url.toString())
@@ -209,15 +215,14 @@ class HomeAssistantWebSocketRepository
       );
     } catch (e) {
       if (e is SocketException || e is TimeoutException) {
-        return _retry(
-          url,
-          onConnected: onConnected,
-        );
+        return _retry(url);
       }
       rethrow;
     }
 
-    if (onConnected != null) onConnected();
+    while (onConnected.isNotEmpty) {
+      onConnected.removeAt(0)();
+    }
 
     webSocket?.stream.listen(
       (data) {
@@ -227,7 +232,7 @@ class HomeAssistantWebSocketRepository
         data = jsonDecode(data);
 
         switch (status) {
-          case HomeAssistantWebSocketStatus.retry:
+          case HomeAssistantWebSocketStatus.connecting:
           case HomeAssistantWebSocketStatus.disconnected:
             _auth(data);
             break;
@@ -264,12 +269,12 @@ class HomeAssistantWebSocketRepository
     );
   }
 
-  void _retry(Uri url, {Function? onConnected}) {
+  void _retry(Uri url) {
     if (_plant != null && url.host == _plant!.getBaseUrl().host) {}
     final fallback = _plant?.getFallbackUrl();
     if (fallback != null) {
-      status = HomeAssistantWebSocketStatus.retry;
-      _listen(fallback, onConnected: onConnected);
+      status = HomeAssistantWebSocketStatus.connecting;
+      _listen(fallback);
     }
   }
 
@@ -277,7 +282,8 @@ class HomeAssistantWebSocketRepository
     bool flush = false,
     bool force = false,
   }) {
-    if (status == HomeAssistantWebSocketStatus.disconnected && !force) return;
+    if (status != HomeAssistantWebSocketStatus.connected && !force) return;
+    print(_message);
     if (!flush) return webSocket?.sink.add(_message.removeAt(0));
 
     while (_message.isNotEmpty) {

@@ -19,4 +19,4 @@ class WebSocketState extends Equatable {
   List<Object> get props => [status];
 }
 
-enum HomeAssistantWebSocketStatus { disconnected, connected, retry, error }
+enum HomeAssistantWebSocketStatus { disconnected, connected, connecting, error }

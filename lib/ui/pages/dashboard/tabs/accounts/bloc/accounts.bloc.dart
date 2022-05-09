@@ -76,7 +76,7 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
 
     if (initialState!.localUrl != state.localUrl ||
         initialState!.remoteUrl != state.remoteUrl) {
-      _restartWebsoket();
+      _restartWebsocket();
     }
     if (initialState!.consumptionSensor != state.consumptionSensor ||
         initialState!.productionSensor != state.productionSensor) {
@@ -84,7 +84,7 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
     }
   }
 
-  void _restartWebsoket() {
+  void _restartWebsocket() {
     websocket.reconnect();
   }
 

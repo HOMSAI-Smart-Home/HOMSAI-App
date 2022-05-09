@@ -25,6 +25,7 @@ abstract class WebSocketSubscribersHandlerInterface {
 
 abstract class HomeAssistantWebSocketInterface {
   bool isConnected();
+  bool isConnecting();
 
   Future<void> connect({
     Uri? url,
