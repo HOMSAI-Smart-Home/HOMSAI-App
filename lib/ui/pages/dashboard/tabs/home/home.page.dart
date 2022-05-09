@@ -11,7 +11,6 @@ import 'package:homsai/ui/pages/dashboard/tabs/home/bloc/home.bloc.dart';
 import 'package:homsai/ui/widget/devices/light/light_device.widget.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:rive/rive.dart' as rive;
-
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -348,18 +347,17 @@ class EarnWithHomsaiItemInfo extends StatelessWidget {
       ),
       child: SizedBox.fromSize(
         size: const Size.fromHeight(38),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 2),
-          child: TextButton(
-            style: ButtonStyle(
-                backgroundColor: MaterialStateColor.resolveWith(
-                    (states) => HomsaiColors.primaryGreen)),
-            onPressed: () => {
+        child: InkWell(
+          borderRadius: BorderRadius.circular(5),
+          onTap: () => {
               showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
                         content: earnWithHomsaiDialogContent(context),
+                      insetPadding: const EdgeInsets.symmetric(
+                          horizontal: 20.0, vertical: 24.0),
                         title: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
                               HomsaiLocalizations.of(context)!
@@ -367,24 +365,24 @@ class EarnWithHomsaiItemInfo extends StatelessWidget {
                               style:
                                   TextStyle(color: HomsaiColors.primaryWhite),
                             ),
-                            SizedBox(
-                                width: 30,
+                          InkWell(
+                            onTap: () => {Navigator.of(context).pop()},
+                            borderRadius: BorderRadius.circular(5),
+                            child:
+                                SizedBox(
                                 height: 30,
-                                child: OutlinedButton(
-                                    onPressed: () =>
-                                        {Navigator.of(context).pop()},
-                                    child: Text(
-                                      "X",
-                                      style: TextStyle(
-                                          color: HomsaiColors.primaryWhite),
-                                    )))
+                                width: 30,
+                                child:
+                                    SvgPicture.asset("assets/icons/close.svg")),
+                          )
                           ],
                         ),
                         backgroundColor:
                             Theme.of(context).colorScheme.background,
-                        
                       ))
             },
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -506,11 +504,11 @@ List<Widget> generateEarnWithHomsaiParagraph(
 }) {
   return [
     if (title != null)
-    Text(
-      title,
-      textAlign: TextAlign.left,
-      style: TextStyle(color: HomsaiColors.primaryGreen),
-    ),
+      Text(
+        title,
+        textAlign: TextAlign.left,
+        style: TextStyle(color: HomsaiColors.primaryGreen),
+      ),
     const SizedBox(height: 5),
     Text(content,
         textAlign: TextAlign.left,
