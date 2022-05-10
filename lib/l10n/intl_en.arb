@@ -1,7 +1,8 @@
 {
-    "confirm": "Conmfirm",
+    "confirm": "Confirm",
     "retry": "Retry",
     "next": "Next",
+    "cancel": "Cancel",
 
     "emailAddress": "Email address",
     "invalidEmail": "invalid email",

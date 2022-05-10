@@ -2,6 +2,7 @@
     "confirm": "Conferma",
     "retry": "Riprova",
     "next": "Avanti",
+    "cancel": "Annulla",
 
     "emailAddress": "Indirizzo email",
     "invalidEmail": "Email non valida",

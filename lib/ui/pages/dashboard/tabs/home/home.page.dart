@@ -11,6 +11,7 @@ import 'package:homsai/ui/pages/dashboard/tabs/home/bloc/home.bloc.dart';
 import 'package:homsai/ui/widget/devices/light/light_device.widget.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:rive/rive.dart' as rive;
+
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -350,37 +351,33 @@ class EarnWithHomsaiItemInfo extends StatelessWidget {
         child: InkWell(
           borderRadius: BorderRadius.circular(5),
           onTap: () => {
-              showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                        content: earnWithHomsaiDialogContent(context),
+            showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                      content: earnWithHomsaiDialogContent(context),
                       insetPadding: const EdgeInsets.symmetric(
                           horizontal: 20.0, vertical: 24.0),
-                        title: Row(
+                      title: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              HomsaiLocalizations.of(context)!
-                                  .homePageEarnWithHomesaiDialogTitle,
-                              style:
-                                  TextStyle(color: HomsaiColors.primaryWhite),
-                            ),
+                        children: [
+                          Text(
+                            HomsaiLocalizations.of(context)!
+                                .homePageEarnWithHomesaiDialogTitle,
+                            style: TextStyle(color: HomsaiColors.primaryWhite),
+                          ),
                           InkWell(
                             onTap: () => {Navigator.of(context).pop()},
                             borderRadius: BorderRadius.circular(5),
-                            child:
-                                SizedBox(
+                            child: SizedBox(
                                 height: 30,
                                 width: 30,
                                 child:
                                     SvgPicture.asset("assets/icons/close.svg")),
                           )
-                          ],
-                        ),
-                        backgroundColor:
-                            Theme.of(context).colorScheme.background,
-                      ))
-            },
+                        ],
+                      ),
+                    ))
+          },
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Row(
@@ -551,7 +548,3 @@ class Bullet extends StatelessWidget {
     );
   }
 }
-
-//List<Widget> generateEarnWithHomsaiBulletedList(BuildContext context)
-
-class Boolean {}

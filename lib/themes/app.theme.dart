@@ -42,6 +42,10 @@ class HomsaiThemeData {
           colorScheme,
           _textTheme,
         ),
+        dialogTheme: DialogTheme(
+            titleTextStyle: _textTheme.headline4,
+            contentTextStyle: _textTheme.bodyText1,
+            backgroundColor: colorScheme.surface),
         iconTheme: HomsaiIconTheme.defaultTheme(colorScheme),
         primaryIconTheme: HomsaiIconTheme.defaultTheme(colorScheme),
         unselectedWidgetColor: colorScheme.onBackground,

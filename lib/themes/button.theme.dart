@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/cli_commands.dart';
 
 class HomsaiButtonsTheme {
   static TextButtonThemeData defaultTextTheme(
@@ -6,9 +7,21 @@ class HomsaiButtonsTheme {
     return TextButtonThemeData(
       style: ButtonStyle(
         textStyle: MaterialStateProperty.all(
-          textTheme.headline3?.copyWith(color: colorScheme.primary),
+          textTheme.headline4?.copyWith(color: colorScheme.primary),
         ),
       ),
+    );
+  }
+
+  static ButtonStyle lightTextButtonStyle(ThemeData theme) {
+    return ButtonStyle(
+      textStyle: MaterialStateProperty.all(
+        theme.textTheme.headline4,
+      ),
+      foregroundColor:
+          MaterialStateProperty.all(theme.colorScheme.onBackground),
+      overlayColor: MaterialStateProperty.all(
+          theme.colorScheme.onBackground.withOpacity(0.3)),
     );
   }
 

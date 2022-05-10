@@ -8,10 +8,12 @@ import 'package:homsai/crossconcern/components/common/scaffold/homsai_bloc_scaff
 import 'package:homsai/crossconcern/helpers/blocs/websocket/websocket.bloc.dart';
 import 'package:homsai/datastore/remote/websocket/home_assistant_websocket.interface.dart';
 import 'package:homsai/main.dart';
+import 'package:homsai/themes/button.theme.dart';
 import 'package:homsai/themes/colors.theme.dart';
 import 'package:homsai/ui/pages/dashboard/bloc/dashboard.bloc.dart';
 import 'package:homsai/ui/pages/dashboard/tabs/home/bloc/home.bloc.dart';
 import 'package:homsai/crossconcern/components/utils/shadow.widget.dart';
+import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({Key? key}) : super(key: key);
@@ -73,6 +75,10 @@ class _DashboardPageState extends State<DashboardPage> {
 
 AppBar _dashboardAppBar(context) {
   return AppBar(
+      systemOverlayStyle: SystemUiOverlayStyle(
+        statusBarColor: Theme.of(context).colorScheme.background,
+        systemNavigationBarColor: Theme.of(context).colorScheme.background,
+      ),
       leading: _DashboardAppBarExitAction(),
       title: _DashboardAppBarTitle(),
       centerTitle: true,
@@ -109,16 +115,44 @@ class _DashboardAppBarExitAction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      onPressed: () {
-        context.read<DashboardBloc>().add(
-              Logout(
-                () => context.router.popAndPush(const DashboardRoute()),
-              ),
-            );
+      onPressed: () => {
+        showDialog(
+          context: context,
+          builder: (context) => BlocProvider<DashboardBloc>(
+              create: (BuildContext context) => DashboardBloc(),
+              child: _DashboardLogoutDialog()),
+        )
       },
       icon: SvgPicture.asset(
         "assets/icons/logout.svg",
       ),
+    );
+  }
+}
+
+class _DashboardLogoutDialog extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text("Sei sicuro?"),
+      content: Text(
+          "Confermando perderai tutti i tuoi dati e la possibilità di rientrare nell'app."),
+      actions: [
+        TextButton(
+            onPressed: () => context.read<DashboardBloc>().add(
+                  Logout(
+                    () => context.router.popAndPush(const DashboardRoute()),
+                  ),
+                ),
+            child: Text(HomsaiLocalizations.of(context)!.confirm)),
+        TextButton(
+          style: HomsaiButtonsTheme.lightTextButtonStyle(Theme.of(context)),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: Text(HomsaiLocalizations.of(context)!.cancel),
+        ),
+      ],
     );
   }
 }
