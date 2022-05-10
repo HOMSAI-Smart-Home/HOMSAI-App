@@ -6,12 +6,13 @@ import 'package:homsai/themes/colors.theme.dart';
 import 'package:super_rich_text/super_rich_text.dart';
 
 class NoInternetConnectionAlert extends StatelessWidget {
-  const NoInternetConnectionAlert({Key? key}) : super(key: key);
+  const NoInternetConnectionAlert({required Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Alert(
       AlertType.error,
+      key: key,
       icon: SvgPicture.asset(
         "assets/icons/wifi.svg",
         color: HomsaiColors.primaryRed,

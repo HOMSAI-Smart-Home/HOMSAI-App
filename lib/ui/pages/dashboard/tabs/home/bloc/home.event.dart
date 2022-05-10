@@ -37,3 +37,12 @@ class AddAlert extends HomeEvent {
   @override
   List<Object> get props => [alert];
 }
+
+class RemoveAlert extends HomeEvent {
+  const RemoveAlert(this.alertId);
+
+  final String alertId;
+
+  @override
+  List<Object> get props => [alertId];
+}

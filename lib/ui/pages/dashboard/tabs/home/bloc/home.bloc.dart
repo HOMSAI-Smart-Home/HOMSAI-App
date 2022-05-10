@@ -14,6 +14,7 @@ import 'package:homsai/crossconcern/components/alerts/alert.widget.dart';
 import 'package:homsai/crossconcern/components/alerts/general_alert.widget.dart';
 import 'package:homsai/crossconcern/components/charts/daily_consumption_chart.widget.dart';
 import 'package:homsai/crossconcern/helpers/extensions/list.extension.dart';
+import 'package:homsai/crossconcern/utilities/properties/connection.properties.dart';
 import 'package:homsai/crossconcern/utilities/util/plot.util.dart';
 import 'package:homsai/datastore/DTOs/remote/ai_service/consumption_optimizations_forecast/consumption_optimizations_forecast.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/ai_service/consumption_optimizations_forecast/consumption_optimizations_forecast_body.dto.dart';
@@ -57,11 +58,34 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<FetchHistory>(_onFetchHistory);
     on<ToggleConsumptionOptimazedPlot>(_onToggleConsumptionOptimazedPlot);
     on<AddAlert>(_onAddAlert);
-    _networkManagerInterface.subscribe(NetworkManagerSubscriber((result) => {
-          if (result == ConnectivityResult.none)
-            {add(const AddAlert(NoInternetConnectionAlert()))}
-        }));
+    on<RemoveAlert>(_onRemoveAlert);
+    _networkManagerInterface.subscribe(
+        NetworkManagerSubscriber((result) => {_checkConnection(result)}));
   }
+
+  void _checkConnection(ConnectivityResult result) {
+    switch (result) {
+      case ConnectivityResult.none:
+        add(const AddAlert(NoInternetConnectionAlert(
+            key: Key(ConnectionProperties.noInternetConnectionAlertKey))));
+        break;
+      case ConnectivityResult.wifi:
+        add(const RemoveAlert(
+            ConnectionProperties.noInternetConnectionAlertKey));
+        break;
+      case ConnectivityResult.ethernet:
+        add(const RemoveAlert(
+            ConnectionProperties.noInternetConnectionAlertKey));
+        break;
+      case ConnectivityResult.mobile:
+        add(const RemoveAlert(
+            ConnectionProperties.noInternetConnectionAlertKey));
+        break;
+      default:
+        break;
+    }
+  }
+
   @override
   void onTransition(Transition<HomeEvent, HomeState> transition) {
     super.onTransition(transition);
@@ -77,6 +101,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   void _onAddAlert(AddAlert event, Emitter<HomeState> emit) async {
     emit(state.copyWith(alert: event.alert));
+  }
+
+  void _onRemoveAlert(RemoveAlert event, Emitter<HomeState> emit) async {
+    emit(state.copyWith(alertToRemove: event.alertId));
   }
 
   void _onFetchedLights(FetchedLights event, Emitter<HomeState> emit) async {

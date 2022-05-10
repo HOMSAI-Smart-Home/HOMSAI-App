@@ -33,21 +33,23 @@ class HomeState extends Equatable {
   final bool isLoading;
   final List<Widget> alerts;
 
-  HomeState copyWith(
-      {List<LightEntity>? lights,
-      MesurableSensorEntity? consumptionSensor,
-      MesurableSensorEntity? productionSensor,
-      List<FlSpot>? consumptionPlot,
-      List<FlSpot>? productionPlot,
-      List<FlSpot>? autoConsumption,
-      List<FlSpot>? optimizedConsumptionPlot,
-      PVBalanceDto? balance,
-      PVBalanceDto? optimizedBalance,
-      Offset? minOffset,
-      Offset? maxOffset,
-      bool? isPlotOptimized,
-      bool? isLoading,
-      Widget? alert}) {
+  HomeState copyWith({
+    List<LightEntity>? lights,
+    MesurableSensorEntity? consumptionSensor,
+    MesurableSensorEntity? productionSensor,
+    List<FlSpot>? consumptionPlot,
+    List<FlSpot>? productionPlot,
+    List<FlSpot>? autoConsumption,
+    List<FlSpot>? optimizedConsumptionPlot,
+    PVBalanceDto? balance,
+    PVBalanceDto? optimizedBalance,
+    Offset? minOffset,
+    Offset? maxOffset,
+    bool? isPlotOptimized,
+    bool? isLoading,
+    Widget? alert,
+    String? alertToRemove,
+  }) {
     return HomeState(
       lights: lights ?? this.lights,
       consumptionSensor: consumptionSensor ?? this.consumptionSensor,
@@ -63,7 +65,7 @@ class HomeState extends Equatable {
       maxOffset: maxOffset ?? this.maxOffset,
       isPlotOptimized: isPlotOptimized ?? this.isPlotOptimized,
       isLoading: isLoading ?? this.isLoading,
-      alerts: alert != null ? alerts + [alert] : alerts,
+      alerts: checkAlerts(alert, alertToRemove, alerts),
     );
   }
 
@@ -82,4 +84,22 @@ class HomeState extends Equatable {
         isLoading,
         alerts
       ];
+}
+
+List<Widget> checkAlerts(
+    Widget? alert, String? alertToRemove, List<Widget> alerts) {
+  print("Start ALERTS length: ${alerts.length}");
+  if (alert != null &&
+      alerts.where((element) => element.key == alert.key).isEmpty) {
+    print("finish ALERTS (added) length: ${alerts.length}");
+    return alerts + [alert];
+  }
+
+  if (alertToRemove != null && alerts.isNotEmpty) {
+    print("remove wifi alerts");
+    alerts.removeWhere((element) => element.key == Key(alertToRemove));
+  }
+
+  print("finish ALERTS length: ${alerts.length}");
+  return alerts;
 }
