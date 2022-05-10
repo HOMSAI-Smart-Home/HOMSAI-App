@@ -72,6 +72,7 @@
 
     "homePageImprovementAvailableLabel": "Improvement available",
     "homePageMockTurnOffLightLabel": "Potresti spegnere *Lampadario Salotto* alle 19.",
+    "homePageYesterdayConsumptionLabel": "Your consumption yesterday",
     "homePageCurrentConsumptionLabel": "Current consumption",
     "homePageOptimizedConsumptionLabel": "Optimized consumption",
     "homePagePurchasedEnergyLabel": "Purchased Energy",
