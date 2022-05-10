@@ -47,8 +47,7 @@ class HomeState extends Equatable {
       Offset? maxOffset,
       bool? isPlotOptimized,
       bool? isLoading,
-      List<Widget>? alert}) {
-    
+      Widget? alert}) {
     return HomeState(
       lights: lights ?? this.lights,
       consumptionSensor: consumptionSensor ?? this.consumptionSensor,
@@ -64,7 +63,7 @@ class HomeState extends Equatable {
       maxOffset: maxOffset ?? this.maxOffset,
       isPlotOptimized: isPlotOptimized ?? this.isPlotOptimized,
       isLoading: isLoading ?? this.isLoading,
-      alerts: alerts.add(alerts),
+      alerts: alert != null ? alerts + [alert] : alerts,
     );
   }
 

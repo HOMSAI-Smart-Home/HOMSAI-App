@@ -76,7 +76,7 @@ class _HomePageState extends State<HomePage>  with WidgetsBindingObserver {
             ),
             action: AlertAction("Details", () {}),
           ),*/
-          ...const HomeState().alerts,
+          const ActiveAlert(),
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 10),
             child: DailyConsumptionChartInfo(),
@@ -116,6 +116,23 @@ class _HomePageState extends State<HomePage>  with WidgetsBindingObserver {
       ),
     );
   }
+}
+
+class ActiveAlert extends StatelessWidget {
+  const ActiveAlert({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
+      return generateActiveAlert(state, context);
+    });
+  }
+}
+
+Widget generateActiveAlert(HomeState state, BuildContext context) {
+  return Column(
+    children: [if (state.alerts.isNotEmpty) state.alerts.first],
+  );
 }
 
 class DailyConsumptionChartInfo extends StatelessWidget {

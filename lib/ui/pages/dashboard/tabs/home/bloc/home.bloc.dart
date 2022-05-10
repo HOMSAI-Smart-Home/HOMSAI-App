@@ -31,9 +31,6 @@ import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.
 import 'package:homsai/datastore/models/entity/light/light.entity.dart';
 import 'package:homsai/main.dart';
 import 'package:homsai/datastore/remote/network/network_manager.interface.dart';
-import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
-import 'package:homsai/themes/colors.theme.dart';
-import 'package:super_rich_text/super_rich_text.dart';
 part 'home.event.dart';
 part 'home.state.dart';
 
@@ -55,15 +52,15 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final AppDatabase appDatabase = getIt.get<AppDatabase>();
 
   HomeBloc() : super(const HomeState()) {
-    _networkManagerInterface.subscribe(NetworkManagerSubscriber((result) => {
-          if (result == ConnectivityResult.wifi)
-            {add(const AddAlert(NoInternetConnectionAlert()))}
-        }));
     on<FetchStates>(_onFetchState);
     on<FetchedLights>(_onFetchedLights);
     on<FetchHistory>(_onFetchHistory);
     on<ToggleConsumptionOptimazedPlot>(_onToggleConsumptionOptimazedPlot);
     on<AddAlert>(_onAddAlert);
+    _networkManagerInterface.subscribe(NetworkManagerSubscriber((result) => {
+          if (result == ConnectivityResult.none)
+            {add(const AddAlert(NoInternetConnectionAlert()))}
+        }));
   }
   @override
   void onTransition(Transition<HomeEvent, HomeState> transition) {
@@ -79,8 +76,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   void _onAddAlert(AddAlert event, Emitter<HomeState> emit) async {
-    List<Widget> alerts = state.alerts.add(event.alert);
-    emit(state.copyWith(alerts: alerts));
+    emit(state.copyWith(alert: event.alert));
   }
 
   void _onFetchedLights(FetchedLights event, Emitter<HomeState> emit) async {
