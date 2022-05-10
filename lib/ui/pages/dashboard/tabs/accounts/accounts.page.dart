@@ -40,18 +40,8 @@ class _AccountsPage extends StatefulWidget {
 }
 
 class _AccountsPageState extends State<_AccountsPage> {
-  AccountsBloc? _AccountsBloc;
-
-  @override
-  void dispose() {
-    if (_AccountsBloc == null) return;
-    _AccountsBloc!.add(Exit());
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
-    _AccountsBloc = context.read<AccountsBloc>();
     return Column(
       children: [
         _LocalUrlButton(),
@@ -95,7 +85,7 @@ class _LocalUrlButton extends StatelessWidget {
           onTap: (context) => context.router.push(UrlUpdateRoute(
             onResult: (_) {
               context.router.pop();
-              context.read<AccountsBloc>().add(Update());
+              context.read<AccountsBloc>().add(WebsocketUpdate());
             },
             wizard: false,
           )),
@@ -116,7 +106,7 @@ class _RemoteUrlButton extends StatelessWidget {
           onTap: (context) => context.router.push(UrlUpdateRoute(
             onResult: (_) {
               context.router.pop();
-              context.read<AccountsBloc>().add(Update());
+              context.read<AccountsBloc>().add(WebsocketUpdate());
             },
             wizard: false,
           )),
@@ -135,9 +125,9 @@ class _ProductionSensorButton extends StatelessWidget {
           title: 'Sensore di produzione',
           caption: state.productionSensor ?? '[xxx]',
           onTap: (context) => context.router.push(AddSensorRoute(
-            onResult: (_) {
-              context.router.pop();
-              context.read<AccountsBloc>().add(Update());
+            onResult: (_) async {
+              await context.router.pop();
+              context.read<AccountsBloc>().add(SensorUpdate());
             },
             wizard: false,
           )),
@@ -156,9 +146,9 @@ class _ConsumptionSensorButton extends StatelessWidget {
           title: 'Sensore di consumo',
           caption: state.consumptionSensor ?? '[xxx]',
           onTap: (context) => context.router.push(AddSensorRoute(
-            onResult: (_) {
-              context.router.pop();
-              context.read<AccountsBloc>().add(Update());
+            onResult: (_) async {
+              await context.router.pop();
+              context.read<AccountsBloc>().add(SensorUpdate());
             },
             wizard: false,
           )),

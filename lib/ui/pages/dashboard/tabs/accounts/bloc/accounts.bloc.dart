@@ -21,7 +21,8 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
   AccountsBloc() : super(const AccountsState()) {
     on<Autocomplete>(_onAutocomplete);
     on<Update>(_onUpdate);
-    on<Exit>(_onExit);
+    on<WebsocketUpdate>(_onWebsocketUpdate);
+    on<SensorUpdate>(_onSensorUpdate);
     add(Autocomplete());
   }
 
@@ -74,13 +75,19 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
     add(Autocomplete());
   }
 
-  void _onExit(Exit event, Emitter<AccountsState> emit) {
+  Future<void> _onWebsocketUpdate(WebsocketUpdate event, Emitter<AccountsState> emit) async {
     if (initialState == null) return;
+    await _onAutocomplete(Autocomplete(), emit);
 
     if (initialState!.localUrl != state.localUrl ||
         initialState!.remoteUrl != state.remoteUrl) {
       _restartWebsocket();
     }
+  }
+
+  Future<void> _onSensorUpdate(SensorUpdate event, Emitter<AccountsState> emit) async {
+    if (initialState == null) return;
+    await _onAutocomplete(Autocomplete(), emit);
     if (initialState!.consumptionSensor != state.consumptionSensor ||
         initialState!.productionSensor != state.productionSensor) {
       _resetPlot();
@@ -89,11 +96,9 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
 
   void _restartWebsocket() {
     websocket.reconnect();
-    print("_restartWebsocket");
   }
 
   void _resetPlot() {
-    print("_resetPlot");
     appPreferences.resetConsumptionInfo();
     appPreferences.resetOptimizationForecast();
     appPreferences.resetProductionInfo();

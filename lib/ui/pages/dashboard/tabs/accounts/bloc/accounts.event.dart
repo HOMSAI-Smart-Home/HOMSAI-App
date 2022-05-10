@@ -11,4 +11,6 @@ class Autocomplete extends AccountsEvent {}
 
 class Update extends AccountsEvent {}
 
-class Exit extends AccountsEvent {}
+class WebsocketUpdate extends AccountsEvent {}
+
+class SensorUpdate extends AccountsEvent {}

@@ -91,7 +91,12 @@ class _DashboardAppBarLeading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      onPressed: () => context.router.push(const AccountsRoute()),
+      onPressed: () async {
+        await context.router.push(const AccountsRoute());
+        context.read<DashboardBloc>().add(RetrievePlantName());
+        context.read<HomeBloc>().add(FetchStates());
+        context.read<HomeBloc>().add(FetchHistory());
+      },
       icon: SvgPicture.asset(
         "assets/icons/settings.svg",
       ),
@@ -99,7 +104,7 @@ class _DashboardAppBarLeading extends StatelessWidget {
   }
 }
 
-class _DashboardAppBarTitle extends StatelessWidget {
+class _DashboardAppBarTitle extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<DashboardBloc, DashboardState>(

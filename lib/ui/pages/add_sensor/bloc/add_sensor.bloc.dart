@@ -60,7 +60,7 @@ class AddSensorBloc extends Bloc<AddSensorEvent, AddSensorState> {
       consumptionSensor: state.selectedConsumptionSensor?.entityId,
     );
     if (newPlant != null) {
-      appDatabase.plantDao.updateItem(newPlant);
+      await appDatabase.plantDao.updateItem(newPlant);
     }
     event.onSubmit();
   }
