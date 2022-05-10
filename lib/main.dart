@@ -13,6 +13,7 @@ import 'package:homsai/business/home_assistant/home_assistant.repository.dart';
 import 'package:homsai/business/home_assistant_scanner/home_assistant_scanner.interface.dart';
 import 'package:homsai/business/home_assistant_scanner/home_assistant_scanner.repository.dart';
 import 'package:homsai/business/light/light.interface.dart';
+import 'package:homsai/datastore/models/home_assistant_auth.model.dart';
 import 'package:homsai/datastore/remote/network/network_manager.interface.dart';
 import 'package:homsai/datastore/remote/network/network.manager.dart';
 import 'package:homsai/datastore/remote/rest/remote.Interface.dart';
@@ -91,7 +92,7 @@ Future<void> main() async {
 
   tz.initializeTimeZones();
 
-  runApp(App());
+  runApp(const App());
 }
 
 void getAppVersion() async {
@@ -99,12 +100,67 @@ void getAppVersion() async {
   appVersion = packageInfo.appName + "-" + packageInfo.version;
 }
 
-class App extends StatelessWidget {
-  final _appRouter = AppRouter(authGuard: AuthGuard());
-
-  App({
+class App extends StatefulWidget {
+  const App({
     Key? key,
   }) : super(key: key);
+
+  @override
+  State<App> createState() => _AppState();
+}
+
+class _AppState extends State<App> with WidgetsBindingObserver {
+  final HomeAssistantWebSocketInterface _webSocketInterface =
+      getIt.get<HomeAssistantWebSocketInterface>();
+  final AppPreferencesInterface _appPreferencesInterface =
+      getIt.get<AppPreferencesInterface>();
+  final _appRouter = AppRouter(authGuard: AuthGuard());
+
+  @override
+  void initState() {
+    WidgetsBinding.instance!.addObserver(this);
+    super.initState();
+  }
+
+  void _logOut() {
+    if (_webSocketInterface.isConnected() ||
+        _webSocketInterface.isConnecting()) {
+      _webSocketInterface.logOut();
+    }
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance!.removeObserver(this);
+    _logOut();
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    setState(() {
+      switch (state) {
+        case AppLifecycleState.resumed:
+          HomeAssistantAuth? auth =
+              _appPreferencesInterface.getHomeAssistantToken();
+          String? userId = _appPreferencesInterface.getUserId();
+          if (userId != null && auth != null) {
+            if (!_webSocketInterface.isConnected() &&
+                !_webSocketInterface.isConnecting()) {
+              _webSocketInterface.connect();
+            }
+          }
+          break;
+        case AppLifecycleState.inactive:
+          break;
+        case AppLifecycleState.paused:
+          _logOut();
+          break;
+        case AppLifecycleState.detached:
+          break;
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
