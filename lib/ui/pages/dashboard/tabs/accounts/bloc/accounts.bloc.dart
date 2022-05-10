@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:homsai/datastore/local/app.database.dart';
+import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.dart';
 import 'package:homsai/datastore/models/entity/sensors/sensor.entity.dart';
 import 'package:homsai/datastore/remote/websocket/home_assistant_websocket.interface.dart';
 import 'package:homsai/main.dart';
@@ -12,6 +13,8 @@ part 'accounts.state.dart';
 class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
   AccountsState? initialState;
   final AppDatabase appDatabase = getIt.get<AppDatabase>();
+  final AppPreferencesInterface appPreferences =
+      getIt.get<AppPreferencesInterface>();
   final HomeAssistantWebSocketInterface websocket =
       getIt.get<HomeAssistantWebSocketInterface>();
 
@@ -86,7 +89,13 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
 
   void _restartWebsocket() {
     websocket.reconnect();
+    print("_restartWebsocket");
   }
 
-  void _resetPlot() {}
+  void _resetPlot() {
+    print("_resetPlot");
+    appPreferences.resetConsumptionInfo();
+    appPreferences.resetOptimizationForecast();
+    appPreferences.resetProductionInfo();
+  }
 }

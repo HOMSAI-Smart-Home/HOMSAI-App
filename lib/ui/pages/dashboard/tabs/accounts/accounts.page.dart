@@ -1,8 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:homsai/app.router.dart';
 import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
+import 'package:homsai/app.router.dart';
 import 'package:homsai/crossconcern/components/common/scaffold/homsai_bloc_scaffold.widget.dart';
 import 'package:homsai/ui/pages/dashboard/tabs/accounts/bloc/accounts.bloc.dart';
 
@@ -32,11 +32,26 @@ class AccountsPage extends StatelessWidget {
   }
 }
 
-class _AccountsPage extends StatelessWidget {
+class _AccountsPage extends StatefulWidget {
   const _AccountsPage({Key? key}) : super(key: key);
 
   @override
+  State<_AccountsPage> createState() => _AccountsPageState();
+}
+
+class _AccountsPageState extends State<_AccountsPage> {
+  AccountsBloc? _AccountsBloc;
+
+  @override
+  void dispose() {
+    if (_AccountsBloc == null) return;
+    _AccountsBloc!.add(Exit());
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    _AccountsBloc = context.read<AccountsBloc>();
     return Column(
       children: [
         _LocalUrlButton(),
