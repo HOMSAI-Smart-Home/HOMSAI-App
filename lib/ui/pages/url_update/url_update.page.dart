@@ -120,7 +120,7 @@ class _LocalUrlTextTextField extends StatelessWidget {
             .add(LocalUrlChanged(url: state.url.value)),
         child: UrlTextField<LocalUrlTextFieldBloc>(
           focusNode: focusNode,
-          labelText: "Inserisci l'Url locale",
+          labelText: HomsaiLocalizations.of(context)!.localUrlLabel,
           textInputAction: TextInputAction.next,
         ),
       ),
@@ -144,7 +144,7 @@ class _RemoteUrlTextTextField extends StatelessWidget {
             .add(RemoteUrlChanged(url: state.url.value)),
         child: UrlTextField<RemoteUrlTextFieldBloc>(
           focusNode: focusNode,
-          labelText: "Inserisci l'Url remoto",
+          labelText: HomsaiLocalizations.of(context)!.remoteUrlLabel,
         ),
       ),
     );
@@ -166,14 +166,13 @@ class _UrlUpdateSave extends StatelessWidget {
             onPressed: state.status.isValid
                 ? () {
                     context.read<UrlUpdateBloc>().add(UrlSubmitted(
-                        onSubmit: () => 
-                        wizard
-                        ? context.router.replace(
-                              AddPlantRoute(
-                                onResult: onResult,
-                              ),
-                            )
-                        : onResult(true)));
+                        onSubmit: () => wizard
+                            ? context.router.replace(
+                                AddPlantRoute(
+                                  onResult: onResult,
+                                ),
+                              )
+                            : onResult(true)));
                   }
                 : null,
             child: Text(HomsaiLocalizations.of(context)!.next),

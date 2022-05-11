@@ -80,8 +80,8 @@ class _ProductionSensorsSelect extends StatelessWidget {
     return BlocBuilder<AddSensorBloc, AddSensorState>(
         builder: (context, state) {
       return HomsaiDropdownButton<MesurableSensorEntity>(
-        label: "Produzione",
-        hint: "Nome Sensore di produzione",
+        label: HomsaiLocalizations.of(context)!.productionSensorLabel,
+        hint: HomsaiLocalizations.of(context)!.productionSensorHint,
         value: state.selectedProductionSensor,
         items: state.productionSensors
             .map(
@@ -104,8 +104,8 @@ class _ConsumptionSensorsSelect extends StatelessWidget {
     return BlocBuilder<AddSensorBloc, AddSensorState>(
         builder: (context, state) {
       return HomsaiDropdownButton<MesurableSensorEntity>(
-        label: "Consumo",
-        hint: "Nome Sensore di consumo",
+        label: HomsaiLocalizations.of(context)!.consumptionSensorLabel,
+        hint: HomsaiLocalizations.of(context)!.consumptionSensorHint,
         value: state.selectedConsumptionSensor,
         items: state.consumptionSensors
             .map(
@@ -133,9 +133,7 @@ class _AddSensorSubmit extends StatelessWidget {
     return ElevatedButton(
       onPressed: () {
         final bloc = context.read<AddSensorBloc>();
-        bloc.add(OnSubmit(
-          () => onResult(true)
-        ));
+        bloc.add(OnSubmit(() => onResult(true)));
       },
       child: Text(HomsaiLocalizations.of(context)!.next),
     );

@@ -139,9 +139,7 @@ class _DashboardLogoutDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text("Sei sicuro?"),
-      content: Text(
-          "Confermando perderai tutti i tuoi dati e la possibilità di rientrare nell'app."),
+      content: Text(HomsaiLocalizations.of(context)!.logoutDialogMessage),
       actions: [
         TextButton(
             onPressed: () => context.read<DashboardBloc>().add(

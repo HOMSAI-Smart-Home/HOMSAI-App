@@ -148,7 +148,7 @@ Widget generateChartGraphics(HomeState state, BuildContext context) {
           const _HourglassIcon(),
           const SizedBox(height: 5),
           Text(
-            "Recupero dati...",
+            HomsaiLocalizations.of(context)!.dailyCosumptionChartLoadingLabel,
             style: Theme.of(context).textTheme.caption,
           )
         ],
@@ -174,7 +174,7 @@ Widget generateChartGraphics(HomeState state, BuildContext context) {
             SizedBox(
               width: 250,
               child: Text(
-                "Dati grafico non disponibili. Assicurati di aver collegato i sensori di consumo e produzione.",
+                HomsaiLocalizations.of(context)!.dailyCosumptionChartErrorLabel,
                 style: Theme.of(context).textTheme.caption,
                 textAlign: TextAlign.center,
               ),
@@ -406,7 +406,8 @@ class EarnWithHomsaiItemInfo extends StatelessWidget {
                     Text(
                       (amount != null)
                           ? "${amount!.toStringAsFixed(2)} €"
-                          : "--",
+                          : HomsaiLocalizations.of(context)!
+                              .homePageBalanceDefaultPlaceholder,
                       style: Theme.of(context).textTheme.bodyText1?.copyWith(
                           fontWeight: FontWeight.w400,
                           color: HomsaiColors.primaryWhite),
@@ -454,13 +455,13 @@ Widget earnWithHomsaiDialogContent(BuildContext context) {
         generateEarnWithHomsaiBulletListItem(
             HomsaiColors.primaryGreen,
             HomsaiLocalizations.of(context)!
-                .homePageEarnWithHomesaiDialogBulletListTitle1,
+                .dailyCosumptionChartLegendaSolarPanels,
             HomsaiLocalizations.of(context)!
                 .homePageEarnWithHomesaiDialogBulletListContent1),
         generateEarnWithHomsaiBulletListItem(
             HomsaiColors.primaryYellow,
             HomsaiLocalizations.of(context)!
-                .homePageEarnWithHomesaiDialogBulletListTitle2,
+                .dailyCosumptionChartLegendaConsumption,
             HomsaiLocalizations.of(context)!
                 .homePageEarnWithHomesaiDialogBulletListContent2),
         ...generateEarnWithHomsaiParagraph(
@@ -470,19 +471,19 @@ Widget earnWithHomsaiDialogContent(BuildContext context) {
         generateEarnWithHomsaiBulletListItem(
             HomsaiColors.primaryGreen,
             HomsaiLocalizations.of(context)!
-                .homePageEarnWithHomesaiDialogBulletListTitle3,
+                .dailyCosumptionChartLegendaAvailable,
             HomsaiLocalizations.of(context)!
                 .homePageEarnWithHomesaiDialogBulletListContent3),
         generateEarnWithHomsaiBulletListItem(
             HomsaiColors.primaryBlue,
             HomsaiLocalizations.of(context)!
-                .homePageEarnWithHomesaiDialogBulletListTitle4,
+                .dailyCosumptionChartLegendaSelfConsumption,
             HomsaiLocalizations.of(context)!
                 .homePageEarnWithHomesaiDialogBulletListContent4),
         generateEarnWithHomsaiBulletListItem(
             HomsaiColors.primaryRed,
             HomsaiLocalizations.of(context)!
-                .homePageEarnWithHomesaiDialogBulletListTitle5,
+                .dailyCosumptionChartLegendaSelfPurchased,
             HomsaiLocalizations.of(context)!
                 .homePageEarnWithHomesaiDialogBulletListContent5),
         const SizedBox(height: 15),

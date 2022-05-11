@@ -1,3 +1,4 @@
+import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:homsai/crossconcern/utilities/util/plot.util.dart';
@@ -40,7 +41,7 @@ class DailyConsumptionChart extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text(
-                "kW",
+                HomsaiLocalizations.of(context)!.dailyCosumptionChartPower,
                 style: TextStyle(
                   color: HomsaiColors.primaryGrey,
                   fontSize: 9,
@@ -51,10 +52,22 @@ class DailyConsumptionChart extends StatelessWidget {
                   alignment: WrapAlignment.end,
                   verticalDirection: VerticalDirection.up,
                   children: [
-                    _legenda("Panelli solari", HomsaiColors.primaryGreen),
-                    _legenda("Consumo", HomsaiColors.secondaryYellow),
-                    _legenda("Autoconsumo", HomsaiColors.primaryBlue),
-                    _legenda("Acquistata", HomsaiColors.secondaryRed),
+                    _legenda(
+                        HomsaiLocalizations.of(context)!
+                            .dailyCosumptionChartLegendaSolarPanels,
+                        HomsaiColors.primaryGreen),
+                    _legenda(
+                        HomsaiLocalizations.of(context)!
+                            .dailyCosumptionChartLegendaConsumption,
+                        HomsaiColors.secondaryYellow),
+                    _legenda(
+                        HomsaiLocalizations.of(context)!
+                            .dailyCosumptionChartLegendaSelfConsumption,
+                        HomsaiColors.primaryBlue),
+                    _legenda(
+                        HomsaiLocalizations.of(context)!
+                            .dailyCosumptionChartLegendaSelfPurchased,
+                        HomsaiColors.secondaryRed),
                   ],
                 ),
               ),

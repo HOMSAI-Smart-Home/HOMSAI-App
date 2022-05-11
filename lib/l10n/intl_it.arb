@@ -93,18 +93,35 @@
     "homePageEarnWithHomesaiDialogP3Content": "Sulla base dei consumi mostrati in \"Consumo attuale\", Homsai mostra la stima dei valori ottenibili grazie alla sua ottimizzazione dei consumi, tenendo conto del meteo per efficentare la gestione della climatizzazione e prevedere la produzione di energia. \nGrazie ai suoi algoritmi, Homsai è in grado di migliorare nel tempo l’efficenza di tale ottimizzazione, sfruttando sempre più l’energia prodotta dai pannelli fotovoltaici e utilizzando meno energia acquistata.",
     "homePageEarnWithHomesaiDialogP4Title": "Legenda",
     "homePageEarnWithHomesaiDialogP4Content": "Linee",
-    "homePageEarnWithHomesaiDialogBulletListTitle1": "Pannelli solari",
     "homePageEarnWithHomesaiDialogBulletListContent1": ": Energia prodotta dai pannelli solari",
-    "homePageEarnWithHomesaiDialogBulletListTitle2": "Consumo",
     "homePageEarnWithHomesaiDialogBulletListContent2": ": Energia totale consumata",
     "homePageEarnWithHomesaiDialogP5Content": "Aree",
-    "homePageEarnWithHomesaiDialogBulletListTitle3": "Disponibile",
     "homePageEarnWithHomesaiDialogBulletListContent3": ": energia prodotta residua",
-    "homePageEarnWithHomesaiDialogBulletListTitle4": "Autoconsumo",
-    "homePageEarnWithHomesaiDialogBulletListContent4": ": consumo di energia prodotta",     
-    "homePageEarnWithHomesaiDialogBulletListTitle5": "Acquistata",
+    "homePageEarnWithHomesaiDialogBulletListContent4": ": consumo di energia prodotta",
     "homePageEarnWithHomesaiDialogBulletListContent5": ": consumo di energia acquistata",
     "homePageEarnWithHomesaiDialogP6Content": "Saldo = Energia Immessa* - Energia Acquistata*",
     "homePageEarnWithHomesaiDialogP7Content": "Guadagno con Homsai = Saldo stimato - Saldo attuale",
-    "homePageEarnWithHomesaiDialogP8Content": "*Il costo dell’energia è calcolato sul prezzo medio dell’energia considerando 0.35€ per quella acquistata e 0.04€ per l’energia immessa."
+    "homePageEarnWithHomesaiDialogP8Content": "*Il costo dell’energia è calcolato sul prezzo medio dell’energia considerando 0.35€ per quella acquistata e 0.04€ per l’energia immessa.",
+
+    "dailyCosumptionChartPower": "kW",
+    "dailyCosumptionChartLegendaSolarPanels": "Pannelli solari",
+    "dailyCosumptionChartLegendaConsumption": "Consumo",
+    "dailyCosumptionChartLegendaAvailable": "Disponibile",
+    "dailyCosumptionChartLegendaSelfConsumption": "Autoconsumo",
+    "dailyCosumptionChartLegendaSelfPurchased": "Acquistata",
+
+    "dailyCosumptionChartLoadingLabel": "Recupero dati...",
+    "dailyCosumptionChartErrorLabel": "Dati grafico non disponibili. Assicurati di aver collegato i sensori di consumo e produzione.",
+
+    "productionSensorLabel": "Produzione",
+    "productionSensorHint": "Nome Sensore di produzione",
+    "consumptionSensorLabel": "Consumo",
+    "consumptionSensorHint": "Nome Sensore di consumo",
+
+    "logoutDialogMessage": "Stai per effettuare il logout dall'applicazione. Sei sicuro?",
+
+    "localUrlLabel": "Inserisci l'Url locale",
+    "remoteUrlLabel": "Inserisci l'Url remoto",
+
+    "groupDeviceGeneralLabel": "Generale"
 }
