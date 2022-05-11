@@ -104,6 +104,7 @@ class HomeAssistantScanBloc
 
     emit(state.copyWith(
       selectedUrl: const Url.pure(),
+      scannedUrls: const [],
       status: HomeAssistantScanStatus.manual,
     ));
   }
@@ -146,7 +147,7 @@ class HomeAssistantScanBloc
     emit(state.copyWith(
       selectedUrl: url,
     ));
-    
+
     if (state.selectedUrl.invalid) return;
 
     emit(state.copyWith(
@@ -162,12 +163,10 @@ class HomeAssistantScanBloc
 
       emit(
         state.copyWith(
-          status: HomeAssistantScanStatus.authenticationSuccess,
-          remoteUrl: remote,
-          selectedUrl: url
-        ),
+            status: HomeAssistantScanStatus.authenticationSuccess,
+            remoteUrl: remote,
+            selectedUrl: url),
       );
-      
     } catch (e) {
       emit(state.copyWith(
           status: HomeAssistantScanStatus.authenticationFailure));
