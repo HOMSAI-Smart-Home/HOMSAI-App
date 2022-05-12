@@ -88,20 +88,16 @@ class HomeState extends Equatable {
 
 List<Widget> checkAlerts(
     Widget? alert, String? alertToRemove, List<Widget> alerts) {
-  print("Start ALERTS length: ${alerts.length}");
   if (alert != null &&
       alerts.where((element) => element.key == alert.key).isEmpty) {
-    print("finish ALERTS (added) length: ${alerts.length}");
     return alerts + [alert];
   }
 
   if (alertToRemove != null && alerts.isNotEmpty) {
-    print("remove wifi alerts");
     var newAlerts = List<Widget>.from(alerts);
     newAlerts.removeWhere((element) => element.key == Key(alertToRemove));
     return newAlerts;
   }
 
-  print("finish ALERTS length: ${alerts.length}");
   return alerts;
 }

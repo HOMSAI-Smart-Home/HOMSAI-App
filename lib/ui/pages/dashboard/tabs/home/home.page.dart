@@ -130,7 +130,6 @@ class ActiveAlert extends StatelessWidget {
 }
 
 Widget generateActiveAlert(HomeState state, BuildContext context) {
-  print("REFRESH STATE ${state.alerts.length}");
   return Column(
     children: [if (state.alerts.isNotEmpty) state.alerts.first],
   );
