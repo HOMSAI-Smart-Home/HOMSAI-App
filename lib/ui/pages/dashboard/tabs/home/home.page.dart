@@ -19,17 +19,37 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage>  with WidgetsBindingObserver {
   @override
   void initState() {
-    super.initState();
-    //context.read<HomeBloc>().add(FetchStates());
+    WidgetsBinding.instance!.addObserver(this);
     context.read<WebSocketBloc>().add(ConnectWebSocket(
       onWebSocketConnected: () {
         context.read<HomeBloc>().add(FetchStates());
         context.read<HomeBloc>().add(FetchHistory());
       },
     ));
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance!.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    setState(() {
+      switch (state) {
+        case AppLifecycleState.resumed:
+          context.read<HomeBloc>().add(FetchStates());
+          context.read<HomeBloc>().add(FetchHistory());
+          break;
+        default:
+          break;
+      }
+    });
   }
 
   @override
@@ -60,24 +80,33 @@ class _HomePageState extends State<HomePage> {
             child: DailyConsumptionChartInfo(),
           ),
           BlocBuilder<HomeBloc, HomeState>(
+            buildWhen: (previous, current) =>
+                previous.lights.length != current.lights.length,
             builder: (context, state) {
               return GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    mainAxisSpacing: 8,
-                    crossAxisSpacing: 8,
-                    crossAxisCount: 2,
-                    childAspectRatio: 150 / 90,
-                  ),
-                  shrinkWrap: true,
-                  padding: const EdgeInsets.all(0),
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: state.lights.length,
-                  itemBuilder: (BuildContext context, index) {
-                    return BlocBuilder<HomeBloc, HomeState>(
-                        builder: (context, state) {
-                      return LightDevice(light: state.lights[index]);
-                    });
-                  });
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  mainAxisSpacing: 8,
+                  crossAxisSpacing: 8,
+                  crossAxisCount: 2,
+                  childAspectRatio: 150 / 90,
+                ),
+                shrinkWrap: true,
+                padding: const EdgeInsets.all(0),
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: state.lights.length,
+                itemBuilder: (BuildContext context, index) {
+                  return BlocBuilder<HomeBloc, HomeState>(
+                    buildWhen: (previous, current) =>
+                        previous.lights[index] != current.lights[index],
+                    builder: (context, state) {
+                      return LightDevice(
+                        key: ValueKey(state.lights[index]),
+                        light: state.lights[index],
+                      );
+                    },
+                  );
+                },
+              );
             },
           ),
           const SizedBox(height: 12)
