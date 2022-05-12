@@ -118,7 +118,7 @@ class HomeAssistantWebSocketRepository
   @override
   Future<void> reconnect({Function? onConnected}) async {
     _plant = await appDatabase.getPlant();
-    await logOut();
+    await logout();
 
     if (onConnected != null) this.onConnected.add(onConnected);
 
@@ -302,7 +302,7 @@ class HomeAssistantWebSocketRepository
   }
 
   @override
-  Future<void> logOut() async {
+  Future<void> logout() async {
     events = {};
     eventsId = {};
     status = HomeAssistantWebSocketStatus.disconnected;

@@ -69,7 +69,7 @@ class _DashboardPageState extends State<DashboardPage> {
     super.dispose();
     final HomeAssistantWebSocketInterface webSocketRepository =
         getIt.get<HomeAssistantWebSocketInterface>();
-    webSocketRepository.logOut();
+    webSocketRepository.logout();
   }
 }
 
@@ -104,7 +104,7 @@ class _DashboardAppBarLeading extends StatelessWidget {
   }
 }
 
-class _DashboardAppBarTitle extends StatelessWidget{
+class _DashboardAppBarTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<DashboardBloc, DashboardState>(

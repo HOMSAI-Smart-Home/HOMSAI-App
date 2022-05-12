@@ -135,14 +135,14 @@ class _AppState extends State<App> with WidgetsBindingObserver {
   @override
   void dispose() {
     WidgetsBinding.instance!.removeObserver(this);
-    _logOut();
+    _logout();
     super.dispose();
   }
 
-  void _logOut() {
+  void _logout() {
     if (_webSocketInterface.isConnected() ||
         _webSocketInterface.isConnecting()) {
-      _webSocketInterface.logOut();
+      _webSocketInterface.logout();
     }
   }
 
@@ -164,7 +164,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
         case AppLifecycleState.inactive:
           break;
         case AppLifecycleState.paused:
-          _logOut();
+          _logout();
           break;
         case AppLifecycleState.detached:
           break;
