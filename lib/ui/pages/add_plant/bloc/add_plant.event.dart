@@ -10,10 +10,14 @@ abstract class AddPlantEvent extends Equatable {
 class ConfigurationFetched extends AddPlantEvent {
   const ConfigurationFetched(this.configuration);
 
-  final ConfigurationDto configuration;
+  final Configuration configuration;
 
   @override
   List<Object> get props => [configuration];
+}
+
+class FetchLocalConfig extends AddPlantEvent {
+  // Empty
 }
 
 class StatesFetched extends AddPlantEvent {

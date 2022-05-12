@@ -34,7 +34,8 @@ class _AddPlantPageState extends State<AddPlantPage> {
         BlocProvider<WebSocketBloc>(create: (_) => WebSocketBloc()),
         BlocProvider<AddPlantBloc>(
           create: (context) =>
-              AddPlantBloc(context.read<WebSocketBloc>(), widget.url),
+              AddPlantBloc(
+              context.read<WebSocketBloc>(), widget.url, widget.wizard),
         ),
       ],
       mainAxisAlignment: MainAxisAlignment.center,
@@ -81,20 +82,6 @@ class _AddPlantForm extends StatefulWidget {
 }
 
 class _AddPlantFormState extends State<_AddPlantForm> {
-  @override
-  void initState() {
-    context.read<WebSocketBloc>().add(FetchConfig(
-      onConfigurationFetched: (config) {
-        context.read<AddPlantBloc>().add(ConfigurationFetched(config));
-      },
-    ));
-    context.read<WebSocketBloc>().add(FetchEntites(
-          onEntitiesFetched: (entities) =>
-              context.read<AddPlantBloc>().add(StatesFetched(entities)),
-        ));
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(

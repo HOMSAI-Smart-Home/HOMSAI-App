@@ -26,19 +26,34 @@ class AddPlantBloc extends Bloc<AddPlantEvent, AddPlantState> {
 
   final AppDatabase appDatabase = getIt.get<AppDatabase>();
   final WebSocketBloc webSocketBloc;
+  final bool wizard;
   final Uri? url;
 
-  AddPlantBloc(this.webSocketBloc, this.url) : super(const AddPlantState()) {
+  AddPlantBloc(this.webSocketBloc, this.url, this.wizard)
+      : super(const AddPlantState()) {
     on<ConfigurationFetched>(_onConfigurationFetched);
+    on<FetchLocalConfig>(_onFetchLocalConfig);
     on<StatesFetched>(_onStatesFetched);
     on<PlantNameChanged>(_onPlantNameChanged);
     on<PlantNameUnfocused>(_onPlantNameUnfocused);
     on<CoordinateChanged>(_onCoordinateChanged);
     on<CoordinateUnfocused>(_onCoordinateUnfocused);
     on<OnSubmit>(_onSubmit);
-    if (!webSocketRepository.isConnected()) {
+    if (!webSocketRepository.isConnected() && wizard) {
       webSocketBloc.add(ConnectWebSocket(
-          onWebSocketConnected: () {}, url: url?.toString() ?? ''));
+          onWebSocketConnected: () {
+            webSocketBloc.add(FetchConfig(
+              onConfigurationFetched: (config) {
+                add(ConfigurationFetched(Configuration.fromDto(config)));
+              },
+            ));
+            webSocketBloc.add(FetchEntites(
+              onEntitiesFetched: (entities) => add(StatesFetched(entities)),
+            ));
+          },
+          url: url?.toString() ?? ''));
+    } else {
+      add(FetchLocalConfig());
     }
   }
 
@@ -58,7 +73,15 @@ class AddPlantBloc extends Bloc<AddPlantEvent, AddPlantState> {
         plantName: plantName,
         initialPlantName: plantName.value,
         coordinate: coordinate,
-        configuration: Configuration.fromDto(event.configuration)));
+        configuration: event.configuration));
+  }
+
+  void _onFetchLocalConfig(
+      FetchLocalConfig event, Emitter<AddPlantState> emit) async {
+    final config = await appDatabase.getConfiguration();
+    if (config != null) {
+      add(ConfigurationFetched(config));
+    }
   }
 
   void _onStatesFetched(StatesFetched event, Emitter<AddPlantState> emit) {
