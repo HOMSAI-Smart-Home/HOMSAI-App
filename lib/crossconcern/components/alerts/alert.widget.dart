@@ -19,6 +19,7 @@ class Alert extends StatefulWidget {
     this.message,
     this.action,
     this.cancelable = true,
+    this.closeBtnAction,
   }) : super(key: key);
 
   final AlertType type;
@@ -27,6 +28,7 @@ class Alert extends StatefulWidget {
   final Widget? message;
   final bool cancelable;
   final AlertAction? action;
+  final void Function()? closeBtnAction;
 
   @override
   State<Alert> createState() => _AlertState();
@@ -87,7 +89,7 @@ class _AlertState extends State<Alert> {
                           if (widget.cancelable)
                             InkWell(
                               child: const Icon(Icons.close_rounded),
-                              onTap: close,
+                              onTap: widget.closeBtnAction ?? close,
                               borderRadius: BorderRadius.circular(20),
                             ),
                         ],
