@@ -97,7 +97,9 @@ List<Widget> checkAlerts(
 
   if (alertToRemove != null && alerts.isNotEmpty) {
     print("remove wifi alerts");
-    alerts.removeWhere((element) => element.key == Key(alertToRemove));
+    var newAlerts = List<Widget>.from(alerts);
+    newAlerts.removeWhere((element) => element.key == Key(alertToRemove));
+    return newAlerts;
   }
 
   print("finish ALERTS length: ${alerts.length}");
