@@ -44,13 +44,13 @@
     "homeAssistantScanManualError": "Url invalido",
     "homeAssistantScanManualAuthError": "Impossibile connettersi a Home Assistant",
 
-    "addPlantTitleWizard": "Configura nuovo impianto",
-    "addPlantTitleEdit": "Modifica impianto",
-    "addPlantNameLabel": "Nome impianto",
+    "addPlantTitleWizard": "Dai un nome alla casa",
+    "addPlantTitleEdit": "Modifica casa",
+    "addPlantNameLabel": "Nome casa",
     "addPlantLocationLabel": "Coordinate GPS",
     "addPlantLocationButtonLabel": "Usa posizione attuale",
     "addPlantLocationInfoTitle": "Perché abbiamo bisogno della posizione?",
-    "addPlantLocationInfoDescription": "La posizione viene recuperata dalla tua istanza di Home Assistant. Grazie a questo dato possiamo fornire previsioni più precise per quanto riguarda il meteo, la produzione del fotovoltaico e il consumo della tua abitazione",
+    "addPlantLocationInfoDescription": "Homsai utilizza la posizione per ricavare i dati meteorologici per prevedere la variazione dei consumi e della produzione del fotovoltaico.",
 
     "addUrlTitleWizard": "Configura url",
     "addUrlTitleEdit": "Modifica url",
@@ -115,6 +115,7 @@
     "dailyCosumptionChartLoadingLabel": "Recupero dati...",
     "dailyCosumptionChartErrorLabel": "Non riusciamo a recuperare i dati del grafico, controlla nelle impostazioni di aver inserito i dati corretti sui sensori.",
 
+    "addSensorTitleWizard": "Configura impianto",
     "productionSensorLabel": "Produzione",
     "productionSensorHint": "Nome Sensore di produzione",
     "consumptionSensorLabel": "Consumo",

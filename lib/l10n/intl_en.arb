@@ -44,13 +44,13 @@
     "homeAssistantScanManualError": "Invalid url",
     "homeAssistantScanManualAuthError": "Cannot connect to Home Assistant",
 
-    "addPlantTitleWizard": "Configure a new plant",
-    "addPlantTitleEdit": "Edit plant",
-    "addPlantNameLabel": "Plant name",
+    "addPlantTitleWizard": "Give a name to your home",
+    "addPlantTitleEdit": "Edit home",
+    "addPlantNameLabel": "Home name",
     "addPlantLocationLabel": "GPS Coordinates",
     "addPlantLocationButtonLabel": "Use your location",
     "addPlantLocationInfoTitle": "Why do we need plant's position?",
-    "addPlantLocationInfoDescription": "The location is retrieved from your Home Assistant instance. Thanks to this data we can provide more precise forecasts regarding the weather, photovoltaic production and consumption of your home",
+    "addPlantLocationInfoDescription": "Homsai uses the position to obtain meteorological data to predict the variation in consumption and production of photovoltaics.",
 
     "addUrlTitleWizard": "Configure url",
     "addUrlTitleEdit": "Edit url",
@@ -115,6 +115,7 @@
     "dailyCosumptionChartLoadingLabel": "Loading data...",
     "dailyCosumptionChartErrorLabel": "We are unable to retrieve the graph data, check in the settings that you have entered the correct data on the sensors.",
 
+    "addSensorTitleWizard": "Configure system",
     "productionSensorLabel": "Production",
     "productionSensorHint": "Production sensor name",
     "consumptionSensorLabel": "Consumption",

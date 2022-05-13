@@ -63,7 +63,7 @@ class _AddSensorTitle extends StatelessWidget {
       children: <Widget>[
         Text(
             wizard
-                ? HomsaiLocalizations.of(context)!.addPlantTitleWizard
+                ? HomsaiLocalizations.of(context)!.addSensorTitleWizard
                 : HomsaiLocalizations.of(context)!.addPlantTitleEdit,
             style: Theme.of(context).textTheme.headline3),
         const SizedBox(

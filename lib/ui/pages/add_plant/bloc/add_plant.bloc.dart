@@ -65,7 +65,7 @@ class AddPlantBloc extends Bloc<AddPlantEvent, AddPlantState> {
       ConfigurationFetched event, Emitter<AddPlantState> emit) {
     final plantName = PlantName.dirty(event.configuration.locationName);
     final coordinate = Coordinate.dirty(
-        "${event.configuration.latitude};${event.configuration.longitude}");
+        "${event.configuration.latitude.toStringAsFixed(5)};${event.configuration.longitude.toStringAsFixed(5)}");
     getIt
         .registerSingleton<Location>(getLocation(event.configuration.timezone));
     emit(state.copyWith(

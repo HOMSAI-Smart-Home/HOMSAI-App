@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:homsai/app.router.dart';
 import 'package:homsai/crossconcern/components/common/scaffold/homsai_bloc_scaffold.widget.dart';
 import 'package:homsai/crossconcern/helpers/blocs/websocket/websocket.bloc.dart';
+import 'package:homsai/themes/colors.theme.dart';
 import 'package:homsai/ui/pages/add_plant/bloc/add_plant.bloc.dart';
 import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
 
@@ -33,8 +34,7 @@ class _AddPlantPageState extends State<AddPlantPage> {
       providers: [
         BlocProvider<WebSocketBloc>(create: (_) => WebSocketBloc()),
         BlocProvider<AddPlantBloc>(
-          create: (context) =>
-              AddPlantBloc(
+          create: (context) => AddPlantBloc(
               context.read<WebSocketBloc>(), widget.url, widget.wizard),
         ),
       ],
@@ -152,10 +152,14 @@ class _AddPlantLocationField extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   child: SvgPicture.asset(
                     "assets/icons/place.svg",
+                    color: HomsaiColors.primaryGrey,
                   )),
               labelText: HomsaiLocalizations.of(context)!.addPlantLocationLabel,
             ),
-            style: Theme.of(context).textTheme.bodyText2,
+            style: Theme.of(context)
+                .textTheme
+                .bodyText1!
+                .copyWith(color: HomsaiColors.primaryGrey),
           );
         })),
         const SizedBox(height: 16),

@@ -9,10 +9,29 @@ class HomsaiInputDecorationTheme {
       enabledBorder: _normalTextBorder(colorScheme),
       focusedBorder: _normalTextBorder(colorScheme),
       errorBorder: _errorTextBorder(colorScheme),
+      disabledBorder: _disabledTextBorder(),
       errorMaxLines: 2,
       errorStyle: textTheme.bodyText1?.copyWith(color: HomsaiColors.primaryRed),
-      labelStyle: textTheme.bodyText1,
-      iconColor: colorScheme.onBackground,
+      labelStyle: MaterialStateTextStyle.resolveWith((states) {
+        return textTheme.bodyText1!.copyWith(
+            color: (states.contains(MaterialState.disabled)
+                ? HomsaiColors.primaryGrey
+                : colorScheme.onBackground));
+      }),
+      floatingLabelStyle: MaterialStateTextStyle.resolveWith((states) {
+        return textTheme.bodyText1!.copyWith(
+            color: (states.contains(MaterialState.disabled)
+                ? HomsaiColors.primaryGrey
+                : colorScheme.onBackground));
+      }),
+      iconColor: MaterialStateColor.resolveWith((states) =>
+          (states.contains(MaterialState.disabled)
+              ? HomsaiColors.primaryGrey
+              : colorScheme.onBackground)),
+      prefixIconColor: MaterialStateColor.resolveWith((states) =>
+          (states.contains(MaterialState.disabled)
+              ? HomsaiColors.primaryGrey
+              : colorScheme.onBackground)),
     );
   }
 
@@ -22,6 +41,10 @@ class HomsaiInputDecorationTheme {
 
   static OutlineInputBorder _errorTextBorder(ColorScheme colorScheme) {
     return _textBorder(colorScheme.error);
+  }
+
+  static OutlineInputBorder _disabledTextBorder() {
+    return _textBorder(HomsaiColors.primaryGrey);
   }
 
   static OutlineInputBorder _textBorder(Color color) {
