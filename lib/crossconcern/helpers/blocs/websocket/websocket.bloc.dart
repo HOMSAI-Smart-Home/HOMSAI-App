@@ -35,10 +35,6 @@ class WebSocketBloc extends Bloc<WebSocketEvent, WebSocketState> {
   void _onWebsocketConnect(
       ConnectWebSocket event, Emitter<WebSocketState> emit) async {
     if (event.url.isNotEmpty) {
-      if (webSocketRepository.isConnected() || webSocketRepository.isConnecting()) {
-        return event.onWebSocketConnected();
-      }
-
       return await webSocketRepository.connect(
         url: Uri.parse(event.url),
         onConnected: event.onWebSocketConnected,

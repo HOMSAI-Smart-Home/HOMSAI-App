@@ -4,7 +4,6 @@ import 'package:formz/formz.dart';
 import 'package:homsai/crossconcern/helpers/blocs/websocket/websocket.bloc.dart';
 import 'package:homsai/crossconcern/helpers/models/forms/add_plant/coordinate.model.dart';
 import 'package:homsai/crossconcern/helpers/models/forms/add_plant/plant_name.model.dart';
-import 'package:homsai/datastore/DTOs/websocket/configuration/configuration.dto.dart';
 import 'package:homsai/datastore/local/app.database.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.dart';
 import 'package:homsai/datastore/models/database/configuration.entity.dart';
@@ -39,7 +38,7 @@ class AddPlantBloc extends Bloc<AddPlantEvent, AddPlantState> {
     on<CoordinateChanged>(_onCoordinateChanged);
     on<CoordinateUnfocused>(_onCoordinateUnfocused);
     on<OnSubmit>(_onSubmit);
-    if (!webSocketRepository.isConnected() && wizard) {
+    if (wizard) {
       webSocketBloc.add(ConnectWebSocket(
           onWebSocketConnected: () {
             webSocketBloc.add(FetchConfig(

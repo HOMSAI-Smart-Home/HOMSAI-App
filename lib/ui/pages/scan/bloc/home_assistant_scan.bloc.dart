@@ -163,9 +163,10 @@ class HomeAssistantScanBloc
 
       emit(
         state.copyWith(
-            status: HomeAssistantScanStatus.authenticationSuccess,
-            remoteUrl: remote,
-            selectedUrl: url),
+          status: HomeAssistantScanStatus.authenticationSuccess,
+          remoteUrl: remote,
+          selectedUrl: url,
+        ),
       );
     } catch (e) {
       emit(state.copyWith(

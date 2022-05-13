@@ -13,6 +13,7 @@ import 'package:homsai/business/home_assistant/home_assistant.repository.dart';
 import 'package:homsai/business/home_assistant_scanner/home_assistant_scanner.interface.dart';
 import 'package:homsai/business/home_assistant_scanner/home_assistant_scanner.repository.dart';
 import 'package:homsai/business/light/light.interface.dart';
+import 'package:homsai/datastore/models/database/plant.entity.dart';
 import 'package:homsai/datastore/models/home_assistant_auth.model.dart';
 import 'package:homsai/datastore/remote/network/network_manager.interface.dart';
 import 'package:homsai/datastore/remote/network/network.manager.dart';
@@ -124,6 +125,8 @@ class _AppState extends State<App> with WidgetsBindingObserver {
       getIt.get<HomeAssistantWebSocketInterface>();
   final AppPreferencesInterface _appPreferencesInterface =
       getIt.get<AppPreferencesInterface>();
+  final AppDatabase _appDatabase = getIt.get<AppDatabase>();
+
   final _appRouter = AppRouter(authGuard: AuthGuard());
 
   @override
@@ -147,14 +150,15 @@ class _AppState extends State<App> with WidgetsBindingObserver {
   }
 
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
+  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
+    HomeAssistantAuth? auth = _appPreferencesInterface.getHomeAssistantToken();
+    String? userId = _appPreferencesInterface.getUserId();
+    Plant? plant = await _appDatabase.getPlant();
+
     setState(() {
       switch (state) {
         case AppLifecycleState.resumed:
-          HomeAssistantAuth? auth =
-              _appPreferencesInterface.getHomeAssistantToken();
-          String? userId = _appPreferencesInterface.getUserId();
-          if (userId != null && auth != null) {
+          if (userId != null && auth != null && plant != null) {
             if (!_webSocketInterface.isConnected() &&
                 !_webSocketInterface.isConnecting()) {
               _webSocketInterface.connect();

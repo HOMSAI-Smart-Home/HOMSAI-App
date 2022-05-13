@@ -76,9 +76,11 @@ class HomeAssistantWebSocketRepository
       getIt.get<HomeAssistantInterface>();
   final AppDatabase appDatabase = getIt.get<AppDatabase>();
 
+  static const int startingIndex = 2;
+
   WebSocketChannel? webSocket;
   HomeAssistantAuth? homeAssistantAuth;
-  int id = 2;
+  int id;
   HomeAssistantWebSocketStatus status =
       HomeAssistantWebSocketStatus.disconnected;
   final List<String> _message = [];
@@ -89,6 +91,8 @@ class HomeAssistantWebSocketRepository
   static Map<int, WebSocketSubscribersHandler> events = {};
 
   List<Function> onConnected = [];
+
+  HomeAssistantWebSocketRepository({this.id = startingIndex});
 
   @override
   bool isConnected() {
@@ -103,15 +107,23 @@ class HomeAssistantWebSocketRepository
 
   @override
   Future<void> connect({Uri? url, Function? onConnected}) async {
+    if (isConnected()) {
+      if (onConnected != null) onConnected();
+      return;
+    }
     if (onConnected != null) this.onConnected.add(onConnected);
+    if (isConnecting()) return;
+
+    status = HomeAssistantWebSocketStatus.connecting;
 
     if (url != null) {
-      return _listen(url);
+      return await _listen(url);
     }
+
     _plant = await appDatabase.getPlant();
 
     if (_plant != null) {
-      return _listen(_plant!.getBaseUrl());
+      return await _listen(_plant!.getBaseUrl());
     }
   }
 
@@ -199,15 +211,7 @@ class HomeAssistantWebSocketRepository
   }
 
   Future<void> _listen(Uri url) async {
-    if (isConnected()) {
-      while (onConnected.isNotEmpty) {
-        onConnected.removeAt(0)();
-      }
-      return;
-    }
-
-    if (status == HomeAssistantWebSocketStatus.connecting) return;
-
+    id = startingIndex;
     try {
       if (status != HomeAssistantWebSocketStatus.retry) {
         status = HomeAssistantWebSocketStatus.connecting;
@@ -281,6 +285,7 @@ class HomeAssistantWebSocketRepository
       final fallback = _plant?.getFallbackUrl();
       if (fallback != null) {
         status = HomeAssistantWebSocketStatus.retry;
+        if (_message.isNotEmpty) _message.removeAt(0);
         _listen(fallback);
         return;
       }
