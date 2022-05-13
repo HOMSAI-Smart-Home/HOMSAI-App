@@ -30,12 +30,13 @@ class ToggleConsumptionOptimazedPlot extends HomeEvent {
 }
 
 class AddAlert extends HomeEvent {
-  const AddAlert(this.alert);
+  const AddAlert(this.alert, this.alertId);
 
   final Widget alert;
+  final String alertId;
 
   @override
-  List<Object> get props => [alert];
+  List<Object> get props => [alert, alertId];
 }
 
 class RemoveAlert extends HomeEvent {

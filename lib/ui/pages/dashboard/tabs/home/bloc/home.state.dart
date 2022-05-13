@@ -15,7 +15,7 @@ class HomeState extends Equatable {
       this.maxOffset,
       this.isPlotOptimized = false,
       this.isLoading = true,
-      this.alerts = const []});
+      this.alerts = const {}});
 
   final List<LightEntity> lights;
 
@@ -31,7 +31,7 @@ class HomeState extends Equatable {
   final Offset? maxOffset;
   final bool isPlotOptimized;
   final bool isLoading;
-  final List<Widget> alerts;
+  final Map<String, Widget> alerts;
 
   HomeState copyWith({
     List<LightEntity>? lights,
@@ -47,8 +47,7 @@ class HomeState extends Equatable {
     Offset? maxOffset,
     bool? isPlotOptimized,
     bool? isLoading,
-    Widget? alert,
-    String? alertToRemove,
+    Map<String, Widget>? alerts,
   }) {
     return HomeState(
       lights: lights ?? this.lights,
@@ -65,7 +64,7 @@ class HomeState extends Equatable {
       maxOffset: maxOffset ?? this.maxOffset,
       isPlotOptimized: isPlotOptimized ?? this.isPlotOptimized,
       isLoading: isLoading ?? this.isLoading,
-      alerts: checkAlerts(alert, alertToRemove, alerts),
+      alerts: alerts ?? this.alerts,
     );
   }
 
@@ -84,20 +83,4 @@ class HomeState extends Equatable {
         isLoading,
         alerts
       ];
-}
-
-List<Widget> checkAlerts(
-    Widget? alert, String? alertToRemove, List<Widget> alerts) {
-  if (alert != null &&
-      alerts.where((element) => element.key == alert.key).isEmpty) {
-    return alerts + [alert];
-  }
-
-  if (alertToRemove != null && alerts.isNotEmpty) {
-    var newAlerts = List<Widget>.from(alerts);
-    newAlerts.removeWhere((element) => element.key == Key(alertToRemove));
-    return newAlerts;
-  }
-
-  return alerts;
 }

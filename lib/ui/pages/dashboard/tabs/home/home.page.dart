@@ -131,7 +131,7 @@ class ActiveAlert extends StatelessWidget {
 
 Widget generateActiveAlert(HomeState state, BuildContext context) {
   return Column(
-    children: [if (state.alerts.isNotEmpty) state.alerts.first],
+    children: [if (state.alerts.isNotEmpty) state.alerts.values.toList().first],
   );
 }
 

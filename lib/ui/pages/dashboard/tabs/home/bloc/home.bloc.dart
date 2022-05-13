@@ -65,16 +65,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     switch (result) {
       case ConnectivityResult.none:
         add(const AddAlert(NoInternetConnectionAlert(
-            key: Key(ConnectionProperties.noInternetConnectionAlertKey))));
+                key: Key(ConnectionProperties.noInternetConnectionAlertKey)),
+            ConnectionProperties.noInternetConnectionAlertKey));
         break;
       case ConnectivityResult.wifi:
-        add(const RemoveAlert(
-            ConnectionProperties.noInternetConnectionAlertKey));
-        break;
       case ConnectivityResult.ethernet:
-        add(const RemoveAlert(
-            ConnectionProperties.noInternetConnectionAlertKey));
-        break;
       case ConnectivityResult.mobile:
         add(const RemoveAlert(
             ConnectionProperties.noInternetConnectionAlertKey));
@@ -98,11 +93,15 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   void _onAddAlert(AddAlert event, Emitter<HomeState> emit) async {
-    emit(state.copyWith(alert: event.alert));
+    final Map<String, Widget> alerts = Map.from(state.alerts);
+    alerts.putIfAbsent(event.alertId, () => event.alert);
+    emit(state.copyWith(alerts: alerts));
   }
 
   void _onRemoveAlert(RemoveAlert event, Emitter<HomeState> emit) async {
-    emit(state.copyWith(alertToRemove: event.alertId));
+    final Map<String, Widget> alerts = Map.from(state.alerts);
+    alerts.remove(event.alertId);
+    emit(state.copyWith(alerts: alerts));
   }
 
   void _onFetchedLights(FetchedLights event, Emitter<HomeState> emit) async {
