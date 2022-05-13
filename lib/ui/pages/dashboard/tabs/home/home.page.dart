@@ -20,7 +20,7 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage>  with WidgetsBindingObserver {
+class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   @override
   void initState() {
     WidgetsBinding.instance!.addObserver(this);
@@ -158,22 +158,25 @@ class DailyConsumptionChartInfo extends StatelessWidget {
                         .homePageYesterdayConsumptionLabel,
                     style: Theme.of(context).textTheme.headline5,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
-                    child: ToggleText(
-                      key: ValueKey(state.isPlotOptimized),
-                      first: HomsaiLocalizations.of(context)!
-                          .homePageCurrentConsumptionLabel,
-                      second: HomsaiLocalizations.of(context)!
-                          .homePageOptimizedConsumptionLabel,
-                      onChanged: (isNormalPlot) {
-                        context.read<HomeBloc>().add(
-                            ToggleConsumptionOptimazedPlot(
-                                isOptimized: !isNormalPlot));
-                      },
-                      isFirstEnabled: !state.isPlotOptimized,
+                  if (state.optimizedConsumptionPlot != null &&
+                      state.consumptionPlot != null &&
+                      state.productionPlot != null)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 30),
+                      child: ToggleText(
+                        key: ValueKey(state.isPlotOptimized),
+                        first: HomsaiLocalizations.of(context)!
+                            .homePageCurrentConsumptionLabel,
+                        second: HomsaiLocalizations.of(context)!
+                            .homePageOptimizedConsumptionLabel,
+                        onChanged: (isNormalPlot) {
+                          context.read<HomeBloc>().add(
+                              ToggleConsumptionOptimazedPlot(
+                                  isOptimized: !isNormalPlot));
+                        },
+                        isFirstEnabled: !state.isPlotOptimized,
+                      ),
                     ),
-                  ),
                   generateChartGraphics(state, context),
                   const DailyConsumptionBalanceInfo(),
                 ],
@@ -187,7 +190,10 @@ class DailyConsumptionChartInfo extends StatelessWidget {
 }
 
 Widget generateChartGraphics(HomeState state, BuildContext context) {
-  if (state.isLoading) {
+  if (state.isLoading ||
+      (state.optimizedConsumptionPlot == null ||
+          state.consumptionPlot == null ||
+          state.productionPlot == null)) {
     return SizedBox(
       height: 193,
       child: Column(
@@ -195,40 +201,36 @@ Widget generateChartGraphics(HomeState state, BuildContext context) {
         children: [
           const _HourglassIcon(),
           const SizedBox(height: 5),
-          Text(
-            HomsaiLocalizations.of(context)!.dailyCosumptionChartLoadingLabel,
-            style: Theme.of(context).textTheme.caption,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: (state.isLoading)
+                ? Text(
+                    HomsaiLocalizations.of(context)!
+                        .dailyCosumptionChartLoadingLabel,
+                    style: Theme.of(context).textTheme.caption,
+                    textAlign: TextAlign.center,
+                  )
+                : Text(
+                    HomsaiLocalizations.of(context)!
+                        .dailyCosumptionChartErrorLabel,
+                    style: Theme.of(context).textTheme.caption,
+                    textAlign: TextAlign.center,
+                  ),
+
           )
         ],
       ),
     );
   }
-  return (state.optimizedConsumptionPlot != null &&
-          state.consumptionPlot != null &&
-          state.productionPlot != null)
-      ? DailyConsumptionChart(
-          autoConsumptionPlot: state.autoConsumption,
-          consumptionPlot: (state.isPlotOptimized)
-              ? state.optimizedConsumptionPlot
-              : state.consumptionPlot,
-          productionPlot: state.productionPlot,
-          max: state.maxOffset,
-          min: state.minOffset,
-        )
-      : Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(
-              width: 250,
-              child: Text(
-                HomsaiLocalizations.of(context)!.dailyCosumptionChartErrorLabel,
-                style: Theme.of(context).textTheme.caption,
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ],
-        );
+  return DailyConsumptionChart(
+    autoConsumptionPlot: state.autoConsumption,
+    consumptionPlot: (state.isPlotOptimized)
+        ? state.optimizedConsumptionPlot
+        : state.consumptionPlot,
+    productionPlot: state.productionPlot,
+    max: state.maxOffset,
+    min: state.minOffset,
+  );
 }
 
 class _HourglassIcon extends StatefulWidget {
@@ -241,16 +243,30 @@ class _HourglassIcon extends StatefulWidget {
 class _HourglassIconState extends State<_HourglassIcon> {
   rive.SMIInput<bool>? _error;
 
+  void _onHouglassInit(rive.Artboard artboard) {
+    final controller =
+        rive.StateMachineController.fromArtboard(artboard, 'spin');
+    if (controller != null) {
+      artboard.addController(controller);
+      _error = controller.findInput<bool>('error');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return const SizedBox(
-      width: 48,
-      height: 48,
-      child: rive.RiveAnimation.asset(
-        "assets/animations/hourglass.riv",
-        stateMachines: ['spin'],
-      ),
-    );
+    return BlocListener<HomeBloc, HomeState>(
+        listener: (context, state) {
+          _error?.value = !state.isLoading;
+        },
+        child: SizedBox(
+          width: 48,
+          height: 48,
+          child: rive.RiveAnimation.asset(
+            "assets/animations/hourglass.riv",
+            stateMachines: const [''],
+            onInit: _onHouglassInit,
+          ),
+        ));
   }
 }
 

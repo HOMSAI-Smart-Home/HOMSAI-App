@@ -14,7 +14,7 @@ class HomeState extends Equatable {
       this.minOffset,
       this.maxOffset,
       this.isPlotOptimized = false,
-      this.isLoading = true,
+      this.isLoading = false,
       this.alerts = const {}});
 
   final List<LightEntity> lights;

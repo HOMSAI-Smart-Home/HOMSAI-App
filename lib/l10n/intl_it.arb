@@ -113,7 +113,7 @@
     "dailyCosumptionChartLegendaSelfPurchased": "Acquistata",
 
     "dailyCosumptionChartLoadingLabel": "Recupero dati...",
-    "dailyCosumptionChartErrorLabel": "Dati grafico non disponibili. Assicurati di aver collegato i sensori di consumo e produzione.",
+    "dailyCosumptionChartErrorLabel": "Non riusciamo a recuperare i dati del grafico, controlla nelle impostazioni di aver inserito i dati corretti sui sensori.",
 
     "productionSensorLabel": "Produzione",
     "productionSensorHint": "Nome Sensore di produzione",
