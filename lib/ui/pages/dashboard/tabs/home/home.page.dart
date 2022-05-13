@@ -410,6 +410,10 @@ class EarnWithHomsaiItemInfo extends StatelessWidget {
                       content: earnWithHomsaiDialogContent(context),
                       insetPadding: const EdgeInsets.symmetric(
                           horizontal: 20.0, vertical: 24.0),
+                      titlePadding: const EdgeInsets.only(
+                          top: 10, left: 20, right: 10, bottom: 0),
+                      contentPadding: const EdgeInsets.only(
+                          top: 15, left: 20, right: 10, bottom: 0),
                       title: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -558,7 +562,8 @@ List<Widget> generateEarnWithHomsaiParagraph(
       Text(
         title,
         textAlign: TextAlign.left,
-        style: TextStyle(color: HomsaiColors.primaryGreen),
+        style: TextStyle(
+            color: HomsaiColors.primaryGreen, fontWeight: FontWeight.bold),
       ),
     const SizedBox(height: 5),
     Text(content,
