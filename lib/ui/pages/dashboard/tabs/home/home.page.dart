@@ -254,6 +254,7 @@ class _HourglassIconState extends State<_HourglassIcon> {
 
   @override
   Widget build(BuildContext context) {
+    return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
     return BlocListener<HomeBloc, HomeState>(
         listener: (context, state) {
           _error?.value = !state.isLoading;
@@ -267,6 +268,7 @@ class _HourglassIconState extends State<_HourglassIcon> {
             onInit: _onHouglassInit,
           ),
         ));
+    });
   }
 }
 
