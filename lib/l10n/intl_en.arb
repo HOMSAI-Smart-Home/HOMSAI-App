@@ -41,7 +41,7 @@
     "homeAssistantScanningProgress": "Scanning...",
     "homeAssistantScanManualCheckbox": "This is a remote URL",
     "homeAssistantScanLabel": "Scan",
-    "homeAssistantScanManualError": "Invalid url",
+    "homeAssistantScanManualError": "Invalid url, make sure it respects the format http://XX.XXX.XXX.XXX:XXXX",
     "homeAssistantScanManualAuthError": "Cannot connect to Home Assistant",
 
     "addPlantTitleWizard": "Give a name to your home",
