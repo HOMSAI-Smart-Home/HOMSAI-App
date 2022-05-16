@@ -76,11 +76,9 @@ class HomeAssistantWebSocketRepository
       getIt.get<HomeAssistantInterface>();
   final AppDatabase appDatabase = getIt.get<AppDatabase>();
 
-  static const int startingIndex = 2;
-
   WebSocketChannel? webSocket;
   HomeAssistantAuth? homeAssistantAuth;
-  int id;
+  int id = 2;
   HomeAssistantWebSocketStatus status =
       HomeAssistantWebSocketStatus.disconnected;
   final List<String> _message = [];
@@ -91,8 +89,6 @@ class HomeAssistantWebSocketRepository
   static Map<int, WebSocketSubscribersHandler> events = {};
 
   List<Function> onConnected = [];
-
-  HomeAssistantWebSocketRepository({this.id = startingIndex});
 
   @override
   bool isConnected() {
@@ -211,7 +207,6 @@ class HomeAssistantWebSocketRepository
   }
 
   Future<void> _listen(Uri url) async {
-    id = startingIndex;
     try {
       if (status != HomeAssistantWebSocketStatus.retry) {
         status = HomeAssistantWebSocketStatus.connecting;
