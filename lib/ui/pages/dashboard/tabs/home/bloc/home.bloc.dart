@@ -1,4 +1,3 @@
-import 'dart:isolate';
 import 'dart:math';
 
 import 'package:bloc/bloc.dart';
@@ -52,6 +51,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   final AppDatabase appDatabase = getIt.get<AppDatabase>();
 
+  bool _active = true;
+
   HomeBloc() : super(const HomeState()) {
     on<FetchStates>(_onFetchState);
     on<FetchedLights>(_onFetchedLights);
@@ -90,7 +91,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   void _onFetchState(FetchStates event, Emitter<HomeState> emit) async {
     webSocketRepository.fetchingStates(
       WebSocketSubscriber((res) {
-        add(FetchedLights(entities: res));
+        if (_active) add(FetchedLights(entities: res));
       }),
     );
   }
@@ -113,8 +114,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       await appDatabase.homeAssitantDao.refreshPlantEntities(
           plant.id!, event.entities.getEntities<Entity>());
     }
-
-    emit(state.copyWith(lights: event.entities.getEntities<LightEntity>()));
+    if (_active) {
+      emit(state.copyWith(lights: event.entities.getEntities<LightEntity>()));
+    }
   }
 
   void _onToggleConsumptionOptimazedPlot(
@@ -185,31 +187,33 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
               _getPlotInfo(consumptionForecast.optimizedGeneralPowerMeterData);
         }
 
-        emit(state.copyWith(
-            consumptionSensor: consumptionSensor,
-            productionSensor: productionSensor,
-            consumptionPlot: consumptionInfo.plot.isNotEmpty
-                ? consumptionInfo.plot
-                : DailyConsumptionChart.emptyPlot,
-            productionPlot: productionInfo.plot.isNotEmpty
-                ? productionInfo.plot
-                : DailyConsumptionChart.emptyPlot,
-            optimizedConsumptionPlot:
-                optimizedInfo?.plot ?? DailyConsumptionChart.emptyPlot,
-            autoConsumption: autoConsumption,
-            balance: consumptionForecast?.withoutHomsai,
-            optimizedBalance: consumptionForecast?.withHomsai,
-            minOffset: minOffset(
-              consumptionInfo.minRange,
-              productionInfo.minRange,
-              optimizedInfo?.minRange,
-            ),
-            maxOffset: maxOffset(
-              consumptionInfo.maxRange,
-              productionInfo.maxRange,
-              optimizedInfo?.maxRange,
-            ),
-            isLoading: false));
+        if (_active) {
+          emit(state.copyWith(
+              consumptionSensor: consumptionSensor,
+              productionSensor: productionSensor,
+              consumptionPlot: consumptionInfo.plot.isNotEmpty
+                  ? consumptionInfo.plot
+                  : DailyConsumptionChart.emptyPlot,
+              productionPlot: productionInfo.plot.isNotEmpty
+                  ? productionInfo.plot
+                  : DailyConsumptionChart.emptyPlot,
+              optimizedConsumptionPlot:
+                  optimizedInfo?.plot ?? DailyConsumptionChart.emptyPlot,
+              autoConsumption: autoConsumption,
+              balance: consumptionForecast?.withoutHomsai,
+              optimizedBalance: consumptionForecast?.withHomsai,
+              minOffset: minOffset(
+                consumptionInfo.minRange,
+                productionInfo.minRange,
+                optimizedInfo?.minRange,
+              ),
+              maxOffset: maxOffset(
+                consumptionInfo.maxRange,
+                productionInfo.maxRange,
+                optimizedInfo?.maxRange,
+              ),
+              isLoading: false));
+        }
       } catch (e) {
         emit(HomeState(lights: state.lights));
       }
@@ -286,6 +290,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         .toList();
     return plot.sample(
         plot[0].x, plot[0].x + const Duration(days: 1).inMinutes, 20);
+  }
+
+  void onActive() {
+    _active = true;
+  }
+
+  void onInactive() {
+    _active = false;
   }
 }
 

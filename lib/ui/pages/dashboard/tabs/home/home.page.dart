@@ -44,10 +44,12 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     setState(() {
       switch (state) {
         case AppLifecycleState.resumed:
+          context.read<HomeBloc>().onActive();
           context.read<HomeBloc>().add(FetchStates());
           context.read<HomeBloc>().add(FetchHistory());
           break;
         default:
+          context.read<HomeBloc>().onInactive();
           break;
       }
     });
