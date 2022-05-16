@@ -77,15 +77,16 @@ abstract class AppDatabase extends FloorDatabase {
     final plant = await getPlant();
     if (plant == null) return null;
 
-    final homeAssistantEntity = await homeAssitantDao.findEntityById(plant.id!, entityId);
+    final homeAssistantEntity =
+        await homeAssitantDao.findEntityById(plant.id!, entityId);
     return homeAssistantEntity?.entity as T;
   }
 
   Future<void> logout() async {
     final user = await getUser();
     if (user == null) return;
-    //user.plantId = null;
-    //await userDao.updateItem(user);
+    user.plantId = null;
+    await userDao.updateItem(user);
     _appPreferences.logout();
   }
 }

@@ -26,7 +26,7 @@ abstract class HomeAssistantInterface {
     Duration timeout,
   });
   Future revokeToken({
-    required Uri url,
+    required Plant plant,
     Duration timeout,
   });
   Future<List<HistoryDto>> getHistory({

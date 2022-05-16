@@ -207,13 +207,17 @@ class HomeAssistantRepository implements HomeAssistantInterface {
 
   @override
   Future revokeToken({
-    required Uri url,
+    required Plant plant,
     Duration timeout = const Duration(seconds: 2),
   }) async {
     HomeAssistantAuth? auth = appPreferences.getHomeAssistantToken();
     Map<String, dynamic> body;
 
-    url = url.replace(
+    final baseUrl = plant.getBaseUrl().replace(
+      path: HomeAssistantApiProprties.tokenPath,
+      queryParameters: {},
+    );
+    final fallback = plant.getFallbackUrl()?.replace(
       path: HomeAssistantApiProprties.tokenPath,
       queryParameters: {},
     );
@@ -225,18 +229,20 @@ class HomeAssistantRepository implements HomeAssistantInterface {
 
     await _tokenReqest(
       timeout: timeout,
-      baseurl: url,
+      baseurl: baseUrl,
+      fallback: fallback,
       body: body,
     );
     appPreferences.resetHomeAssistantToken();
   }
 
   @override
-  Future<List<HistoryDto>> getHistory(
-      {required Plant plant,
-      HistoryBodyDto? historyBodyDto,
-      Duration timeout = const Duration(seconds: 10),
-      required bool isConsumption}) async {
+  Future<List<HistoryDto>> getHistory({
+    required Plant plant,
+    HistoryBodyDto? historyBodyDto,
+    Duration timeout = const Duration(seconds: 10),
+    required bool isConsumption,
+  }) async {
     Map<String, dynamic> response;
 
     final baseUrl = plant.getBaseUrl().replace(
