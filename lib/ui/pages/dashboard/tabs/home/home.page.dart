@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:homsai/crossconcern/components/charts/daily_consumption_chart.widget.dart';
+import 'package:homsai/crossconcern/components/charts/photovoltaic_forecast_chart.widget.dart';
 import 'package:homsai/crossconcern/components/utils/shadow.widget.dart';
 import 'package:homsai/crossconcern/components/utils/toggle_text.widget.dart';
 import 'package:homsai/crossconcern/helpers/blocs/websocket/websocket.bloc.dart';
@@ -200,15 +201,39 @@ Widget generateChartGraphics(HomeState state, BuildContext context) {
       ),
     );
   }
-  return DailyConsumptionChart(
-    autoConsumptionPlot: state.autoConsumption,
-    consumptionPlot: (state.isPlotOptimized)
-        ? state.optimizedConsumptionPlot
-        : state.consumptionPlot,
-    productionPlot: state.productionPlot,
-    max: state.maxOffset,
-    min: state.minOffset,
-  );
+  return (state.optimizedConsumptionPlot != null &&
+          state.consumptionPlot != null &&
+          state.productionPlot != null)
+      ? PhotovoltaicForecastChart(
+          forecastData: state.productionPlot,
+          currentForecastData: state.productionPlot
+              ?.elementAt(state.productionPlot!.length ~/ 2),
+          min: state.minOffset,
+          max: state.maxOffset)
+      /*DailyConsumptionChart(
+          autoConsumptionPlot: state.autoConsumption,
+          consumptionPlot: (state.isPlotOptimized)
+              ? state.optimizedConsumptionPlot
+              : state.consumptionPlot,
+          productionPlot: state.productionPlot,
+          max: state.maxOffset,
+          min: state.minOffset,
+        )
+        */
+      : Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: 250,
+              child: Text(
+                HomsaiLocalizations.of(context)!.dailyCosumptionChartErrorLabel,
+                style: Theme.of(context).textTheme.caption,
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ],
+        );
 }
 
 class _HourglassIcon extends StatefulWidget {
