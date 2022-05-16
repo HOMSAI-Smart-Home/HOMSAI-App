@@ -435,7 +435,7 @@ class _SearchLocalIntanceManualCheckbox extends StatelessWidget {
             ),
             Text(
               HomsaiLocalizations.of(context)!.homeAssistantScanManualCheckbox,
-              style: Theme.of(context).textTheme.bodyText1!,
+              style: Theme.of(context).textTheme.bodyText1!.copyWith(height: 1),
             ),
           ],
         ),

@@ -45,19 +45,19 @@ class _DeviceState extends State<Device> {
         return SvgPicture.asset(
           device.iconPath,
           color: getColor(device),
-          height: 38,
+          height: 50,
         );
       case DeviceStatus.warning:
         return SvgPicture.asset(
           "assets/icons/info.svg",
           color: getColor(device),
-          height: 38,
+          height: 50,
         );
       case DeviceStatus.error:
         return SvgPicture.asset(
           "assets/icons/warning.svg",
           color: getColor(device),
-          height: 38,
+          height: 50,
         );
     }
   }
@@ -101,6 +101,7 @@ class _DeviceState extends State<Device> {
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.bodyText1?.copyWith(
                           fontWeight: FontWeight.w500,
+                          height: 1,
                         ),
                   ),
                   Row(
@@ -128,14 +129,22 @@ class _DeviceState extends State<Device> {
                                             .groupDeviceGeneralLabel,
                                         style: Theme.of(context)
                                             .textTheme
-                                            .bodyText2,
+                                            .bodyText2!
+                                            .copyWith(
+                                              height: 1,
+                                            ),
                                       ),
                                     ],
                                   ),
                                 )
                               : Text(
                                   widget.room,
-                                  style: Theme.of(context).textTheme.bodyText2,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyText2!
+                                      .copyWith(
+                                        height: 1,
+                                      ),
                                 ),
                           const SizedBox(height: 12),
                           FittedBox(
@@ -147,6 +156,7 @@ class _DeviceState extends State<Device> {
                                   .bodyText1
                                   ?.copyWith(
                                     fontWeight: FontWeight.bold,
+                                    height: 1,
                                     color: getColor(widget),
                                   ),
                             ),

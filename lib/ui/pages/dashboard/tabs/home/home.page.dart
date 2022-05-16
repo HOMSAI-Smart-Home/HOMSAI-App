@@ -1,4 +1,3 @@
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -61,23 +60,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          /*Alert(
-            AlertType.tips,
-            icon: SvgPicture.asset(
-                    "assets/icons/tips.svg",
-                  ),
-            title: Text(
-              HomsaiLocalizations.of(context)!
-                  .homePageImprovementAvailableLabel,
-              style: Theme.of(context).textTheme.headline3,
-            ),
-            message: SuperRichText(
-              text: HomsaiLocalizations.of(context)!
-                  .homePageMockTurnOffLightLabel,
-              style: Theme.of(context).textTheme.bodyText2,
-            ),
-            action: AlertAction("Details", () {}),
-          ),*/
           const ActiveAlert(),
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 10),
@@ -158,7 +140,10 @@ class DailyConsumptionChartInfo extends StatelessWidget {
                   Text(
                     HomsaiLocalizations.of(context)!
                         .homePageYesterdayConsumptionLabel,
-                    style: Theme.of(context).textTheme.headline5,
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline5!
+                        .copyWith(height: 1),
                   ),
                   if (state.optimizedConsumptionPlot != null &&
                       state.consumptionPlot != null &&
@@ -218,7 +203,6 @@ Widget generateChartGraphics(HomeState state, BuildContext context) {
                     style: Theme.of(context).textTheme.caption,
                     textAlign: TextAlign.center,
                   ),
-
           )
         ],
       ),
@@ -257,19 +241,19 @@ class _HourglassIconState extends State<_HourglassIcon> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
-    return BlocListener<HomeBloc, HomeState>(
-        listener: (context, state) {
-          _error?.value = !state.isLoading;
-        },
-        child: SizedBox(
-          width: 48,
-          height: 48,
-          child: rive.RiveAnimation.asset(
-            "assets/animations/hourglass.riv",
-            stateMachines: const [''],
-            onInit: _onHouglassInit,
-          ),
-        ));
+      return BlocListener<HomeBloc, HomeState>(
+          listener: (context, state) {
+            _error?.value = !state.isLoading;
+          },
+          child: SizedBox(
+            width: 48,
+            height: 48,
+            child: rive.RiveAnimation.asset(
+              "assets/animations/hourglass.riv",
+              stateMachines: const [''],
+              onInit: _onHouglassInit,
+            ),
+          ));
     });
   }
 }
@@ -315,7 +299,10 @@ class DailyConsumptionBalanceInfo extends StatelessWidget {
               colored: true,
             ),
             EarnWithHomsaiItemInfo(amount: balanceWithHomesai(state)),
-          ],
+            const SizedBox(
+              height: 10,
+            ),
+          ]
         ),
       ),
     );
@@ -359,7 +346,7 @@ class DailyConsumptionBalanceItemInfo extends StatelessWidget {
         borderRadius: BorderRadius.circular(5),
       ),
       child: SizedBox.fromSize(
-        size: const Size.fromHeight(38),
+        size: const Size.fromHeight(40),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Row(
@@ -369,6 +356,7 @@ class DailyConsumptionBalanceItemInfo extends StatelessWidget {
                 label,
                 style: Theme.of(context).textTheme.bodyText1?.copyWith(
                     fontWeight: FontWeight.bold,
+                    height: 1,
                     color: textColor ??
                         Theme.of(context).colorScheme.onSurfaceVariant),
               ),
@@ -379,6 +367,7 @@ class DailyConsumptionBalanceItemInfo extends StatelessWidget {
                     (amount != null) ? "${amount!.toStringAsFixed(2)} €" : "--",
                     style: Theme.of(context).textTheme.bodyText1?.copyWith(
                         fontWeight: FontWeight.w400,
+                        height: 1,
                         color: getColored(context)),
                   ),
                   if (power != null)
@@ -389,6 +378,7 @@ class DailyConsumptionBalanceItemInfo extends StatelessWidget {
                       style: Theme.of(context).textTheme.bodyText2?.copyWith(
                             fontWeight: FontWeight.w400,
                             fontSize: 10,
+                            height: 1,
                             color: Theme.of(context)
                                 .colorScheme
                                 .onBackground
@@ -420,7 +410,7 @@ class EarnWithHomsaiItemInfo extends StatelessWidget {
         borderRadius: BorderRadius.circular(5),
       ),
       child: SizedBox.fromSize(
-        size: const Size.fromHeight(38),
+        size: const Size.fromHeight(40),
         child: InkWell(
           borderRadius: BorderRadius.circular(5),
           onTap: () => {
@@ -440,7 +430,9 @@ class EarnWithHomsaiItemInfo extends StatelessWidget {
                           Text(
                             HomsaiLocalizations.of(context)!
                                 .homePageEarnWithHomesaiDialogTitle,
-                            style: TextStyle(color: HomsaiColors.primaryWhite),
+                            style: TextStyle(
+                              color: HomsaiColors.primaryWhite,
+                            ),
                           ),
                           InkWell(
                             onTap: () => {Navigator.of(context).pop()},
@@ -467,6 +459,7 @@ class EarnWithHomsaiItemInfo extends StatelessWidget {
                           .homePageEarnWithHomesaiLabel,
                       style: Theme.of(context).textTheme.bodyText1?.copyWith(
                           fontWeight: FontWeight.bold,
+                          height: 1,
                           color: HomsaiColors.primaryWhite),
                     ),
                     SvgPicture.asset("assets/icons/help.svg"),
@@ -482,6 +475,7 @@ class EarnWithHomsaiItemInfo extends StatelessWidget {
                               .homePageBalanceDefaultPlaceholder,
                       style: Theme.of(context).textTheme.bodyText1?.copyWith(
                           fontWeight: FontWeight.w400,
+                          height: 1,
                           color: HomsaiColors.primaryWhite),
                     ),
                   ],

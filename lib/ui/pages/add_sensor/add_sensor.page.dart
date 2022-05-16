@@ -37,13 +37,14 @@ class _AddSensorPageState extends State<AddSensorPage> {
       resizeToAvoidBottomInset: false,
       children: <Widget>[
         _AddSensorTitle(widget.wizard),
+        _AddPlantDescription(widget.wizard),
         _ProductionSensorsSelect(),
         const SizedBox(
-          height: 24,
+          height: 9,
         ),
         _ConsumptionSensorsSelect(),
         const SizedBox(
-          height: 24,
+          height: 16,
         ),
         _AddSensorSubmit(widget.onResult, widget.wizard)
       ],
@@ -62,14 +63,32 @@ class _AddSensorTitle extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         Text(
-            wizard
-                ? HomsaiLocalizations.of(context)!.addSensorTitleWizard
-                : HomsaiLocalizations.of(context)!.addPlantTitleEdit,
-            style: Theme.of(context).textTheme.headline3),
+          wizard
+              ? HomsaiLocalizations.of(context)!.addSensorTitleWizard
+              : HomsaiLocalizations.of(context)!.addPlantTitleEdit,
+          style: Theme.of(context).textTheme.headline2,
+        ),
         const SizedBox(
-          height: 24,
+          height: 16,
         ),
       ],
+    );
+  }
+}
+
+class _AddPlantDescription extends StatelessWidget {
+  final bool wizard;
+
+  const _AddPlantDescription(this.wizard);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      wizard
+          ? HomsaiLocalizations.of(context)!.addPlantDescriptionWizard
+          : HomsaiLocalizations.of(context)!.addPlantDescriptionEdit,
+      textAlign: TextAlign.center,
+      style: Theme.of(context).textTheme.bodyText1,
     );
   }
 }

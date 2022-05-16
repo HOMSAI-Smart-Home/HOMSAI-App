@@ -114,12 +114,7 @@ class _TextPadding extends StatelessWidget {
             Row(children: [
               Text(
                 _GetTextFromPage.getTitle(page, context),
-                style: const TextStyle(
-                    color: Color(0xffffffff),
-                    fontFamily: 'JoyrideExtended',
-                    fontStyle: FontStyle.normal,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 22),
+                style: Theme.of(context).textTheme.headline1
               )
             ]),
             const SizedBox(
@@ -287,30 +282,29 @@ class _HomeAssistantSuperRichText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Flexible(
-        child: SuperRichText(
-      text: text,
-      style: const TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w300,
-          fontFamily: 'HelveticaNowText'),
-      othersMarkers: [
-        MarkerText(
-            marker: '*/', style: const TextStyle(fontWeight: FontWeight.w700)),
-        MarkerText.withUrl(
-            marker: 'l1',
-            urls: ["https://www.home-assistant.io"],
-            style: TextStyle(
-                fontWeight: FontWeight.w700,
-                color: Theme.of(context).colorScheme.primary,
-                decoration: TextDecoration.underline)),
-        MarkerText.withUrl(
-            marker: 'l2',
-            urls: ['https://homsai.app'],
-            style: TextStyle(
-                fontWeight: FontWeight.w700,
-                color: Theme.of(context).colorScheme.primary,
-                decoration: TextDecoration.underline)),
-      ],
-    ));
+      child: SuperRichText(
+        text: text,
+        style: Theme.of(context).textTheme.bodyText1,
+        othersMarkers: [
+          MarkerText(
+              marker: '*',
+              style: const TextStyle(fontWeight: FontWeight.w700)),
+          MarkerText.withUrl(
+              marker: 'l1',
+              urls: ["https://www.home-assistant.io"],
+              style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  color: Theme.of(context).colorScheme.primary,
+                  decoration: TextDecoration.underline)),
+          MarkerText.withUrl(
+              marker: 'l2',
+              urls: ['https://homsai.app'],
+              style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  color: Theme.of(context).colorScheme.primary,
+                  decoration: TextDecoration.underline)),
+        ],
+      ),
+    );
   }
 }

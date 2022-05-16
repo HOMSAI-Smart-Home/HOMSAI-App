@@ -31,7 +31,6 @@ class UrlTextField<Bloc extends UrlTextFieldBloc> extends StatelessWidget {
       onChange: onChange,
     );
   }
-
 }
 
 class _UrlTextField<Bloc extends UrlTextFieldBloc> extends StatelessWidget {
@@ -41,14 +40,14 @@ class _UrlTextField<Bloc extends UrlTextFieldBloc> extends StatelessWidget {
   final TextInputAction? textInputAction;
   final Function(String)? onChange;
 
-  const _UrlTextField({
-    Key? key,
-    required this.focusNode,
-    this.errorText,
-    this.labelText,
-    this.textInputAction,
-    this.onChange
-  }) : super(key: key);
+  const _UrlTextField(
+      {Key? key,
+      required this.focusNode,
+      this.errorText,
+      this.labelText,
+      this.textInputAction,
+      this.onChange})
+      : super(key: key);
 
   Color _color(BuildContext context, UrlTextFieldState state) {
     return (state.status == FormzStatus.invalid)
@@ -59,8 +58,8 @@ class _UrlTextField<Bloc extends UrlTextFieldBloc> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<Bloc, UrlTextFieldState>(
-        builder: (context, state) {
-      return Padding(
+      builder: (context, state) {
+        return Padding(
           padding: const EdgeInsets.symmetric(vertical: 8),
           child: TextFormField(
             key: ValueKey(state.initialUrl),
@@ -69,8 +68,8 @@ class _UrlTextField<Bloc extends UrlTextFieldBloc> extends StatelessWidget {
             keyboardType: TextInputType.url,
             textInputAction: textInputAction,
             onChanged: onChange == null
-            ? (value) => context.read<Bloc>().add(UrlChanged(url: value))
-            : (value) => onChange!(value),
+                ? (value) => context.read<Bloc>().add(UrlChanged(url: value))
+                : (value) => onChange!(value),
             decoration: InputDecoration(
               prefixIcon: Padding(
                   padding: const EdgeInsets.all(14.0),
@@ -80,14 +79,16 @@ class _UrlTextField<Bloc extends UrlTextFieldBloc> extends StatelessWidget {
               errorText: state.status != UrlTextFieldStatus.invalid
                   ? null
                   : errorText ??
-                    HomsaiLocalizations.of(context)!
-                      .homeAssistantScanManualError,
+                      HomsaiLocalizations.of(context)!
+                          .homeAssistantScanManualError,
               labelText: labelText ?? HomsaiLocalizations.of(context)!.urlLabel,
             ),
             style: Theme.of(context).textTheme.bodyText1!.copyWith(
                   color: Theme.of(context).colorScheme.onBackground,
                 ),
-          ));
-    });
+          ),
+        );
+      },
+    );
   }
 }

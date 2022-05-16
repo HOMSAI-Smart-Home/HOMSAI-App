@@ -78,6 +78,7 @@ class _ToggleTextButton extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodyText2?.copyWith(
                     color: Theme.of(context).colorScheme.background,
+                    height: 1,
                     fontWeight: FontWeight.w500),
               ),
             ),

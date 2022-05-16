@@ -46,7 +46,7 @@ class _HomsaiDropdownButtonState<T extends Object>
   @override
   Widget build(BuildContext context) {
     return SizedBox.fromSize(
-      size: const Size.fromHeight(60),
+      size: const Size.fromHeight(68),
       child: Stack(
         children: [
           Padding(
@@ -72,7 +72,7 @@ class _HomsaiDropdownButtonState<T extends Object>
                   ),
                 ),
                 isExpanded: true,
-                buttonPadding: const EdgeInsets.only(left: 24, right: 16),
+                buttonPadding: const EdgeInsets.only(left: 24, right: 16, top: 5, bottom: 5),
                 buttonDecoration: BoxDecoration(
                   border: border(context),
                   borderRadius: BorderRadius.circular(5),

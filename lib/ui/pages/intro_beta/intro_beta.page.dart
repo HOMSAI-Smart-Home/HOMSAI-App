@@ -51,8 +51,6 @@ class _IntroBetaContainerState extends State<_IntroBetaContainer> {
           current.introBetaStatus != IntroBetaStatus.loading,
       builder: (context, state) {
         return Padding(
-          //alignment: Alignment.center,
-          //height: 240,
           padding: EdgeInsets.only(
             bottom: MediaQuery.of(context).viewInsets.bottom,
             top: 8,
@@ -224,7 +222,7 @@ class _IntroBetaTitle extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
         const SizedBox(
-          height: 24,
+          height: 16,
         ),
       ],
     );
@@ -239,12 +237,20 @@ class _IntroBetaDescription extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SuperRichText(
-      text: description,
-      style: Theme.of(context).textTheme.bodyText1,
-      textAlign: TextAlign.center,
-      overflow: TextOverflow.ellipsis,
-      maxLines: 5,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        SuperRichText(
+          text: description,
+          style: Theme.of(context).textTheme.bodyText1,
+          textAlign: TextAlign.center,
+          overflow: TextOverflow.ellipsis,
+          maxLines: 5,
+        ),
+        const SizedBox(
+          height: 16,
+        ),
+      ],
     );
   }
 }

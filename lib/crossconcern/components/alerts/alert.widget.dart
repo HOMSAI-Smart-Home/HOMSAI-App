@@ -62,13 +62,18 @@ class _AlertState extends State<Alert> {
     return Theme(
       child: Card(
         child: Padding(
-          padding: const EdgeInsets.only(top: 10, right: 16, left: 16),
+          padding:
+              const EdgeInsets.only(top: 5, right: 16, left: 16, bottom: 10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              if (widget.icon != null) widget.icon!,
+              if (widget.icon != null)
+                Padding(
+                    padding: const EdgeInsets.only(
+                        top: 5),
+                    child: widget.icon!),
               const SizedBox(
                 width: 8,
               ),

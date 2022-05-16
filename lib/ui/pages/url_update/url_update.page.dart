@@ -145,6 +145,7 @@ class _RemoteUrlTextTextField extends StatelessWidget {
         child: UrlTextField<RemoteUrlTextFieldBloc>(
           focusNode: focusNode,
           labelText: HomsaiLocalizations.of(context)!.remoteUrlLabel,
+          textInputAction: TextInputAction.done,
         ),
       ),
     );
