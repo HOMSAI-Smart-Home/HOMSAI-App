@@ -122,6 +122,10 @@
     "productionSensorHint": "Production sensor name",
     "consumptionSensorLabel": "Consumption",
     "consumptionSensorHint": "Consumption sensor name",
+    "consumptionSensorPopUpTitle": "Incomplete configuration",
+    "consumptionSensorPopUpContent1": "Make sure you have filled in all the fields correctly. To view the optimized consumption correctly, complete the system configuration. You can still complete the configuration later from the Settings page.",
+    "consumptionSensorPopUpIgnore": "Ignore",
+    "consumptionSensorPopUpModify": "Modify",
 
     "logoutDialogMessage": "You will logout from the app. Are you sure?",
 

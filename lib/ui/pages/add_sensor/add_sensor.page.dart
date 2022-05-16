@@ -5,6 +5,7 @@ import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
 import 'package:homsai/crossconcern/components/common/scaffold/homsai_bloc_scaffold.widget.dart';
 import 'package:homsai/crossconcern/helpers/blocs/websocket/websocket.bloc.dart';
 import 'package:homsai/datastore/models/entity/sensors/mesurable/mesurable_sensor.entity.dart';
+import 'package:homsai/themes/colors.theme.dart';
 import 'package:homsai/ui/pages/add_sensor/bloc/add_sensor.bloc.dart';
 
 class AddSensorPage extends StatefulWidget {
@@ -151,8 +152,78 @@ class _AddSensorSubmit extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
-        final bloc = context.read<AddSensorBloc>();
-        bloc.add(OnSubmit(() => onResult(true)));
+        showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+                  content: Column(
+                    children: [
+                      Text(HomsaiLocalizations.of(context)!
+                          .consumptionSensorPopUpContent1)
+                    ],
+                  ),
+                  scrollable: true,
+                  insetPadding: const EdgeInsets.symmetric(
+                      horizontal: 20.0, vertical: 24.0),
+                  titlePadding: const EdgeInsets.only(
+                      top: 10, left: 20, right: 10, bottom: 0),
+                  contentPadding: const EdgeInsets.only(
+                      top: 25, left: 20, right: 10, bottom: 0),
+                  title: Row(
+                    children: [
+                      Text(
+                        HomsaiLocalizations.of(context)!
+                            .consumptionSensorPopUpTitle,
+                        style: TextStyle(color: HomsaiColors.primaryWhite),
+                      ),
+                    ],
+                  ),
+                  actions: [
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: InkWell(
+                            onTap: () {
+                              final bloc = context.read<AddSensorBloc>();
+                              bloc.add(OnSubmit(() => onResult(true)));
+                            },
+                            child: Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 20, bottom: 20),
+                                  child: Text(
+                                    HomsaiLocalizations.of(context)!
+                                        .consumptionSensorPopUpIgnore,
+                                  ),
+                                ),
+                              ],
+                              mainAxisAlignment: MainAxisAlignment.center,
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                            flex: 1,
+                            child: InkWell(
+                                onTap: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      HomsaiLocalizations.of(context)!
+                                          .consumptionSensorPopUpModify,
+                                      style: TextStyle(
+                                          color: HomsaiColors.primaryGreen),
+                                    )
+                                  ],
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                ))),
+                      ],
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    )
+                  ],
+                ));
       },
       child: Text(HomsaiLocalizations.of(context)!.next),
     );
