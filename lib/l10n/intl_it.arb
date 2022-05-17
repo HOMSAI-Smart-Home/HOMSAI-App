@@ -124,6 +124,7 @@
     "consumptionSensorHint": "Nome Sensore di consumo",
     "consumptionSensorPopUpTitle": "Configurazione incompleta",
     "consumptionSensorPopUpContent1": "Assicurati di aver compilato correttamente tutti i campi.\nPer visualizzare correttamente i consumi ottimizzati completa la configurazione dell’impianto.\nPotrai comunque completare la configurazione in un secondo momento dalla pagina Impostazioni.",
+    "consumptionSensorPopUpContent2": "Campi incompleti:",
     "consumptionSensorPopUpIgnore": "Ignora",
     "consumptionSensorPopUpModify": "Modifica",
 

@@ -124,6 +124,7 @@
     "consumptionSensorHint": "Consumption sensor name",
     "consumptionSensorPopUpTitle": "Incomplete configuration",
     "consumptionSensorPopUpContent1": "Make sure you have filled in all the fields correctly. To view the optimized consumption correctly, complete the system configuration. You can still complete the configuration later from the Settings page.",
+    "consumptionSensorPopUpContent2": "Incomplete fields:",
     "consumptionSensorPopUpIgnore": "Ignore",
     "consumptionSensorPopUpModify": "Modify",
 

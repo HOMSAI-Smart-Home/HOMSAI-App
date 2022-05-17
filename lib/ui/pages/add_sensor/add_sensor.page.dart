@@ -7,6 +7,7 @@ import 'package:homsai/crossconcern/helpers/blocs/websocket/websocket.bloc.dart'
 import 'package:homsai/datastore/models/entity/sensors/mesurable/mesurable_sensor.entity.dart';
 import 'package:homsai/themes/colors.theme.dart';
 import 'package:homsai/ui/pages/add_sensor/bloc/add_sensor.bloc.dart';
+import 'package:homsai/ui/pages/dashboard/tabs/home/home.page.dart';
 
 class AddSensorPage extends StatefulWidget {
   final void Function(bool) onResult;
@@ -150,82 +151,139 @@ class _AddSensorSubmit extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () {
-        showDialog(
-            context: context,
-            builder: (context) => AlertDialog(
-                  content: Column(
+    return BlocBuilder<AddSensorBloc, AddSensorState>(
+        builder: (context, state) {
+      return ElevatedButton(
+        onPressed: () {
+          checkSensorsSelection(context, state);
+        },
+        child: Text(HomsaiLocalizations.of(context)!.next),
+      );
+    });
+  }
+
+  void checkSensorsSelection(BuildContext context, AddSensorState state) {
+    final bloc = context.read<AddSensorBloc>();
+    Map<String, MesurableSensorEntity?> selectedSensor = {
+      HomsaiLocalizations.of(context)!.productionSensorLabel:
+          state.selectedProductionSensor,
+      HomsaiLocalizations.of(context)!.consumptionSensorLabel:
+          state.selectedConsumptionSensor,
+    };
+    if (selectedSensor.containsValue(null)) {
+      showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+                content: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(HomsaiLocalizations.of(context)!
+                        .consumptionSensorPopUpContent1),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Text(HomsaiLocalizations.of(context)!
+                        .consumptionSensorPopUpContent2),
+                    ...getIncompleteSensors(selectedSensor, context),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                  ],
+                ),
+                scrollable: true,
+                insetPadding: const EdgeInsets.symmetric(
+                    horizontal: 20.0, vertical: 24.0),
+                titlePadding: const EdgeInsets.only(
+                    top: 10, left: 20, right: 10, bottom: 0),
+                contentPadding: const EdgeInsets.only(
+                    top: 25, left: 20, right: 10, bottom: 0),
+                title: Row(
+                  children: [
+                    Text(
+                      HomsaiLocalizations.of(context)!
+                          .consumptionSensorPopUpTitle,
+                      style: TextStyle(color: HomsaiColors.primaryWhite),
+                    ),
+                  ],
+                ),
+                actions: [
+                  Row(
                     children: [
-                      Text(HomsaiLocalizations.of(context)!
-                          .consumptionSensorPopUpContent1)
-                    ],
-                  ),
-                  scrollable: true,
-                  insetPadding: const EdgeInsets.symmetric(
-                      horizontal: 20.0, vertical: 24.0),
-                  titlePadding: const EdgeInsets.only(
-                      top: 10, left: 20, right: 10, bottom: 0),
-                  contentPadding: const EdgeInsets.only(
-                      top: 25, left: 20, right: 10, bottom: 0),
-                  title: Row(
-                    children: [
-                      Text(
-                        HomsaiLocalizations.of(context)!
-                            .consumptionSensorPopUpTitle,
-                        style: TextStyle(color: HomsaiColors.primaryWhite),
-                      ),
-                    ],
-                  ),
-                  actions: [
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: InkWell(
-                            onTap: () {
-                              final bloc = context.read<AddSensorBloc>();
-                              bloc.add(OnSubmit(() => onResult(true)));
-                            },
-                            child: Row(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 20, bottom: 20),
-                                  child: Text(
-                                    HomsaiLocalizations.of(context)!
-                                        .consumptionSensorPopUpIgnore,
-                                  ),
+                      Expanded(
+                        flex: 1,
+                        child: InkWell(
+                          onTap: () =>
+                              {bloc.add(OnSubmit(() => onResult(true)))},
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(top: 20, bottom: 20),
+                                child: Text(
+                                  HomsaiLocalizations.of(context)!
+                                      .consumptionSensorPopUpIgnore,
                                 ),
-                              ],
-                              mainAxisAlignment: MainAxisAlignment.center,
-                            ),
+                              ),
+                            ],
+                            mainAxisAlignment: MainAxisAlignment.center,
                           ),
                         ),
-                        Expanded(
-                            flex: 1,
-                            child: InkWell(
-                                onTap: () {
-                                  Navigator.pop(context);
-                                },
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      HomsaiLocalizations.of(context)!
-                                          .consumptionSensorPopUpModify,
-                                      style: TextStyle(
-                                          color: HomsaiColors.primaryGreen),
-                                    )
-                                  ],
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                ))),
-                      ],
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    )
-                  ],
-                ));
-      },
-      child: Text(HomsaiLocalizations.of(context)!.next),
-    );
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(top: 20, bottom: 20),
+                                child: Text(
+                                  HomsaiLocalizations.of(context)!
+                                      .consumptionSensorPopUpModify,
+                                  style: TextStyle(
+                                      color: HomsaiColors.primaryGreen),
+                                ),
+                              ),
+                            ],
+                            mainAxisAlignment: MainAxisAlignment.center,
+                          ),
+                        ),
+                      ),
+                    ],
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  )
+                ],
+              ));
+    } else {
+      bloc.add(OnSubmit(() => onResult(true)));
+    }
+  }
+
+  List<Widget> getIncompleteSensors(
+      Map<String, MesurableSensorEntity?> selectedSensor,
+      BuildContext context) {
+    List<String> keys = selectedSensor.keys.toList();
+    List<Widget> incompleteFieldsTexts = [];
+    for (var key in keys) {
+      if (selectedSensor[key] == null) {
+        incompleteFieldsTexts.add(Padding(
+          padding: const EdgeInsets.only(top: 10, right: 0, left: 0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Padding(
+                padding: EdgeInsets.only(top: 0, right: 10, left: 10),
+                child: Bullet(),
+              ),
+              Text(key, style: Theme.of(context).textTheme.bodyText1)
+            ],
+          ),
+        ));
+      }
+    }
+    return incompleteFieldsTexts;
   }
 }
