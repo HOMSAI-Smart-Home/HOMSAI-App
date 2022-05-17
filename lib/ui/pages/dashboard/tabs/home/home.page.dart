@@ -137,14 +137,6 @@ class DailyConsumptionChartInfo extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    HomsaiLocalizations.of(context)!
-                        .homePageYesterdayConsumptionLabel,
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline5!
-                        .copyWith(height: 1),
-                  ),
                   if (state.optimizedConsumptionPlot != null &&
                       state.consumptionPlot != null &&
                       state.productionPlot != null)
