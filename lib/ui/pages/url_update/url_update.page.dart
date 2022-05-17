@@ -117,7 +117,7 @@ class _LocalUrlTextTextField extends StatelessWidget {
         listenWhen: (previous, current) => previous.url != current.url,
         listener: (context, state) => context
             .read<UrlUpdateBloc>()
-            .add(LocalUrlChanged(url: state.url.value)),
+            .add(LocalUrlChanged(url: state.url.value.trim())),
         child: UrlTextField<LocalUrlTextFieldBloc>(
           focusNode: focusNode,
           labelText: HomsaiLocalizations.of(context)!.localUrlLabel,

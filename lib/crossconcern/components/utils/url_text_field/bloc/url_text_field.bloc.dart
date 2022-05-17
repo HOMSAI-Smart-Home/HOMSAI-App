@@ -15,18 +15,20 @@ class UrlTextFieldBloc extends Bloc<UrlTextFieldEvent, UrlTextFieldState> {
 
   void _onUrlAutocomplete(
       UrlAutoComplete event, Emitter<UrlTextFieldState> emit) {
-    final url = Url.dirty(event.url);
+    final urlTrimmed = event.url.trim();
+    final url = Url.dirty(urlTrimmed);
     emit(state.copyWith(
-      initialUrl: event.url,
-      url: url.valid ? url : Url.pure(event.url),
+      initialUrl: urlTrimmed,
+      url: url.valid ? url : Url.pure(urlTrimmed),
       status: _isUrlValid(url),
     ));
   }
 
   void _onUrlChanged(UrlChanged event, Emitter<UrlTextFieldState> emit) {
-    final urlDirty = Url.dirty(event.url);
+    final urlTrimmed = event.url.trim();
+    final urlDirty = Url.dirty(urlTrimmed);
     emit(state.copyWith(
-      url: urlDirty.valid ? urlDirty : Url.pure(event.url),
+      url: urlDirty.valid ? urlDirty : Url.pure(urlTrimmed),
       status: _isUrlValid(urlDirty),
     ));
   }
