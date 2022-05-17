@@ -199,7 +199,7 @@ Widget generateChartGraphics(HomeState state, BuildContext context) {
         ],
       ),
     );
-  }
+  } 
   return DailyConsumptionChart(
     autoConsumptionPlot: state.autoConsumption,
     consumptionPlot: (state.isPlotOptimized)

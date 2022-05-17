@@ -122,17 +122,24 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   void _onToggleConsumptionOptimazedPlot(
       ToggleConsumptionOptimazedPlot event, Emitter<HomeState> emit) {
     List<FlSpot> autoConsumption;
-    if (event.isOptimized) {
+/*     if (event.isOptimized) {
       autoConsumption =
           state.optimizedConsumptionPlot!.intersect(state.productionPlot!);
     } else {
       autoConsumption = state.consumptionPlot!.intersect(state.productionPlot!);
-    }
+    } */
 
     emit(state.copyWith(
-      autoConsumption: autoConsumption,
+      autoConsumption: checkAutoConsumption(event.isOptimized),
       isPlotOptimized: event.isOptimized,
     ));
+  }
+
+  List<FlSpot> checkAutoConsumption(bool isOptimized) {
+    if (isOptimized) {
+      return state.optimizedConsumptionPlot!.intersect(state.productionPlot!);
+    }
+    return state.consumptionPlot!.intersect(state.productionPlot!);
   }
 
   bool _checkIfDateIsYesterday(DateTime date) {
@@ -165,7 +172,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         ConsumptionOptimizationsForecastDto? consumptionForecast;
         PlotInfo? optimizedInfo;
         if (consumptionInfo.plot.isNotEmpty && productionInfo.plot.isNotEmpty) {
-          autoConsumption = consumptionInfo.plot.intersect(productionInfo.plot);
+          autoConsumption = checkAutoConsumption(state.isPlotOptimized);
           final forecasts = appPreferencesInterface.getOptimizationForecast();
           if (forecasts != null &&
               forecasts.optimizedGeneralPowerMeterData.isNotEmpty &&
@@ -289,7 +296,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         .where((spot) => spot.y != double.negativeInfinity)
         .toList();
     return plot.sample(
-        plot[0].x, plot[0].x + const Duration(days: 1).inMinutes, 20);
+        plot[0].x, plot[0].x + const Duration(days: 1).inMinutes, 10);
   }
 
   void onActive() {
