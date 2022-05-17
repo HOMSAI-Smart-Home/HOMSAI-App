@@ -1,8 +1,11 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 class ApiProprties {
-  static const aIServiceBaseUrl = "http://staging.aiservice.homsai.app:8080";
+  static get aIServiceBaseUrl => dotenv.env['AISERVICE_BASE_URL'];
   static const aiServicePhotovoltaicSelfConsumptionOptimizerForecast =
       "/aiservice/forecast/photovoltaic/self-consumption";
-  static const aiServiceDailyPlanPath = "/aiservice/statistics/suggestions/dailyplan";
+  static const aiServiceDailyPlanPath =
+      "/aiservice/statistics/suggestions/dailyplan";
   static const aiServiceLoginPath = "/aiservice/auth/login";
   static const aiServiceSubscribeToBetaPath = "/aiservice/users/requestdemo";
 }

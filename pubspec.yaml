@@ -65,6 +65,7 @@ dependencies:
   timezone: ^0.8.0
   firebase_crashlytics: ^2.7.2
   firebase_core: ^1.16.0
+  flutter_dotenv: ^5.0.2
 
 dev_dependencies:
   flutter_test:
@@ -102,6 +103,7 @@ flutter:
     - assets/animations/
     - assets/icons/
     - assets/splash/
+    - .env
 
   fonts:
     - family: HelveticaNowText
