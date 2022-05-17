@@ -273,9 +273,10 @@ class _AddSensorSubmit extends StatelessWidget {
           padding: const EdgeInsets.only(top: 10, right: 0, left: 0),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               const Padding(
-                padding: EdgeInsets.only(top: 0, right: 10, left: 10),
+                padding: EdgeInsets.only(top: 5, right: 10, left: 10),
                 child: Bullet(),
               ),
               Text(key, style: Theme.of(context).textTheme.bodyText1)
