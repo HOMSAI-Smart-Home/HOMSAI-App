@@ -4,7 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'log.dto.g.dart';
 
 @JsonSerializable()
-@DateTimeConverter()
+@TimezoneDateTimeConverter()
 class LogDto {
   String? state;
   @JsonKey(name: 'entity_id')

@@ -8,6 +8,8 @@ class ApiProprties {
       "/aiservice/statistics/suggestions/dailyplan";
   static const aiServiceLoginPath = "/aiservice/auth/login";
   static const aiServiceSubscribeToBetaPath = "/aiservice/users/requestdemo";
+  static const aiServicePhotovoltaicForecast =
+      "/aiservice/forecast/photovoltaic";
 }
 
 class HomeAssistantApiProprties {

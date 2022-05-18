@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:homsai/crossconcern/utilities/properties/app_preference.proprties.dart';
-import 'package:homsai/datastore/DTOs/remote/ai_service/consumption_optimizations_forecast/consumption_optimizations_forecast.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/ai_service/daily_plan/daily_plan_cached.dto.dart';
+import 'package:homsai/datastore/DTOs/remote/ai_service/forecast/consumption_optimizations/consumption_optimizations_forecast.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/history/history.dto.dart';
 import 'package:homsai/datastore/models/ai_service_auth.model.dart';
 import 'package:homsai/datastore/models/home_assistant_auth.model.dart';

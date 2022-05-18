@@ -5,7 +5,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'history_body.dto.g.dart';
 
 @JsonSerializable()
-@DateTimeConverter()
+@TimezoneDateTimeConverter()
 @QueryBoolConverter()
 class HistoryBodyDto {
   @JsonKey(ignore: true)

@@ -4,7 +4,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'logbook_body.dto.g.dart';
 
 @JsonSerializable()
-@DateTimeConverter()
+@TimezoneDateTimeConverter()
 class LogbookBodyDto {
   @JsonKey(name: 'end_time')
   DateTime? endTime;

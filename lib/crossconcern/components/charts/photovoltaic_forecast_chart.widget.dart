@@ -286,7 +286,7 @@ class PhotovoltaicForecastChart extends StatelessWidget {
         barWidth: barWidth,
         isStrokeCapRound: false,
         dotData: FlDotData(show: false),
-        dashArray: [15, 5],
+        dashArray: [5, 3],
       );
 
   Shadow get shadow => Shadow(

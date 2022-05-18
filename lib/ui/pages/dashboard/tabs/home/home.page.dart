@@ -6,7 +6,7 @@ import 'package:homsai/crossconcern/components/charts/photovoltaic_forecast_char
 import 'package:homsai/crossconcern/components/utils/shadow.widget.dart';
 import 'package:homsai/crossconcern/components/utils/toggle_text.widget.dart';
 import 'package:homsai/crossconcern/helpers/blocs/websocket/websocket.bloc.dart';
-import 'package:homsai/datastore/DTOs/remote/ai_service/consumption_optimizations_forecast/consumption_optimizations_forecast.dto.dart';
+import 'package:homsai/datastore/DTOs/remote/ai_service/forecast/consumption_optimizations/consumption_optimizations_forecast.dto.dart';
 import 'package:homsai/themes/colors.theme.dart';
 import 'package:homsai/ui/pages/dashboard/tabs/home/bloc/home.bloc.dart';
 import 'package:homsai/ui/widget/devices/light/light_device.widget.dart';

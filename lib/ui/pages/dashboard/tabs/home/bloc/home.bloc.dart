@@ -14,10 +14,11 @@ import 'package:homsai/crossconcern/exceptions/invalid_sensor.exception.dart';
 import 'package:homsai/crossconcern/helpers/extensions/list.extension.dart';
 import 'package:homsai/crossconcern/utilities/properties/connection.properties.dart';
 import 'package:homsai/crossconcern/utilities/util/plot.util.dart';
-import 'package:homsai/datastore/DTOs/remote/ai_service/consumption_optimizations_forecast/consumption_optimizations_forecast.dto.dart';
-import 'package:homsai/datastore/DTOs/remote/ai_service/consumption_optimizations_forecast/consumption_optimizations_forecast_body.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/ai_service/daily_plan/daily_plan.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/ai_service/daily_plan/daily_plan_body.dto.dart';
+import 'package:homsai/datastore/DTOs/remote/ai_service/forecast/consumption_optimizations/consumption_optimizations_forecast.dto.dart';
+import 'package:homsai/datastore/DTOs/remote/ai_service/forecast/consumption_optimizations/consumption_optimizations_forecast_body.dto.dart';
+import 'package:homsai/datastore/DTOs/remote/ai_service/forecast/photovoltaic/photovoltaic_body.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/history/history.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/history/history_body.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/logbook/logbook.dto.dart';
@@ -270,6 +271,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           );
         }
 
+        final result = await aiServiceInterface.getPhotovoltaicForecast(
+            PhotovoltaicForecastBodyDto(8, 200,
+                latitude: plant.latitude, longitude: plant.longitude));
+        print(result);
+
         if (_active) {
           emit(state.copyWith(
               consumptionSensor: consumptionSensor,
@@ -360,12 +366,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   List<FlSpot> _parsePlot(List<HistoryDto> results) {
     final plot = results
         .map(
-          (result) => FlSpot(
-            (result.lastChanged.minute +
-                    result.lastChanged.hour * Duration.minutesPerHour)
-                .toDouble(),
-            double.tryParse(result.state) ?? double.negativeInfinity,
-          ),
+          (result) => result.spot,
         )
         .where((spot) => spot.y != double.negativeInfinity)
         .toList();

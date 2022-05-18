@@ -1,10 +1,11 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:homsai/crossconcern/helpers/converters/date_time.converter.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'history.dto.g.dart';
 
 @JsonSerializable()
-@DateTimeConverter()
+@TimezoneDateTimeConverter()
 class HistoryDto {
   @JsonKey(includeIfNull: false)
   Map<String, dynamic>? attributes;
@@ -32,4 +33,10 @@ class HistoryDto {
   static List<HistoryDto> fromList(List<dynamic> results) {
     return results.map((result) => HistoryDto.fromJson(result)).toList();
   }
+
+  FlSpot get spot => FlSpot(
+        (lastChanged.minute + lastChanged.hour * Duration.minutesPerHour)
+            .toDouble(),
+        double.tryParse(state) ?? double.negativeInfinity,
+      );
 }
