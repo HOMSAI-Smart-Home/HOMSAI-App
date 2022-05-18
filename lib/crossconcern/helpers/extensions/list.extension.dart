@@ -23,7 +23,7 @@ extension ListSensorEntity on List<SensorEntity> {
   List<T> filterSensorByDeviceClass<T extends SensorEntity>(
       DeviceClass deviceClass) {
     return where((sensor) {
-      return sensor.isDeviceClassOf(deviceClass);
+      return sensor is T && sensor.isDeviceClassOf(deviceClass);
     }).map((sensor) => sensor as T).toList();
   }
 }

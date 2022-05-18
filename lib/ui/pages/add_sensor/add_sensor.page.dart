@@ -11,12 +11,14 @@ import 'package:homsai/ui/pages/dashboard/tabs/home/home.page.dart';
 
 class AddSensorPage extends StatefulWidget {
   final void Function(bool) onResult;
+  final Uri? url;
   final bool wizard;
 
   const AddSensorPage({
     Key? key,
     required this.onResult,
     this.wizard = true,
+    this.url,
   }) : super(key: key);
 
   @override
@@ -32,7 +34,8 @@ class _AddSensorPageState extends State<AddSensorPage> {
           create: (_) => WebSocketBloc(),
         ),
         BlocProvider<AddSensorBloc>(
-          create: (context) => AddSensorBloc(context.read<WebSocketBloc>()),
+          create: (context) =>
+              AddSensorBloc(context.read<WebSocketBloc>(), widget.url),
         ),
       ],
       mainAxisAlignment: MainAxisAlignment.center,

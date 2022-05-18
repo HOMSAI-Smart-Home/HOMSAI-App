@@ -33,3 +33,11 @@ class OnSubmit extends AddSensorEvent {
   @override
   List<Object> get props => [onSubmit];
 }
+class EntitiesFetched extends AddSensorEvent {
+  const EntitiesFetched(this.entities);
+
+  final List<Entity> entities;
+
+  @override
+  List<Object> get props => [entities];
+}

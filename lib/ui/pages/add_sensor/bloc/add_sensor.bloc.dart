@@ -4,8 +4,10 @@ import 'package:homsai/crossconcern/helpers/blocs/websocket/websocket.bloc.dart'
 import 'package:homsai/crossconcern/helpers/extensions/list.extension.dart';
 import 'package:homsai/crossconcern/helpers/factories/home_assistant_sensor.factory.dart';
 import 'package:homsai/datastore/local/app.database.dart';
+import 'package:homsai/datastore/models/entity/base/base.entity.dart';
 import 'package:homsai/datastore/models/entity/sensors/mesurable/mesurable_sensor.entity.dart';
 import 'package:homsai/datastore/models/entity/sensors/sensor.entity.dart';
+import 'package:homsai/datastore/remote/websocket/home_assistant_websocket.interface.dart';
 import 'package:homsai/main.dart';
 
 part 'add_sensor.event.dart';
@@ -13,14 +15,29 @@ part 'add_sensor.state.dart';
 
 class AddSensorBloc extends Bloc<AddSensorEvent, AddSensorState> {
   final AppDatabase appDatabase = getIt.get<AppDatabase>();
+  final HomeAssistantWebSocketInterface webSocketRepository =
+      getIt.get<HomeAssistantWebSocketInterface>();
   final WebSocketBloc webSocketBloc;
+  final Uri? url;
 
-  AddSensorBloc(this.webSocketBloc) : super(const AddSensorState()) {
-    on<RetrieveSensors>(_onRetrieveSensors);
+  AddSensorBloc(this.webSocketBloc, this.url) : super(const AddSensorState()) {
     on<ProductionSensorChanged>(_onProductionSensorChanged);
+    on<EntitiesFetched>(_onEntitiesFetched);
     on<ConsumptionSensorChanged>(_onConsumptionSensorChanged);
     on<OnSubmit>(_onSubmit);
-    add(RetrieveSensors());
+    if (!webSocketRepository.isConnected()) {
+      webSocketBloc.add(ConnectWebSocket(
+          onWebSocketConnected: () {
+            webSocketBloc.add(FetchEntites(
+              onEntitiesFetched: (entities) => add(EntitiesFetched(entities)),
+            ));
+          },
+          url: url?.toString() ?? ''));
+    } else {
+      webSocketBloc.add(FetchEntites(
+        onEntitiesFetched: (entities) => add(EntitiesFetched(entities)),
+      ));
+    }
   }
 
   @override
@@ -28,9 +45,35 @@ class AddSensorBloc extends Bloc<AddSensorEvent, AddSensorState> {
     super.onTransition(transition);
   }
 
-  void _onRetrieveSensors(
-      RetrieveSensors event, Emitter<AddSensorState> emit) async {
-    final sensors = await appDatabase.getEntities<SensorEntity>();
+  void _onEntitiesFetched(
+      EntitiesFetched event, Emitter<AddSensorState> emit) async {
+    SensorEntity? consumptionSensor;
+    SensorEntity? productionSensor;
+    final plant = await appDatabase.getPlant();
+    if (plant != null) {
+      if (event.entities.isNotEmpty) {
+        await appDatabase.homeAssitantDao.insertEntities(
+          plant.id!,
+          event.entities,
+        );
+      }
+      if (plant.consumptionSensor != null) {
+        consumptionSensor =
+            await appDatabase.getEntity<SensorEntity>(plant.consumptionSensor!);
+      }
+      if (plant.productionSensor != null) {
+        productionSensor =
+            await appDatabase.getEntity<SensorEntity>(plant.productionSensor!);
+      }
+      if (consumptionSensor != null && productionSensor != null) {
+        emit(state.copyWith(
+          selectedConsumptionSensor: consumptionSensor as MesurableSensorEntity,
+          selectedProductionSensor: productionSensor as MesurableSensorEntity,
+        ));
+      }
+    }
+
+    final sensors = event.entities.getEntities<SensorEntity>();
     final powerSensors = sensors
         .filterSensorByDeviceClass<MesurableSensorEntity>(DeviceClass.power);
     emit(state.copyWith(

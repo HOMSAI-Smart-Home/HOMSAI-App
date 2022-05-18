@@ -32,7 +32,6 @@ class AddPlantBloc extends Bloc<AddPlantEvent, AddPlantState> {
       : super(const AddPlantState()) {
     on<ConfigurationFetched>(_onConfigurationFetched);
     on<FetchLocalConfig>(_onFetchLocalConfig);
-    on<StatesFetched>(_onStatesFetched);
     on<PlantNameChanged>(_onPlantNameChanged);
     on<PlantNameUnfocused>(_onPlantNameUnfocused);
     on<CoordinateChanged>(_onCoordinateChanged);
@@ -45,9 +44,6 @@ class AddPlantBloc extends Bloc<AddPlantEvent, AddPlantState> {
               onConfigurationFetched: (config) {
                 add(ConfigurationFetched(Configuration.fromDto(config)));
               },
-            ));
-            webSocketBloc.add(FetchEntites(
-              onEntitiesFetched: (entities) => add(StatesFetched(entities)),
             ));
           },
           url: url?.toString() ?? ''));
@@ -77,16 +73,20 @@ class AddPlantBloc extends Bloc<AddPlantEvent, AddPlantState> {
 
   void _onFetchLocalConfig(
       FetchLocalConfig event, Emitter<AddPlantState> emit) async {
-    final config = await appDatabase.getConfiguration();
-    if (config != null) {
-      add(ConfigurationFetched(config));
+    final plant = await appDatabase.getPlant();
+    if (plant != null) {
+      emit(state.copyWith(
+          plantName: PlantName.dirty(plant.name),
+          initialPlantName: plant.name,
+          coordinate: Coordinate.dirty(
+              "${plant.latitude.toStringAsFixed(5)};${plant.longitude.toStringAsFixed(5)}"),
+          configuration: null));
+    } else {
+      final config = await appDatabase.getConfiguration();
+      if (config != null) {
+        add(ConfigurationFetched(config));
+      }
     }
-  }
-
-  void _onStatesFetched(StatesFetched event, Emitter<AddPlantState> emit) {
-    emit(state.copyWith(
-      entities: event.entities,
-    ));
   }
 
   void _onPlantNameChanged(
@@ -158,13 +158,6 @@ class AddPlantBloc extends Bloc<AddPlantEvent, AddPlantState> {
 
     final plantId = await appDatabase.plantDao.insertPlantReplace(plant);
     await appDatabase.updatePlant(plantId);
-
-    if (state.entities.isNotEmpty) {
-      await appDatabase.homeAssitantDao.insertEntities(
-        plantId,
-        state.entities,
-      );
-    }
     event.onSubmit();
   }
 
