@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:homsai/crossconcern/components/common/dropdown.widget.dart';
 import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
 import 'package:homsai/crossconcern/components/common/scaffold/homsai_bloc_scaffold.widget.dart';
@@ -8,6 +9,7 @@ import 'package:homsai/datastore/models/entity/sensors/mesurable/mesurable_senso
 import 'package:homsai/themes/colors.theme.dart';
 import 'package:homsai/ui/pages/add_sensor/bloc/add_sensor.bloc.dart';
 import 'package:homsai/ui/pages/dashboard/tabs/home/home.page.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class AddSensorPage extends StatefulWidget {
   final void Function(bool) onResult;
@@ -43,6 +45,32 @@ class _AddSensorPageState extends State<AddSensorPage> {
       children: <Widget>[
         _AddSensorTitle(widget.wizard),
         _AddPlantDescription(widget.wizard),
+        const SizedBox(
+          height: 9,
+        ),
+        TextField(
+          style: Theme.of(context).textTheme.bodyText2,
+          inputFormatters: [
+            MaskTextInputFormatter(
+              mask: "-#/##",
+              initialText: "00/00",
+              filter: {"#": RegExp(r'[0-9]'), "-": RegExp(r'[0-1]')},
+            )
+          ],
+          keyboardType: TextInputType.number,
+          decoration: InputDecoration(
+            prefixIcon: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                child: SvgPicture.asset(
+                  "assets/icons/calendar.svg",
+                )),
+            labelText:
+                HomsaiLocalizations.of(context)!.photovoltaicInstallationDate,
+          ),
+        ),
+        const SizedBox(
+          height: 9,
+        ),
         _ProductionSensorsSelect(),
         const SizedBox(
           height: 9,

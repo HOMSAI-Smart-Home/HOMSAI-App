@@ -128,6 +128,7 @@
     "consumptionSensorPopUpContent2": "Campi incompleti:",
     "consumptionSensorPopUpIgnore": "Ignora",
     "consumptionSensorPopUpModify": "Modifica",
+    "photovoltaicInstallationDate": "Data installazione fotovoltaico",
 
     "logoutDialogMessage": "Stai per effettuare il logout dall'applicazione. Sei sicuro?",
 
