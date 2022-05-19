@@ -2,20 +2,20 @@ part of 'month_year_field.bloc.dart';
 
 class MonthYearFieldState extends Equatable {
   const MonthYearFieldState(
-      {this.initialValue = "", this.controller = const TextEditingValue()});
+      {
+    this.errorText = "",
+  });
 
-  final String initialValue;
-  final TextEditingValue controller;
+  final String errorText;
 
   MonthYearFieldState copyWith({
-    String? initialValue,
-    required TextEditingValue controller,
+    String? errorText,
   }) {
     return MonthYearFieldState(
-        initialValue: initialValue ?? this.initialValue,
-        controller: controller);
+      errorText: errorText ?? this.errorText,
+    );
   }
 
   @override
-  List<Object> get props => [initialValue, controller];
+  List<Object> get props => [errorText];
 }

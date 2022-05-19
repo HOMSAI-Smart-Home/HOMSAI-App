@@ -130,7 +130,9 @@
     "consumptionSensorPopUpModify": "Modifica",
     "photovoltaicInstallationDate": "Data installazione fotovoltaico",
     "photovoltaicInstallationDateStartValue": "MM/AAAA",
-    "photovoltaicNominalPowerLabel": "Potenza nominale fotovoltaico (kWp)", 
+    "photovoltaicNominalPowerLabel": "Potenza nominale fotovoltaico (kWp)",
+    "photovoltaicInstallationDateInvalid": "Data non valida",
+    "photovoltaicInstallationDateToComplete": "Completa correttamente la data",
     "yearLetter": "A",
     "monthLetter": "M",
 

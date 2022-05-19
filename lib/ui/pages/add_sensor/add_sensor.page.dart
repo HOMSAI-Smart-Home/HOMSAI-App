@@ -55,6 +55,7 @@ class _AddSensorPageState extends State<AddSensorPage> {
         MonthYearField(
           labelText:
               HomsaiLocalizations.of(context)!.photovoltaicInstallationDate,
+          focusNode: FocusNode(),
         ),
         const SizedBox(
           height: 9,

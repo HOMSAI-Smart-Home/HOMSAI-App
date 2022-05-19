@@ -131,6 +131,8 @@
     "photovoltaicInstallationDate": "Photovoltaic installation date",
     "photovoltaicInstallationDateStartValue": "MM/YYYY",
     "photovoltaicNominalPowerLabel": "Photovoltaic nominal power (kWp)",
+    "photovoltaicInstallationDateInvalid": "Invalid date",
+    "photovoltaicInstallationDateToComplete": "Complete the date correctly",
     "yearLetter": "Y",
     "monthLetter": "M",
 

@@ -25,7 +25,6 @@ class MonthYearField extends StatelessWidget {
               HomsaiLocalizations.of(context)!
                   .photovoltaicInstallationDateStartValue) {
         controller.text = "";
-        validateInput(controller.text);
       }
     });
     return TextFormField(
@@ -39,7 +38,6 @@ class MonthYearField extends StatelessWidget {
             "assets/icons/calendar.svg",
           ),
         ),
-        errorText: controller.text == "" ? "ciao" : "",
         labelText: labelText,
       ),
       style: Theme.of(context).textTheme.bodyText1,
@@ -93,10 +91,5 @@ class MonthYearField extends StatelessWidget {
       obscureText: obscureText,
       enabled: enabled,
     );
-  }
-
-  String validateInput(String value) {
-    print("validation");
-    return "";
   }
 }
