@@ -3,8 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:homsai/crossconcern/components/common/dropdown.widget.dart';
 import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
-import 'package:homsai/crossconcern/components/common/month_year_field.widget.dart';
 import 'package:homsai/crossconcern/components/common/scaffold/homsai_bloc_scaffold.widget.dart';
+import 'package:homsai/crossconcern/components/utils/month_year_field/bloc/month_year_field.bloc.dart';
+import 'package:homsai/crossconcern/components/utils/month_year_field/month_year_field.widget.dart';
 import 'package:homsai/crossconcern/helpers/blocs/websocket/websocket.bloc.dart';
 import 'package:homsai/datastore/models/entity/sensors/mesurable/mesurable_sensor.entity.dart';
 import 'package:homsai/themes/colors.theme.dart';
@@ -38,6 +39,9 @@ class _AddSensorPageState extends State<AddSensorPage> {
         BlocProvider<AddSensorBloc>(
           create: (context) =>
               AddSensorBloc(context.read<WebSocketBloc>(), widget.url),
+        ),
+        BlocProvider<MonthYearFieldBloc>(
+          create: (context) => MonthYearFieldBloc(),
         ),
       ],
       mainAxisAlignment: MainAxisAlignment.center,
