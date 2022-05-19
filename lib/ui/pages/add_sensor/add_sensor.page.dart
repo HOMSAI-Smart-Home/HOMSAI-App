@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:homsai/crossconcern/components/common/dropdown.widget.dart';
 import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
+import 'package:homsai/crossconcern/components/common/month_year_field.widget.dart';
 import 'package:homsai/crossconcern/components/common/scaffold/homsai_bloc_scaffold.widget.dart';
 import 'package:homsai/crossconcern/helpers/blocs/websocket/websocket.bloc.dart';
 import 'package:homsai/datastore/models/entity/sensors/mesurable/mesurable_sensor.entity.dart';
 import 'package:homsai/themes/colors.theme.dart';
 import 'package:homsai/ui/pages/add_sensor/bloc/add_sensor.bloc.dart';
 import 'package:homsai/ui/pages/dashboard/tabs/home/home.page.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class AddSensorPage extends StatefulWidget {
   final void Function(bool) onResult;
@@ -48,7 +48,14 @@ class _AddSensorPageState extends State<AddSensorPage> {
         const SizedBox(
           height: 9,
         ),
-        const _PhotovoltaicInstallationDate(),
+        MonthYearField(
+          labelText:
+              HomsaiLocalizations.of(context)!.photovoltaicInstallationDate,
+        ),
+        const SizedBox(
+          height: 9,
+        ),
+        _PhotovoltaicNominalPower(),
         const SizedBox(
           height: 9,
         ),
@@ -62,39 +69,6 @@ class _AddSensorPageState extends State<AddSensorPage> {
         ),
         _AddSensorSubmit(widget.onResult, widget.wizard)
       ],
-    );
-  }
-}
-
-class _PhotovoltaicInstallationDate extends StatelessWidget {
-  const _PhotovoltaicInstallationDate();
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
-      child: TextFormField(
-        keyboardType: TextInputType.number,
-        inputFormatters: [
-          MaskTextInputFormatter(
-            mask: "-#/##",
-            initialText: "00/00",
-            filter: {"#": RegExp(r'[0-9]'), "-": RegExp(r'[0-1]')},
-          )
-        ],
-        decoration: InputDecoration(
-          prefixIcon: Padding(
-              padding: const EdgeInsets.all(14.0),
-              child: SvgPicture.asset(
-                "assets/icons/calendar.svg",
-              )),
-          labelText:
-              HomsaiLocalizations.of(context)!.photovoltaicInstallationDate,
-        ),
-        style: Theme.of(context).textTheme.bodyText1!.copyWith(
-              color: Theme.of(context).colorScheme.onBackground,
-            ),
-      ),
     );
   }
 }
@@ -185,6 +159,25 @@ class _ConsumptionSensorsSelect extends StatelessWidget {
             context.read<AddSensorBloc>().add(ConsumptionSensorChanged(sensor)),
       );
     });
+  }
+}
+
+class _PhotovoltaicNominalPower extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      decoration: InputDecoration(
+        prefixIcon: Padding(
+          padding: const EdgeInsets.all(14.0),
+          child: SvgPicture.asset(
+            "assets/icons/power.svg",
+          ),
+        ),
+        labelText:
+            HomsaiLocalizations.of(context)!.photovoltaicNominalPowerLabel,
+      ),
+      style: Theme.of(context).textTheme.bodyText1,
+    );
   }
 }
 

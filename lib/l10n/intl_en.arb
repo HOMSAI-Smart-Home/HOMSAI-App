@@ -129,6 +129,10 @@
     "consumptionSensorPopUpIgnore": "Ignore",
     "consumptionSensorPopUpModify": "Modify",
     "photovoltaicInstallationDate": "Photovoltaic installation date",
+    "photovoltaicInstallationDateStartValue": "MM/YYYY",
+    "photovoltaicNominalPowerLabel": "Photovoltaic nominal power (kWp)",
+    "yearLetter": "Y",
+    "monthLetter": "M",
 
     "logoutDialogMessage": "You will logout from the app. Are you sure?",
 
