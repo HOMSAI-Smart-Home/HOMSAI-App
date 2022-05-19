@@ -6,4 +6,5 @@ class AppPreferencesProperties {
   static const String prefOptimizationForecast = 'optimization_forecast';
   static const String prefConsumptionInfo = 'consumption_info';
   static const String prefProductionInfo = 'production_info';
+  static const String prefLogBook = 'log_book';
 }

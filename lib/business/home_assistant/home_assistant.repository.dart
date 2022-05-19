@@ -311,6 +311,8 @@ class HomeAssistantRepository implements HomeAssistantInterface {
       fallbackUrl: fallback,
     );
 
-    return LogbookDto.fromJson(response);
+    final logBook = LogbookDto.fromJson(response);
+    appPreferences.setLogBook(logBook);
+    return logBook;
   }
 }

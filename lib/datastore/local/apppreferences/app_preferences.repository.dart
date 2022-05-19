@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:homsai/crossconcern/utilities/properties/app_preference.proprties.dart';
 import 'package:homsai/datastore/DTOs/remote/ai_service/consumption_optimizations_forecast/consumption_optimizations_forecast.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/history/history.dto.dart';
+import 'package:homsai/datastore/DTOs/remote/logbook/logbook.dto.dart';
 import 'package:homsai/datastore/models/ai_service_auth.model.dart';
 import 'package:homsai/datastore/models/home_assistant_auth.model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -157,4 +158,24 @@ class AppPreferences implements AppPreferencesInterface {
   void resetProductionInfo() {
     preferences?.remove(AppPreferencesProperties.prefProductionInfo);
   }
+
+  @override
+  LogbookDto? getLogBook() {
+    final logBook =
+        preferences?.getString(AppPreferencesProperties.prefLogBook);
+    return logBook != null ? LogbookDto.fromJson(jsonDecode(logBook)) : null;
+  }
+
+  @override
+  void resetLogBook() {
+    preferences?.remove(AppPreferencesProperties.prefLogBook);
+  }
+
+  @override
+  void setLogBook(LogbookDto logbookDto) {
+    preferences?.setString(
+        AppPreferencesProperties.prefLogBook, jsonEncode(logbookDto));
+  }
+
+  
 }

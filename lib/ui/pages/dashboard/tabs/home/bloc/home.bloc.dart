@@ -16,8 +16,12 @@ import 'package:homsai/crossconcern/utilities/properties/connection.properties.d
 import 'package:homsai/crossconcern/utilities/util/plot.util.dart';
 import 'package:homsai/datastore/DTOs/remote/ai_service/consumption_optimizations_forecast/consumption_optimizations_forecast.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/ai_service/consumption_optimizations_forecast/consumption_optimizations_forecast_body.dto.dart';
+import 'package:homsai/datastore/DTOs/remote/ai_service/daily_plan/daily_plan.dto.dart';
+import 'package:homsai/datastore/DTOs/remote/ai_service/daily_plan/daily_plan_body.dto.dart';
+import 'package:homsai/datastore/DTOs/remote/ai_service/daily_plan/log.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/history/history.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/history/history_body.dto.dart';
+import 'package:homsai/datastore/DTOs/remote/logbook/logbook.dto.dart';
 import 'package:homsai/datastore/local/app.database.dart';
 import 'package:homsai/datastore/models/database/configuration.entity.dart';
 import 'package:homsai/datastore/models/database/plant.entity.dart';
@@ -115,7 +119,41 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           plant.id!, event.entities.getEntities<Entity>());
     }
     if (_active) {
+      appPreferencesInterface.resetLogBook();
+      final lights = event.entities.getEntities<LightEntity>();
+      LogbookDto logBook;
+      DailyPlanBodyDto dailyPlanBodyDto;
+      final logBookCached = appPreferencesInterface.getLogBook();
+      if (logBookCached != null) {
+        logBook = logBookCached;
+      } else {
+        logBook = await homeAssistantRepository.getLogBook(plant: plant!);
+      }
+      dailyPlanBodyDto = new DailyPlanBodyDto(logBook.data);
+      final dailyPlan =
+          await aiServiceInterface.getDailyPlan(dailyPlanBodyDto, 5, ["light"]);
+      
       emit(state.copyWith(lights: event.entities.getEntities<LightEntity>()));
+
+      /*
+
+      final historyBodyDto = HistoryBodyDto(sensor, minimalResponse: true);
+    List<HistoryDto>? historyCached = getHistoryCached(isConsumption);
+    List<HistoryDto> history;
+    if (historyCached != null &&
+        historyCached.isNotEmpty &&
+        _checkIfDateIsYesterday(historyCached[0].lastChanged)) {
+      history = historyCached;
+    } else {
+      history = await homeAssistantRepository.getHistory(
+          plant: plant,
+          historyBodyDto: historyBodyDto,
+          timeout: const Duration(seconds: 2),
+          isConsumption: isConsumption);
+    }
+    return _getPlotInfo(history);
+      */
+
     }
   }
 
@@ -250,7 +288,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   Future<PlotInfo> _getPlotInfoFromSensor(
-      String? sensor, Plant plant, bool isConsumption) async {
+      /*******************/
+      String? sensor,
+      Plant plant,
+      bool isConsumption) async {
     PlotInfo info =
         PlotInfo(maxRange: Offset(Duration.minutesPerDay.toDouble(), 4));
     if (sensor == null) throw InvalidSensorException();

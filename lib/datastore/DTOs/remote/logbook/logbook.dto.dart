@@ -5,9 +5,10 @@ part 'logbook.dto.g.dart';
 
 @JsonSerializable()
 class LogbookDto {
-  List<LogDto> logbook = [];
+  @JsonKey(name: 'data')
+  List<LogDto> data = [];
 
-  LogbookDto(this.logbook);
+  LogbookDto(this.data);
 
   factory LogbookDto.fromJson(Map<String, dynamic> json) =>
       _$LogbookDtoFromJson(json);
@@ -16,7 +17,7 @@ class LogbookDto {
 
   LogbookDto.fromList(List jsonList) {
     for (var element in jsonList) {
-      logbook.add(LogDto.fromJson(element));
+      data.add(LogDto.fromJson(element));
     }
   }
 }
