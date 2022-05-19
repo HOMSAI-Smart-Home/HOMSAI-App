@@ -175,6 +175,7 @@ class _PhotovoltaicNominalPower extends StatelessWidget {
         ),
         labelText:
             HomsaiLocalizations.of(context)!.photovoltaicNominalPowerLabel,
+        
       ),
       style: Theme.of(context).textTheme.bodyText1,
     );

@@ -18,9 +18,16 @@ class MonthYearField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController controller = TextEditingController(
-        text: HomsaiLocalizations.of(context)!
-            .photovoltaicInstallationDateStartValue);
+    FocusNode focusNode = FocusNode();
+    final TextEditingController controller = TextEditingController();
+    focusNode.addListener(() {
+      if (!focusNode.hasFocus &&
+          controller.text ==
+              HomsaiLocalizations.of(context)!
+                  .photovoltaicInstallationDateStartValue) {
+        controller.text = "";
+      }
+    });
     return TextFormField(
       keyboardType:
           const TextInputType.numberWithOptions(signed: false, decimal: false),
@@ -35,6 +42,13 @@ class MonthYearField extends StatelessWidget {
         labelText: labelText,
       ),
       style: Theme.of(context).textTheme.bodyText1,
+      focusNode: focusNode,
+      onTap: () {
+        if (controller.text == "") {
+          controller.text = HomsaiLocalizations.of(context)!
+              .photovoltaicInstallationDateStartValue;
+        }
+      },
       onChanged: (value) {
         value = value.replaceAll(RegExp(r"\D"), "");
         var yl = HomsaiLocalizations.of(context)!.yearLetter;
