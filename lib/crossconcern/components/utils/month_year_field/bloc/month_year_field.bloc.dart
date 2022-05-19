@@ -13,7 +13,6 @@ class MonthYearFieldBloc
 
   void _onFieldValidation(
       FieldValidate event, Emitter<MonthYearFieldState> emit) {
-    print("VALIDATION BLOC TEXT: ${event.errorText}");
     emit(
       state.copyWith(errorText: event.errorText),
     );

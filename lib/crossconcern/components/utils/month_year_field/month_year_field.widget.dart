@@ -130,7 +130,6 @@ class _MonthYearField<Bloc extends MonthYearFieldBloc> extends StatelessWidget {
   }
 
   void validateTextField(String fieldValue, BuildContext context) {
-    print("VALIDATION");
     var controlRegex = RegExp(r'^\d{2}\/\d{4}$');
     if (controlRegex.hasMatch(fieldValue) == false) {
       context.read<Bloc>().add(
