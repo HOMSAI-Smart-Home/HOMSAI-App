@@ -170,6 +170,8 @@ class _PhotovoltaicNominalPower extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      keyboardType:
+          const TextInputType.numberWithOptions(decimal: true, signed: true),
       decoration: InputDecoration(
         prefixIcon: Padding(
           padding: const EdgeInsets.all(14.0),
