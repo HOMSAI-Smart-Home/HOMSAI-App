@@ -46,7 +46,6 @@ class _AddSensorPageState extends State<AddSensorPage> {
         ),
       ],
       mainAxisAlignment: MainAxisAlignment.center,
-      resizeToAvoidBottomInset: false,
       children: <Widget>[
         _AddSensorTitle(widget.wizard),
         _AddPlantDescription(widget.wizard),
