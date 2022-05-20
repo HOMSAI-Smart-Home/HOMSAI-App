@@ -64,7 +64,9 @@ class _MonthYearField<Bloc extends MonthYearFieldBloc> extends StatelessWidget {
         builder: (context, state) {
       return TextFormField(
         keyboardType: const TextInputType.numberWithOptions(
-            signed: false, decimal: false),
+          signed: false,
+          decimal: false,
+        ),
         controller: controller,
         decoration: InputDecoration(
           prefixIcon: Padding(

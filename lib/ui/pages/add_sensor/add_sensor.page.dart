@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:homsai/crossconcern/components/common/dropdown.widget.dart';
@@ -50,7 +51,19 @@ class _AddSensorPageState extends State<AddSensorPage> {
         _AddSensorTitle(widget.wizard),
         _AddPlantDescription(widget.wizard),
         const SizedBox(
-          height: 9,
+          height: 8,
+        ),
+        _ConsumptionSensorsSelect(),
+        const SizedBox(
+          height: 8,
+        ),
+        _ProductionSensorsSelect(),
+        const SizedBox(
+          height: 16,
+        ),
+        _PhotovoltaicNominalPower(),
+        const SizedBox(
+          height: 16,
         ),
         MonthYearField(
           labelText:
@@ -58,21 +71,9 @@ class _AddSensorPageState extends State<AddSensorPage> {
           focusNode: FocusNode(),
         ),
         const SizedBox(
-          height: 9,
-        ),
-        _PhotovoltaicNominalPower(),
-        const SizedBox(
-          height: 9,
-        ),
-        _ProductionSensorsSelect(),
-        const SizedBox(
-          height: 9,
-        ),
-        _ConsumptionSensorsSelect(),
-        const SizedBox(
           height: 16,
         ),
-        _AddSensorSubmit(widget.onResult, widget.wizard)
+        _AddSensorSubmit(widget.onResult, widget.wizard),
       ],
     );
   }
@@ -172,7 +173,10 @@ class _PhotovoltaicNominalPower extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       keyboardType:
-          const TextInputType.numberWithOptions(decimal: true, signed: true),
+          const TextInputType.numberWithOptions(decimal: true, signed: false),
+      inputFormatters: [
+        _PhotovoltaicNominalPowerFormatter(),
+      ],
       decoration: InputDecoration(
         prefixIcon: Padding(
           padding: const EdgeInsets.all(14.0),
@@ -182,10 +186,18 @@ class _PhotovoltaicNominalPower extends StatelessWidget {
         ),
         labelText:
             HomsaiLocalizations.of(context)!.photovoltaicNominalPowerLabel,
-        
       ),
       style: Theme.of(context).textTheme.bodyText1,
     );
+  }
+}
+
+class _PhotovoltaicNominalPowerFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    final stringCheck = RegExp(r'^\d*,{0,1}\d*$');
+    return stringCheck.hasMatch(newValue.text) ? newValue : oldValue;
   }
 }
 
