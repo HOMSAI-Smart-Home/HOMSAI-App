@@ -62,11 +62,15 @@ class _MonthYearField<Bloc extends MonthYearFieldBloc> extends StatelessWidget {
     });
     return BlocBuilder<MonthYearFieldBloc, MonthYearFieldState>(
         builder: (context, state) {
-      return TextFormField(
-        keyboardType: const TextInputType.numberWithOptions(
-          signed: false,
-          decimal: false,
+      return Padding(
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom,
         ),
+        child: TextFormField(
+        keyboardType: const TextInputType.numberWithOptions(
+            signed: false,
+            decimal: false,
+          ),
         controller: controller,
         decoration: InputDecoration(
           prefixIcon: Padding(
@@ -133,6 +137,7 @@ class _MonthYearField<Bloc extends MonthYearFieldBloc> extends StatelessWidget {
         cursorWidth: 0.0,
         obscureText: obscureText,
         enabled: enabled,
+        ),
       );
     });
   }
