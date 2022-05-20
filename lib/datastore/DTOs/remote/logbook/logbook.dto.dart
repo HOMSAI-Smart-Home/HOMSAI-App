@@ -5,7 +5,6 @@ part 'logbook.dto.g.dart';
 
 @JsonSerializable()
 class LogbookDto {
-  @JsonKey(name: 'data')
   List<LogDto> data = [];
 
   LogbookDto(this.data);

@@ -290,18 +290,22 @@ class HomeAssistantRepository implements HomeAssistantInterface {
   @override
   Future<LogbookDto> getLogBook({
     required Plant plant,
+    DateTime? start,
     LogbookBodyDto? logbookBodyDto,
   }) async {
     Map<String, dynamic> response;
 
     final baseUrl = plant.getBaseUrl().replace(
           path: HomeAssistantApiProprties.logbookPath +
-              (logbookBodyDto?.start?.toIso8601String() ?? ""),
+              '/' +
+              (start?.toIso8601String() ?? ""),
           queryParameters: logbookBodyDto?.toJson(),
         );
+    
+    // print(LogbookBodyDto.fromJson(logbookBodyDto?.toJson() ?? Map()).toJson());
     final fallback = plant.getFallbackUrl()?.replace(
           path: HomeAssistantApiProprties.logbookPath +
-              (logbookBodyDto?.start?.toIso8601String() ?? ""),
+              (start?.toIso8601String() ?? ""),
           queryParameters: logbookBodyDto?.toJson(),
         );
 
@@ -311,8 +315,6 @@ class HomeAssistantRepository implements HomeAssistantInterface {
       fallbackUrl: fallback,
     );
 
-    final logBook = LogbookDto.fromJson(response);
-    appPreferences.setLogBook(logBook);
-    return logBook;
+    return LogbookDto.fromJson(response);
   }
 }

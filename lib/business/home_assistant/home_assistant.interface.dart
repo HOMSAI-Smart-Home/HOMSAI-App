@@ -37,6 +37,7 @@ abstract class HomeAssistantInterface {
       required bool isConsumption});
   Future<LogbookDto> getLogBook({
     required Plant plant,
+    DateTime? start,
     LogbookBodyDto? logbookBodyDto,
   });
 }

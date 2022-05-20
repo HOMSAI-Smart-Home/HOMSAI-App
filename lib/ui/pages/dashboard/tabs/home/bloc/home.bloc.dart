@@ -18,10 +18,11 @@ import 'package:homsai/datastore/DTOs/remote/ai_service/consumption_optimization
 import 'package:homsai/datastore/DTOs/remote/ai_service/consumption_optimizations_forecast/consumption_optimizations_forecast_body.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/ai_service/daily_plan/daily_plan.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/ai_service/daily_plan/daily_plan_body.dto.dart';
-import 'package:homsai/datastore/DTOs/remote/ai_service/daily_plan/log.dto.dart';
+import 'package:homsai/datastore/DTOs/remote/ai_service/daily_plan/daily_plan_cached.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/history/history.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/history/history_body.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/logbook/logbook.dto.dart';
+import 'package:homsai/datastore/DTOs/remote/logbook/logbook_body.dto.dart';
 import 'package:homsai/datastore/local/app.database.dart';
 import 'package:homsai/datastore/models/database/configuration.entity.dart';
 import 'package:homsai/datastore/models/database/plant.entity.dart';
@@ -119,41 +120,46 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           plant.id!, event.entities.getEntities<Entity>());
     }
     if (_active) {
-      appPreferencesInterface.resetLogBook();
-      final lights = event.entities.getEntities<LightEntity>();
+      // appPreferencesInterface.resetLogBook();
+      // final lights = event.entities.getEntities<LightEntity>();
       LogbookDto logBook;
       DailyPlanBodyDto dailyPlanBodyDto;
-      final logBookCached = appPreferencesInterface.getLogBook();
-      if (logBookCached != null) {
-        logBook = logBookCached;
+      DailyPlanDto dailyPlan;
+      // TODO: Capire se ho il daily plan
+      // Se non ho la daily plan allora la fetcho e poi la salvo anche nei preferences
+      // Per fare la daily plan ho bisogno del logbook che parte 7 giorni fa alle  00:00 e finisce oggi alle 00:00 e l'entità
+      // posso fare la daily plan e
+
+      final dailyPlanCached = appPreferencesInterface.getDailyPlan();
+      if (dailyPlanCached != null &&
+          _checkIfDateIsYesterday(dailyPlanCached.dateFetched)) {
+        dailyPlan = dailyPlanCached.dailyPlan;
       } else {
-        logBook = await homeAssistantRepository.getLogBook(plant: plant!);
+        DateTime today = DateTime.now();
+        today = DateTime(
+          today.year,
+          today.month,
+          today.day,
+        );
+        // TODO: Handle other devices
+        logBook = await homeAssistantRepository.getLogBook(
+          plant: plant!,
+          start: _getOneWeekAgo(today),
+          logbookBodyDto: LogbookBodyDto(
+            endTime: today,
+          ),
+        );
+        dailyPlanBodyDto = DailyPlanBodyDto.fromList(
+          logBook.data,
+        );
+        dailyPlan = await aiServiceInterface.getDailyPlan(
+          dailyPlanBodyDto,
+          event.entities.length,
+          ["light"],
+        );
       }
-      dailyPlanBodyDto = new DailyPlanBodyDto(logBook.data);
-      final dailyPlan =
-          await aiServiceInterface.getDailyPlan(dailyPlanBodyDto, 5, ["light"]);
-      
+
       emit(state.copyWith(lights: event.entities.getEntities<LightEntity>()));
-
-      /*
-
-      final historyBodyDto = HistoryBodyDto(sensor, minimalResponse: true);
-    List<HistoryDto>? historyCached = getHistoryCached(isConsumption);
-    List<HistoryDto> history;
-    if (historyCached != null &&
-        historyCached.isNotEmpty &&
-        _checkIfDateIsYesterday(historyCached[0].lastChanged)) {
-      history = historyCached;
-    } else {
-      history = await homeAssistantRepository.getHistory(
-          plant: plant,
-          historyBodyDto: historyBodyDto,
-          timeout: const Duration(seconds: 2),
-          isConsumption: isConsumption);
-    }
-    return _getPlotInfo(history);
-      */
-
     }
   }
 
@@ -183,6 +189,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       return optimizedConsumption.plot.intersect(productionPlot);
     }
     return consumptionPlot.intersect(productionPlot);
+  }
+
+  DateTime _getOneWeekAgo(DateTime date) {
+    DateTime oneWeekAgo = date.subtract(const Duration(days: 7));
+    oneWeekAgo = DateTime(oneWeekAgo.year, oneWeekAgo.month, oneWeekAgo.day);
+    return oneWeekAgo;
   }
 
   bool _checkIfDateIsYesterday(DateTime date) {
@@ -288,10 +300,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   Future<PlotInfo> _getPlotInfoFromSensor(
-      /*******************/
-      String? sensor,
-      Plant plant,
-      bool isConsumption) async {
+      String? sensor, Plant plant, bool isConsumption) async {
     PlotInfo info =
         PlotInfo(maxRange: Offset(Duration.minutesPerDay.toDouble(), 4));
     if (sensor == null) throw InvalidSensorException();

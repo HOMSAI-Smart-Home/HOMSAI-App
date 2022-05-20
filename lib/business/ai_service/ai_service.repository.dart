@@ -6,6 +6,7 @@ import 'package:homsai/datastore/DTOs/remote/ai_service/consumption_optimization
 import 'package:homsai/datastore/DTOs/remote/ai_service/consumption_optimizations_forecast/consumption_optimizations_forecast.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/ai_service/daily_plan/daily_plan.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/ai_service/daily_plan/daily_plan_body.dto.dart';
+import 'package:homsai/datastore/DTOs/remote/ai_service/daily_plan/daily_plan_cached.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/ai_service/daily_plan/log.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/ai_service/login/login.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/ai_service/login/login_body.dto.dart';
@@ -117,7 +118,28 @@ class AIServiceRepository implements AIServiceInterface {
       headers: _getHeader(),
       body: dailyPlanBodyDto.toJson(),
     );
-    return _deanonymizeDayliPlanDto(DailyPlanDto.fromJson(result));
+
+    final dailyPlan = _deanonymizeDayliPlanDto(
+      DailyPlanDto.fromJson(result),
+    );
+
+    DateTime today = DateTime.now();
+    today = DateTime(
+      today.year,
+      today.month,
+      today.day,
+    );
+
+    DailyPlanCachedDto dailyPlanCached = DailyPlanCachedDto(
+      dailyPlan,
+      today,
+    );
+
+    appPreferences.setDailyPlan(
+      dailyPlanCached,
+    );
+
+    return dailyPlan;
   }
 
   DailyPlanBodyDto _anonymizeDayliPlanBodyDto(

@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:homsai/crossconcern/utilities/properties/app_preference.proprties.dart';
 import 'package:homsai/datastore/DTOs/remote/ai_service/consumption_optimizations_forecast/consumption_optimizations_forecast.dto.dart';
+import 'package:homsai/datastore/DTOs/remote/ai_service/daily_plan/daily_plan_cached.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/history/history.dto.dart';
-import 'package:homsai/datastore/DTOs/remote/logbook/logbook.dto.dart';
 import 'package:homsai/datastore/models/ai_service_auth.model.dart';
 import 'package:homsai/datastore/models/home_assistant_auth.model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -160,22 +160,28 @@ class AppPreferences implements AppPreferencesInterface {
   }
 
   @override
-  LogbookDto? getLogBook() {
-    final logBook =
-        preferences?.getString(AppPreferencesProperties.prefLogBook);
-    return logBook != null ? LogbookDto.fromJson(jsonDecode(logBook)) : null;
-  }
-
-  @override
-  void resetLogBook() {
-    preferences?.remove(AppPreferencesProperties.prefLogBook);
-  }
-
-  @override
-  void setLogBook(LogbookDto logbookDto) {
+  void setDailyPlan(DailyPlanCachedDto dailyPlan) {
     preferences?.setString(
-        AppPreferencesProperties.prefLogBook, jsonEncode(logbookDto));
+      AppPreferencesProperties.prefDailyPlan,
+      jsonEncode(
+        dailyPlan.toJson(),
+      ),
+    );
   }
 
-  
+  @override
+  DailyPlanCachedDto? getDailyPlan() {
+    final dailyPlan =
+        preferences?.getString(AppPreferencesProperties.prefDailyPlan);
+    return dailyPlan != null
+        ? DailyPlanCachedDto.fromJson(
+            jsonDecode(dailyPlan),
+          )
+        : null;
+  }
+
+  @override
+  void resetDailyPlan() {
+    preferences?.remove(AppPreferencesProperties.prefDailyPlan);
+  }
 }
