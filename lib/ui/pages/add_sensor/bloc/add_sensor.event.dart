@@ -25,6 +25,24 @@ class ConsumptionSensorChanged extends AddSensorEvent {
   MesurableSensorEntity? get sensor => _sensor?.copy();
 }
 
+class PhotovoltaicNominalPowerChanged extends AddSensorEvent {
+  const PhotovoltaicNominalPowerChanged(this.value);
+
+  final String value;
+
+  @override
+  List<Object> get props => [value];
+}
+
+class PhotovoltaicInstallatioDateChanged extends AddSensorEvent {
+  const PhotovoltaicInstallatioDateChanged(this.date);
+
+  final String date;
+
+  @override
+  List<Object> get props => [date];
+}
+
 class OnSubmit extends AddSensorEvent {
   const OnSubmit(this.onSubmit);
 

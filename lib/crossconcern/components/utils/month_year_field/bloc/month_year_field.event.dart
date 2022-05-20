@@ -17,3 +17,16 @@ class FieldValidate extends MonthYearFieldEvent {
   @override
   List<Object> get props => [errorText];
 }
+
+class FieldValueChanged extends MonthYearFieldEvent {
+  const FieldValueChanged({
+    required this.valueChanged,
+    required this.selection,
+  });
+
+  final String valueChanged;
+  final TextSelection selection;
+
+  @override
+  List<Object> get props => [valueChanged, selection];
+}

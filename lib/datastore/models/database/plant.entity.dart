@@ -24,6 +24,10 @@ class Plant extends BaseEntity {
   final String? productionSensor;
   @ColumnInfo(name: 'consumption_sensor_id')
   final String? consumptionSensor;
+  @ColumnInfo(name: 'photovoltaic_nominal_power')
+  final String? photovoltaicNominalPower;
+  @ColumnInfo(name: 'photovoltaic_installation_date')
+  final DateTime? photovoltaicInstallationDate;
 
   String get coordinates => "$latitude;$longitude";
 
@@ -37,22 +41,33 @@ class Plant extends BaseEntity {
     int? id,
     this.productionSensor,
     this.consumptionSensor,
+    this.photovoltaicNominalPower,
+    this.photovoltaicInstallationDate,
   }) : super(id);
 
   Plant copyWith({
-     String? localUrl,
-   String? remoteUrl,
-   String? name,
-   double? latitude,
-   double? longitude,
-   int? configurationId,
-   String? productionSensor,
-   String? consumptionSensor,
-
+    String? localUrl,
+    String? remoteUrl,
+    String? name,
+    double? latitude,
+    double? longitude,
+    int? configurationId,
+    String? productionSensor,
+    String? consumptionSensor,
+    String? photovoltaicNominalPower,
+    DateTime? photovoltaicInstallationDate,
   }) =>
       Plant(
-        localUrl == null ? this.localUrl : localUrl.isEmpty ? null : localUrl,
-        remoteUrl == null ? this.remoteUrl : remoteUrl.isEmpty ? null : remoteUrl,
+        localUrl == null
+            ? this.localUrl
+            : localUrl.isEmpty
+                ? null
+                : localUrl,
+        remoteUrl == null
+            ? this.remoteUrl
+            : remoteUrl.isEmpty
+                ? null
+                : remoteUrl,
         name ?? this.name,
         latitude ?? this.latitude,
         longitude ?? this.longitude,
@@ -60,6 +75,10 @@ class Plant extends BaseEntity {
         id: id,
         productionSensor: productionSensor ?? this.productionSensor,
         consumptionSensor: consumptionSensor ?? this.consumptionSensor,
+        photovoltaicInstallationDate:
+            photovoltaicInstallationDate ?? this.photovoltaicInstallationDate,
+        photovoltaicNominalPower:
+            photovoltaicNominalPower ?? this.photovoltaicNominalPower,  
       );
 
   Uri getBaseUrl() {

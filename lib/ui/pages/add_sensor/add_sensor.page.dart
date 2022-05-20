@@ -64,11 +64,7 @@ class _AddSensorPageState extends State<AddSensorPage> {
         const SizedBox(
           height: 16,
         ),
-        MonthYearField(
-          labelText:
-              HomsaiLocalizations.of(context)!.photovoltaicInstallationDate,
-          focusNode: FocusNode(),
-        ),
+        _PhotovoltaicInstallationDate(),
         const SizedBox(
           height: 16,
         ),
@@ -186,6 +182,11 @@ class _PhotovoltaicNominalPower extends StatelessWidget {
         labelText:
             HomsaiLocalizations.of(context)!.photovoltaicNominalPowerLabel,
       ),
+      onChanged: (value) {
+        context.read<AddSensorBloc>().add(
+              PhotovoltaicNominalPowerChanged(value),
+            );
+      },
       style: Theme.of(context).textTheme.bodyText1,
     );
   }
@@ -197,6 +198,23 @@ class _PhotovoltaicNominalPowerFormatter extends TextInputFormatter {
       TextEditingValue oldValue, TextEditingValue newValue) {
     final stringCheck = RegExp(r'^\d*,{0,1}\d*$');
     return stringCheck.hasMatch(newValue.text) ? newValue : oldValue;
+  }
+}
+
+class _PhotovoltaicInstallationDate extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<AddSensorBloc, AddSensorState>(
+        builder: (context, state) {
+      return MonthYearField(
+          labelText:
+              HomsaiLocalizations.of(context)!.photovoltaicInstallationDate,
+          onChanged: (value) {
+            context
+                .read<AddSensorBloc>()
+                .add(PhotovoltaicInstallatioDateChanged(value));
+          });
+    });
   }
 }
 
@@ -221,13 +239,17 @@ class _AddSensorSubmit extends StatelessWidget {
 
   void checkSensorsSelection(BuildContext context, AddSensorState state) {
     final bloc = context.read<AddSensorBloc>();
-    Map<String, MesurableSensorEntity?> selectedSensor = {
+    Map<String, bool?> selectedSensor = {
       HomsaiLocalizations.of(context)!.productionSensorLabel:
-          state.selectedProductionSensor,
+          state.selectedProductionSensor != null ? true : false,
       HomsaiLocalizations.of(context)!.consumptionSensorLabel:
-          state.selectedConsumptionSensor,
+          state.selectedConsumptionSensor != null ? true : false,
+      HomsaiLocalizations.of(context)!.photovoltaicNominalPowerLabel:
+          state.photovoltaicNominalPower != null ? true : false,
+      HomsaiLocalizations.of(context)!.photovoltaicInstallationDate:
+          state.photovoltaicInstallationDate != null ? true : false,
     };
-    if (selectedSensor.containsValue(null)) {
+    if (selectedSensor.containsValue(false)) {
       showDialog(
           context: context,
           builder: (context) => AlertDialog(
@@ -320,12 +342,11 @@ class _AddSensorSubmit extends StatelessWidget {
   }
 
   List<Widget> getIncompleteSensors(
-      Map<String, MesurableSensorEntity?> selectedSensor,
-      BuildContext context) {
+      Map<String, bool?> selectedSensor, BuildContext context) {
     List<String> keys = selectedSensor.keys.toList();
     List<Widget> incompleteFieldsTexts = [];
     for (var key in keys) {
-      if (selectedSensor[key] == null) {
+      if (selectedSensor[key] == false) {
         incompleteFieldsTexts.add(Padding(
           padding: const EdgeInsets.only(top: 10, right: 0, left: 0),
           child: Row(

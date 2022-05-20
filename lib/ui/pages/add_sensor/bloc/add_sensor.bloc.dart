@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:homsai/crossconcern/components/utils/month_year_field/bloc/month_year_field.bloc.dart';
 import 'package:homsai/crossconcern/helpers/blocs/websocket/websocket.bloc.dart';
 import 'package:homsai/crossconcern/helpers/extensions/list.extension.dart';
 import 'package:homsai/crossconcern/helpers/factories/home_assistant_sensor.factory.dart';
@@ -96,14 +97,34 @@ class AddSensorBloc extends Bloc<AddSensorEvent, AddSensorState> {
     ));
   }
 
+  void _onPhotovoltaicNominalPowerChanged(
+      PhotovoltaicNominalPowerChanged event, Emitter<AddSensorState> emit) {
+    emit(state.copyWith(photovoltaicNominalPower: event.value));
+  }
+
+  void _onPhotovoltaicInstallatioDateChanged(
+      PhotovoltaicInstallatioDateChanged event, Emitter<AddSensorState> emit) {
+    final date = parseMonthYearDate(event.date);
+    emit(
+      state.copyWith(
+          photovoltaicInstallationDate:
+              date != null && checkMonthYearDate(event.date, date)
+                  ? date
+                  : null),
+    );
+  }
+
   void _onSubmit(OnSubmit event, Emitter<AddSensorState> emit) async {
     final plant = await appDatabase.getPlant();
     final newPlant = plant?.copyWith(
       productionSensor: state.selectedProductionSensor?.entityId,
       consumptionSensor: state.selectedConsumptionSensor?.entityId,
+      photovoltaicInstallationDate: state.photovoltaicInstallationDate,
+      photovoltaicNominalPower: state.photovoltaicNominalPower,
     );
     if (newPlant != null) {
       await appDatabase.plantDao.updateItem(newPlant);
+      appDatabase.plantDao.toString();
     }
     event.onSubmit();
   }

@@ -4,21 +4,22 @@ import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
 import 'package:homsai/crossconcern/components/utils/month_year_field/bloc/month_year_field.bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:homsai/themes/colors.theme.dart';
+import 'package:homsai/ui/pages/add_sensor/bloc/add_sensor.bloc.dart';
 
 class MonthYearField<Bloc extends MonthYearFieldBloc> extends StatelessWidget {
   const MonthYearField({
     this.key,
     this.obscureText = false,
     this.enabled = true,
-    required this.focusNode,
     required this.labelText,
+    this.onChanged,
   }) : super(key: key);
 
   final Key? key;
   final bool obscureText;
   final bool enabled;
   final String labelText;
-  final FocusNode focusNode;
+  final Function(String)? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -26,30 +27,30 @@ class MonthYearField<Bloc extends MonthYearFieldBloc> extends StatelessWidget {
       labelText: labelText,
       obscureText: obscureText,
       enabled: enabled,
-      focusNode: focusNode,
+      onChanged: onChanged,
     );
   }
 }
 
 class _MonthYearField<Bloc extends MonthYearFieldBloc> extends StatelessWidget {
-  const _MonthYearField({
+  _MonthYearField({
     this.key,
     this.obscureText = false,
     this.enabled = true,
-    required this.focusNode,
     required this.labelText,
+    this.onChanged,
   }) : super(key: key);
 
   final Key? key;
   final bool obscureText;
   final bool enabled;
   final String labelText;
-  final FocusNode focusNode;
+  final FocusNode focusNode = FocusNode();
+  final Function(String)? onChanged;
 
   @override
   Widget build(BuildContext context) {
     final TextEditingController controller = TextEditingController();
-
     focusNode.addListener(() {
       if (!focusNode.hasFocus) {
         validateTextField(controller.text, context);
@@ -60,13 +61,17 @@ class _MonthYearField<Bloc extends MonthYearFieldBloc> extends StatelessWidget {
         }
       }
     });
+    
     return BlocBuilder<MonthYearFieldBloc, MonthYearFieldState>(
         builder: (context, state) {
+      controller.text = state.valueChanged;
+      controller.selection = state.selection;
+
       return TextFormField(
         keyboardType: const TextInputType.numberWithOptions(
-            signed: false,
-            decimal: false,
-          ),
+          signed: false,
+          decimal: false,
+        ),
         controller: controller,
         decoration: InputDecoration(
           prefixIcon: Padding(
@@ -129,6 +134,14 @@ class _MonthYearField<Bloc extends MonthYearFieldBloc> extends StatelessWidget {
               controller.selection = const TextSelection.collapsed(offset: 7);
               break;
           }
+          context.read<Bloc>().add(
+                FieldValueChanged(
+                    valueChanged: controller.text,
+                    selection: controller.selection),
+              );
+          if (onChanged != null) {
+            onChanged!(controller.text);
+          }
         },
         cursorWidth: 0.0,
         obscureText: obscureText,
@@ -138,37 +151,27 @@ class _MonthYearField<Bloc extends MonthYearFieldBloc> extends StatelessWidget {
   }
 
   void validateTextField(String fieldValue, BuildContext context) {
-    print(
-        "fieldValue: $fieldValue, default: ${HomsaiLocalizations.of(context)!.photovoltaicInstallationDateStartValue}");
     if (fieldValue ==
         HomsaiLocalizations.of(context)!
             .photovoltaicInstallationDateStartValue) {
-      context.read<Bloc>().add(const FieldValidate(errorText: ""));
-      return;
+      return context.read<Bloc>().add(const FieldValidate(errorText: ""));
     }
-    var controlRegex = RegExp(r'^\d{2}\/\d{4}$');
-    if (controlRegex.hasMatch(fieldValue) == false) {
-      context.read<Bloc>().add(
+    final date = parseMonthYearDate(fieldValue);
+    if (date == null) {
+      return context.read<Bloc>().add(
             FieldValidate(
               errorText: HomsaiLocalizations.of(context)!
                   .photovoltaicInstallationDateToComplete,
             ),
           );
-      return;
     }
-    final month = int.parse(fieldValue.split("/")[0]);
-    final year = int.parse(fieldValue.split("/")[1]);
-    final date = DateTime(year, month);
-    final now = DateTime(DateTime.now().year, DateTime.now().month);
-    if (date.year != year || date.isAfter(now)) {
-      context.read<Bloc>().add(
-            FieldValidate(
-              errorText: HomsaiLocalizations.of(context)!
-                  .photovoltaicInstallationDateInvalid,
-            ),
-          );
-      return;
-    }
-    context.read<Bloc>().add(const FieldValidate(errorText: ""));
+    return checkMonthYearDate(fieldValue, date) == false
+        ? context.read<Bloc>().add(
+              FieldValidate(
+                errorText: HomsaiLocalizations.of(context)!
+                    .photovoltaicInstallationDateInvalid,
+              ),
+            )
+        : context.read<Bloc>().add(const FieldValidate(errorText: ""));
   }
 }
