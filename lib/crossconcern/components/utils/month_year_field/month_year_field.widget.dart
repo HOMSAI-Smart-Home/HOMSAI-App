@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
 import 'package:homsai/crossconcern/components/utils/month_year_field/bloc/month_year_field.bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:homsai/themes/colors.theme.dart';
 
 class MonthYearField<Bloc extends MonthYearFieldBloc> extends StatelessWidget {
   const MonthYearField({
@@ -73,7 +74,12 @@ class _MonthYearField<Bloc extends MonthYearFieldBloc> extends StatelessWidget {
             ),
           ),
           labelText: labelText,
+          floatingLabelStyle: TextStyle(
+              color: state.errorText != ""
+                  ? HomsaiColors.primaryRed
+                  : HomsaiColors.primaryWhite),
           errorText: state.errorText != "" ? state.errorText : null,
+          errorStyle: const TextStyle(height: 1),
         ),
         style: Theme.of(context).textTheme.bodyText1,
         focusNode: focusNode,
@@ -130,6 +136,14 @@ class _MonthYearField<Bloc extends MonthYearFieldBloc> extends StatelessWidget {
   }
 
   void validateTextField(String fieldValue, BuildContext context) {
+    print(
+        "fieldValue: $fieldValue, default: ${HomsaiLocalizations.of(context)!.photovoltaicInstallationDateStartValue}");
+    if (fieldValue ==
+        HomsaiLocalizations.of(context)!
+            .photovoltaicInstallationDateStartValue) {
+      context.read<Bloc>().add(const FieldValidate(errorText: ""));
+      return;
+    }
     var controlRegex = RegExp(r'^\d{2}\/\d{4}$');
     if (controlRegex.hasMatch(fieldValue) == false) {
       context.read<Bloc>().add(
@@ -145,10 +159,12 @@ class _MonthYearField<Bloc extends MonthYearFieldBloc> extends StatelessWidget {
     final date = DateTime(year, month);
     final now = DateTime(DateTime.now().year, DateTime.now().month);
     if (date.year != year || date.isAfter(now)) {
-      context.read<Bloc>().add(FieldValidate(
-            errorText: HomsaiLocalizations.of(context)!
-                .photovoltaicInstallationDateInvalid,
-          ));
+      context.read<Bloc>().add(
+            FieldValidate(
+              errorText: HomsaiLocalizations.of(context)!
+                  .photovoltaicInstallationDateInvalid,
+            ),
+          );
       return;
     }
     context.read<Bloc>().add(const FieldValidate(errorText: ""));
