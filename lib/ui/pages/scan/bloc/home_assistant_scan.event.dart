@@ -40,7 +40,14 @@ class ManualUrlUnfocused extends HomeAssistantEvent {}
 
 class ManualToggleRemote extends HomeAssistantEvent {}
 
-class UrlSubmitted extends HomeAssistantEvent {}
+class UrlSubmitted extends HomeAssistantEvent {
+  const UrlSubmitted({required this.onSubmit});
+
+  final void Function(String localUrl, String remoteUrl) onSubmit;
+
+  @override
+  List<Object> get props => [onSubmit];
+}
 
 class HostFound extends HomeAssistantEvent {
   const HostFound({required this.host});
@@ -61,3 +68,6 @@ class ScanFailed extends HomeAssistantEvent {
 }
 
 class ScanCompleted extends HomeAssistantEvent {}
+
+class AuthenticationFailure extends HomeAssistantEvent {}
+class AuthenticationSuccess extends HomeAssistantEvent {}

@@ -2,10 +2,11 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:homsai/crossconcern/components/common/checkbox/checkbox.widget.dart';
-import 'package:homsai/crossconcern/components/common/checkbox/checkbox_bloc.widget.dart';
+import 'package:formz/formz.dart';
 import 'package:homsai/crossconcern/components/common/radio.widget.dart';
 import 'package:homsai/crossconcern/components/common/scaffold/homsai_bloc_scaffold.widget.dart';
+import 'package:homsai/crossconcern/components/utils/double_url/bloc/double_url.bloc.dart';
+import 'package:homsai/crossconcern/components/utils/double_url/double_url.widget.dart';
 import 'package:homsai/globalkeys.widget.dart';
 import 'package:homsai/app.router.dart';
 import 'package:homsai/themes/colors.theme.dart';
@@ -48,12 +49,12 @@ class _HomeAssistantScanPage extends State<HomeAssistantScanPage> {
   Widget build(BuildContext context) {
     return HomsaiBlocScaffold(
       providers: [
-        BlocProvider<CheckboxBloc>(
-          create: (_) => CheckboxBloc(false),
+        BlocProvider<DoubleUrlBloc>(
+          create: (_) => DoubleUrlBloc(),
         ),
         BlocProvider<HomeAssistantScanBloc>(
           create: (context) =>
-              HomeAssistantScanBloc(context.read<CheckboxBloc>()),
+              HomeAssistantScanBloc(context.read<DoubleUrlBloc>()),
         ),
       ],
       padding: EdgeInsets.only(
@@ -142,7 +143,7 @@ class _SearchLocalInstanceContainerState
       builder: (context, state) {
         return Container(
           alignment: Alignment.center,
-          height: 222,
+          height: 232,
           child: AnimatedSwitcher(
             duration: const Duration(milliseconds: 250),
             transitionBuilder: buildTransition,
@@ -408,113 +409,13 @@ class _SearchLocalIntanceManual extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        _SearchLocalIntanceManualTextField(),
-        const SizedBox(
-          height: 8,
-        ),
-        _SearchLocalIntanceManualCheckbox(),
-        const SizedBox(
+      children: const <Widget>[
+        DoubleUrl(),
+        SizedBox(
           height: 8,
         ),
       ],
     );
-  }
-}
-
-class _SearchLocalIntanceManualCheckbox extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      child: SizedBox(
-        child: Row(
-          children: [
-            const CheckboxButton(initialValue: false),
-            const SizedBox(
-              width: 8,
-            ),
-            Text(
-              HomsaiLocalizations.of(context)!.homeAssistantScanManualCheckbox,
-              style: Theme.of(context).textTheme.bodyText1!.copyWith(height: 1),
-            ),
-          ],
-        ),
-      ),
-      onTap: () =>
-          context.read<HomeAssistantScanBloc>().add(ManualToggleRemote()),
-    );
-  }
-}
-
-class _SearchLocalIntanceManualTextField extends StatefulWidget {
-  @override
-  State<_SearchLocalIntanceManualTextField> createState() =>
-      _SearchLocalIntanceManualTextFieldState();
-}
-
-class _SearchLocalIntanceManualTextFieldState
-    extends State<_SearchLocalIntanceManualTextField> {
-  final FocusNode _urlFocusNode = FocusNode();
-
-  @override
-  void initState() {
-    super.initState();
-    _urlFocusNode.addListener(() {
-      if (!_urlFocusNode.hasFocus) {
-        context.read<HomeAssistantScanBloc>().add(ManualUrlUnfocused());
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    _urlFocusNode.dispose();
-    super.dispose();
-  }
-
-  Color _color(BuildContext context, HomeAssistantScanState state) {
-    return (state.selectedUrl.invalid || state.status.isAuthenticationFailure)
-        ? Theme.of(context).colorScheme.error
-        : Theme.of(context).colorScheme.onBackground;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<HomeAssistantScanBloc, HomeAssistantScanState>(
-        builder: (context, state) {
-      return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8),
-          child: TextFormField(
-            restorationId: 'manual_url_text_field',
-            initialValue: state.selectedUrl.value,
-            focusNode: _urlFocusNode,
-            keyboardType: TextInputType.url,
-            onChanged: (value) {
-              context
-                  .read<HomeAssistantScanBloc>()
-                  .add(ManualUrlChanged(url: value));
-            },
-            enabled: !state.status.isAuthenticationInProgress,
-            decoration: InputDecoration(
-              prefixIcon: Padding(
-                  padding: const EdgeInsets.all(14.0),
-                  child: SvgPicture.asset(
-                    "assets/icons/link.svg",
-                  )),
-              errorText: state.status.isAuthenticationFailure
-                  ? HomsaiLocalizations.of(context)!
-                      .homeAssistantScanManualAuthError
-                  : state.selectedUrl.invalid
-                      ? HomsaiLocalizations.of(context)!
-                          .homeAssistantScanManualError
-                      : null,
-              labelText: HomsaiLocalizations.of(context)!.urlLabel,
-            ),
-            style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                  color: Theme.of(context).colorScheme.onBackground,
-                ),
-          ));
-    });
   }
 }
 
@@ -548,41 +449,57 @@ class _ContinueRetryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<HomeAssistantScanBloc, HomeAssistantScanState>(
-      listenWhen: (previous, current) =>
-          previous.status != current.status &&
-          current.status.isAuthenticationSuccess,
-      listener: (context, state) {
-        context.router.replace(
-          AddPlantRoute(
-            onResult: onResult,
-            url: Uri.parse(state.selectedUrl.value),
-            remote: state.remoteUrl,
-          ),
-        );
-      },
-      child: BlocBuilder<HomeAssistantScanBloc, HomeAssistantScanState>(
+    return BlocBuilder<HomeAssistantScanBloc, HomeAssistantScanState>(
         buildWhen: (previous, current) =>
             previous.status != current.status ||
             previous.selectedUrl.value != current.selectedUrl.value,
-        builder: (context, state) {
-          return ElevatedButton(
-            onPressed: (state.status.canSubmitUrl && state.selectedUrl.valid)
-                ? () =>
-                    context.read<HomeAssistantScanBloc>().add(UrlSubmitted())
-                : state.status.isScanningFailure
-                    ? () => context
-                        .read<HomeAssistantScanBloc>()
-                        .add(const ScanPressed())
-                    : null,
-            child: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 250),
-              child: _buttonLabel(context, state.status),
-            ),
+        builder: (context, scanState) {
+          return BlocBuilder<DoubleUrlBloc, DoubleUrlState>(
+            buildWhen: (previous, current) => previous.status != current.status,
+            builder: (context, doubleUrlstate) {
+              return ElevatedButton(
+                onPressed: scanState.status.isManual
+                    ? doubleUrlstate.status.isValid
+                        ? () => context.read<HomeAssistantScanBloc>().add(
+                              UrlSubmitted(
+                                onSubmit: (localUrl, remoteUrl) =>
+                                    context.router.replace(
+                                  AddPlantRoute(
+                                    onResult: onResult,
+                                    localUrl: localUrl,
+                                    remoteUrl: remoteUrl,
+                                  ),
+                                ),
+                              ),
+                            )
+                        : null
+                    : (scanState.status.canSubmitUrl &&
+                            scanState.selectedUrl.valid)
+                        ? () => context.read<HomeAssistantScanBloc>().add(
+                              UrlSubmitted(
+                                onSubmit: (localUrl, remoteUrl) =>
+                                    context.router.replace(
+                                  AddPlantRoute(
+                                    onResult: onResult,
+                                    localUrl: localUrl,
+                                    remoteUrl: remoteUrl,
+                                  ),
+                                ),
+                              ),
+                            )
+                        : scanState.status.isScanningFailure
+                            ? () => context
+                                .read<HomeAssistantScanBloc>()
+                                .add(const ScanPressed())
+                            : null,
+                child: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 250),
+                  child: _buttonLabel(context, scanState.status),
+                ),
+              );
+            },
           );
-        },
-      ),
-    );
+        });
   }
 
   Widget _buttonLabel(BuildContext context, HomeAssistantScanStatus status) {

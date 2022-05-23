@@ -26,3 +26,5 @@ class UrlChanged extends UrlTextFieldEvent {
 }
 
 class UrlUnfocused extends UrlTextFieldEvent {}
+
+class UrlError extends UrlTextFieldEvent {}

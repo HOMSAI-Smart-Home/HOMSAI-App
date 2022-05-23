@@ -28,7 +28,8 @@ abstract class HomeAssistantWebSocketInterface {
   bool isConnecting();
 
   Future<void> connect({
-    Uri? url,
+    Uri? baseUrl,
+    Uri? fallback,
     Function? onConnected,
   });
 

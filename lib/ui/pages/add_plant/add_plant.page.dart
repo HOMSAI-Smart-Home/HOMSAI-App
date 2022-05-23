@@ -11,15 +11,15 @@ import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
 
 class AddPlantPage extends StatefulWidget {
   final void Function(bool) onResult;
-  final Uri? url;
-  final bool? remote;
+  final String? localUrl;
+  final String? remoteUrl;
   final bool wizard;
 
   const AddPlantPage({
     Key? key,
     required this.onResult,
-    this.url,
-    this.remote,
+    this.localUrl,
+    this.remoteUrl,
     this.wizard = true,
   }) : super(key: key);
 
@@ -35,7 +35,17 @@ class _AddPlantPageState extends State<AddPlantPage> {
         BlocProvider<WebSocketBloc>(create: (_) => WebSocketBloc()),
         BlocProvider<AddPlantBloc>(
           create: (context) => AddPlantBloc(
-              context.read<WebSocketBloc>(), widget.url, widget.wizard),
+            context.read<WebSocketBloc>(),
+            widget.wizard
+            ? widget.localUrl!.isNotEmpty
+              ? widget.localUrl
+              : widget.remoteUrl
+            : null,
+            (widget.wizard && widget.localUrl!.isNotEmpty)
+            ? widget.remoteUrl
+            : null,
+            widget.wizard,
+          ),
         ),
       ],
       mainAxisAlignment: MainAxisAlignment.center,
@@ -45,7 +55,11 @@ class _AddPlantPageState extends State<AddPlantPage> {
         _AddPlantForm(),
         const SizedBox(height: 24),
         _AddPlantSubmit(
-            widget.onResult, widget.url, widget.remote, widget.wizard),
+          widget.onResult,
+          widget.wizard,
+          widget.localUrl,
+          widget.remoteUrl,
+        ),
         const SizedBox(height: 24),
       ],
     );
@@ -196,15 +210,15 @@ class _AddPlantLocationInfo extends StatelessWidget {
 
 class _AddPlantSubmit extends StatelessWidget {
   final void Function(bool) onResult;
-  final Uri? url;
-  final bool? remote;
+  final String? localUrl;
+  final String? remoteUrl;
   final bool wizard;
 
   const _AddPlantSubmit(
     this.onResult,
-    this.url,
-    this.remote,
     this.wizard,
+    this.localUrl,
+    this.remoteUrl,
   );
 
   @override
@@ -217,8 +231,8 @@ class _AddPlantSubmit extends StatelessWidget {
                         ? context.router
                             .push(AddSensorRoute(onResult: onResult))
                         : onResult(true),
-                    url?.toString() ?? '',
-                    remote ?? true,
+                    localUrl ?? '',
+                    remoteUrl ?? '',
                   ),
                 )
             ,

@@ -26,9 +26,8 @@ class AddPlantBloc extends Bloc<AddPlantEvent, AddPlantState> {
   final AppDatabase appDatabase = getIt.get<AppDatabase>();
   final WebSocketBloc webSocketBloc;
   final bool wizard;
-  final Uri? url;
 
-  AddPlantBloc(this.webSocketBloc, this.url, this.wizard)
+  AddPlantBloc(this.webSocketBloc, String? baseUrl, String? fallback, this.wizard,)
       : super(const AddPlantState()) {
     on<ConfigurationFetched>(_onConfigurationFetched);
     on<FetchLocalConfig>(_onFetchLocalConfig);
@@ -38,15 +37,26 @@ class AddPlantBloc extends Bloc<AddPlantEvent, AddPlantState> {
     on<CoordinateUnfocused>(_onCoordinateUnfocused);
     on<OnSubmit>(_onSubmit);
     if (wizard) {
-      webSocketBloc.add(ConnectWebSocket(
+      webSocketBloc.add(
+        ConnectWebSocket(
           onWebSocketConnected: () {
-            webSocketBloc.add(FetchConfig(
-              onConfigurationFetched: (config) {
-                add(ConfigurationFetched(Configuration.fromDto(config)));
-              },
-            ));
+            webSocketBloc.add(
+              FetchConfig(
+                onConfigurationFetched: (config) {
+                  add(ConfigurationFetched(Configuration.fromDto(config)));
+                },
+              ),
+            );
+            webSocketBloc.add(
+              FetchEntites(
+                onEntitiesFetched: (entities) => add(StatesFetched(entities)),
+              ),
+            );
           },
-          url: url?.toString() ?? ''));
+          baseUrl: baseUrl ?? '',
+          fallback: fallback ?? '',
+        ),
+      );
     } else {
       add(FetchLocalConfig());
     }
@@ -147,8 +157,8 @@ class AddPlantBloc extends Bloc<AddPlantEvent, AddPlantState> {
       final configurationId =
           await appDatabase.configurationDao.insertItem(state.configuration!);
       plant = Plant(
-        !event.remote ? event.url.toString() : null,
-        event.remote ? event.url.toString() : null,
+        event.localUrl.isNotEmpty ? event.localUrl : null,
+        event.remoteUrl.isNotEmpty ? event.remoteUrl : null,
         state.plantName.value,
         double.parse(latitude),
         double.parse(longitude),

@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:formz/formz.dart';
 import 'package:homsai/business/home_assistant/home_assistant.interface.dart';
-import 'package:homsai/crossconcern/components/common/checkbox/checkbox_bloc.widget.dart';
-import 'package:homsai/crossconcern/components/common/checkbox/checkbox_event.widget.dart';
+import 'package:homsai/crossconcern/components/utils/double_url/bloc/double_url.bloc.dart';
 import 'package:homsai/crossconcern/helpers/models/forms/url.model.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.dart';
 import 'package:homsai/globalkeys.widget.dart';
@@ -22,19 +22,18 @@ class HomeAssistantScanBloc
       getIt.get<AppPreferencesInterface>();
 
   StreamSubscription<String>? _scanSubscription;
-  CheckboxBloc checkboxBloc;
+  DoubleUrlBloc doubleUrlBloc;
 
-  HomeAssistantScanBloc(this.checkboxBloc)
+  HomeAssistantScanBloc(this.doubleUrlBloc)
       : super(const HomeAssistantScanState()) {
     on<ScanPressed>(_onScanPressed, transformer: restartable());
     on<ManualUrlPressed>(_onManualUrlPressed);
-    on<ManualUrlChanged>(_onManualUrlChanged);
-    on<ManualUrlUnfocused>(_onManualUrlUnfocused);
-    on<ManualToggleRemote>(_onManualToggleRemote);
     on<UrlSelected>(_onUrlSelected);
     on<UrlSubmitted>(_onUrlSubmitted);
     on<HostFound>(_onHostFound, transformer: sequential());
     on<ScanFailed>(_onScanFailure);
+    on<AuthenticationFailure>(_onAuthenticationFailure);
+    on<AuthenticationSuccess>(_onAuthenticationSuccess);
 
     add(const ScanPressed());
   }
@@ -109,30 +108,6 @@ class HomeAssistantScanBloc
     ));
   }
 
-  void _onManualUrlChanged(
-      ManualUrlChanged event, Emitter<HomeAssistantScanState> emit) {
-    final url = Url.dirty(event.url);
-    emit(state.copyWith(
-        selectedUrl: url.valid ? url : Url.pure(event.url),
-        status: HomeAssistantScanStatus.manual));
-  }
-
-  void _onManualUrlUnfocused(
-      ManualUrlUnfocused event, Emitter<HomeAssistantScanState> emit) {
-    final url = Url.dirty(state.selectedUrl.value);
-    emit(state.copyWith(
-      selectedUrl: url,
-    ));
-  }
-
-  void _onManualToggleRemote(
-      ManualToggleRemote event, Emitter<HomeAssistantScanState> emit) {
-    checkboxBloc.add(Toggle());
-    emit(state.copyWith(
-      remoteUrl: !state.remoteUrl,
-    ));
-  }
-
   void _onUrlSelected(UrlSelected event, Emitter<HomeAssistantScanState> emit) {
     final url = Url.dirty(event.url);
     emit(state.copyWith(
@@ -140,37 +115,65 @@ class HomeAssistantScanBloc
     ));
   }
 
+  void _onAuthenticationFailure(
+    AuthenticationFailure event,
+    Emitter<HomeAssistantScanState> emit,
+  ) {
+    emit(
+      state.copyWith(
+        status: HomeAssistantScanStatus.authenticationFailure,
+      ),
+    );
+  }
+
+  void _onAuthenticationSuccess(
+    AuthenticationSuccess event,
+    Emitter<HomeAssistantScanState> emit,
+  ) {
+    emit(
+      state.copyWith(
+        status: HomeAssistantScanStatus.authenticationSuccess,
+      ),
+    );
+  }
+
   void _onUrlSubmitted(
-      UrlSubmitted event, Emitter<HomeAssistantScanState> emit) async {
-    final url = Url.dirty(state.selectedUrl.value);
-    final remote = state.remoteUrl;
-    emit(state.copyWith(
-      selectedUrl: url,
-    ));
+    UrlSubmitted event,
+    Emitter<HomeAssistantScanState> emit,
+  ) {
+    doubleUrlBloc.add(
+      DoubleUrlSubmitted(
+        onSubmit: (localUrl, remoteUrl) async {
+          localUrl = state.status.isManual ? localUrl : state.selectedUrl.value;
+          remoteUrl = state.status.isManual ? remoteUrl : '';
 
-    if (state.selectedUrl.invalid) return;
+          if (state.status.isManual && doubleUrlBloc.state.status.isInvalid) {
+            return;
+          }
+          if (!state.status.isManual && state.selectedUrl.invalid) {
+            return;
+          }
 
-    emit(state.copyWith(
-        status: HomeAssistantScanStatus.authenticationInProgress));
+          emit(state.copyWith(
+              status: HomeAssistantScanStatus.authenticationInProgress));
 
-    try {
-      final authResult = await homeAssistantRepository.authenticate(
-        url: Uri.parse(url.value),
-        remote: remote,
-      );
+          try {
+            final authResult = await homeAssistantRepository.authenticate(
+              baseUrl: Uri.parse(localUrl.isNotEmpty ? localUrl : remoteUrl),
+              fallback: localUrl.isNotEmpty ? Uri.parse(remoteUrl) : null,
+            );
 
-      appPreferencesInterface.setHomeAssistantToken(authResult);
+            appPreferencesInterface.setHomeAssistantToken(authResult);
 
-      emit(
-        state.copyWith(
-          status: HomeAssistantScanStatus.authenticationSuccess,
-          remoteUrl: remote,
-          selectedUrl: url,
-        ),
-      );
-    } catch (e) {
-      emit(state.copyWith(
-          status: HomeAssistantScanStatus.authenticationFailure));
-    }
+            add(AuthenticationSuccess());
+
+            event.onSubmit(localUrl, remoteUrl);
+          } catch (e) {
+            doubleUrlBloc.add(DoubleUrlError());
+            add(AuthenticationFailure());
+          }
+        },
+      ),
+    );
   }
 }

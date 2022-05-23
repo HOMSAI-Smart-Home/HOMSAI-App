@@ -102,7 +102,11 @@ class HomeAssistantWebSocketRepository
   }
 
   @override
-  Future<void> connect({Uri? url, Function? onConnected}) async {
+  Future<void> connect({
+    Uri? baseUrl,
+    Uri? fallback,
+    Function? onConnected,
+  }) async {
     if (isConnected()) {
       if (onConnected != null) onConnected();
       return;
@@ -112,8 +116,20 @@ class HomeAssistantWebSocketRepository
 
     status = HomeAssistantWebSocketStatus.connecting;
 
-    if (url != null) {
-      return await _listen(url);
+    if (baseUrl != null) {
+      return await _listen(
+        baseUrl,
+        retry: (exeption) {
+          if (fallback != null &&
+              status != HomeAssistantWebSocketStatus.retry) {
+            status = HomeAssistantWebSocketStatus.retry;
+            if (_message.isNotEmpty) _message.removeAt(0);
+            _listen(fallback);
+            return;
+          }
+          throw exeption;
+        },
+      );
     }
 
     _plant = await appDatabase.getPlant();
@@ -206,7 +222,7 @@ class HomeAssistantWebSocketRepository
     }
   }
 
-  Future<void> _listen(Uri url) async {
+  Future<void> _listen(Uri url, {Function(Exception exception)? retry}) async {
     try {
       if (status != HomeAssistantWebSocketStatus.retry) {
         status = HomeAssistantWebSocketStatus.connecting;
@@ -268,14 +284,13 @@ class HomeAssistantWebSocketRepository
     } catch (e) {
       if ((e is SocketException || e is TimeoutException) &&
           status != HomeAssistantWebSocketStatus.error) {
-        return _retry(url, e as Exception);
+        return retry != null ? retry(e as Exception) : _retry(url, e as Exception);
       }
       rethrow;
     }
   }
 
   void _retry(Uri url, Exception e) {
-    print('retry: $status');
     if (_plant != null && status != HomeAssistantWebSocketStatus.retry) {
       final fallback = _plant?.getFallbackUrl();
       if (fallback != null) {

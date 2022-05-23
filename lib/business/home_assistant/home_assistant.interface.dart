@@ -9,17 +9,18 @@ import 'package:homsai/datastore/models/home_assistant_auth.model.dart';
 
 abstract class HomeAssistantInterface {
   Future<HomeAssistantAuth> authenticate({
-    required Uri url,
-    required bool remote,
+    required Uri baseUrl,
+    Uri? fallback,
   });
   Future<StreamSubscription<String>> scan({
     required void Function(String) onData,
     Function? onError,
     Duration? timeout,
   });
-  Future<Uri?> canConnectToHomeAssistant({
-    required Uri url,
-    Duration timeout,
+  Future<Uri> canConnectToHomeAssistant({
+    required Uri baseUrl,
+    Uri? fallback,
+    Duration timeout = const Duration(seconds: 2),
   });
   Future<HomeAssistantAuth> refreshToken({
     required Uri url,
@@ -29,12 +30,11 @@ abstract class HomeAssistantInterface {
     required Plant plant,
     Duration timeout,
   });
-  Future<List<HistoryDto>> getHistory({
-    required Plant plant,
-    required HistoryBodyDto historyBodyDto,
-    Duration timeout,
-      required bool isConsumption
-  });
+  Future<List<HistoryDto>> getHistory(
+      {required Plant plant,
+      required HistoryBodyDto historyBodyDto,
+      Duration timeout,
+      required bool isConsumption});
   Future<LogbookDto> getLogBook({
     required Plant plant,
     LogbookBodyDto? logbookBodyDto,

@@ -8,13 +8,14 @@ abstract class WebSocketEvent extends Equatable {
 }
 
 class ConnectWebSocket extends WebSocketEvent {
-  const ConnectWebSocket({required this.onWebSocketConnected, this.url = ''});
+  const ConnectWebSocket({required this.onWebSocketConnected, this.baseUrl = '', this.fallback = ''});
 
   final void Function() onWebSocketConnected;
-  final String url;
+  final String baseUrl;
+  final String fallback;
 
   @override
-  List<Object> get props => [onWebSocketConnected, url];
+  List<Object> get props => [onWebSocketConnected, baseUrl, fallback];
 }
 
 class FetchConfig extends WebSocketEvent {

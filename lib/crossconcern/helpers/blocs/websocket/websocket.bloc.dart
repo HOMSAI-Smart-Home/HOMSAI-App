@@ -34,13 +34,14 @@ class WebSocketBloc extends Bloc<WebSocketEvent, WebSocketState> {
 
   void _onWebsocketConnect(
       ConnectWebSocket event, Emitter<WebSocketState> emit) async {
-    if (event.url.isNotEmpty) {
-      return await webSocketRepository.connect(
-        url: Uri.parse(event.url),
+    if (event.baseUrl.isNotEmpty) {
+      return webSocketRepository.connect(
+        baseUrl: Uri.parse(event.baseUrl),
+        fallback: event.fallback.isNotEmpty ? Uri.parse(event.baseUrl) : null,
         onConnected: event.onWebSocketConnected,
       );
     }
-    await webSocketRepository.connect(onConnected: event.onWebSocketConnected);
+    webSocketRepository.connect(onConnected: event.onWebSocketConnected);
   }
 
   void _onFetchConfig(FetchConfig event, Emitter<WebSocketState> emit) {

@@ -11,6 +11,7 @@ class UrlTextFieldBloc extends Bloc<UrlTextFieldEvent, UrlTextFieldState> {
     on<UrlAutoComplete>(_onUrlAutocomplete);
     on<UrlChanged>(_onUrlChanged);
     on<UrlUnfocused>(_onUrlUnfocused);
+    on<UrlError>(_onError);
   }
 
   void _onUrlAutocomplete(
@@ -37,6 +38,14 @@ class UrlTextFieldBloc extends Bloc<UrlTextFieldEvent, UrlTextFieldState> {
     emit(state.copyWith(
       status: _isUrlValid(state.url),
     ));
+  }
+
+  void _onError(UrlError event, Emitter<UrlTextFieldState> emit) {
+    if (state.url.value.isNotEmpty){
+      emit(state.copyWith(
+        status: UrlTextFieldStatus.invalid,
+      ));
+    }
   }
 
   UrlTextFieldStatus _isUrlValid(Url url) {

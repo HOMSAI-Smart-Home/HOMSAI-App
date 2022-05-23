@@ -15,6 +15,7 @@ class DoubleUrlBloc extends Bloc<DoubleUrlEvent, DoubleUrlState> {
     on<DoubleUrlLocalUrlChanged>(_onLocalUrlChanged);
     on<DoubleUrlRemoteUrlChanged>(_onRemoteUrlChange);
     on<DoubleUrlSubmitted>(_onUrlSubmitted);
+    on<DoubleUrlError>(_onUrlError);
   }
 
   void initializeBlocs({
@@ -63,6 +64,14 @@ class DoubleUrlBloc extends Bloc<DoubleUrlEvent, DoubleUrlState> {
       localUrlTextFieldBloc.state.url.value,
       remoteUrlTextFieldBloc.state.url.value,
     );
+  }
+
+  void _onUrlError(
+    DoubleUrlError event,
+    Emitter<DoubleUrlState> emit,
+  ) async {
+    localUrlTextFieldBloc.add(UrlError());
+    remoteUrlTextFieldBloc.add(UrlError());
   }
 
   FormzStatus _isFormValidate() {

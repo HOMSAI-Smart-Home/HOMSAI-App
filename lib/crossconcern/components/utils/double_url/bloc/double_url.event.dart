@@ -46,3 +46,5 @@ class DoubleUrlSubmitted extends DoubleUrlEvent {
   @override
   List<Object> get props => [onSubmit];
 }
+
+class DoubleUrlError extends DoubleUrlEvent {}

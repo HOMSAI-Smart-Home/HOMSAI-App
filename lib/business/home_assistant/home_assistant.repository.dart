@@ -34,11 +34,15 @@ class HomeAssistantRepository implements HomeAssistantInterface {
   final RemoteInterface remote = getIt.get<RemoteInterface>();
 
   @override
-  Future<HomeAssistantAuth> authenticate(
-      {required Uri url, required bool remote}) {
-    return canConnectToHomeAssistant(url: url).then((host) {
-      throwIf(host == null, HostsNotFound());
-      return authenticateHomeAssistant(url: host!, remote: remote);
+  Future<HomeAssistantAuth> authenticate({
+    required Uri baseUrl,
+    Uri? fallback,
+  }) {
+    return canConnectToHomeAssistant(
+      baseUrl: baseUrl,
+      fallback: fallback,
+    ).then((host) {
+      return authenticateHomeAssistant(url: host);
     });
   }
 
@@ -53,8 +57,9 @@ class HomeAssistantRepository implements HomeAssistantInterface {
     return headers;
   }
 
-  Future<HomeAssistantAuth> authenticateHomeAssistant(
-      {required Uri url, required bool remote}) {
+  Future<HomeAssistantAuth> authenticateHomeAssistant({
+    required Uri url,
+  }) {
     const String callbackUrlScheme =
         HomeAssistantApiProprties.authCallbackScheme;
 
@@ -70,9 +75,9 @@ class HomeAssistantRepository implements HomeAssistantInterface {
     return FlutterWebAuth.authenticate(
       url: url.toString(),
       callbackUrlScheme: callbackUrlScheme,
-    ).then((result) {
-      return _getToken(url: url, result: result, remote: remote);
-    });
+    ).then(
+      (result) => _getToken(result: result, url: url),
+    );
   }
 
   @override
@@ -92,17 +97,28 @@ class HomeAssistantRepository implements HomeAssistantInterface {
   }
 
   @override
-  Future<Uri?> canConnectToHomeAssistant({
-    required Uri url,
+  Future<Uri> canConnectToHomeAssistant({
+    required Uri baseUrl,
+    Uri? fallback,
     Duration timeout = const Duration(seconds: 2),
   }) async {
-    return _homeAssistantScanner.canConnectToHomeAssistant(
-        url: url, timeout: timeout);
+    Uri? url = await _homeAssistantScanner.canConnectToHomeAssistant(
+        url: baseUrl, timeout: timeout);
+
+    if (url != null) return url;
+
+    throwIf(fallback == null, HostsNotFound);
+
+    url = await _homeAssistantScanner.canConnectToHomeAssistant(
+        url: fallback!, timeout: timeout);
+
+    if (url != null) return url;
+    throw Exception;
   }
 
   Future<Map<String, dynamic>> _tokenReqest({
     required Duration timeout,
-    required Uri baseurl,
+    required Uri baseUrl,
     Uri? fallback,
     required Map<String, dynamic> body,
   }) async {
@@ -110,7 +126,7 @@ class HomeAssistantRepository implements HomeAssistantInterface {
     HttpClient client = HttpClient();
     client.connectionTimeout = timeout;
 
-    baseurl = baseurl.replace(
+    baseUrl = baseUrl.replace(
       path: HomeAssistantApiProprties.tokenPath,
       queryParameters: {},
     );
@@ -120,7 +136,7 @@ class HomeAssistantRepository implements HomeAssistantInterface {
     );
 
     response = await remote.post(
-      baseurl,
+      baseUrl,
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
       },
@@ -140,9 +156,8 @@ class HomeAssistantRepository implements HomeAssistantInterface {
   }
 
   Future<HomeAssistantAuth> _getToken({
-    required Uri url,
     required String result,
-    required bool remote,
+    required Uri url,
     Duration timeout = const Duration(seconds: 2),
   }) async {
     Map<String, dynamic> data;
@@ -159,7 +174,7 @@ class HomeAssistantRepository implements HomeAssistantInterface {
       'client_id': HomeAssistantApiProprties.authClientId
     };
 
-    data = await _tokenReqest(timeout: timeout, baseurl: url, body: body);
+    data = await _tokenReqest(timeout: timeout, baseUrl: url, body: body);
 
     now = DateTime.now().millisecondsSinceEpoch ~/ 1000;
 
@@ -193,7 +208,7 @@ class HomeAssistantRepository implements HomeAssistantInterface {
 
     data = await _tokenReqest(
       timeout: timeout,
-      baseurl: url,
+      baseUrl: url,
       body: body,
     );
 
@@ -229,7 +244,7 @@ class HomeAssistantRepository implements HomeAssistantInterface {
 
     await _tokenReqest(
       timeout: timeout,
-      baseurl: baseUrl,
+      baseUrl: baseUrl,
       fallback: fallback,
       body: body,
     );
