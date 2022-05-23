@@ -52,3 +52,4 @@ app.*.map.json
 *.env.staging
 *.env.dev
 *.env.prod
+.env.example
