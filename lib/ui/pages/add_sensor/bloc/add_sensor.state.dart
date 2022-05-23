@@ -10,6 +10,8 @@ class AddSensorState extends Equatable {
     this.photovoltaicInstallationDate,
     this.initialPhotovoltaicNominalPower,
     this.initialPhotovoltaicInstallationDate,
+    this.batterySensors = const [],
+    this.selectedBatterySensor,
   });
 
   final List<MesurableSensorEntity> productionSensors;
@@ -20,6 +22,8 @@ class AddSensorState extends Equatable {
   final String? initialPhotovoltaicNominalPower;
   final DateTime? photovoltaicInstallationDate;
   final String? initialPhotovoltaicInstallationDate;
+  final List<MesurableSensorEntity> batterySensors;
+  final MesurableSensorEntity? selectedBatterySensor;
 
   AddSensorState copyWith({
     List<MesurableSensorEntity>? productionSensors,
@@ -30,6 +34,8 @@ class AddSensorState extends Equatable {
     String? initialPhotovoltaicNominalPower,
     DateTime? photovoltaicInstallationDate,
     String? initialPhotovoltaicInstallationDate,
+    List<MesurableSensorEntity>? batterySensors,
+    MesurableSensorEntity? selectedBatterySensor,
   }) {
     return AddSensorState(
       productionSensors: productionSensors ?? this.productionSensors,
@@ -44,6 +50,9 @@ class AddSensorState extends Equatable {
           this.initialPhotovoltaicNominalPower,
       photovoltaicInstallationDate: photovoltaicInstallationDate,
       initialPhotovoltaicInstallationDate: initialPhotovoltaicInstallationDate,
+      batterySensors: batterySensors ?? this.batterySensors,
+      selectedBatterySensor:
+          selectedBatterySensor ?? this.selectedBatterySensor,
     );
   }
 
@@ -61,5 +70,7 @@ class AddSensorState extends Equatable {
             ),
         initialPhotovoltaicNominalPower ?? "",
         initialPhotovoltaicInstallationDate ?? "",
+        batterySensors,
+        selectedBatterySensor?.id ?? "",
       ];
 }

@@ -28,6 +28,7 @@ class AddSensorBloc extends Bloc<AddSensorEvent, AddSensorState> {
     on<PhotovoltaicNominalPowerChanged>(_onPhotovoltaicNominalPowerChanged);
     on<PhotovoltaicInstallatioDateChanged>(
         _onPhotovoltaicInstallatioDateChanged);
+    on<BatterySensorChanged>(_onBatterySensorChanged);
     on<OnSubmit>(_onSubmit);
     if (!webSocketRepository.isConnected()) {
       webSocketBloc.add(ConnectWebSocket(
@@ -91,6 +92,7 @@ class AddSensorBloc extends Bloc<AddSensorEvent, AddSensorState> {
       state.copyWith(
           productionSensors: List<MesurableSensorEntity>.from(powerSensors),
           consumptionSensors: List<MesurableSensorEntity>.from(powerSensors),
+          batterySensors: List<MesurableSensorEntity>.from(powerSensors),
           initialPhotovoltaicNominalPower: plant?.photovoltaicNominalPower,
           initialPhotovoltaicInstallationDate:
               parseMonthYearString(plant?.photovoltaicInstallationDate),
@@ -127,6 +129,13 @@ class AddSensorBloc extends Bloc<AddSensorEvent, AddSensorState> {
                   ? date
                   : null),
     );
+  }
+
+  void _onBatterySensorChanged(
+      BatterySensorChanged event, Emitter<AddSensorState> emit) {
+    emit(state.copyWith(
+      selectedBatterySensor: event.sensor,
+    ));
   }
 
   void _onSubmit(OnSubmit event, Emitter<AddSensorState> emit) async {

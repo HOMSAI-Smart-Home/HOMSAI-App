@@ -120,7 +120,7 @@
 
     "addSensorTitleWizard": "Configura impianto",
     "productionSensorLabel": "Produzione",
-    "productionSensorHint": "Nome Sensore di produzione",
+    "productionSensorHint": "Scegli Sensore di produzione",
     "consumptionSensorLabel": "Consumo",
     "consumptionSensorHint": "Nome Sensore di consumo",
     "consumptionSensorPopUpTitle": "Configurazione incompleta",
@@ -135,6 +135,14 @@
     "photovoltaicInstallationDateToComplete": "Completa correttamente la data",
     "yearLetter": "A",
     "monthLetter": "M",
+    "consumptionSensorHint": "Scegli Sensore di consumo",
+    "batterySensorLabel": "Batteria",
+    "batterySensorHint": "Scegli batteria fotovoltaico",
+    "addSensorPopUpTitle": "Configurazione incompleta",
+    "addSensorPopUpContent1": "Assicurati di aver compilato correttamente tutti i campi.\nPer visualizzare correttamente i consumi ottimizzati completa la configurazione dell’impianto.\nPotrai comunque completare la configurazione in un secondo momento dalla pagina Impostazioni.",
+    "addSensorPopUpContent2": "Campi incompleti:",
+    "addSensorPopUpIgnore": "Ignora",
+    "addSensorPopUpModify": "Modifica",
 
     "logoutDialogMessage": "Stai per effettuare il logout dall'applicazione. Sei sicuro?",
 

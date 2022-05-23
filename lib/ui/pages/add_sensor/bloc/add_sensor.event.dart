@@ -43,6 +43,14 @@ class PhotovoltaicInstallatioDateChanged extends AddSensorEvent {
   List<Object> get props => [date];
 }
 
+class BatterySensorChanged extends AddSensorEvent {
+  const BatterySensorChanged(this._sensor);
+
+  final MesurableSensorEntity? _sensor;
+
+  MesurableSensorEntity? get sensor => _sensor?.copy();
+}
+
 class OnSubmit extends AddSensorEvent {
   const OnSubmit(this.onSubmit);
 
@@ -51,6 +59,7 @@ class OnSubmit extends AddSensorEvent {
   @override
   List<Object> get props => [onSubmit];
 }
+
 class EntitiesFetched extends AddSensorEvent {
   const EntitiesFetched(this.entities);
 

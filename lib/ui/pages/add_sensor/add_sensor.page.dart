@@ -58,6 +58,10 @@ class _AddSensorPageState extends State<AddSensorPage> {
         ),
         _ProductionSensorsSelect(),
         const SizedBox(
+          height: 8,
+        ),
+        _BatterySensorsSelect(),
+        const SizedBox(
           height: 16,
         ),
         _PhotovoltaicNominalPower(),
@@ -226,6 +230,30 @@ class _PhotovoltaicInstallationDate extends StatelessWidget {
   }
 }
 
+class _BatterySensorsSelect extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<AddSensorBloc, AddSensorState>(
+        builder: (context, state) {
+      return HomsaiDropdownButton<MesurableSensorEntity>(
+        label: HomsaiLocalizations.of(context)!.batterySensorLabel,
+        hint: HomsaiLocalizations.of(context)!.batterySensorHint,
+        value: state.selectedBatterySensor,
+        items: state.batterySensors
+            .map(
+              (sensor) => DropdownMenuItem<MesurableSensorEntity>(
+                child: Text(sensor.name),
+                value: sensor,
+              ),
+            )
+            .toList(),
+        onChanged: (sensor) =>
+            context.read<AddSensorBloc>().add(BatterySensorChanged(sensor)),
+      );
+    });
+  }
+}
+
 class _AddSensorSubmit extends StatelessWidget {
   final void Function(bool) onResult;
   final bool wizard;
@@ -265,12 +293,12 @@ class _AddSensorSubmit extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(HomsaiLocalizations.of(context)!
-                        .consumptionSensorPopUpContent1),
+                        .addSensorPopUpContent1),
                     const SizedBox(
                       height: 20,
                     ),
                     Text(HomsaiLocalizations.of(context)!
-                        .consumptionSensorPopUpContent2),
+                        .addSensorPopUpContent2),
                     ...getIncompleteSensors(selectedSensor, context),
                     const SizedBox(
                       height: 20,
@@ -287,8 +315,7 @@ class _AddSensorSubmit extends StatelessWidget {
                 title: Row(
                   children: [
                     Text(
-                      HomsaiLocalizations.of(context)!
-                          .consumptionSensorPopUpTitle,
+                      HomsaiLocalizations.of(context)!.addSensorPopUpTitle,
                       style: TextStyle(color: HomsaiColors.primaryWhite),
                     ),
                   ],
@@ -308,7 +335,7 @@ class _AddSensorSubmit extends StatelessWidget {
                                     const EdgeInsets.only(top: 20, bottom: 20),
                                 child: Text(
                                   HomsaiLocalizations.of(context)!
-                                      .consumptionSensorPopUpIgnore,
+                                      .addSensorPopUpIgnore,
                                 ),
                               ),
                             ],
@@ -329,7 +356,7 @@ class _AddSensorSubmit extends StatelessWidget {
                                     const EdgeInsets.only(top: 20, bottom: 20),
                                 child: Text(
                                   HomsaiLocalizations.of(context)!
-                                      .consumptionSensorPopUpModify,
+                                      .addSensorPopUpModify,
                                   style: TextStyle(
                                       color: HomsaiColors.primaryGreen),
                                 ),
