@@ -145,6 +145,7 @@ class AddSensorBloc extends Bloc<AddSensorEvent, AddSensorState> {
       consumptionSensor: state.selectedConsumptionSensor?.entityId,
       photovoltaicInstallationDate: state.photovoltaicInstallationDate,
       photovoltaicNominalPower: state.photovoltaicNominalPower,
+      batterySensor: state.selectedBatterySensor?.entityId,
     );
     if (newPlant != null) {
       await appDatabase.plantDao.updateItem(newPlant);

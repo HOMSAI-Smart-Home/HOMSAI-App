@@ -28,6 +28,8 @@ class Plant extends BaseEntity {
   final String? photovoltaicNominalPower;
   @ColumnInfo(name: 'photovoltaic_installation_date')
   final DateTime? photovoltaicInstallationDate;
+  @ColumnInfo(name: 'battery_sensor_id')
+  final String? batterySensor;
 
   String get coordinates => "$latitude;$longitude";
 
@@ -43,6 +45,7 @@ class Plant extends BaseEntity {
     this.consumptionSensor,
     this.photovoltaicNominalPower,
     this.photovoltaicInstallationDate,
+    this.batterySensor,
   }) : super(id);
 
   Plant copyWith({
@@ -56,6 +59,7 @@ class Plant extends BaseEntity {
     String? consumptionSensor,
     String? photovoltaicNominalPower,
     DateTime? photovoltaicInstallationDate,
+    String? batterySensor,
   }) =>
       Plant(
         localUrl == null
@@ -78,7 +82,8 @@ class Plant extends BaseEntity {
         photovoltaicInstallationDate:
             photovoltaicInstallationDate ?? this.photovoltaicInstallationDate,
         photovoltaicNominalPower:
-            photovoltaicNominalPower ?? this.photovoltaicNominalPower,  
+            photovoltaicNominalPower ?? this.photovoltaicNominalPower,
+        batterySensor: batterySensor ?? this.batterySensor,
       );
 
   Uri getBaseUrl() {
