@@ -120,26 +120,31 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   void _onToggleConsumptionOptimazedPlot(
-      ToggleConsumptionOptimazedPlot event, Emitter<HomeState> emit) {
-    List<FlSpot> autoConsumption;
-/*     if (event.isOptimized) {
-      autoConsumption =
-          state.optimizedConsumptionPlot!.intersect(state.productionPlot!);
-    } else {
-      autoConsumption = state.consumptionPlot!.intersect(state.productionPlot!);
-    } */
-
+    ToggleConsumptionOptimazedPlot event,
+    Emitter<HomeState> emit,
+  ) {
     emit(state.copyWith(
-      autoConsumption: checkAutoConsumption(event.isOptimized),
+      autoConsumption: checkAutoConsumption(
+        isOptimized: event.isOptimized,
+        optimizedConsumption:
+            PlotInfo(plot: state.optimizedConsumptionPlot ?? []),
+        productionPlot: state.productionPlot!,
+        consumptionPlot: state.consumptionPlot!,
+      ),
       isPlotOptimized: event.isOptimized,
     ));
   }
 
-  List<FlSpot> checkAutoConsumption(bool isOptimized) {
+  List<FlSpot> checkAutoConsumption({
+    required bool isOptimized,
+    required PlotInfo optimizedConsumption,
+    required List<FlSpot> productionPlot,
+    required List<FlSpot> consumptionPlot,
+  }) {
     if (isOptimized) {
-      return state.optimizedConsumptionPlot!.intersect(state.productionPlot!);
+      return optimizedConsumption.plot.intersect(productionPlot);
     }
-    return state.consumptionPlot!.intersect(state.productionPlot!);
+    return consumptionPlot.intersect(productionPlot);
   }
 
   bool _checkIfDateIsYesterday(DateTime date) {
@@ -171,8 +176,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         List<FlSpot> autoConsumption = [];
         ConsumptionOptimizationsForecastDto? consumptionForecast;
         PlotInfo? optimizedInfo;
+
         if (consumptionInfo.plot.isNotEmpty && productionInfo.plot.isNotEmpty) {
-          autoConsumption = checkAutoConsumption(state.isPlotOptimized);
           final forecasts = appPreferencesInterface.getOptimizationForecast();
           if (forecasts != null &&
               forecasts.optimizedGeneralPowerMeterData.isNotEmpty &&
@@ -192,6 +197,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           }
           optimizedInfo =
               _getPlotInfo(consumptionForecast.optimizedGeneralPowerMeterData);
+
+          autoConsumption = checkAutoConsumption(
+            isOptimized: state.isPlotOptimized,
+            optimizedConsumption: optimizedInfo,
+            consumptionPlot: consumptionInfo.plot,
+            productionPlot: productionInfo.plot,
+          );
         }
 
         if (_active) {
