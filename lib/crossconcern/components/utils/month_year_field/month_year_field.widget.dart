@@ -4,7 +4,6 @@ import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
 import 'package:homsai/crossconcern/components/utils/month_year_field/bloc/month_year_field.bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:homsai/themes/colors.theme.dart';
-import 'package:homsai/ui/pages/add_sensor/bloc/add_sensor.bloc.dart';
 
 class MonthYearField<Bloc extends MonthYearFieldBloc> extends StatelessWidget {
   const MonthYearField({
@@ -13,6 +12,7 @@ class MonthYearField<Bloc extends MonthYearFieldBloc> extends StatelessWidget {
     this.enabled = true,
     required this.labelText,
     this.onChanged,
+    this.initialValue,
   }) : super(key: key);
 
   final Key? key;
@@ -20,6 +20,7 @@ class MonthYearField<Bloc extends MonthYearFieldBloc> extends StatelessWidget {
   final bool enabled;
   final String labelText;
   final Function(String)? onChanged;
+  final String? initialValue;
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +29,7 @@ class MonthYearField<Bloc extends MonthYearFieldBloc> extends StatelessWidget {
       obscureText: obscureText,
       enabled: enabled,
       onChanged: onChanged,
+      initialValue: initialValue,
     );
   }
 }
@@ -39,6 +41,7 @@ class _MonthYearField<Bloc extends MonthYearFieldBloc> extends StatelessWidget {
     this.enabled = true,
     required this.labelText,
     this.onChanged,
+    this.initialValue,
   }) : super(key: key);
 
   final Key? key;
@@ -47,9 +50,18 @@ class _MonthYearField<Bloc extends MonthYearFieldBloc> extends StatelessWidget {
   final String labelText;
   final FocusNode focusNode = FocusNode();
   final Function(String)? onChanged;
+  final String? initialValue;
 
   @override
   Widget build(BuildContext context) {
+    if (initialValue != null) {
+      context.read<Bloc>().add(
+            FieldValueChanged(
+              valueChanged: initialValue!,
+              selection: const TextSelection.collapsed(offset: 7),
+            ),
+          );
+    }
     final TextEditingController controller = TextEditingController();
     focusNode.addListener(() {
       if (!focusNode.hasFocus) {
@@ -61,7 +73,7 @@ class _MonthYearField<Bloc extends MonthYearFieldBloc> extends StatelessWidget {
         }
       }
     });
-    
+
     return BlocBuilder<MonthYearFieldBloc, MonthYearFieldState>(
         builder: (context, state) {
       controller.text = state.valueChanged;
@@ -137,7 +149,8 @@ class _MonthYearField<Bloc extends MonthYearFieldBloc> extends StatelessWidget {
           context.read<Bloc>().add(
                 FieldValueChanged(
                     valueChanged: controller.text,
-                    selection: controller.selection),
+                    selection: controller.selection,
+                  ),
               );
           if (onChanged != null) {
             onChanged!(controller.text);
@@ -147,7 +160,8 @@ class _MonthYearField<Bloc extends MonthYearFieldBloc> extends StatelessWidget {
         obscureText: obscureText,
         enabled: enabled,
       );
-    });
+      },
+    );
   }
 
   void validateTextField(String fieldValue, BuildContext context) {

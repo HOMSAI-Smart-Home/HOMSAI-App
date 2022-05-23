@@ -8,6 +8,8 @@ class AddSensorState extends Equatable {
     this.selectedConsumptionSensor,
     this.photovoltaicNominalPower,
     this.photovoltaicInstallationDate,
+    this.initialPhotovoltaicNominalPower,
+    this.initialPhotovoltaicInstallationDate,
   });
 
   final List<MesurableSensorEntity> productionSensors;
@@ -15,7 +17,9 @@ class AddSensorState extends Equatable {
   final List<MesurableSensorEntity> consumptionSensors;
   final MesurableSensorEntity? selectedConsumptionSensor;
   final String? photovoltaicNominalPower;
+  final String? initialPhotovoltaicNominalPower;
   final DateTime? photovoltaicInstallationDate;
+  final String? initialPhotovoltaicInstallationDate;
 
   AddSensorState copyWith({
     List<MesurableSensorEntity>? productionSensors,
@@ -23,7 +27,9 @@ class AddSensorState extends Equatable {
     List<MesurableSensorEntity>? consumptionSensors,
     MesurableSensorEntity? selectedConsumptionSensor,
     String? photovoltaicNominalPower,
+    String? initialPhotovoltaicNominalPower,
     DateTime? photovoltaicInstallationDate,
+    String? initialPhotovoltaicInstallationDate,
   }) {
     return AddSensorState(
       productionSensors: productionSensors ?? this.productionSensors,
@@ -34,7 +40,10 @@ class AddSensorState extends Equatable {
           selectedConsumptionSensor ?? this.selectedConsumptionSensor,
       photovoltaicNominalPower:
           photovoltaicNominalPower ?? this.photovoltaicNominalPower,
+      initialPhotovoltaicNominalPower: initialPhotovoltaicNominalPower ??
+          this.initialPhotovoltaicNominalPower,
       photovoltaicInstallationDate: photovoltaicInstallationDate,
+      initialPhotovoltaicInstallationDate: initialPhotovoltaicInstallationDate,
     );
   }
 
@@ -50,5 +59,7 @@ class AddSensorState extends Equatable {
               DateTime.now().year,
               DateTime.now().month,
             ),
+        initialPhotovoltaicNominalPower ?? "",
+        initialPhotovoltaicInstallationDate ?? "",
       ];
 }

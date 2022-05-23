@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:floor/floor.dart';
+import 'package:homsai/crossconcern/helpers/converters/database/datetime_converter.dart';
 import 'package:homsai/crossconcern/helpers/converters/database/home_assistant.converter.dart';
 import 'package:homsai/crossconcern/helpers/converters/database/list.converter.dart';
 import 'package:homsai/crossconcern/helpers/converters/database/map.converter.dart';
@@ -21,7 +22,8 @@ import 'package:sqflite/sqflite.dart' as sqflite;
 
 part 'app.database.g.dart';
 
-@TypeConverters([ListConverter, MapConverter, HomeAssistantConverter])
+@TypeConverters(
+    [ListConverter, MapConverter, HomeAssistantConverter, DateTimeConverter])
 @Database(
     version: DatabaseProperties.version,
     entities: [User, Plant, Configuration, HomeAssistantEntity])

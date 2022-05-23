@@ -25,6 +25,9 @@ class AddSensorBloc extends Bloc<AddSensorEvent, AddSensorState> {
     on<ProductionSensorChanged>(_onProductionSensorChanged);
     on<EntitiesFetched>(_onEntitiesFetched);
     on<ConsumptionSensorChanged>(_onConsumptionSensorChanged);
+    on<PhotovoltaicNominalPowerChanged>(_onPhotovoltaicNominalPowerChanged);
+    on<PhotovoltaicInstallatioDateChanged>(
+        _onPhotovoltaicInstallatioDateChanged);
     on<OnSubmit>(_onSubmit);
     if (!webSocketRepository.isConnected()) {
       webSocketBloc.add(ConnectWebSocket(
@@ -67,20 +70,32 @@ class AddSensorBloc extends Bloc<AddSensorEvent, AddSensorState> {
             await appDatabase.getEntity<SensorEntity>(plant.productionSensor!);
       }
       if (consumptionSensor != null && productionSensor != null) {
-        emit(state.copyWith(
-          selectedConsumptionSensor: consumptionSensor as MesurableSensorEntity,
-          selectedProductionSensor: productionSensor as MesurableSensorEntity,
-        ));
+        emit(
+          state.copyWith(
+              selectedConsumptionSensor:
+                  consumptionSensor as MesurableSensorEntity,
+              selectedProductionSensor:
+                  productionSensor as MesurableSensorEntity,
+              initialPhotovoltaicNominalPower: plant.photovoltaicNominalPower,
+              initialPhotovoltaicInstallationDate:
+                  parseMonthYearString(plant.photovoltaicInstallationDate),
+              photovoltaicInstallationDate: plant.photovoltaicInstallationDate),
+        );
       }
     }
 
     final sensors = event.entities.getEntities<SensorEntity>();
     final powerSensors = sensors
         .filterSensorByDeviceClass<MesurableSensorEntity>(DeviceClass.power);
-    emit(state.copyWith(
-      productionSensors: List<MesurableSensorEntity>.from(powerSensors),
-      consumptionSensors: List<MesurableSensorEntity>.from(powerSensors),
-    ));
+    emit(
+      state.copyWith(
+          productionSensors: List<MesurableSensorEntity>.from(powerSensors),
+          consumptionSensors: List<MesurableSensorEntity>.from(powerSensors),
+          initialPhotovoltaicNominalPower: plant?.photovoltaicNominalPower,
+          initialPhotovoltaicInstallationDate:
+              parseMonthYearString(plant?.photovoltaicInstallationDate),
+          photovoltaicInstallationDate: plant?.photovoltaicInstallationDate),
+    );
   }
 
   void _onProductionSensorChanged(
@@ -124,7 +139,6 @@ class AddSensorBloc extends Bloc<AddSensorEvent, AddSensorState> {
     );
     if (newPlant != null) {
       await appDatabase.plantDao.updateItem(newPlant);
-      appDatabase.plantDao.toString();
     }
     event.onSubmit();
   }

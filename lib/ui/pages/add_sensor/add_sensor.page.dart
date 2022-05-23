@@ -166,28 +166,34 @@ class _ConsumptionSensorsSelect extends StatelessWidget {
 class _PhotovoltaicNominalPower extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      keyboardType:
-          const TextInputType.numberWithOptions(decimal: true, signed: false),
-      inputFormatters: [
-        _PhotovoltaicNominalPowerFormatter(),
-      ],
-      decoration: InputDecoration(
-        prefixIcon: Padding(
-          padding: const EdgeInsets.all(14.0),
-          child: SvgPicture.asset(
-            "assets/icons/power.svg",
+    return BlocBuilder<AddSensorBloc, AddSensorState>(
+      builder: (context, state) {
+        return TextFormField(
+          initialValue: state.initialPhotovoltaicNominalPower,
+          key: ValueKey(state.initialPhotovoltaicNominalPower),
+          keyboardType: const TextInputType.numberWithOptions(
+              decimal: true, signed: false),
+          inputFormatters: [
+            _PhotovoltaicNominalPowerFormatter(),
+          ],
+          decoration: InputDecoration(
+            prefixIcon: Padding(
+              padding: const EdgeInsets.all(14.0),
+              child: SvgPicture.asset(
+                "assets/icons/power.svg",
+              ),
+            ),
+            labelText:
+                HomsaiLocalizations.of(context)!.photovoltaicNominalPowerLabel,
           ),
-        ),
-        labelText:
-            HomsaiLocalizations.of(context)!.photovoltaicNominalPowerLabel,
-      ),
-      onChanged: (value) {
-        context.read<AddSensorBloc>().add(
-              PhotovoltaicNominalPowerChanged(value),
-            );
+          onChanged: (value) {
+            context.read<AddSensorBloc>().add(
+                  PhotovoltaicNominalPowerChanged(value),
+                );
+          },
+          style: Theme.of(context).textTheme.bodyText1,
+        );
       },
-      style: Theme.of(context).textTheme.bodyText1,
     );
   }
 }
@@ -207,13 +213,15 @@ class _PhotovoltaicInstallationDate extends StatelessWidget {
     return BlocBuilder<AddSensorBloc, AddSensorState>(
         builder: (context, state) {
       return MonthYearField(
-          labelText:
-              HomsaiLocalizations.of(context)!.photovoltaicInstallationDate,
-          onChanged: (value) {
-            context
-                .read<AddSensorBloc>()
-                .add(PhotovoltaicInstallatioDateChanged(value));
-          });
+        labelText:
+            HomsaiLocalizations.of(context)!.photovoltaicInstallationDate,
+        initialValue: state.initialPhotovoltaicInstallationDate,
+        onChanged: (value) {
+          context
+              .read<AddSensorBloc>()
+              .add(PhotovoltaicInstallatioDateChanged(value));
+        },
+      );
     });
   }
 }
@@ -238,6 +246,8 @@ class _AddSensorSubmit extends StatelessWidget {
   }
 
   void checkSensorsSelection(BuildContext context, AddSensorState state) {
+    print(
+        "state.photovoltaicInstallationDate: ${state.photovoltaicInstallationDate}");
     final bloc = context.read<AddSensorBloc>();
     Map<String, bool?> selectedSensor = {
       HomsaiLocalizations.of(context)!.productionSensorLabel:
@@ -245,7 +255,7 @@ class _AddSensorSubmit extends StatelessWidget {
       HomsaiLocalizations.of(context)!.consumptionSensorLabel:
           state.selectedConsumptionSensor != null ? true : false,
       HomsaiLocalizations.of(context)!.photovoltaicNominalPowerLabel:
-          state.photovoltaicNominalPower != null ? true : false,
+          state.photovoltaicNominalPower == "" ? false : true,
       HomsaiLocalizations.of(context)!.photovoltaicInstallationDate:
           state.photovoltaicInstallationDate != null ? true : false,
     };

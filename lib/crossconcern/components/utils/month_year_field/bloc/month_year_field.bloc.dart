@@ -38,6 +38,12 @@ DateTime? parseMonthYearDate(String dateString) {
   return DateTime(year, month);
 }
 
+String? parseMonthYearString(DateTime? date) {
+  return date == null
+      ? null
+      : "${date.month.toString()}/${date.year.toString()}";
+}
+
 bool checkMonthYearDate(String dateString, DateTime dateParsed) {
   // Check if Month/Year date is correct and is not in the future
   final year = int.parse(dateString.split("/")[1]);
