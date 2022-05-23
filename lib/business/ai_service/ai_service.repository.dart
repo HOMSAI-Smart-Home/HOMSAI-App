@@ -9,7 +9,6 @@ import 'package:homsai/datastore/DTOs/remote/ai_service/daily_plan/daily_plan_bo
 import 'package:homsai/datastore/DTOs/remote/ai_service/daily_plan/log.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/ai_service/login/login.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/ai_service/login/login_body.dto.dart';
-import 'package:homsai/datastore/DTOs/remote/history/history.dto.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.dart';
 import 'package:homsai/datastore/models/ai_service_auth.model.dart';
 import 'package:homsai/datastore/remote/rest/remote.Interface.dart';

@@ -65,7 +65,7 @@ class _HomeAssistantScanPage extends State<HomeAssistantScanPage> {
       ),
       children: <Widget>[
         _HomeAssistantScanDialog(),
-        const SizedBox(height: 40),
+        const SizedBox(height: 24),
         _SearchLocalInstance(onResult: widget.onResult)
       ],
     );
@@ -107,10 +107,7 @@ class _SearchLocalInstanceState extends State<_SearchLocalInstance> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        Text(
-          HomsaiLocalizations.of(context)!.homeAssistantScanTitle,
-          style: Theme.of(context).textTheme.headline3,
-        ),
+        _HomeAssistantScanTitle(),
         const SizedBox(
           height: 12,
         ),
@@ -120,6 +117,34 @@ class _SearchLocalInstanceState extends State<_SearchLocalInstance> {
         ),
         _SearchLocalIntanceButtons(widget.onResult)
       ],
+    );
+  }
+}
+
+class _HomeAssistantScanTitle extends StatelessWidget {
+  String getTitle(
+    HomsaiLocalizations localizations,
+    HomeAssistantScanStatus status,
+  ) {
+    if (status.isManual) return localizations.urlTitle;
+    return localizations.homeAssistantScanTitle;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<HomeAssistantScanBloc, HomeAssistantScanState>(
+      buildWhen: (previous, current) =>
+          previous.status.isManual != current.status.isManual &&
+          (previous.status.isManual || current.status.isManual),
+      builder: (context, state) {
+        return Text(
+          getTitle(
+            HomsaiLocalizations.of(context)!,
+            state.status,
+          ),
+          style: Theme.of(context).textTheme.headline2,
+        );
+      },
     );
   }
 }
@@ -143,7 +168,7 @@ class _SearchLocalInstanceContainerState
       builder: (context, state) {
         return Container(
           alignment: Alignment.center,
-          height: 232,
+          height: 328,
           child: AnimatedSwitcher(
             duration: const Duration(milliseconds: 250),
             transitionBuilder: buildTransition,
@@ -409,10 +434,38 @@ class _SearchLocalIntanceManual extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
-      children: const <Widget>[
-        DoubleUrl(),
-        SizedBox(
+      children: <Widget>[
+        const SizedBox(
           height: 8,
+        ),
+        _UrlDescription(),
+        const SizedBox(
+          height: 24,
+        ),
+        const DoubleUrl(),
+      ],
+    );
+  }
+}
+
+class _UrlDescription extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return SuperRichText(
+      textAlign: TextAlign.center,
+      text: HomsaiLocalizations.of(context)!.urlDescription,
+      style: Theme.of(context).textTheme.bodyText1,
+      othersMarkers: [
+        MarkerText.withUrl(
+          marker: '%1',
+          urls: [
+            "https://companion.home-assistant.io/docs/troubleshooting/networking/"
+          ],
+          style: TextStyle(
+            fontWeight: FontWeight.w700,
+            color: Theme.of(context).colorScheme.primary,
+            decoration: TextDecoration.underline,
+          ),
         ),
       ],
     );

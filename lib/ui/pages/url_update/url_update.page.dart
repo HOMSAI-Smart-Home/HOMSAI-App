@@ -8,6 +8,7 @@ import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
 import 'package:homsai/crossconcern/components/utils/double_url/bloc/double_url.bloc.dart';
 import 'package:homsai/crossconcern/components/utils/double_url/double_url.widget.dart';
 import 'package:homsai/ui/pages/url_update/bloc/url_update.bloc.dart';
+import 'package:super_rich_text/super_rich_text.dart';
 
 class UrlUpdatePage extends StatelessWidget {
   final void Function(bool) onResult;
@@ -40,6 +41,10 @@ class UrlUpdatePage extends StatelessWidget {
         const SizedBox(
           height: 24,
         ),
+        _UrlDescription(),
+        const SizedBox(
+          height: 24,
+        ),
         const DoubleUrl(),
         const SizedBox(
           height: 16,
@@ -53,8 +58,32 @@ class UrlUpdatePage extends StatelessWidget {
 class _UrlUpdateTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Text(HomsaiLocalizations.of(context)!.addUrlTitleEdit,
-        style: Theme.of(context).textTheme.headline3);
+    return Text(HomsaiLocalizations.of(context)!.urlTitle,
+        style: Theme.of(context).textTheme.headline2);
+  }
+}
+
+class _UrlDescription extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return SuperRichText(
+      textAlign: TextAlign.center,
+      text: HomsaiLocalizations.of(context)!.urlDescription,
+      style: Theme.of(context).textTheme.bodyText1,
+      othersMarkers: [
+        MarkerText.withUrl(
+          marker: '%1',
+          urls: [
+            "https://companion.home-assistant.io/docs/troubleshooting/networking/"
+          ],
+          style: TextStyle(
+            fontWeight: FontWeight.w700,
+            color: Theme.of(context).colorScheme.primary,
+            decoration: TextDecoration.underline,
+          ),
+        ),
+      ],
+    );
   }
 }
 

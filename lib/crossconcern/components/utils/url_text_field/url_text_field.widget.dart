@@ -79,7 +79,7 @@ class _UrlTextField<Bloc extends UrlTextFieldBloc> extends StatelessWidget {
                         HomsaiLocalizations.of(context)!
                             .homeAssistantScanManualError,
                 labelText:
-                    labelText ?? HomsaiLocalizations.of(context)!.urlLabel,
+                    labelText ?? '',
               ),
               style: Theme.of(context).textTheme.bodyText1!.copyWith(
                     color: Theme.of(context).colorScheme.onBackground,

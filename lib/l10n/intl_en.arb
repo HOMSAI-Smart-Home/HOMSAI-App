@@ -32,7 +32,9 @@
     "loginTitle2": "home\n",
     "notSignUp": "First time on Homsai?",
 
-    "urlLabel": "Enter Url",
+    "urlTitle": "Enter instance Url",
+    "urlLabel": "Enter URL",
+    "urlDescription": "The local and remote URLs are used to make your Home Assistant system reachable.\n%1Learn more%1",
 
     "homeAssistantScanDialogTitle": "Connect to the WI-FI!",
     "homeAssistantScanDialogMessage": "To identify the local instance of *Home Assistant*, the smartphone must be connected to the same Wi-Fi as the home automation hub.",

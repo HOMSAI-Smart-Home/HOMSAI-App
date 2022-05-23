@@ -38,15 +38,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
 
     //TODO:fix when websocket factory
     Plant plant = (await _appDatabase.getPlant())!;
-    try {
-      await _homeAssistantInterface.revokeToken(plant: plant);
-      print('removed');
-    } catch (_) {
-      print('not removed');
-    }
-    
-    _homeAssistantInterface.getLogBook(plant: plant);
-
+    await _homeAssistantInterface.revokeToken(plant: plant);
     await _appDatabase.logout();
     event.onLogout();
   }

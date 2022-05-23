@@ -15,6 +15,7 @@ class RemoteRepository implements RemoteInterface {
   Client client = Client();
   static const Duration _timeout = Duration(seconds: 10);
 
+  @override
   Map<String, dynamic> parseResponse(Response response) {
     dynamic body;
     dynamic bodyList;
