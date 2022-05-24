@@ -319,9 +319,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         plant.latitude,
         plant.longitude,
       );
-      print("photovoltaicForecast.data ${photovoltaicForecast.data}");
-      print("photovoltaicForecast.min ${photovoltaicForecast.min}");
-      print("photovoltaicForecast.max ${photovoltaicForecast.max}");
       emit(state.copyWith(
         forecastData: photovoltaicForecast.data,
         forecastMinOffset: photovoltaicForecast.min,
