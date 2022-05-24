@@ -246,8 +246,6 @@ class _AddSensorSubmit extends StatelessWidget {
   }
 
   void checkSensorsSelection(BuildContext context, AddSensorState state) {
-    print(
-        "state.photovoltaicInstallationDate: ${state.photovoltaicInstallationDate}");
     final bloc = context.read<AddSensorBloc>();
     Map<String, bool?> selectedSensor = {
       HomsaiLocalizations.of(context)!.productionSensorLabel:

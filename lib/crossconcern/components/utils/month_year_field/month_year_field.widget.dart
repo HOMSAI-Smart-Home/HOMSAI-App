@@ -54,15 +54,15 @@ class _MonthYearField<Bloc extends MonthYearFieldBloc> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final TextEditingController controller = TextEditingController();
     if (initialValue != null) {
       context.read<Bloc>().add(
             FieldValueChanged(
               valueChanged: initialValue!,
-              selection: const TextSelection.collapsed(offset: 7),
+              selection: controller.selection,
             ),
           );
     }
-    final TextEditingController controller = TextEditingController();
     focusNode.addListener(() {
       if (!focusNode.hasFocus) {
         validateTextField(controller.text, context);
@@ -75,91 +75,91 @@ class _MonthYearField<Bloc extends MonthYearFieldBloc> extends StatelessWidget {
     });
 
     return BlocBuilder<MonthYearFieldBloc, MonthYearFieldState>(
-        builder: (context, state) {
-      controller.text = state.valueChanged;
-      controller.selection = state.selection;
+      builder: (context, state) {
+        controller.text = state.valueChanged;
+        controller.selection = state.selection;
 
-      return TextFormField(
-        keyboardType: const TextInputType.numberWithOptions(
-          signed: false,
-          decimal: false,
-        ),
-        controller: controller,
-        decoration: InputDecoration(
-          prefixIcon: Padding(
-            padding: const EdgeInsets.all(14.0),
-            child: SvgPicture.asset(
-              "assets/icons/calendar.svg",
-            ),
+        return TextFormField(
+          keyboardType: const TextInputType.numberWithOptions(
+            signed: false,
+            decimal: false,
           ),
-          labelText: labelText,
-          floatingLabelStyle: TextStyle(
-              color: state.errorText != ""
-                  ? HomsaiColors.primaryRed
-                  : HomsaiColors.primaryWhite),
-          errorText: state.errorText != "" ? state.errorText : null,
-          errorStyle: const TextStyle(height: 1),
-        ),
-        style: Theme.of(context).textTheme.bodyText1,
-        focusNode: focusNode,
-        onTap: () {
-          if (controller.text == "") {
-            controller.text = HomsaiLocalizations.of(context)!
-                .photovoltaicInstallationDateStartValue;
-          }
-        },
-        onChanged: (value) {
-          value = value.replaceAll(RegExp(r"\D"), "");
-          var yl = HomsaiLocalizations.of(context)!.yearLetter;
-          var ml = HomsaiLocalizations.of(context)!.monthLetter;
-          switch (value.length) {
-            case 0:
-              controller.text = "$ml$ml/$yl$yl$yl$yl";
-              controller.selection = const TextSelection.collapsed(offset: 0);
-              break;
-            case 1:
-              controller.text = "$value$ml/$yl$yl$yl$yl";
-              controller.selection = const TextSelection.collapsed(offset: 1);
-              break;
-            case 2:
-              controller.text = "$value/$yl$yl$yl$yl";
-              controller.selection = const TextSelection.collapsed(offset: 2);
-              break;
-            case 3:
-              controller.text =
-                  "${value.substring(0, 2)}/${value.substring(2)}$yl$yl$yl";
-              controller.selection = const TextSelection.collapsed(offset: 4);
-              break;
-            case 4:
-              controller.text =
-                  "${value.substring(0, 2)}/${value.substring(2, 4)}$yl$yl";
-              controller.selection = const TextSelection.collapsed(offset: 5);
-              break;
-            case 5:
-              controller.text =
-                  "${value.substring(0, 2)}/${value.substring(2, 5)}$yl";
-              controller.selection = const TextSelection.collapsed(offset: 6);
-              break;
-            default:
-              controller.text =
-                  "${value.substring(0, 2)}/${value.substring(2, 6)}";
-              controller.selection = const TextSelection.collapsed(offset: 7);
-              break;
-          }
-          context.read<Bloc>().add(
-                FieldValueChanged(
+          controller: controller,
+          decoration: InputDecoration(
+            prefixIcon: Padding(
+              padding: const EdgeInsets.all(14.0),
+              child: SvgPicture.asset(
+                "assets/icons/calendar.svg",
+              ),
+            ),
+            labelText: labelText,
+            floatingLabelStyle: TextStyle(
+                color: state.errorText != ""
+                    ? HomsaiColors.primaryRed
+                    : HomsaiColors.primaryWhite),
+            errorText: state.errorText != "" ? state.errorText : null,
+            errorStyle: const TextStyle(height: 1),
+          ),
+          style: Theme.of(context).textTheme.bodyText1,
+          focusNode: focusNode,
+          onTap: () {
+            if (controller.text == "") {
+              controller.text = HomsaiLocalizations.of(context)!
+                  .photovoltaicInstallationDateStartValue;
+            }
+          },
+          onChanged: (value) {
+            value = value.replaceAll(RegExp(r"\D"), "");
+            var yl = HomsaiLocalizations.of(context)!.yearLetter;
+            var ml = HomsaiLocalizations.of(context)!.monthLetter;
+            switch (value.length) {
+              case 0:
+                controller.text = "$ml$ml/$yl$yl$yl$yl";
+                controller.selection = const TextSelection.collapsed(offset: 0);
+                break;
+              case 1:
+                controller.text = "$value$ml/$yl$yl$yl$yl";
+                controller.selection = const TextSelection.collapsed(offset: 1);
+                break;
+              case 2:
+                controller.text = "$value/$yl$yl$yl$yl";
+                controller.selection = const TextSelection.collapsed(offset: 2);
+                break;
+              case 3:
+                controller.text =
+                    "${value.substring(0, 2)}/${value.substring(2)}$yl$yl$yl";
+                controller.selection = const TextSelection.collapsed(offset: 4);
+                break;
+              case 4:
+                controller.text =
+                    "${value.substring(0, 2)}/${value.substring(2, 4)}$yl$yl";
+                controller.selection = const TextSelection.collapsed(offset: 5);
+                break;
+              case 5:
+                controller.text =
+                    "${value.substring(0, 2)}/${value.substring(2, 5)}$yl";
+                controller.selection = const TextSelection.collapsed(offset: 6);
+                break;
+              default:
+                controller.text =
+                    "${value.substring(0, 2)}/${value.substring(2, 6)}";
+                controller.selection = const TextSelection.collapsed(offset: 7);
+                break;
+            }
+            context.read<Bloc>().add(
+                  FieldValueChanged(
                     valueChanged: controller.text,
                     selection: controller.selection,
                   ),
-              );
-          if (onChanged != null) {
-            onChanged!(controller.text);
-          }
-        },
-        cursorWidth: 0.0,
-        obscureText: obscureText,
-        enabled: enabled,
-      );
+                );
+            if (onChanged != null) {
+              onChanged!(controller.text);
+            }
+          },
+          cursorWidth: 0.0,
+          obscureText: obscureText,
+          enabled: enabled,
+        );
       },
     );
   }
