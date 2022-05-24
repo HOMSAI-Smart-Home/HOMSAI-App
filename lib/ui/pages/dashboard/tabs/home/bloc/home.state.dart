@@ -1,21 +1,25 @@
 part of 'home.bloc.dart';
 
 class HomeState extends Equatable {
-  const HomeState(
-      {this.lights = const [],
-      this.consumptionSensor,
-      this.productionSensor,
-      this.consumptionPlot,
-      this.productionPlot,
-      this.autoConsumption,
-      this.optimizedConsumptionPlot,
-      this.balance,
-      this.optimizedBalance,
-      this.minOffset,
-      this.maxOffset,
-      this.isPlotOptimized = false,
-      this.isLoading = false,
-      this.alerts = const {}});
+  const HomeState({
+    this.lights = const [],
+    this.consumptionSensor,
+    this.productionSensor,
+    this.consumptionPlot,
+    this.productionPlot,
+    this.autoConsumption,
+    this.optimizedConsumptionPlot,
+    this.balance,
+    this.optimizedBalance,
+    this.minOffset,
+    this.maxOffset,
+    this.isPlotOptimized = false,
+    this.isLoading = false,
+    this.alerts = const {},
+    this.forecastData = const [],
+    this.forecastMinOffset = Offset.zero,
+    this.forecastMaxOffset = Offset.zero,
+  });
 
   final List<LightEntity> lights;
 
@@ -32,6 +36,9 @@ class HomeState extends Equatable {
   final bool isPlotOptimized;
   final bool isLoading;
   final Map<String, Widget> alerts;
+  final List<FlSpot> forecastData;
+  final Offset forecastMinOffset;
+  final Offset forecastMaxOffset;
 
   HomeState copyWith({
     List<LightEntity>? lights,
@@ -48,6 +55,9 @@ class HomeState extends Equatable {
     bool? isPlotOptimized,
     bool? isLoading,
     Map<String, Widget>? alerts,
+    List<FlSpot>? forecastData,
+    Offset? forecastMinOffset,
+    Offset? forecastMaxOffset,
   }) {
     return HomeState(
       lights: lights ?? this.lights,
@@ -65,6 +75,9 @@ class HomeState extends Equatable {
       isPlotOptimized: isPlotOptimized ?? this.isPlotOptimized,
       isLoading: isLoading ?? this.isLoading,
       alerts: alerts ?? this.alerts,
+      forecastData: forecastData ?? this.forecastData,
+      forecastMinOffset: forecastMinOffset ?? this.forecastMinOffset,
+      forecastMaxOffset: forecastMaxOffset ?? this.forecastMaxOffset,
     );
   }
 
@@ -81,6 +94,9 @@ class HomeState extends Equatable {
         maxOffset,
         isPlotOptimized,
         isLoading,
-        alerts
+        alerts,
+        forecastData,
+        forecastMinOffset,
+        forecastMaxOffset,
       ];
 }

@@ -18,6 +18,7 @@ import 'package:homsai/datastore/DTOs/remote/ai_service/daily_plan/daily_plan.dt
 import 'package:homsai/datastore/DTOs/remote/ai_service/daily_plan/daily_plan_body.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/ai_service/forecast/consumption_optimizations/consumption_optimizations_forecast.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/ai_service/forecast/consumption_optimizations/consumption_optimizations_forecast_body.dto.dart';
+import 'package:homsai/datastore/DTOs/remote/ai_service/forecast/photovoltaic/photovoltaic.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/ai_service/forecast/photovoltaic/photovoltaic_body.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/history/history.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/history/history_body.dto.dart';
@@ -62,6 +63,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<FetchStates>(_onFetchState);
     on<FetchedLights>(_onFetchedLights);
     on<FetchHistory>(_onFetchHistory);
+    on<FetchPhotovoltaicForecast>(_onFetchPhotovoltaicForecast);
     on<ToggleConsumptionOptimazedPlot>(_onToggleConsumptionOptimazedPlot);
     on<AddAlert>(_onAddAlert);
     on<RemoveAlert>(_onRemoveAlert);
@@ -271,11 +273,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           );
         }
 
-        final result = await aiServiceInterface.getPhotovoltaicForecast(
-            PhotovoltaicForecastBodyDto(8, 200,
-                latitude: plant.latitude, longitude: plant.longitude));
-        print(result);
-
         if (_active) {
           emit(state.copyWith(
               consumptionSensor: consumptionSensor,
@@ -307,6 +304,58 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         emit(HomeState(lights: state.lights));
       }
     }
+  }
+
+  void _onFetchPhotovoltaicForecast(
+      FetchPhotovoltaicForecast event, Emitter<HomeState> emit) async {
+    final plant = await appDatabase.getPlant();
+    //TODO: handle else case
+    if (plant != null &&
+        plant.photovoltaicNominalPower != null &&
+        plant.photovoltaicInstallationDate != null) {
+      final photovoltaicForecast = await _getPhotovoltaicForecast(
+        double.parse(plant.photovoltaicNominalPower!),
+        plant.photovoltaicInstallationDate!.difference(DateTime.now()).inDays,
+        plant.latitude,
+        plant.longitude,
+      );
+      print("photovoltaicForecast.data ${photovoltaicForecast.data}");
+      print("photovoltaicForecast.min ${photovoltaicForecast.min}");
+      print("photovoltaicForecast.max ${photovoltaicForecast.max}");
+      emit(state.copyWith(
+        forecastData: photovoltaicForecast.data,
+        forecastMinOffset: photovoltaicForecast.min,
+        forecastMaxOffset: photovoltaicForecast.max,
+      ));
+    }
+  }
+
+  Future<PhotovoltaicForecastInfo> _getPhotovoltaicForecast(
+      double photovoltaicNominalPower,
+      int days,
+      double latitude,
+      double longitude) async {
+    final photovoltaicForecast =
+        await aiServiceInterface.getPhotovoltaicForecast(
+      PhotovoltaicForecastBodyDto(
+        photovoltaicNominalPower,
+        days,
+        latitude: latitude,
+        longitude: longitude,
+      ),
+    );
+    return _parsePhotovoltaicForecastInfo(photovoltaicForecast);
+  }
+
+  PhotovoltaicForecastInfo _parsePhotovoltaicForecastInfo(
+      List<PhotovoltaicForecastDto> photovoltaicForecast) {
+    final dataParsed =
+        photovoltaicForecast.map((element) => element.toSpot).toList();
+    return PhotovoltaicForecastInfo(
+      data: dataParsed,
+      min: Offset(dataParsed.first.x, max(0, dataParsed.min.y)),
+      max: Offset(dataParsed.last.x, dataParsed.max.y),
+    );
   }
 
   Offset minOffset(Offset a, Offset b, Offset? c) {
@@ -392,7 +441,7 @@ class PlotInfo {
   PlotInfo({
     this.plot = const [],
     this.minRange = Offset.zero,
-    this.maxRange = Offset.infinite,
+    this.maxRange = Offset.zero,
     this.history = const [],
   });
 
@@ -407,5 +456,28 @@ class PlotInfo {
         minRange: minRange ?? this.minRange,
         maxRange: maxRange ?? this.maxRange,
         history: history ?? this.history,
+      );
+}
+
+class PhotovoltaicForecastInfo {
+  final List<FlSpot> data;
+  final Offset min;
+  final Offset max;
+
+  PhotovoltaicForecastInfo({
+    this.data = const [],
+    this.min = Offset.zero,
+    this.max = Offset.zero,
+  });
+
+  PhotovoltaicForecastInfo copyWith({
+    List<FlSpot>? data,
+    Offset? min,
+    Offset? max,
+  }) =>
+      PhotovoltaicForecastInfo(
+        data: data ?? this.data,
+        min: min ?? this.min,
+        max: max ?? this.max,
       );
 }

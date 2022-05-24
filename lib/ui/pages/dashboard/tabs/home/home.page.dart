@@ -30,6 +30,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         context.read<HomeBloc>().add(FetchHistory());
       },
     ));
+    context.read<HomeBloc>().add(FetchPhotovoltaicForecast());
     super.initState();
   }
 
@@ -205,11 +206,12 @@ Widget generateChartGraphics(HomeState state, BuildContext context) {
           state.consumptionPlot != null &&
           state.productionPlot != null)
       ? PhotovoltaicForecastChart(
-          forecastData: state.productionPlot,
+          forecastData: state.forecastData,
           currentForecastData: state.productionPlot
               ?.elementAt(state.productionPlot!.length ~/ 2),
-          min: state.minOffset,
-          max: state.maxOffset)
+          min: state.forecastMinOffset,
+          max: state.forecastMaxOffset,
+        )
       /*DailyConsumptionChart(
           autoConsumptionPlot: state.autoConsumption,
           consumptionPlot: (state.isPlotOptimized)

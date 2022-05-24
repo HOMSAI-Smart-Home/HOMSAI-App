@@ -20,6 +20,8 @@ class FetchedLights extends HomeEvent {
 
 class FetchHistory extends HomeEvent {}
 
+class FetchPhotovoltaicForecast extends HomeEvent {}
+
 class ToggleConsumptionOptimazedPlot extends HomeEvent {
   const ToggleConsumptionOptimazedPlot({required this.isOptimized});
 
