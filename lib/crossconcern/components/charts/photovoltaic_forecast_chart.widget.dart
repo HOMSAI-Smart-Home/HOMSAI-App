@@ -140,7 +140,7 @@ class PhotovoltaicForecastChart extends StatelessWidget {
   FlGridData get gridData => FlGridData(
         show: true,
         drawVerticalLine: false,
-        horizontalInterval: 1,
+        horizontalInterval: 10,
         getDrawingHorizontalLine: (value) {
           return FlLine(
             color: HomsaiColors.primaryGrey.withOpacity(0.5),
@@ -172,13 +172,16 @@ class PhotovoltaicForecastChart extends StatelessWidget {
       );
 
   bool canShowBottomTitle(int value) {
-    int hour = (value.toInt() ~/ 60) - 2;
-    return value % 60 == 0 && hour >= 0 && hour < 22 && hour.toInt() % 4 == 0;
+    int hour = (value.toInt() ~/ 60) % Duration.hoursPerDay - 2;
+    return value.toInt() % Duration.minutesPerDay % 60 == 0 &&
+        hour >= 0 &&
+        hour < 22 &&
+        hour.toInt() % 6 == 0;
   }
 
   Widget bottomTitleWidgets(double value, TitleMeta meta) {
     TextStyle style = TextStyle(color: HomsaiColors.primaryWhite, fontSize: 10);
-    int hour = (value.toInt() ~/ 60);
+    int hour = (value.toInt() ~/ 60) % Duration.hoursPerDay;
     String time = canShowBottomTitle(value.toInt()) ? "$hour:00" : '';
     return Padding(
         child: Text(
@@ -201,7 +204,7 @@ class PhotovoltaicForecastChart extends StatelessWidget {
       fontWeight: FontWeight.bold,
       fontSize: 9,
     );
-    if (value <= 0 || value % 2 != 0) return Container();
+    if (value <= 0 || value % 10 != 0) return Container();
 
     return Padding(
         padding: const EdgeInsets.only(right: 6),
@@ -223,7 +226,7 @@ class PhotovoltaicForecastChart extends StatelessWidget {
       );
 
   List<LineChartBarData> get lineBarsData => [
-        lineChartBarData_1,
+        //lineChartBarData_1,
         lineChartBarData_2,
       ];
 
@@ -279,7 +282,7 @@ class PhotovoltaicForecastChart extends StatelessWidget {
   LineChartBarData get lineChartBarData_2 => LineChartBarData(
         showingIndicators: [0],
         spots: (forecastData != null)
-            ? forecastData!.sublist(forecastData!.indexOf(currentForecastData!))
+            ? forecastData! /* .sublist(forecastData!.indexOf(currentForecastData!)) */
             : null,
         isCurved: isCurved,
         color: HomsaiColors.primaryGreen,

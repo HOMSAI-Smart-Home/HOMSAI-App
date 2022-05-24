@@ -348,6 +348,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       List<PhotovoltaicForecastDto> photovoltaicForecast) {
     final dataParsed =
         photovoltaicForecast.map((element) => element.toSpot).toList();
+        
     return PhotovoltaicForecastInfo(
       data: dataParsed,
       min: Offset(dataParsed.first.x, max(0, dataParsed.min.y)),

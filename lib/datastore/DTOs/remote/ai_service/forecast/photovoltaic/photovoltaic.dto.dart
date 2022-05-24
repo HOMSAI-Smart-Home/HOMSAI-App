@@ -33,6 +33,7 @@ class PhotovoltaicForecastDto {
       date
           .add(Duration(minutes: minutesInDay))
           .millisecondsSinceEpoch
-          .toDouble(),
+              .toDouble() /
+          Duration.millisecondsPerMinute,
       production);
 }

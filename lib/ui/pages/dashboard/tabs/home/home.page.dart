@@ -1,3 +1,4 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -66,6 +67,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 10),
             child: DailyConsumptionChartInfo(),
+          ),
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 10),
+            child: PhotovoltaicForecastChartInfo(),
           ),
           BlocBuilder<HomeBloc, HomeState>(
             buildWhen: (previous, current) =>
@@ -158,7 +163,7 @@ class DailyConsumptionChartInfo extends StatelessWidget {
                         isFirstEnabled: !state.isPlotOptimized,
                       ),
                     ),
-                  generateChartGraphics(state, context),
+                  generateDailyConsumptionChartGraphics(state, context),
                   const DailyConsumptionBalanceInfo(),
                 ],
               ),
@@ -170,7 +175,8 @@ class DailyConsumptionChartInfo extends StatelessWidget {
   }
 }
 
-Widget generateChartGraphics(HomeState state, BuildContext context) {
+Widget generateDailyConsumptionChartGraphics(
+    HomeState state, BuildContext context) {
   if (state.isLoading ||
       (state.optimizedConsumptionPlot == null ||
           state.consumptionPlot == null ||
@@ -204,15 +210,9 @@ Widget generateChartGraphics(HomeState state, BuildContext context) {
   }
   return (state.optimizedConsumptionPlot != null &&
           state.consumptionPlot != null &&
-          state.productionPlot != null)
-      ? PhotovoltaicForecastChart(
-          forecastData: state.forecastData,
-          currentForecastData: state.productionPlot
-              ?.elementAt(state.productionPlot!.length ~/ 2),
-          min: state.forecastMinOffset,
-          max: state.forecastMaxOffset,
-        )
-      /*DailyConsumptionChart(
+          state.productionPlot != null &&
+          state.forecastData.isNotEmpty)
+      ? DailyConsumptionChart(
           autoConsumptionPlot: state.autoConsumption,
           consumptionPlot: (state.isPlotOptimized)
               ? state.optimizedConsumptionPlot
@@ -221,7 +221,6 @@ Widget generateChartGraphics(HomeState state, BuildContext context) {
           max: state.maxOffset,
           min: state.minOffset,
         )
-        */
       : Row(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -236,6 +235,74 @@ Widget generateChartGraphics(HomeState state, BuildContext context) {
             ),
           ],
         );
+}
+
+class PhotovoltaicForecastChartInfo extends StatelessWidget {
+  const PhotovoltaicForecastChartInfo({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) {
+        return Shadow(
+          padding: const EdgeInsets.symmetric(horizontal: 3),
+          sigma: 1,
+          offset: const Offset(0, 2),
+          color: HomsaiColors.primaryGrey,
+          child: Card(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 10),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  generatePhotovoltaicForecastChartGraphics(state, context),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+Widget generatePhotovoltaicForecastChartGraphics(
+    HomeState state, BuildContext context) {
+  if (state.forecastData.isNotEmpty) {
+    return PhotovoltaicForecastChart(
+      forecastData: state.forecastData,
+      currentForecastData: FlSpot.zero,
+      min: state.forecastMinOffset,
+      max: state.forecastMaxOffset,
+    );
+  }
+
+  return SizedBox(
+    height: 193,
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const _HourglassIcon(),
+        const SizedBox(height: 5),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: (state.isLoading)
+              ? Text(
+                  HomsaiLocalizations.of(context)!
+                      .dailyCosumptionChartLoadingLabel,
+                  style: Theme.of(context).textTheme.caption,
+                  textAlign: TextAlign.center,
+                )
+              : Text(
+                  HomsaiLocalizations.of(context)!
+                      .dailyCosumptionChartErrorLabel,
+                  style: Theme.of(context).textTheme.caption,
+                  textAlign: TextAlign.center,
+                ),
+        )
+      ],
+    ),
+  );
 }
 
 class _HourglassIcon extends StatefulWidget {
