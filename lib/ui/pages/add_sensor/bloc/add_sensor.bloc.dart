@@ -54,7 +54,10 @@ class AddSensorBloc extends Bloc<AddSensorEvent, AddSensorState> {
       EntitiesFetched event, Emitter<AddSensorState> emit) async {
     SensorEntity? consumptionSensor;
     SensorEntity? productionSensor;
+    SensorEntity? batterySensor;
+
     final plant = await appDatabase.getPlant();
+
     if (plant != null) {
       if (event.entities.isNotEmpty) {
         await appDatabase.homeAssitantDao.insertEntities(
@@ -70,34 +73,32 @@ class AddSensorBloc extends Bloc<AddSensorEvent, AddSensorState> {
         productionSensor =
             await appDatabase.getEntity<SensorEntity>(plant.productionSensor!);
       }
-      if (consumptionSensor != null && productionSensor != null) {
-        emit(
-          state.copyWith(
-              selectedConsumptionSensor:
-                  consumptionSensor as MesurableSensorEntity,
-              selectedProductionSensor:
-                  productionSensor as MesurableSensorEntity,
-              initialPhotovoltaicNominalPower: plant.photovoltaicNominalPower,
-              initialPhotovoltaicInstallationDate:
-                  parseMonthYearString(plant.photovoltaicInstallationDate),
-              photovoltaicInstallationDate: plant.photovoltaicInstallationDate),
-        );
+
+      if (plant.batterySensor != null) {
+        batterySensor =
+            await appDatabase.getEntity<SensorEntity>(plant.batterySensor!);
       }
+
+      emit(
+        state.copyWith(
+            selectedConsumptionSensor:
+                consumptionSensor as MesurableSensorEntity,
+            selectedProductionSensor: productionSensor as MesurableSensorEntity,
+            selectedBatterySensor: batterySensor as MesurableSensorEntity,
+            initialPhotovoltaicNominalPower: plant.photovoltaicNominalPower,
+            initialPhotovoltaicInstallationDate:
+                parseMonthYearString(plant.photovoltaicInstallationDate),
+            photovoltaicInstallationDate: plant.photovoltaicInstallationDate),
+      );
     }
 
     final sensors = event.entities.getEntities<SensorEntity>();
     final powerSensors = sensors
         .filterSensorByDeviceClass<MesurableSensorEntity>(DeviceClass.power);
-    emit(
-      state.copyWith(
-          productionSensors: List<MesurableSensorEntity>.from(powerSensors),
-          consumptionSensors: List<MesurableSensorEntity>.from(powerSensors),
-          batterySensors: List<MesurableSensorEntity>.from(powerSensors),
-          initialPhotovoltaicNominalPower: plant?.photovoltaicNominalPower,
-          initialPhotovoltaicInstallationDate:
-              parseMonthYearString(plant?.photovoltaicInstallationDate),
-          photovoltaicInstallationDate: plant?.photovoltaicInstallationDate),
-    );
+    emit(state.copyWith(
+        productionSensors: List<MesurableSensorEntity>.from(powerSensors),
+        consumptionSensors: List<MesurableSensorEntity>.from(powerSensors),
+        batterySensors: List<MesurableSensorEntity>.from(powerSensors)));
   }
 
   void _onProductionSensorChanged(

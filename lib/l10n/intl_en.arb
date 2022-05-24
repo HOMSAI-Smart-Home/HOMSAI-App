@@ -155,5 +155,15 @@
     
     "accountBugReportTitle": "Report a problem",
     "accountBugReportCaption": "Help us improve Homsai",
-    "accountBugReportErrorText": "Unable to reach "
+    "accountBugReportErrorText": "Unable to reach ",
+
+    "accountEmail": "Email",
+    "accountLocalUrl": "local URL",
+    "accountRemoteUrl": "remote URL",
+    "accountProductionSensor": "Production sensor",
+    "accountConsumptionSensor": "Consumption sensor",
+    "accountBatterySensor": "Battery sensor",
+    "accountPlantName": "Plant name",
+    "accountPosition": "Plant position",
+    "accountVersion": "App version"
 }

@@ -37,7 +37,10 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
   ) async {
     SensorEntity? consumptionSensor;
     SensorEntity? productionSensor;
+    SensorEntity? batterySensor;
+
     final plant = await appDatabase.getPlant();
+
     if (plant == null) return;
 
     if (plant.consumptionSensor != null) {
@@ -47,6 +50,10 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
     if (plant.productionSensor != null) {
       productionSensor =
           await appDatabase.getEntity<SensorEntity>(plant.productionSensor!);
+    }
+    if (plant.batterySensor != null) {
+      batterySensor =
+          await appDatabase.getEntity<SensorEntity>(plant.batterySensor!);
     }
 
     final user = await appDatabase.getUser();
@@ -58,6 +65,7 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
       remoteUrl: plant.remoteUrl ?? '',
       consumptionSensor: consumptionSensor?.name,
       productionSensor: productionSensor?.name,
+      batterySensor: batterySensor?.name,
       plantName: plant.name,
       position: (plant.latitude).toStringAsFixed(5) +
           ', ' +

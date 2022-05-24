@@ -50,6 +50,7 @@ class _AccountsPageState extends State<_AccountsPage> {
         _RemoteUrlButton(),
         _ProductionSensorButton(),
         _ConsumptionSensorButton(),
+        _BatterySensorButton(),
         _NameButton(),
         _PositionButton(),
         _EmailButton(),
@@ -66,8 +67,8 @@ class _EmailButton extends StatelessWidget {
     return BlocBuilder<AccountsBloc, AccountsState>(
       builder: (context, state) {
         return _AccountButton(
-          title: "Email",
-          caption: state.email ?? 'mariorossi00@mail.com',
+          title: HomsaiLocalizations.of(context)!.accountEmail,
+          caption: state.email ?? '-',
           onTap: null,
         );
       },
@@ -81,8 +82,8 @@ class _LocalUrlButton extends StatelessWidget {
     return BlocBuilder<AccountsBloc, AccountsState>(
       builder: (context, state) {
         return _AccountButton(
-          title: 'URL Locale',
-          caption: state.localUrl ?? 'http[s]://x.x.x.x[:8123]',
+          title: HomsaiLocalizations.of(context)!.accountLocalUrl,
+          caption: state.localUrl ?? '-',
           onTap: (context) => context.router.push(UrlUpdateRoute(
             onResult: (_) {
               context.router.pop();
@@ -102,8 +103,8 @@ class _RemoteUrlButton extends StatelessWidget {
     return BlocBuilder<AccountsBloc, AccountsState>(
       builder: (context, state) {
         return _AccountButton(
-          title: 'URL Remoto',
-          caption: state.remoteUrl ?? 'http[s]://x.x.x.x[:8123]',
+          title: HomsaiLocalizations.of(context)!.accountRemoteUrl,
+          caption: state.remoteUrl ?? '-',
           onTap: (context) => context.router.push(UrlUpdateRoute(
             onResult: (_) {
               context.router.pop();
@@ -123,8 +124,8 @@ class _ProductionSensorButton extends StatelessWidget {
     return BlocBuilder<AccountsBloc, AccountsState>(
       builder: (context, state) {
         return _AccountButton(
-          title: 'Sensore di produzione',
-          caption: state.productionSensor ?? '[xxx]',
+          title: HomsaiLocalizations.of(context)!.accountProductionSensor,
+          caption: state.productionSensor ?? '-',
           onTap: (context) => context.router.push(AddSensorRoute(
             onResult: (_) async {
               await context.router.pop();
@@ -144,8 +145,29 @@ class _ConsumptionSensorButton extends StatelessWidget {
     return BlocBuilder<AccountsBloc, AccountsState>(
       builder: (context, state) {
         return _AccountButton(
-          title: 'Sensore di consumo',
-          caption: state.consumptionSensor ?? '[xxx]',
+          title: HomsaiLocalizations.of(context)!.accountConsumptionSensor,
+          caption: state.consumptionSensor ?? '-',
+          onTap: (context) => context.router.push(AddSensorRoute(
+            onResult: (_) async {
+              await context.router.pop();
+              context.read<AccountsBloc>().add(SensorUpdate());
+            },
+            wizard: false,
+          )),
+        );
+      },
+    );
+  }
+}
+
+class _BatterySensorButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<AccountsBloc, AccountsState>(
+      builder: (context, state) {
+        return _AccountButton(
+          title: HomsaiLocalizations.of(context)!.accountBatterySensor,
+          caption: state.batterySensor ?? '-',
           onTap: (context) => context.router.push(AddSensorRoute(
             onResult: (_) async {
               await context.router.pop();
@@ -165,8 +187,8 @@ class _NameButton extends StatelessWidget {
     return BlocBuilder<AccountsBloc, AccountsState>(
       builder: (context, state) {
         return _AccountButton(
-          title: 'Nome Impianto',
-          caption: state.plantName ?? 'Casa',
+          title: HomsaiLocalizations.of(context)!.accountPlantName,
+          caption: state.plantName ?? '-',
           onTap: (context) => context.router.push(AddPlantRoute(
             onResult: (_) {
               context.router.pop();
@@ -186,8 +208,8 @@ class _PositionButton extends StatelessWidget {
     return BlocBuilder<AccountsBloc, AccountsState>(
       builder: (context, state) {
         return _AccountButton(
-          title: 'Posizione Impianto',
-          caption: state.position ?? '0.00000, 0.00000',
+          title: HomsaiLocalizations.of(context)!.accountPosition,
+          caption: state.position ?? '-',
           onTap: (context) => context.router.push(AddPlantRoute(
             onResult: (_) {
               context.router.pop();
@@ -207,8 +229,8 @@ class _VersionButton extends StatelessWidget {
     return BlocBuilder<AccountsBloc, AccountsState>(
       builder: (context, state) {
         return _AccountButton(
-          title: 'Versione App',
-          caption: state.version ?? '0.0',
+          title: HomsaiLocalizations.of(context)!.accountVersion,
+          caption: state.version ?? '-',
           onTap: null,
         );
       },
