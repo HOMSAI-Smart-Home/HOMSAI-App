@@ -301,10 +301,11 @@ class HomeAssistantRepository implements HomeAssistantInterface {
               (start?.toIso8601String() ?? ""),
           queryParameters: logbookBodyDto?.toJson(),
         );
-    
+
     // print(LogbookBodyDto.fromJson(logbookBodyDto?.toJson() ?? Map()).toJson());
     final fallback = plant.getFallbackUrl()?.replace(
           path: HomeAssistantApiProprties.logbookPath +
+              '/' +
               (start?.toIso8601String() ?? ""),
           queryParameters: logbookBodyDto?.toJson(),
         );
@@ -314,7 +315,6 @@ class HomeAssistantRepository implements HomeAssistantInterface {
       headers: _getHeader(),
       fallbackUrl: fallback,
     );
-
     return LogbookDto.fromJson(response);
   }
 }

@@ -113,10 +113,7 @@ class AIServiceRepository implements AIServiceInterface {
     Map<String, dynamic> result = await remoteInterface.post(
       Uri.parse(ApiProprties.aIServiceBaseUrl).replace(
         path: ApiProprties.aiServiceDailyPlanPath,
-        queryParameters: {
-          "n": deviceNumber.toString(),
-          "device": entitysType[0].toString()
-        },
+        queryParameters: {"n": deviceNumber.toString(), "device": "light"},
       ),
       headers: _getHeader(),
       body: dailyPlanBodyDto.toJson()["dailyLog"],
@@ -125,8 +122,9 @@ class AIServiceRepository implements AIServiceInterface {
     /*final dailyPlan = _deanonymizeDayliPlanDto(
       DailyPlanDto.fromJson(result),
     );*/
-    
-    final dailyPlan = DailyPlanDto.fromJson(result);
+
+    final dailyPlan = DailyPlanDto.fromResult(result["data"]);
+
     DateTime today = DateTime.now();
     today = DateTime(
       today.year,

@@ -13,10 +13,12 @@ class DailyPlanDto {
 
   Map<String, dynamic> toJson() => _$DailyPlanDtoToJson(this);
 
-  DailyPlanDto.fromList(List jsonList) {
-    for (var element in jsonList) {
-      dailyPlan.add(HourDto.fromList(element));
-    }
+  static List<HourDto> fromList(List<dynamic> results) {
+    return results.map((result) => HourDto.fromJson(result)).toList();
+  }
+
+  factory DailyPlanDto.fromResult(List<dynamic> result) {
+    return DailyPlanDto(DailyPlanDto.fromList(result));
   }
 }
 
@@ -43,7 +45,7 @@ class HourDto {
 @JsonSerializable()
 class DeviceDto {
   int? order;
-  @JsonKey(name: 'entity_id')
+  @JsonKey(name: 'device_id')
   String? entityId;
 
   DeviceDto(this.order, this.entityId);

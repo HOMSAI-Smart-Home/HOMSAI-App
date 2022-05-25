@@ -7,7 +7,7 @@ part of 'daily_plan.dto.dart';
 // **************************************************************************
 
 DailyPlanDto _$DailyPlanDtoFromJson(Map<String, dynamic> json) => DailyPlanDto(
-      (json as List<dynamic>)
+      (json['dailyPlan'] as List<dynamic>)
           .map((e) => HourDto.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
@@ -31,10 +31,10 @@ Map<String, dynamic> _$HourDtoToJson(HourDto instance) => <String, dynamic>{
 
 DeviceDto _$DeviceDtoFromJson(Map<String, dynamic> json) => DeviceDto(
       json['order'] as int?,
-      json['entity_id'] as String?,
+      json['device_id'] as String?,
     );
 
 Map<String, dynamic> _$DeviceDtoToJson(DeviceDto instance) => <String, dynamic>{
       'order': instance.order,
-      'entity_id': instance.entityId,
+      'device_id': instance.entityId,
     };

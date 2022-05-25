@@ -18,7 +18,6 @@ import 'package:homsai/datastore/DTOs/remote/ai_service/consumption_optimization
 import 'package:homsai/datastore/DTOs/remote/ai_service/consumption_optimizations_forecast/consumption_optimizations_forecast_body.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/ai_service/daily_plan/daily_plan.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/ai_service/daily_plan/daily_plan_body.dto.dart';
-import 'package:homsai/datastore/DTOs/remote/ai_service/daily_plan/daily_plan_cached.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/history/history.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/history/history_body.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/logbook/logbook.dto.dart';
@@ -121,15 +120,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     }
     if (_active) {
       // appPreferencesInterface.resetLogBook();
-      // final lights = event.entities.getEntities<LightEntity>();
       LogbookDto logBook;
       DailyPlanBodyDto dailyPlanBodyDto;
       DailyPlanDto dailyPlan;
-      // TODO: Capire se ho il daily plan
-      // Se non ho la daily plan allora la fetcho e poi la salvo anche nei preferences
-      // Per fare la daily plan ho bisogno del logbook che parte 7 giorni fa alle  00:00 e finisce oggi alle 00:00 e l'entità
-      // posso fare la daily plan e
-
       final dailyPlanCached = appPreferencesInterface.getDailyPlan();
       if (dailyPlanCached != null &&
           _checkIfDateIsYesterday(dailyPlanCached.dateFetched)) {
@@ -149,18 +142,39 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             endTime: today,
           ),
         );
+
         dailyPlanBodyDto = DailyPlanBodyDto.fromList(
           logBook.data,
         );
+
         dailyPlan = await aiServiceInterface.getDailyPlan(
           dailyPlanBodyDto,
           event.entities.getEntities<LightEntity>().length,
           ["light"],
         );
       }
-
-      emit(state.copyWith(lights: event.entities.getEntities<LightEntity>()));
+      final lights = event.entities.getEntities<LightEntity>();
+      final orderedDevices = _orderDevicesByDailyPlan(dailyPlan, lights);
+      emit(state.copyWith(lights: orderedDevices));
     }
+  }
+
+  List<LightEntity> _orderDevicesByDailyPlan(
+    DailyPlanDto dailyPlan,
+    List<LightEntity> lights,
+  ) {
+    final currentHour = DateTime.now().hour;
+    List<DeviceDto> currentDevicePlan =
+        dailyPlan.dailyPlan[currentHour].deviceId;
+
+    lights.sort((a, b) {
+      return currentDevicePlan
+              .indexWhere((element) => element.entityId == a.entityId) -
+          currentDevicePlan
+              .indexWhere((element) => element.entityId == b.entityId);
+    });
+
+    return lights;
   }
 
   void _onToggleConsumptionOptimazedPlot(
