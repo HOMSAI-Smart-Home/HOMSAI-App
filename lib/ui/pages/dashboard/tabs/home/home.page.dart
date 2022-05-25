@@ -65,7 +65,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         mainAxisSize: MainAxisSize.min,
         children: [
           const ActiveAlert(),
-          const GraphicChartsCarousel(),
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 10),
+            child: DailyConsumptionChartInfo(),
+          ),
           BlocBuilder<HomeBloc, HomeState>(
             buildWhen: (previous, current) =>
                 previous.lights.length != current.lights.length,
@@ -118,31 +121,6 @@ Widget generateActiveAlert(HomeState state, BuildContext context) {
   return Column(
     children: [if (state.alerts.isNotEmpty) state.alerts.values.toList().first],
   );
-}
-
-class GraphicChartsCarousel extends StatelessWidget {
-  const GraphicChartsCarousel({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return CarouselSlider(
-      items: const [
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: 10),
-          child: DailyConsumptionChartInfo(),
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: 10),
-          child: PhotovoltaicForecastChartInfo(),
-        ),
-      ],
-      options: CarouselOptions(
-        height: 500,
-        viewportFraction: 0.95,
-        enableInfiniteScroll: false,
-      ),
-    );
-  }
 }
 
 class DailyConsumptionChartInfo extends StatelessWidget {
@@ -256,7 +234,7 @@ Widget generateDailyConsumptionChartGraphics(
         );
 }
 
-class PhotovoltaicForecastChartInfo extends StatelessWidget {
+/* class PhotovoltaicForecastChartInfo extends StatelessWidget {
   const PhotovoltaicForecastChartInfo({Key? key}) : super(key: key);
 
   @override
@@ -283,7 +261,7 @@ class PhotovoltaicForecastChartInfo extends StatelessWidget {
       },
     );
   }
-}
+} */
 
 Widget generatePhotovoltaicForecastChartGraphics(
     HomeState state, BuildContext context) {
