@@ -14,6 +14,10 @@ ConsumptionOptimizationsForecastDto
               .toList(),
           PVBalanceDto.fromJson(json['without_homsai'] as Map<String, dynamic>),
           PVBalanceDto.fromJson(json['with_homsai'] as Map<String, dynamic>),
+          optimizedBatteryData:
+              (json['optimized_battery_data'] as List<dynamic>?)
+                  ?.map((e) => HistoryDto.fromJson(e as Map<String, dynamic>))
+                  .toList(),
         );
 
 Map<String, dynamic> _$ConsumptionOptimizationsForecastDtoToJson(
@@ -23,6 +27,8 @@ Map<String, dynamic> _$ConsumptionOptimizationsForecastDtoToJson(
           .optimizedGeneralPowerMeterData
           .map((e) => e.toJson())
           .toList(),
+      'optimized_battery_data':
+          instance.optimizedBatteryData?.map((e) => e.toJson()).toList(),
       'without_homsai': instance.withoutHomsai.toJson(),
       'with_homsai': instance.withHomsai.toJson(),
     };

@@ -7,6 +7,8 @@ part 'consumption_optimizations_forecast.dto.g.dart';
 class ConsumptionOptimizationsForecastDto {
   @JsonKey(name: "optimized_general_power_meter_data")
   List<HistoryDto> optimizedGeneralPowerMeterData;
+  @JsonKey(name: "optimized_battery_data")
+  List<HistoryDto>? optimizedBatteryData;
   @JsonKey(name: "without_homsai")
   PVBalanceDto withoutHomsai;
   @JsonKey(name: "with_homsai")
@@ -15,8 +17,9 @@ class ConsumptionOptimizationsForecastDto {
   ConsumptionOptimizationsForecastDto(
     this.optimizedGeneralPowerMeterData,
     this.withoutHomsai,
-    this.withHomsai,
-  );
+    this.withHomsai, {
+    this.optimizedBatteryData,
+  });
 
   factory ConsumptionOptimizationsForecastDto.fromJson(
           Map<String, dynamic> json) =>

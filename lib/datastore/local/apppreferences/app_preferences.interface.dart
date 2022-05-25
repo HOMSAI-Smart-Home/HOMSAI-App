@@ -40,4 +40,8 @@ abstract class AppPreferencesInterface {
   void setDailyPlan(DailyPlanCachedDto dailyPlan);
   DailyPlanCachedDto? getDailyPlan();
   void resetDailyPlan();
+
+  void setBatteryInfo(List<HistoryDto> batteryInfo);
+  List<HistoryDto>? getBatteryInfo();
+  void resetBatteryInfo();
 }

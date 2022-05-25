@@ -76,8 +76,6 @@ class AIServiceRepository implements AIServiceInterface {
       headers: _getHeader(),
       body: optimizationsForecastBody.toJson(),
     );
-    appPreferences.setOptimizationForecast(
-        ConsumptionOptimizationsForecastDto.fromJson(result));
     return ConsumptionOptimizationsForecastDto.fromJson(result);
   }
 

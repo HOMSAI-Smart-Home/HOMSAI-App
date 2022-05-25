@@ -1,12 +1,11 @@
 // ignore_for_file: overridden_fields
 
 import 'package:equatable/equatable.dart';
+import 'package:homsai/crossconcern/helpers/factories/home_assistant_sensor.factory.dart';
 import 'package:homsai/datastore/models/entity/base/base.entity.dart';
 import 'package:homsai/datastore/models/entity/context/context.entity.dart';
 import 'package:homsai/datastore/models/entity/sensors/sensor.entity.dart';
 import 'package:json_annotation/json_annotation.dart';
-
-import '../../../../../crossconcern/helpers/factories/home_assistant_sensor.factory.dart';
 
 part 'mesurable_sensor.entity.g.dart';
 

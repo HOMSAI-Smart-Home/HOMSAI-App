@@ -242,6 +242,7 @@ class DailyConsumptionChartInfo extends StatelessWidget {
                         ? state.optimizedConsumptionPlot
                         : state.consumptionPlot,
                     productionPlot: state.productionPlot,
+                    chargePlot: state.chargePlot,
                     max: state.maxOffset,
                     min: state.minOffset,
                   ),

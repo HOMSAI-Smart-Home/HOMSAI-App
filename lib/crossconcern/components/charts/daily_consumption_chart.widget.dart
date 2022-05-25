@@ -17,6 +17,7 @@ class DailyConsumptionChart extends StatelessWidget {
   final List<FlSpot>? consumptionPlot;
   final List<FlSpot>? productionPlot;
   final List<FlSpot>? autoConsumptionPlot;
+  final List<FlSpot>? chargePlot;
   final Offset? min;
   final Offset? max;
 
@@ -25,6 +26,7 @@ class DailyConsumptionChart extends StatelessWidget {
       this.consumptionPlot,
       this.productionPlot,
       this.autoConsumptionPlot,
+      this.chargePlot,
       required this.min,
       required this.max})
       : super(key: key);
@@ -217,6 +219,7 @@ class DailyConsumptionChart extends StatelessWidget {
 
   List<LineChartBarData> get lineBarsData => [
         productionBackgroundLineChartBarData,
+        chargeBackgroundLineChartBarData,
         consumptionBackgroundLineChartBarData,
         autoConsumptionBackgroundLineChartBarData,
         autoConsumptionLineChartBarData,
@@ -267,6 +270,34 @@ class DailyConsumptionChart extends StatelessWidget {
         stops: const [0, 1],
       );
 
+  LineChartBarData get chargeBackgroundLineChartBarData => LineChartBarData(
+        showingIndicators: [],
+        spots: chargePlot ?? List.from(emptyPlot),
+        isCurved: isCurved,
+        color: HomsaiColors.primaryOrange,
+        barWidth: barWidth,
+        isStrokeCapRound: true,
+        dotData: FlDotData(
+          show: false,
+        ),
+        belowBarData: chargeBelowBarAreaData,
+      );
+
+  BarAreaData get chargeBelowBarAreaData => BarAreaData(
+        show: true,
+        gradient: chargeBelowBarAreaDataGradient,
+      );
+
+  LinearGradient get chargeBelowBarAreaDataGradient => LinearGradient(
+        begin: Alignment.bottomCenter,
+        end: Alignment.topCenter,
+        colors: [
+          HomsaiColors.primaryOrange.withOpacity(0.1),
+          HomsaiColors.primaryOrange.withOpacity(0.8),
+        ],
+        stops: const [0, 1],
+      );
+
   LineChartBarData get consumptionBackgroundLineChartBarData =>
       LineChartBarData(
         spots: consumptionPlot ?? List.from(emptyPlot),
@@ -307,7 +338,7 @@ class DailyConsumptionChart extends StatelessWidget {
       LineChartBarData(
         spots: autoConsumptionPlot ?? List.from(emptyPlot),
         isCurved: isCurved,
-        color: HomsaiColors.primaryGreen,
+        color: HomsaiColors.primaryBlue.withOpacity(0.5),
         barWidth: barWidth,
         isStrokeCapRound: true,
         dotData: FlDotData(show: false),
@@ -317,7 +348,7 @@ class DailyConsumptionChart extends StatelessWidget {
   LineChartBarData get autoConsumptionLineChartBarData => LineChartBarData(
         spots: autoConsumptionPlot ?? List.from(emptyPlot),
         isCurved: isCurved,
-        color: HomsaiColors.primaryGreen,
+        color: HomsaiColors.primaryBlue.withOpacity(0.5),
         barWidth: barWidth,
         isStrokeCapRound: true,
         dotData: FlDotData(show: false),

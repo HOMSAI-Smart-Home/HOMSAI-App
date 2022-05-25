@@ -7,4 +7,5 @@ class AppPreferencesProperties {
   static const String prefConsumptionInfo = 'consumption_info';
   static const String prefProductionInfo = 'production_info';
   static const String prefDailyPlan = 'daily_plan';
+  static const String prefBatteryInfo = 'battery_info';
 }

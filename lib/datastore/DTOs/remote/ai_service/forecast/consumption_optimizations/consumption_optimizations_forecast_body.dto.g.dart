@@ -18,6 +18,9 @@ ConsumptionOptimizationsForecastBodyDto
               .map((e) => HistoryDto.fromJson(e as Map<String, dynamic>))
               .toList(),
           json['pv_production_meter_data_unit'] as String,
+          batteryMeterData: (json['battery_meter_data'] as List<dynamic>?)
+              ?.map((e) => HistoryDto.fromJson(e as Map<String, dynamic>))
+              .toList(),
         );
 
 Map<String, dynamic> _$ConsumptionOptimizationsForecastBodyDtoToJson(
@@ -29,6 +32,8 @@ Map<String, dynamic> _$ConsumptionOptimizationsForecastBodyDtoToJson(
       'pv_production_meter_data': instance.pvProductionPowerMeterHistoricalData
           .map((e) => e.toJson())
           .toList(),
+      'battery_meter_data':
+          instance.batteryMeterData?.map((e) => e.toJson()).toList(),
       'general_power_meter_data_unit': instance.generalPowerMeterDataUnit,
       'pv_production_meter_data_unit': instance.pvProductionMeterDaraUnit,
     };

@@ -30,11 +30,11 @@ abstract class HomeAssistantInterface {
     required Plant plant,
     Duration timeout,
   });
-  Future<List<HistoryDto>> getHistory(
-      {required Plant plant,
-      required HistoryBodyDto historyBodyDto,
-      Duration timeout,
-      required bool isConsumption});
+  Future<List<HistoryDto>> getHistory({
+    required Plant plant,
+    required HistoryBodyDto historyBodyDto,
+    Duration timeout,
+  });
   Future<LogbookDto> getLogBook({
     required Plant plant,
     DateTime? start,

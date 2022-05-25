@@ -35,8 +35,9 @@ class AppPreferences implements AppPreferencesInterface {
   @override
   void setHomeAssistantToken(HomeAssistantAuth token) {
     preferences?.setString(
-        AppPreferencesProperties.prefKeyHomeAssistantAccessToken,
-        jsonEncode(token));
+      AppPreferencesProperties.prefKeyHomeAssistantAccessToken,
+      jsonEncode(token),
+    );
   }
 
   @override
@@ -54,7 +55,9 @@ class AppPreferences implements AppPreferencesInterface {
   @override
   void setIntroduction(bool canSkip) {
     preferences?.setBool(
-        AppPreferencesProperties.prefKeySkipIntroduction, canSkip);
+      AppPreferencesProperties.prefKeySkipIntroduction,
+      canSkip,
+    );
   }
 
   @override
@@ -87,8 +90,10 @@ class AppPreferences implements AppPreferencesInterface {
 
   @override
   void setAiServicetToken(AiServiceAuth token) {
-    preferences?.setString(AppPreferencesProperties.prefKeyAiServiceAccessToken,
-        jsonEncode(token));
+    preferences?.setString(
+      AppPreferencesProperties.prefKeyAiServiceAccessToken,
+      jsonEncode(token),
+    );
   }
 
   @override
@@ -101,17 +106,18 @@ class AppPreferences implements AppPreferencesInterface {
   @override
   void setOptimizationForecast(
       ConsumptionOptimizationsForecastDto forecastDto) {
-    preferences?.setString(AppPreferencesProperties.prefOptimizationForecast,
-        jsonEncode(forecastDto));
+    preferences?.setString(
+      AppPreferencesProperties.prefOptimizationForecast,
+      jsonEncode(forecastDto),
+    );
   }
 
   @override
   ConsumptionOptimizationsForecastDto? getOptimizationForecast() {
     final forecast = preferences
         ?.getString(AppPreferencesProperties.prefOptimizationForecast);
-    return forecast != null
-        ? ConsumptionOptimizationsForecastDto.fromJson(jsonDecode(forecast))
-        : null;
+    if (forecast == null) return null;
+    return ConsumptionOptimizationsForecastDto.fromJson(jsonDecode(forecast));
   }
 
   @override
@@ -121,17 +127,18 @@ class AppPreferences implements AppPreferencesInterface {
 
   @override
   void setConsumptionInfo(List<HistoryDto> consumptionInfo) {
-    preferences?.setString(AppPreferencesProperties.prefConsumptionInfo,
-        jsonEncode(consumptionInfo));
+    preferences?.setString(
+      AppPreferencesProperties.prefConsumptionInfo,
+      jsonEncode(consumptionInfo),
+    );
   }
 
   @override
   List<HistoryDto>? getConsumptionInfo() {
     final consumptionInfo =
         preferences?.getString(AppPreferencesProperties.prefConsumptionInfo);
-    return consumptionInfo != null
-        ? HistoryDto.fromList(jsonDecode(consumptionInfo))
-        : null;
+    if (consumptionInfo == null) return null;
+    return HistoryDto.fromList(jsonDecode(consumptionInfo));
   }
 
   @override
@@ -141,17 +148,18 @@ class AppPreferences implements AppPreferencesInterface {
 
   @override
   void setProductionInfo(List<HistoryDto> productionInfo) {
-    preferences?.setString(AppPreferencesProperties.prefProductionInfo,
-        jsonEncode(productionInfo));
+    preferences?.setString(
+      AppPreferencesProperties.prefProductionInfo,
+      jsonEncode(productionInfo),
+    );
   }
 
   @override
   List<HistoryDto>? getProductionInfo() {
     final productionInfo =
         preferences?.getString(AppPreferencesProperties.prefProductionInfo);
-    return productionInfo != null
-        ? HistoryDto.fromList(jsonDecode(productionInfo))
-        : null;
+    if (productionInfo == null) return null;
+    return HistoryDto.fromList(jsonDecode(productionInfo));
   }
 
   @override
@@ -183,5 +191,25 @@ class AppPreferences implements AppPreferencesInterface {
   @override
   void resetDailyPlan() {
     preferences?.remove(AppPreferencesProperties.prefDailyPlan);
+  }
+
+  List<HistoryDto>? getBatteryInfo() {
+    final batteryInfo =
+        preferences?.getString(AppPreferencesProperties.prefBatteryInfo);
+    if (batteryInfo == null) return null;
+    return HistoryDto.fromList(jsonDecode(batteryInfo));
+  }
+
+  @override
+  void resetBatteryInfo() {
+    preferences?.remove(AppPreferencesProperties.prefBatteryInfo);
+  }
+
+  @override
+  void setBatteryInfo(List<HistoryDto> batteryInfo) {
+    preferences?.setString(
+      AppPreferencesProperties.prefBatteryInfo,
+      jsonEncode(batteryInfo),
+    );
   }
 }

@@ -47,6 +47,18 @@ class Plot {
     return intersection;
   }
 
+  static List<FlSpot> stack(List<FlSpot> plotA, List<FlSpot> plotB) {
+    List<FlSpot> stack = [];
+    if (plotA.length != plotB.length) return stack;
+    for (int i = 0; i < plotA.length; i++) {
+      final spotA = plotA[i];
+      final spotB = plotB[i];
+      final intersectSpot = FlSpot(spotA.x, spotA.y + math.max(0, spotB.y));
+      stack.add(intersectSpot);
+    }
+    return stack;
+  }
+
   static FlSpot min(List<FlSpot> plot) {
     if (plot.isEmpty) return FlSpot.nullSpot;
 
@@ -77,6 +89,10 @@ extension PlotListX on List<FlSpot> {
 
   List<FlSpot> intersect(List<FlSpot> plot) {
     return Plot.intersect(this, plot);
+  }
+
+  List<FlSpot> stack(List<FlSpot> plot) {
+    return Plot.stack(this, plot);
   }
 
   FlSpot get min => Plot.min(this);

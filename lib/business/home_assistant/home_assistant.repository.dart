@@ -256,7 +256,6 @@ class HomeAssistantRepository implements HomeAssistantInterface {
     required Plant plant,
     HistoryBodyDto? historyBodyDto,
     Duration timeout = const Duration(seconds: 10),
-    required bool isConsumption,
   }) async {
     Map<String, dynamic> response;
 
@@ -278,13 +277,9 @@ class HomeAssistantRepository implements HomeAssistantInterface {
       timeout: timeout,
     );
 
-    final history = HistoryDto.fromList(response["data"][0]);
-    if (isConsumption == true) {
-      appPreferences.setConsumptionInfo(history);
-    } else {
-      appPreferences.setProductionInfo(history);
-    }
-    return history;
+    final data = response['data'][0];
+
+    return HistoryDto.fromList(data);
   }
 
   @override

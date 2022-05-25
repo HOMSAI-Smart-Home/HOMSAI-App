@@ -9,6 +9,9 @@ class HomeState extends Equatable {
     this.productionPlot,
     this.autoConsumption,
     this.optimizedConsumptionPlot,
+    this.batteryPlot,
+    this.chargePlot,
+    this.optimizedBatteryPlot,
     this.balance,
     this.optimizedBalance,
     this.minOffset,
@@ -28,8 +31,11 @@ class HomeState extends Equatable {
   final MesurableSensorEntity? productionSensor;
   final List<FlSpot>? consumptionPlot;
   final List<FlSpot>? productionPlot;
+  final List<FlSpot>? batteryPlot;
   final List<FlSpot>? autoConsumption;
+  final List<FlSpot>? chargePlot;
   final List<FlSpot>? optimizedConsumptionPlot;
+  final List<FlSpot>? optimizedBatteryPlot;
   final PVBalanceDto? balance;
   final PVBalanceDto? optimizedBalance;
   final Offset? minOffset;
@@ -48,8 +54,11 @@ class HomeState extends Equatable {
     MesurableSensorEntity? productionSensor,
     List<FlSpot>? consumptionPlot,
     List<FlSpot>? productionPlot,
+    List<FlSpot>? batteryPlot,
     List<FlSpot>? autoConsumption,
+    List<FlSpot>? chargePlot,
     List<FlSpot>? optimizedConsumptionPlot,
+    List<FlSpot>? optimizedBatteryPlot,
     PVBalanceDto? balance,
     PVBalanceDto? optimizedBalance,
     Offset? minOffset,
@@ -68,9 +77,12 @@ class HomeState extends Equatable {
       productionSensor: productionSensor ?? this.productionSensor,
       consumptionPlot: consumptionPlot ?? this.consumptionPlot,
       productionPlot: productionPlot ?? this.productionPlot,
+      batteryPlot: batteryPlot ?? this.batteryPlot,
       autoConsumption: autoConsumption ?? this.autoConsumption,
+      chargePlot: chargePlot ?? this.chargePlot,
       optimizedConsumptionPlot:
           optimizedConsumptionPlot ?? this.optimizedConsumptionPlot,
+      optimizedBatteryPlot: optimizedBatteryPlot ?? this.optimizedBatteryPlot,
       balance: balance ?? this.balance,
       optimizedBalance: optimizedBalance ?? this.optimizedBalance,
       minOffset: minOffset ?? this.minOffset,
@@ -92,8 +104,11 @@ class HomeState extends Equatable {
         productionSensor,
         consumptionPlot,
         productionPlot,
+        batteryPlot,
         autoConsumption,
+        chargePlot,
         optimizedConsumptionPlot,
+        optimizedBatteryPlot,
         minOffset,
         maxOffset,
         isPlotOptimized,

@@ -11,6 +11,9 @@ class ConsumptionOptimizationsForecastBodyDto {
   @JsonKey(name: "pv_production_meter_data")
   List<HistoryDto> pvProductionPowerMeterHistoricalData;
 
+  @JsonKey(name: "battery_meter_data")
+  List<HistoryDto>? batteryMeterData;
+
   @JsonKey(name: "general_power_meter_data_unit")
   String generalPowerMeterDataUnit;
 
@@ -21,8 +24,9 @@ class ConsumptionOptimizationsForecastBodyDto {
     this.generalPowerMeterHistoricalData,
     this.generalPowerMeterDataUnit,
     this.pvProductionPowerMeterHistoricalData,
-    this.pvProductionMeterDaraUnit,
-  );
+    this.pvProductionMeterDaraUnit, {
+    this.batteryMeterData,
+  });
 
   factory ConsumptionOptimizationsForecastBodyDto.fromJson(
           Map<String, dynamic> json) =>

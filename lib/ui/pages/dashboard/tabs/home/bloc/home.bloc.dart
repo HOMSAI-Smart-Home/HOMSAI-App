@@ -186,28 +186,101 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     ToggleConsumptionOptimazedPlot event,
     Emitter<HomeState> emit,
   ) {
+    final autoConsumption = _checkAutoConsumption(
+      isOptimized: event.isOptimized,
+      optimizedConsumption:
+          PlotInfo(plot: state.optimizedConsumptionPlot ?? []),
+      optimizedBattery: PlotInfo(plot: state.optimizedBatteryPlot ?? []),
+      productionPlot: state.productionPlot!,
+      consumptionPlot: state.consumptionPlot!,
+      batteryPlot: state.batteryPlot!,
+    );
     emit(state.copyWith(
-      autoConsumption: checkAutoConsumption(
+      autoConsumption: autoConsumption,
+      chargePlot: _checkCharge(
         isOptimized: event.isOptimized,
-        optimizedConsumption:
-            PlotInfo(plot: state.optimizedConsumptionPlot ?? []),
-        productionPlot: state.productionPlot!,
-        consumptionPlot: state.consumptionPlot!,
+        autoConsumption: autoConsumption,
+        batteryPlot: state.batteryPlot ?? [],
+        optimizedBatteryPlot:
+            state.optimizedBatteryPlot ?? DailyConsumptionChart.emptyPlot,
       ),
       isPlotOptimized: event.isOptimized,
     ));
   }
 
-  List<FlSpot> checkAutoConsumption({
+  List<FlSpot> _checkAutoConsumption({
     required bool isOptimized,
     required PlotInfo optimizedConsumption,
+    PlotInfo? optimizedBattery,
     required List<FlSpot> productionPlot,
     required List<FlSpot> consumptionPlot,
+    required List<FlSpot> batteryPlot,
   }) {
     if (isOptimized) {
-      return optimizedConsumption.plot.intersect(productionPlot);
+      final autoConsumption =
+          optimizedConsumption.plot.intersect(productionPlot);
+      return optimizedBattery == null
+          ? autoConsumption
+          : autoConsumption
+              .sample(
+                autoConsumption[0].x,
+                autoConsumption[0].x + const Duration(days: 1).inMinutes,
+                10,
+              )
+              .stack(optimizedBattery.plot.sample(
+                optimizedBattery.plot[0].x,
+                optimizedBattery.plot[0].x + const Duration(days: 1).inMinutes,
+                10,
+              ));
     }
-    return consumptionPlot.intersect(productionPlot);
+
+    final autoConsumption = consumptionPlot.intersect(productionPlot);
+    return autoConsumption
+        .sample(
+          autoConsumption[0].x,
+          autoConsumption[0].x + const Duration(days: 1).inMinutes,
+          10,
+        )
+        .stack(batteryPlot.sample(
+          batteryPlot[0].x,
+          batteryPlot[0].x + const Duration(days: 1).inMinutes,
+          10,
+        ));
+  }
+
+  List<FlSpot> _checkCharge({
+    required bool isOptimized,
+    required List<FlSpot> autoConsumption,
+    required List<FlSpot> optimizedBatteryPlot,
+    required List<FlSpot> batteryPlot,
+  }) {
+    if (isOptimized) {
+      return optimizedBatteryPlot
+          .map((flSpot) => FlSpot(
+                flSpot.x,
+                min(flSpot.y, 0) * -1,
+              ))
+          .toList()
+          .sample(
+            optimizedBatteryPlot[0].x,
+            optimizedBatteryPlot[0].x + const Duration(days: 1).inMinutes,
+            10,
+          )
+          .stack(autoConsumption);
+    } else {
+      return batteryPlot
+          .map((flSpot) => FlSpot(
+                flSpot.x,
+                min(flSpot.y, 0) * -1,
+              ))
+          .toList()
+          .sample(
+            batteryPlot[0].x,
+            batteryPlot[0].x + const Duration(days: 1).inMinutes,
+            10,
+          )
+          .stack(autoConsumption);
+    }
   }
 
   DateTime _getOneWeekAgo(DateTime date) {
@@ -229,19 +302,19 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   ) async {
     emit(state.copyWith(isLoading: true));
     try {
-    final suggestionsChartResult =
-        await aiServiceInterface.getSuggestionsChart();
-    switch (mapSuggestionsChart[suggestionsChartResult.chart]) {
+      final suggestionsChartResult =
+          await aiServiceInterface.getSuggestionsChart();
+      switch (mapSuggestionsChart[suggestionsChartResult.chart]) {
         case GraphicTypes.pvForecast:
           emit(state.copyWith(activeGraphicChart: GraphicTypes.pvForecast));
-        add(FetchPhotovoltaicForecast());
-        break;
-      default:
+          add(FetchPhotovoltaicForecast());
+          break;
+        default:
           emit(state.copyWith(
               activeGraphicChart: GraphicTypes.consumptionOptimizations));
-        add(FetchHistory());
-        break;
-    }
+          add(FetchHistory());
+          break;
+      }
     } catch (e) {
       emit(state.copyWith(isLoading: false));
     }
@@ -250,14 +323,25 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   void _onFetchHistory(FetchHistory event, Emitter<HomeState> emit) async {
     emit(state.copyWith(isLoading: true));
     final plant = await appDatabase.getPlant();
+
     if (plant != null) {
       try {
         Configuration? configuration = await appDatabase.getConfiguration();
 
-        final consumptionInfo =
-            await _getPlotInfoFromSensor(plant.consumptionSensor, plant, true);
-        final productionInfo =
-            await _getPlotInfoFromSensor(plant.productionSensor, plant, false);
+        final consumptionInfo = await _getConsumptionInfo(
+          plant.consumptionSensor,
+          plant,
+        );
+
+        final productionInfo = await _getProductionInfo(
+          plant.productionSensor,
+          plant,
+        );
+
+        final batteryInfo = await _getBatteryInfo(
+          plant.batterySensor,
+          plant,
+        );
 
         final productionSensor = await appDatabase.homeAssitantDao
             .findEntity<MesurableSensorEntity>(
@@ -267,8 +351,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
                 plant.id!, plant.consumptionSensor!);
 
         List<FlSpot> autoConsumption = [];
+        List<FlSpot> charge = [];
         ConsumptionOptimizationsForecastDto? consumptionForecast;
-        PlotInfo? optimizedInfo;
+        PlotInfo? optimizedConsumptionInfo;
+        PlotInfo? optimizedBatteryInfo;
 
         if (consumptionInfo.plot.isNotEmpty && productionInfo.plot.isNotEmpty) {
           final forecasts = appPreferencesInterface.getOptimizationForecast();
@@ -285,17 +371,37 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
                       consumptionSensor!.unitMesurement,
                       productionInfo.history,
                       productionSensor!.unitMesurement,
+                      batteryMeterData: batteryInfo.history.isNotEmpty
+                          ? batteryInfo.history
+                          : null,
                     ),
                     configuration!.unitSystemType);
+            appPreferencesInterface
+                .setOptimizationForecast(consumptionForecast);
           }
-          optimizedInfo =
-              _getPlotInfo(consumptionForecast.optimizedGeneralPowerMeterData);
 
-          autoConsumption = checkAutoConsumption(
+          optimizedConsumptionInfo =
+              _getPlotInfo(consumptionForecast.optimizedGeneralPowerMeterData);
+          optimizedBatteryInfo =
+              consumptionForecast.optimizedBatteryData != null
+                  ? _getPlotInfo(consumptionForecast.optimizedBatteryData!)
+                  : null;
+
+          autoConsumption = _checkAutoConsumption(
             isOptimized: state.isPlotOptimized,
-            optimizedConsumption: optimizedInfo,
+            optimizedConsumption: optimizedConsumptionInfo,
             consumptionPlot: consumptionInfo.plot,
             productionPlot: productionInfo.plot,
+            batteryPlot: batteryInfo.plot,
+            optimizedBattery: optimizedBatteryInfo,
+          );
+
+          charge = _checkCharge(
+            autoConsumption: autoConsumption,
+            batteryPlot: batteryInfo.plot,
+            isOptimized: state.isPlotOptimized,
+            optimizedBatteryPlot:
+                optimizedBatteryInfo?.plot ?? DailyConsumptionChart.emptyPlot,
           );
         }
 
@@ -309,20 +415,27 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
               productionPlot: productionInfo.plot.isNotEmpty
                   ? productionInfo.plot
                   : DailyConsumptionChart.emptyPlot,
-              optimizedConsumptionPlot:
-                  optimizedInfo?.plot ?? DailyConsumptionChart.emptyPlot,
+              batteryPlot: batteryInfo.plot.isNotEmpty
+                  ? batteryInfo.plot
+                  : DailyConsumptionChart.emptyPlot,
+              optimizedConsumptionPlot: optimizedConsumptionInfo?.plot ??
+                  DailyConsumptionChart.emptyPlot,
+              optimizedBatteryPlot:
+                  optimizedBatteryInfo?.plot ?? DailyConsumptionChart.emptyPlot,
               autoConsumption: autoConsumption,
+              chargePlot:
+                  charge.isNotEmpty ? charge : DailyConsumptionChart.emptyPlot,
               balance: consumptionForecast?.withoutHomsai,
               optimizedBalance: consumptionForecast?.withHomsai,
               minOffset: minOffset(
                 consumptionInfo.minRange,
                 productionInfo.minRange,
-                optimizedInfo?.minRange,
+                optimizedConsumptionInfo?.minRange,
               ),
               maxOffset: maxOffset(
                 consumptionInfo.maxRange,
                 productionInfo.maxRange,
-                optimizedInfo?.maxRange,
+                optimizedConsumptionInfo?.maxRange,
               ),
               isLoading: false));
         } else {
@@ -345,17 +458,17 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         plant.photovoltaicInstallationDate != null) {
       try {
         final photovoltaicForecast = await _getPhotovoltaicForecast(
-        double.parse(plant.photovoltaicNominalPower!),
-        plant.photovoltaicInstallationDate!.difference(DateTime.now()).inDays,
-        plant.latitude,
-        plant.longitude,
-      );
-      emit(state.copyWith(
-        forecastData: photovoltaicForecast.data,
-        forecastMinOffset: photovoltaicForecast.min,
-        forecastMaxOffset: photovoltaicForecast.max,
+          double.parse(plant.photovoltaicNominalPower!),
+          plant.photovoltaicInstallationDate!.difference(DateTime.now()).inDays,
+          plant.latitude,
+          plant.longitude,
+        );
+        emit(state.copyWith(
+          forecastData: photovoltaicForecast.data,
+          forecastMinOffset: photovoltaicForecast.min,
+          forecastMaxOffset: photovoltaicForecast.max,
           isLoading: false,
-      ));
+        ));
       } catch (e) {
         emit(state.copyWith(isLoading: true));
       }
@@ -403,32 +516,75 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     return c == null || t >= c ? t : c;
   }
 
-  Future<PlotInfo> _getPlotInfoFromSensor(
-      String? sensor, Plant plant, bool isConsumption) async {
-    if (sensor == null) throw InvalidSensorException();
+  Future<PlotInfo> _getConsumptionInfo(
+    String? sensor,
+    Plant plant,
+  ) async {
+    if (sensor == null) return PlotInfo();
 
-    final historyBodyDto = HistoryBodyDto(sensor, minimalResponse: true);
-    List<HistoryDto>? historyCached = getHistoryCached(isConsumption);
-    List<HistoryDto> history;
-    if (historyCached != null &&
-        historyCached.isNotEmpty &&
-        _checkIfDateIsYesterday(historyCached[0].lastChanged)) {
-      history = historyCached;
-    } else {
-      history = await homeAssistantRepository.getHistory(
-          plant: plant,
-          historyBodyDto: historyBodyDto,
-          timeout: const Duration(seconds: 2),
-          isConsumption: isConsumption);
-    }
+    List<HistoryDto> history = await _getHistoryFromSensor(
+      appPreferencesInterface.getConsumptionInfo(),
+      sensor,
+      plant,
+    );
+
+    appPreferencesInterface.setConsumptionInfo(history);
     return _getPlotInfo(history);
   }
 
-  List<HistoryDto>? getHistoryCached(bool isConsumption) {
-    if (isConsumption) {
-      return appPreferencesInterface.getConsumptionInfo();
+  Future<PlotInfo> _getProductionInfo(
+    String? sensor,
+    Plant plant,
+  ) async {
+    if (sensor == null) return PlotInfo();
+
+    List<HistoryDto> history = await _getHistoryFromSensor(
+      appPreferencesInterface.getProductionInfo(),
+      sensor,
+      plant,
+    );
+
+    appPreferencesInterface.setProductionInfo(history);
+    return _getPlotInfo(history);
+  }
+
+  Future<PlotInfo> _getBatteryInfo(
+    String? sensor,
+    Plant plant,
+  ) async {
+    if (sensor == null) return PlotInfo();
+
+    List<HistoryDto> history = await _getHistoryFromSensor(
+      appPreferencesInterface.getBatteryInfo(),
+      sensor,
+      plant,
+    );
+
+    appPreferencesInterface.setBatteryInfo(history);
+    return _getPlotInfo(history);
+  }
+
+  Future<List<HistoryDto>> _getHistoryFromSensor(
+    List<HistoryDto>? history,
+    String sensor,
+    Plant plant,
+  ) async {
+    if (history != null &&
+        history.isNotEmpty &&
+        _checkIfDateIsYesterday(history[0].lastChanged)) {
+      return history;
     }
-    return appPreferencesInterface.getProductionInfo();
+
+    history = await homeAssistantRepository.getHistory(
+      plant: plant,
+      historyBodyDto: HistoryBodyDto(
+        sensor,
+        minimalResponse: true,
+      ),
+      timeout: const Duration(seconds: 2),
+    );
+
+    return history;
   }
 
   PlotInfo _getPlotInfo(List<HistoryDto> history) {
