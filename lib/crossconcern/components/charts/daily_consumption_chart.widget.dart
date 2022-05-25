@@ -36,17 +36,9 @@ class DailyConsumptionChart extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.only(left: 30, right: 30, bottom: 2),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.end,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Text(
-                HomsaiLocalizations.of(context)!.dailyCosumptionChartPower,
-                style: TextStyle(
-                  color: HomsaiColors.primaryGrey,
-                  fontSize: 9,
-                ),
-              ),
               Flexible(
                 child: Wrap(
                   alignment: WrapAlignment.end,
@@ -71,6 +63,17 @@ class DailyConsumptionChart extends StatelessWidget {
                   ],
                 ),
               ),
+              Row(
+                children: [
+                  Text(
+                    HomsaiLocalizations.of(context)!.dailyCosumptionChartPower,
+                    style: TextStyle(
+                      color: HomsaiColors.primaryGrey,
+                      fontSize: 8,
+                    ),
+                  ),
+                ],
+              )
             ],
           ),
         ),
@@ -96,7 +99,7 @@ class DailyConsumptionChart extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          padding: const EdgeInsets.fromLTRB(8, 4, 4, 0),
           child: Container(
             color: color,
             width: 2,
@@ -107,7 +110,7 @@ class DailyConsumptionChart extends StatelessWidget {
           name,
           style: TextStyle(
             color: color,
-            fontSize: 9,
+            fontSize: 8,
           ),
         ),
       ],

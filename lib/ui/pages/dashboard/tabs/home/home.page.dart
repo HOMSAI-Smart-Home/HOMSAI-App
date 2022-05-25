@@ -13,6 +13,7 @@ import 'package:homsai/ui/pages/dashboard/tabs/home/bloc/home.bloc.dart';
 import 'package:homsai/ui/widget/devices/light/light_device.widget.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:rive/rive.dart' as rive;
+import 'package:carousel_slider/carousel_slider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -64,14 +65,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         mainAxisSize: MainAxisSize.min,
         children: [
           const ActiveAlert(),
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 10),
-            child: DailyConsumptionChartInfo(),
-          ),
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 10),
-            child: PhotovoltaicForecastChartInfo(),
-          ),
+          const GraphicChartsCarousel(),
           BlocBuilder<HomeBloc, HomeState>(
             buildWhen: (previous, current) =>
                 previous.lights.length != current.lights.length,
@@ -124,6 +118,31 @@ Widget generateActiveAlert(HomeState state, BuildContext context) {
   return Column(
     children: [if (state.alerts.isNotEmpty) state.alerts.values.toList().first],
   );
+}
+
+class GraphicChartsCarousel extends StatelessWidget {
+  const GraphicChartsCarousel({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return CarouselSlider(
+      items: const [
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 10),
+          child: DailyConsumptionChartInfo(),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 10),
+          child: PhotovoltaicForecastChartInfo(),
+        ),
+      ],
+      options: CarouselOptions(
+        height: 500,
+        viewportFraction: 0.95,
+        enableInfiniteScroll: false,
+      ),
+    );
+  }
 }
 
 class DailyConsumptionChartInfo extends StatelessWidget {
