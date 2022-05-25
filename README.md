@@ -75,7 +75,7 @@ To build the release apk
 flutter build apk --target {{path of Main.dart}} --release
 ```
 
-### Pre-commit hook integration
+## Pre-commit hook integration
 This will perform the lint on every commit and will abort it in case of errors
 
 In the root of the project run
@@ -88,4 +88,24 @@ Then give permission with command
 chmod +x .git/hooks/pre-commit
 ```
 
+### Pre-commit hook fails in Fork
 
+If your commit fails due to flutter command not being found, your flutter sdk is not in your $PATH. 
+
+Follow flutter documentation to [update your path](https://docs.flutter.dev/get-started/install/macos#update-your-path). 
+
+Then add the following line to pre-commit-hook file and change [FLUTTER_SDK_LOCATION] to be the path of your clone of the Flutter git repo, for example $HOME/flutter
+
+```
+export PATH=[FLUTTER_SDK_LOCATION]/bin:$PATH
+```
+
+Then in the root of the project run
+```
+cp pre-commit-hook .git/hooks/pre-commit
+```
+
+Finally give permission with command
+```
+chmod +x .git/hooks/pre-commit
+```

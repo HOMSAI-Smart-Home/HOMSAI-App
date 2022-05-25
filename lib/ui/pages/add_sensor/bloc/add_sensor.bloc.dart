@@ -27,12 +27,12 @@ class AddSensorBloc extends Bloc<AddSensorEvent, AddSensorState> {
     on<OnSubmit>(_onSubmit);
     if (!webSocketRepository.isConnected()) {
       webSocketBloc.add(ConnectWebSocket(
-          onWebSocketConnected: () {
-            webSocketBloc.add(FetchEntites(
-              onEntitiesFetched: (entities) => add(EntitiesFetched(entities)),
-            ));
-          },
-          url: url?.toString() ?? ''));
+        onWebSocketConnected: () {
+          webSocketBloc.add(FetchEntites(
+            onEntitiesFetched: (entities) => add(EntitiesFetched(entities)),
+          ));
+        },
+      ));
     } else {
       webSocketBloc.add(FetchEntites(
         onEntitiesFetched: (entities) => add(EntitiesFetched(entities)),
