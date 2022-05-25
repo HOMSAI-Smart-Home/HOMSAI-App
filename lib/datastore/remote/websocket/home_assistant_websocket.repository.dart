@@ -7,6 +7,7 @@ import 'package:homsai/business/home_assistant/home_assistant.interface.dart';
 import 'package:homsai/crossconcern/helpers/blocs/websocket/websocket.bloc.dart';
 import 'package:homsai/crossconcern/utilities/properties/api.proprties.dart';
 import 'package:homsai/datastore/DTOs/websocket/configuration/configuration_body.dto.dart';
+import 'package:homsai/datastore/DTOs/websocket/entitys_from_device/entitys_from_device_body.dto.dart';
 import 'package:homsai/datastore/DTOs/websocket/error/error.dto.dart';
 import 'package:homsai/datastore/DTOs/websocket/response/response.dto.dart';
 import 'package:homsai/datastore/DTOs/websocket/service/service_body.dto.dart';
@@ -287,7 +288,9 @@ class HomeAssistantWebSocketRepository
     } catch (e) {
       if ((e is SocketException || e is TimeoutException) &&
           status != HomeAssistantWebSocketStatus.error) {
-        return retry != null ? retry(e as Exception) : _retry(url, e as Exception);
+        return retry != null
+            ? retry(e as Exception)
+            : _retry(url, e as Exception);
       }
       rethrow;
     }
@@ -579,6 +582,62 @@ class HomeAssistantWebSocketRepository
 
     _addSubscriber(
       HomeAssistantApiProprties.validateConfig,
+      subscriber,
+      true,
+      payload,
+    );
+  }
+
+  @override
+  void getDeviceList(WebSocketSubscriberInterface subscriber) {
+    Map<String, dynamic> payload = {};
+
+    payload['id'] = eventsId.containsKey(HomeAssistantApiProprties.deviceList)
+        ? eventsId[HomeAssistantApiProprties.deviceList]
+        : id;
+    payload['type'] = HomeAssistantApiProprties.deviceList;
+
+    _addSubscriber(
+      HomeAssistantApiProprties.deviceList,
+      subscriber,
+      true,
+      payload,
+    );
+  }
+
+  @override
+  void getAreaList(WebSocketSubscriberInterface subscriber) {
+    Map<String, dynamic> payload = {};
+
+    payload['id'] = eventsId.containsKey(HomeAssistantApiProprties.areaList)
+        ? eventsId[HomeAssistantApiProprties.areaList]
+        : id;
+    payload['type'] = HomeAssistantApiProprties.areaList;
+
+    _addSubscriber(
+      HomeAssistantApiProprties.areaList,
+      subscriber,
+      true,
+      payload,
+    );
+  }
+
+  @override
+  void getEntitysFromDevice(
+    WebSocketSubscriberInterface subscriber,
+    EntitysFromDeviceBodyDto entitysFromDeviceBodyDto,
+  ) {
+    Map<String, dynamic> payload = {};
+
+    payload['id'] =
+        eventsId.containsKey(HomeAssistantApiProprties.entitysFromDevice)
+            ? eventsId[HomeAssistantApiProprties.entitysFromDevice]
+            : id;
+    payload['type'] = HomeAssistantApiProprties.entitysFromDevice;
+    payload.addAll(entitysFromDeviceBodyDto.toJson());
+
+    _addSubscriber(
+      HomeAssistantApiProprties.entitysFromDevice,
       subscriber,
       true,
       payload,

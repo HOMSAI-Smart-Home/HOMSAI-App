@@ -65,4 +65,7 @@ class HomeAssistantApiProprties {
 
   static const historyPath = "/api/history/period";
   static const logbookPath = "/api/logbook";
+  static const deviceList = "config/device_registry/list";
+  static const areaList = "config/area_registry/list";
+  static const entitysFromDevice = "search/related";
 }
