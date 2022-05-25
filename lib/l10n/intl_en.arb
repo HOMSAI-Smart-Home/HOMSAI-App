@@ -134,5 +134,8 @@
     "localUrlLabel": "Insert local Url",
     "remoteUrlLabel": "Insert remote Url",
 
-    "groupDeviceGeneralLabel": "General"
+    "groupDeviceGeneralLabel": "General",
+    
+    "accountBugReportTitle": "Report a problem",
+    "accountBugReportCaption": "Help us improve Homsai"
 }
