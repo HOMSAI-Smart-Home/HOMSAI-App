@@ -41,8 +41,8 @@ class DailyConsumptionChart extends StatelessWidget {
             children: [
               Flexible(
                 child: Wrap(
-                  alignment: WrapAlignment.end,
-                  verticalDirection: VerticalDirection.up,
+                  alignment: WrapAlignment.center,
+                  verticalDirection: VerticalDirection.down,
                   children: [
                     _legenda(
                         HomsaiLocalizations.of(context)!
@@ -69,7 +69,7 @@ class DailyConsumptionChart extends StatelessWidget {
                     HomsaiLocalizations.of(context)!.dailyCosumptionChartPower,
                     style: TextStyle(
                       color: HomsaiColors.primaryGrey,
-                      fontSize: 8,
+                      fontSize: 9,
                     ),
                   ),
                 ],
@@ -110,7 +110,7 @@ class DailyConsumptionChart extends StatelessWidget {
           name,
           style: TextStyle(
             color: color,
-            fontSize: 8,
+            fontSize: 9,
           ),
         ),
       ],
