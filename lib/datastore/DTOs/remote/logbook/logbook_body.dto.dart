@@ -6,12 +6,10 @@ part 'logbook_body.dto.g.dart';
 @JsonSerializable()
 @DateTimeConverter()
 class LogbookBodyDto {
-  String? entity;
   @JsonKey(name: 'end_time')
   DateTime? endTime;
 
   LogbookBodyDto({
-    this.entity,
     this.endTime,
   });
 

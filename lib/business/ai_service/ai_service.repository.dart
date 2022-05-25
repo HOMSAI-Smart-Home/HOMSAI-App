@@ -109,20 +109,24 @@ class AIServiceRepository implements AIServiceInterface {
     int deviceNumber,
     List<String> entitysType,
   ) async {
-    dailyPlanBodyDto = _anonymizeDayliPlanBodyDto(dailyPlanBodyDto);
+    //dailyPlanBodyDto = _anonymizeDayliPlanBodyDto(dailyPlanBodyDto);
     Map<String, dynamic> result = await remoteInterface.post(
       Uri.parse(ApiProprties.aIServiceBaseUrl).replace(
         path: ApiProprties.aiServiceDailyPlanPath,
-        queryParameters: {"n": deviceNumber, "device": entitysType},
+        queryParameters: {
+          "n": deviceNumber.toString(),
+          "device": entitysType[0].toString()
+        },
       ),
       headers: _getHeader(),
-      body: dailyPlanBodyDto.toJson(),
+      body: dailyPlanBodyDto.toJson()["dailyLog"],
     );
 
-    final dailyPlan = _deanonymizeDayliPlanDto(
+    /*final dailyPlan = _deanonymizeDayliPlanDto(
       DailyPlanDto.fromJson(result),
-    );
-
+    );*/
+    
+    final dailyPlan = DailyPlanDto.fromJson(result);
     DateTime today = DateTime.now();
     today = DateTime(
       today.year,
@@ -148,9 +152,11 @@ class AIServiceRepository implements AIServiceInterface {
         DailyPlanBodyDto.fromJson(dailyPlanBodyDto.toJson());
 
     for (LogDto dailyLog in anonymizedDailyPlanBodyDto.dailyLog) {
-      List<String> entity = dailyLog.entityId!.split('.');
-      dailyLog.name = _toAnon(dailyLog.name!);
-      dailyLog.entityId = '${_toAnon(entity[0])}.${_toAnon(entity[1])}';
+      List<String> entity = dailyLog.entityId?.split('.') ?? List.empty();
+      if (entity.isNotEmpty) {
+        dailyLog.name = _toAnon(dailyLog.name!);
+        dailyLog.entityId = '${_toAnon(entity[0])}.${_toAnon(entity[1])}';
+      }
     }
 
     return anonymizedDailyPlanBodyDto;

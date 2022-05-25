@@ -16,7 +16,9 @@ class DailyPlanBodyDto {
 
   DailyPlanBodyDto.fromList(List jsonList) {
     for (var element in jsonList) {
-      dailyLog.add(LogDto.fromJson(element));
+      if (element != null) {
+        dailyLog.add(element as LogDto);
+      }
     }
   }
 }

@@ -98,6 +98,7 @@ class RemoteRepository implements RemoteInterface {
           )
           .timeout(timeout),
     );
+    print("Sono qui");
     return parseResponse(response);
   }
 

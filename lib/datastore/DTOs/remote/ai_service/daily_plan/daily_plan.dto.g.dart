@@ -7,7 +7,7 @@ part of 'daily_plan.dto.dart';
 // **************************************************************************
 
 DailyPlanDto _$DailyPlanDtoFromJson(Map<String, dynamic> json) => DailyPlanDto(
-      (json['dailyPlan'] as List<dynamic>)
+      (json as List<dynamic>)
           .map((e) => HourDto.fromJson(e as Map<String, dynamic>))
           .toList(),
     );

@@ -8,7 +8,6 @@ part of 'logbook_body.dto.dart';
 
 LogbookBodyDto _$LogbookBodyDtoFromJson(Map<String, dynamic> json) =>
     LogbookBodyDto(
-      entity: json['entity'] as String?,
       endTime: json['end_time'] == null
           ? null
           : DateTime.parse(json['end_time'] as String),
@@ -16,6 +15,5 @@ LogbookBodyDto _$LogbookBodyDtoFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$LogbookBodyDtoToJson(LogbookBodyDto instance) =>
     <String, dynamic>{
-      'entity': instance.entity,
       'end_time': instance.endTime?.toIso8601String(),
     };
