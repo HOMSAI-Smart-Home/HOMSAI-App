@@ -4,11 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
 import 'package:homsai/app.router.dart';
 import 'package:homsai/crossconcern/components/common/scaffold/homsai_bloc_scaffold.widget.dart';
-import 'package:homsai/crossconcern/helpers/models/forms/url.model.dart';
+import 'package:homsai/crossconcern/components/utils/open_url.dart';
 import 'package:homsai/crossconcern/utilities/properties/constants.util.dart';
 import 'package:homsai/ui/pages/dashboard/tabs/accounts/bloc/accounts.bloc.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 
 class AccountsPage extends StatelessWidget {
   const AccountsPage({Key? key}) : super(key: key);
@@ -57,8 +55,6 @@ class _AccountsPageState extends State<_AccountsPage> {
         _EmailButton(),
         _VersionButton(),
         _BugReportButton()
-        /*const SizedBox(height: 16),
-        _ChangePlantButton(),*/
       ],
     );
   }
@@ -228,7 +224,7 @@ class _BugReportButton extends StatelessWidget {
         return _AccountButton(
           title: HomsaiLocalizations.of(context)!.accountBugReportTitle,
           caption: HomsaiLocalizations.of(context)!.accountBugReportCaption,
-          onTap: (context) => launchUrlString(bugReportUrl),
+          onTap: (context) => openUrl(context, bugReportUrl),
         );
       },
     );
@@ -279,22 +275,6 @@ class _AccountButton extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _ChangePlantButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return OutlinedButton(
-      //TODO: add logic -> scanner
-      onPressed: () => print("ChangePlant"),
-      child: const AnimatedSwitcher(
-        duration: Duration(milliseconds: 250),
-        child: Text(
-          "Cambia impianto",
-        ),
       ),
     );
   }

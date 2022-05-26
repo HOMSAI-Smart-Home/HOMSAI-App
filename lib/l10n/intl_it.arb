@@ -137,5 +137,6 @@
     "groupDeviceGeneralLabel": "Generale",
 
     "accountBugReportTitle": "Segnala un problema",
-    "accountBugReportCaption": "Aiutaci a migliorare Homsai"
+    "accountBugReportCaption": "Aiutaci a migliorare Homsai",
+    "accountBugReportErrorText": "Impossibile raggiungere la pagina "
 }

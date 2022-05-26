@@ -315,8 +315,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   Future<PlotInfo> _getPlotInfoFromSensor(
       String? sensor, Plant plant, bool isConsumption) async {
-    PlotInfo info =
-        PlotInfo(maxRange: Offset(Duration.minutesPerDay.toDouble(), 4));
     if (sensor == null) throw InvalidSensorException();
 
     final historyBodyDto = HistoryBodyDto(sensor, minimalResponse: true);

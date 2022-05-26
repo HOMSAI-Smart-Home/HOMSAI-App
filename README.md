@@ -32,6 +32,7 @@ HOMSAI Flutter application
 - fl_chart: chart library that supports Line Chart, Bar Chart, Pie Chart, Scatter Chart, and Radar Chart.
 - dropdown_button2: allows dropdown to be more versatile.
 - uuid: package to generate unique universal identifier.
+- url_launcher: library that allow you to go to web pages
 
 ## Auto Router Generator
 
