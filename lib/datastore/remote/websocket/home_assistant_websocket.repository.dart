@@ -7,7 +7,7 @@ import 'package:homsai/business/home_assistant/home_assistant.interface.dart';
 import 'package:homsai/crossconcern/helpers/blocs/websocket/websocket.bloc.dart';
 import 'package:homsai/crossconcern/utilities/properties/api.proprties.dart';
 import 'package:homsai/datastore/DTOs/websocket/configuration/configuration_body.dto.dart';
-import 'package:homsai/datastore/DTOs/websocket/entitys_from_device/entitys_from_device_body.dto.dart';
+import 'package:homsai/datastore/DTOs/websocket/device_related/entitys_from_device_body.dto.dart';
 import 'package:homsai/datastore/DTOs/websocket/error/error.dto.dart';
 import 'package:homsai/datastore/DTOs/websocket/response/response.dto.dart';
 import 'package:homsai/datastore/DTOs/websocket/service/service_body.dto.dart';
@@ -24,7 +24,7 @@ import 'package:web_socket_channel/io.dart';
 
 class WebSocketSubscriber implements WebSocketSubscriberInterface {
   @override
-  Function(dynamic) onDone;
+  Function(Map<String, dynamic>) onDone;
   @override
   Function(ErrorDto)? onError;
 
@@ -623,9 +623,9 @@ class HomeAssistantWebSocketRepository
   }
 
   @override
-  void getEntitysFromDevice(
+  void getDeviceRelated(
     WebSocketSubscriberInterface subscriber,
-    EntitysFromDeviceBodyDto entitysFromDeviceBodyDto,
+    DeviceRelatedBodyDto deviceRelatedBodyDto,
   ) {
     Map<String, dynamic> payload = {};
 
@@ -634,7 +634,7 @@ class HomeAssistantWebSocketRepository
             ? eventsId[HomeAssistantApiProprties.entitysFromDevice]
             : id;
     payload['type'] = HomeAssistantApiProprties.entitysFromDevice;
-    payload.addAll(entitysFromDeviceBodyDto.toJson());
+    payload.addAll(deviceRelatedBodyDto.toJson());
 
     _addSubscriber(
       HomeAssistantApiProprties.entitysFromDevice,

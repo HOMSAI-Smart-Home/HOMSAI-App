@@ -27,11 +27,11 @@ class FetchConfig extends WebSocketEvent {
   List<Object> get props => [onConfigurationFetched];
 }
 
-class FetchEntites extends WebSocketEvent {
-  const FetchEntites({required this.onEntitiesFetched});
+class FetchDevice extends WebSocketEvent {
+  const FetchDevice({required this.onDevicesFetched});
 
-  final void Function(List<Entity>) onEntitiesFetched;
+  final void Function(List<Device>) onDevicesFetched;
 
   @override
-  List<Object> get props => [onEntitiesFetched];
+  List<Object> get props => [onDevicesFetched];
 }

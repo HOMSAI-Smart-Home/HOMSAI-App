@@ -2,8 +2,12 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:homsai/crossconcern/helpers/extensions/list.extension.dart';
 import 'package:homsai/datastore/DTOs/websocket/configuration/configuration.dto.dart';
+import 'package:homsai/datastore/DTOs/websocket/device_related/device_related.dto.dart';
+import 'package:homsai/datastore/DTOs/websocket/device_related/entitys_from_device_body.dto.dart';
 import 'package:homsai/datastore/local/app.database.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.dart';
+import 'package:homsai/datastore/models/area/base.area.dart';
+import 'package:homsai/datastore/models/device/base.device.dart';
 import 'package:homsai/datastore/models/entity/base/base.entity.dart';
 import 'package:homsai/datastore/remote/websocket/home_assistant_websocket.interface.dart';
 import 'package:homsai/datastore/remote/websocket/home_assistant_websocket.repository.dart';
@@ -24,7 +28,7 @@ class WebSocketBloc extends Bloc<WebSocketEvent, WebSocketState> {
   WebSocketBloc() : super(const WebSocketState()) {
     on<ConnectWebSocket>(_onWebsocketConnect);
     on<FetchConfig>(_onFetchConfig);
-    on<FetchEntites>(_onFetchEntities);
+    on<FetchDevice>(_onFetchDevice);
   }
 
   @override
@@ -54,15 +58,44 @@ class WebSocketBloc extends Bloc<WebSocketEvent, WebSocketState> {
     );
   }
 
-  void _onFetchEntities(FetchEntites event, Emitter<WebSocketState> emit) {
-    webSocketRepository.fetchingStates(
-      WebSocketSubscriber(
-        (data) {
-          event.onEntitiesFetched(
-            (data as List<dynamic>).getEntities<Entity>(),
-          );
-        },
-      ),
-    );
+  void _onFetchDevice(FetchDevice event, Emitter<WebSocketState> emit) {
+    webSocketRepository.getAreaList(WebSocketSubscriber((data) {
+      Map<String, Area> areas = {};
+
+      (data as List<dynamic>)
+          .getAreas()
+          .forEach((area) => areas.putIfAbsent(area.id, () => area));
+
+      webSocketRepository.fetchingStates(
+        WebSocketSubscriber((data) {
+          Map<String, Entity> entities = {};
+
+          (data as List<dynamic>).getEntities<Entity>().forEach(
+              (entity) => entities.putIfAbsent(entity.entityId, () => entity));
+
+          webSocketRepository.getDeviceList(WebSocketSubscriber((data) {
+            final devicesDto = (data as List<dynamic>).getDevicesDto();
+
+            for (var deviceDto in devicesDto) {
+              webSocketRepository.getDeviceRelated(WebSocketSubscriber((data) {
+                List<Device> devices = [];
+                final deviceRelatedDto = DeviceRelatedDto.fromJson(data);
+
+                devices.add(Device.fromDeviceDto(
+                  deviceDto,
+                  areas[deviceRelatedDto.area]!,
+                  deviceRelatedDto.entity
+                      .map<Entity>((entityId) => entities[entityId]!)
+                      .toList(),
+                ));
+                if (devices.length == devicesDto.length) {
+                  event.onDevicesFetched(devices);
+                }
+              }), DeviceRelatedBodyDto(deviceDto.id));
+            }
+          }));
+        }),
+      );
+    }));
   }
 }

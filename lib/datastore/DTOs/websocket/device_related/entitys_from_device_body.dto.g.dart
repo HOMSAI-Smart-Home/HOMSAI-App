@@ -6,14 +6,14 @@ part of 'entitys_from_device_body.dto.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-EntitysFromDeviceBodyDto _$EntitysFromDeviceBodyDtoFromJson(
+DeviceRelatedBodyDto _$DeviceRelatedBodyDtoFromJson(
         Map<String, dynamic> json) =>
-    EntitysFromDeviceBodyDto(
-      json['item_id'] as Map<String, dynamic>?,
+    DeviceRelatedBodyDto(
+      json['item_id'] as String,
     );
 
-Map<String, dynamic> _$EntitysFromDeviceBodyDtoToJson(
-        EntitysFromDeviceBodyDto instance) =>
+Map<String, dynamic> _$DeviceRelatedBodyDtoToJson(
+        DeviceRelatedBodyDto instance) =>
     <String, dynamic>{
       'item_id': instance.itemId,
     };
