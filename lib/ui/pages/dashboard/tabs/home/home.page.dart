@@ -7,13 +7,13 @@ import 'package:homsai/crossconcern/components/charts/photovoltaic_forecast_char
 import 'package:homsai/crossconcern/components/utils/shadow.widget.dart';
 import 'package:homsai/crossconcern/components/utils/toggle_text.widget.dart';
 import 'package:homsai/crossconcern/helpers/blocs/websocket/websocket.bloc.dart';
+import 'package:homsai/crossconcern/utilities/properties/constants.util.dart';
 import 'package:homsai/datastore/DTOs/remote/ai_service/forecast/consumption_optimizations/consumption_optimizations_forecast.dto.dart';
 import 'package:homsai/themes/colors.theme.dart';
 import 'package:homsai/ui/pages/dashboard/tabs/home/bloc/home.bloc.dart';
 import 'package:homsai/ui/widget/devices/light/light_device.widget.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:rive/rive.dart' as rive;
-import 'package:carousel_slider/carousel_slider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -32,7 +32,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         context.read<HomeBloc>().add(FetchHistory());
       },
     ));
-    context.read<HomeBloc>().add(FetchPhotovoltaicForecast());
+    context.read<HomeBloc>().add(FetchSuggestionsChart());
     super.initState();
   }
 
@@ -61,46 +61,51 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const ActiveAlert(),
-          const Padding(
-            padding: EdgeInsets.symmetric(vertical: 10),
-            child: DailyConsumptionChartInfo(),
-          ),
-          BlocBuilder<HomeBloc, HomeState>(
-            buildWhen: (previous, current) =>
-                previous.lights.length != current.lights.length,
-            builder: (context, state) {
-              return GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  mainAxisSpacing: 8,
-                  crossAxisSpacing: 8,
-                  crossAxisCount: 2,
-                  childAspectRatio: 150 / 90,
-                ),
-                shrinkWrap: true,
-                padding: const EdgeInsets.all(0),
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: state.lights.length,
-                itemBuilder: (BuildContext context, index) {
-                  return BlocBuilder<HomeBloc, HomeState>(
-                    buildWhen: (previous, current) =>
-                        previous.lights[index] != current.lights[index],
-                    builder: (context, state) {
-                      return LightDevice(
-                        key: ValueKey(state.lights[index]),
-                        light: state.lights[index],
+      child: BlocBuilder<HomeBloc, HomeState>(
+        builder: (context, state) {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const ActiveAlert(),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: _getActiveGraphicChart(state.activeGraphicChart),
+              ),
+              BlocBuilder<HomeBloc, HomeState>(
+                buildWhen: (previous, current) =>
+                    previous.lights.length != current.lights.length,
+                builder: (context, state) {
+                  return GridView.builder(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      mainAxisSpacing: 8,
+                      crossAxisSpacing: 8,
+                      crossAxisCount: 2,
+                      childAspectRatio: 150 / 90,
+                    ),
+                    shrinkWrap: true,
+                    padding: const EdgeInsets.all(0),
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: state.lights.length,
+                    itemBuilder: (BuildContext context, index) {
+                      return BlocBuilder<HomeBloc, HomeState>(
+                        buildWhen: (previous, current) =>
+                            previous.lights[index] != current.lights[index],
+                        builder: (context, state) {
+                          return LightDevice(
+                            key: ValueKey(state.lights[index]),
+                            light: state.lights[index],
+                          );
+                        },
                       );
                     },
                   );
                 },
-              );
-            },
-          ),
-          const SizedBox(height: 12)
-        ],
+              ),
+              const SizedBox(height: 12)
+            ],
+          );
+        },
       ),
     );
   }
@@ -123,6 +128,20 @@ Widget generateActiveAlert(HomeState state, BuildContext context) {
   );
 }
 
+Widget _getActiveGraphicChart(String? activeChart) {
+  Widget activeGraphicChart;
+
+  switch (activeChart) {
+    case pvForecast:
+      activeGraphicChart = const PhotovoltaicForecastChartInfo();
+      break;
+    default:
+      activeGraphicChart = const DailyConsumptionChartInfo();
+      break;
+  }
+  return activeGraphicChart;
+}
+
 class DailyConsumptionChartInfo extends StatelessWidget {
   const DailyConsumptionChartInfo({Key? key}) : super(key: key);
 
@@ -141,7 +160,8 @@ class DailyConsumptionChartInfo extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  if (state.optimizedConsumptionPlot != null &&
+                  if (!state.isLoading &&
+                      state.optimizedConsumptionPlot != null &&
                       state.consumptionPlot != null &&
                       state.productionPlot != null)
                     Padding(
@@ -160,7 +180,45 @@ class DailyConsumptionChartInfo extends StatelessWidget {
                         isFirstEnabled: !state.isPlotOptimized,
                       ),
                     ),
-                  generateDailyConsumptionChartGraphics(state, context),
+                  DailyConsumptionChart(
+                    autoConsumptionPlot: state.autoConsumption,
+                    consumptionPlot: (state.isPlotOptimized)
+                        ? state.optimizedConsumptionPlot
+                        : state.consumptionPlot,
+                    productionPlot: state.productionPlot,
+                    max: state.maxOffset,
+                    min: state.minOffset,
+                  ),
+                  if (state.isLoading ||
+                      (state.optimizedConsumptionPlot == null ||
+                          state.consumptionPlot == null ||
+                          state.productionPlot == null))
+                    SizedBox(
+                      height: 193,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const _HourglassIcon(),
+                          const SizedBox(height: 5),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: (state.isLoading)
+                                ? Text(
+                                    HomsaiLocalizations.of(context)!
+                                        .dailyCosumptionChartLoadingLabel,
+                                    style: Theme.of(context).textTheme.caption,
+                                    textAlign: TextAlign.center,
+                                  )
+                                : Text(
+                                    HomsaiLocalizations.of(context)!
+                                        .dailyCosumptionChartErrorLabel,
+                                    style: Theme.of(context).textTheme.caption,
+                                    textAlign: TextAlign.center,
+                                  ),
+                          )
+                        ],
+                      ),
+                    ),
                   const DailyConsumptionBalanceInfo(),
                 ],
               ),
@@ -172,69 +230,7 @@ class DailyConsumptionChartInfo extends StatelessWidget {
   }
 }
 
-Widget generateDailyConsumptionChartGraphics(
-    HomeState state, BuildContext context) {
-  if (state.isLoading ||
-      (state.optimizedConsumptionPlot == null ||
-          state.consumptionPlot == null ||
-          state.productionPlot == null)) {
-    return SizedBox(
-      height: 193,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const _HourglassIcon(),
-          const SizedBox(height: 5),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: (state.isLoading)
-                ? Text(
-                    HomsaiLocalizations.of(context)!
-                        .dailyCosumptionChartLoadingLabel,
-                    style: Theme.of(context).textTheme.caption,
-                    textAlign: TextAlign.center,
-                  )
-                : Text(
-                    HomsaiLocalizations.of(context)!
-                        .dailyCosumptionChartErrorLabel,
-                    style: Theme.of(context).textTheme.caption,
-                    textAlign: TextAlign.center,
-                  ),
-          )
-        ],
-      ),
-    );
-  }
-  return (state.optimizedConsumptionPlot != null &&
-          state.consumptionPlot != null &&
-          state.productionPlot != null &&
-          state.forecastData.isNotEmpty)
-      ? DailyConsumptionChart(
-          autoConsumptionPlot: state.autoConsumption,
-          consumptionPlot: (state.isPlotOptimized)
-              ? state.optimizedConsumptionPlot
-              : state.consumptionPlot,
-          productionPlot: state.productionPlot,
-          max: state.maxOffset,
-          min: state.minOffset,
-        )
-      : Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(
-              width: 250,
-              child: Text(
-                HomsaiLocalizations.of(context)!.dailyCosumptionChartErrorLabel,
-                style: Theme.of(context).textTheme.caption,
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ],
-        );
-}
-
-/* class PhotovoltaicForecastChartInfo extends StatelessWidget {
+class PhotovoltaicForecastChartInfo extends StatelessWidget {
   const PhotovoltaicForecastChartInfo({Key? key}) : super(key: key);
 
   @override
@@ -261,7 +257,7 @@ Widget generateDailyConsumptionChartGraphics(
       },
     );
   }
-} */
+}
 
 Widget generatePhotovoltaicForecastChartGraphics(
     HomeState state, BuildContext context) {

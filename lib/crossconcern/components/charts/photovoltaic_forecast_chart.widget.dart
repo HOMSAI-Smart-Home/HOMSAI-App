@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:homsai/crossconcern/utilities/util/plot.util.dart';
 import 'package:homsai/themes/colors.theme.dart';
 import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
-import 'package:homsai/crossconcern/components/utils/shadow.widget.dart' as sh;
 
 class PhotovoltaicForecastChart extends StatelessWidget {
   static final emptyPlot = Plot.sample(

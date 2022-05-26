@@ -4,6 +4,7 @@ import 'package:homsai/datastore/DTOs/remote/ai_service/forecast/consumption_opt
 import 'package:homsai/datastore/DTOs/remote/ai_service/forecast/consumption_optimizations/consumption_optimizations_forecast_body.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/ai_service/forecast/photovoltaic/photovoltaic.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/ai_service/forecast/photovoltaic/photovoltaic_body.dto.dart';
+import 'package:homsai/datastore/DTOs/remote/ai_service/forecast/suggestions_chart/suggestions_chart.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/ai_service/login/login_body.dto.dart';
 import 'package:homsai/datastore/models/ai_service_auth.model.dart';
 
@@ -31,4 +32,6 @@ abstract class AIServiceInterface {
   Future<List<PhotovoltaicForecastDto>> getPhotovoltaicForecast(
     PhotovoltaicForecastBodyDto dailyPlanBodyDto,
   );
+
+  Future<SuggestionsChartDto> getSuggestionsChart();
 }

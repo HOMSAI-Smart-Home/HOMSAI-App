@@ -10,6 +10,8 @@ class ApiProprties {
   static const aiServiceSubscribeToBetaPath = "/aiservice/users/requestdemo";
   static const aiServicePhotovoltaicForecast =
       "/aiservice/forecast/photovoltaic";
+  static const aiServiceSuggestionsChart =
+      "/aiservice/statistics/suggestions/chart";
 }
 
 class HomeAssistantApiProprties {

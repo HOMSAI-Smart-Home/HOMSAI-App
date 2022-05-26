@@ -13,6 +13,7 @@ import 'package:homsai/crossconcern/components/charts/daily_consumption_chart.wi
 import 'package:homsai/crossconcern/exceptions/invalid_sensor.exception.dart';
 import 'package:homsai/crossconcern/helpers/extensions/list.extension.dart';
 import 'package:homsai/crossconcern/utilities/properties/connection.properties.dart';
+import 'package:homsai/crossconcern/utilities/properties/constants.util.dart';
 import 'package:homsai/crossconcern/utilities/util/plot.util.dart';
 import 'package:homsai/datastore/DTOs/remote/ai_service/daily_plan/daily_plan.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/ai_service/daily_plan/daily_plan_body.dto.dart';
@@ -65,6 +66,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<FetchHistory>(_onFetchHistory);
     on<FetchPhotovoltaicForecast>(_onFetchPhotovoltaicForecast);
     on<ToggleConsumptionOptimazedPlot>(_onToggleConsumptionOptimazedPlot);
+    on<FetchSuggestionsChart>(_onFetchSuggestionsChart);
     on<AddAlert>(_onAddAlert);
     on<RemoveAlert>(_onRemoveAlert);
     _networkManagerInterface.subscribe(
@@ -221,6 +223,24 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     return date.isAtSameMomentAs(yesterday);
   }
 
+  void _onFetchSuggestionsChart(
+    FetchSuggestionsChart event,
+    Emitter<HomeState> emit,
+  ) async {
+    final suggestionsChartResult =
+        await aiServiceInterface.getSuggestionsChart();
+    switch (mapSuggestionsChart[suggestionsChartResult.chart]) {
+      case pvForecast:
+        emit(state.copyWith(activeGraphicChart: pvForecast));
+        add(FetchPhotovoltaicForecast());
+        break;
+      default:
+        emit(state.copyWith(activeGraphicChart: consumptionOptimizations));
+        add(FetchHistory());
+        break;
+    }
+  }
+
   void _onFetchHistory(FetchHistory event, Emitter<HomeState> emit) async {
     emit(state.copyWith(isLoading: true));
     final plant = await appDatabase.getPlant();
@@ -309,7 +329,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   void _onFetchPhotovoltaicForecast(
       FetchPhotovoltaicForecast event, Emitter<HomeState> emit) async {
     final plant = await appDatabase.getPlant();
-    //TODO: handle else case
     if (plant != null &&
         plant.photovoltaicNominalPower != null &&
         plant.photovoltaicInstallationDate != null) {
@@ -348,7 +367,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       List<PhotovoltaicForecastDto> photovoltaicForecast) {
     final dataParsed =
         photovoltaicForecast.map((element) => element.toSpot).toList();
-        
+
     return PhotovoltaicForecastInfo(
       data: dataParsed,
       min: Offset(dataParsed.first.x, max(0, dataParsed.min.y)),

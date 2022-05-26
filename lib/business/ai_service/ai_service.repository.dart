@@ -10,6 +10,7 @@ import 'package:homsai/datastore/DTOs/remote/ai_service/forecast/consumption_opt
 import 'package:homsai/datastore/DTOs/remote/ai_service/forecast/consumption_optimizations/consumption_optimizations_forecast_body.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/ai_service/forecast/photovoltaic/photovoltaic_body.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/ai_service/forecast/photovoltaic/photovoltaic.dto.dart';
+import 'package:homsai/datastore/DTOs/remote/ai_service/forecast/suggestions_chart/suggestions_chart.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/ai_service/login/login.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/ai_service/login/login_body.dto.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.dart';
@@ -154,5 +155,16 @@ class AIServiceRepository implements AIServiceInterface {
         ),
         headers: _getHeader());
     return PhotovoltaicForecastDto.fromList(result["data"]);
+  }
+
+  @override
+  Future<SuggestionsChartDto> getSuggestionsChart() async {
+    Map<String, dynamic> result = await remoteInterface.get(
+      Uri.parse(ApiProprties.aIServiceBaseUrl).replace(
+        path: ApiProprties.aiServiceSuggestionsChart,
+      ),
+      headers: _getHeader(),
+    );
+    return SuggestionsChartDto.fromJson(result);
   }
 }
