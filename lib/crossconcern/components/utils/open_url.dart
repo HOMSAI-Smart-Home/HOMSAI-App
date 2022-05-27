@@ -4,7 +4,7 @@ import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
 
 void openUrl(BuildContext context, String url) async {
   if (await canLaunchUrlString(url)) {
-    launchUrlString(url);
+    launchUrlString(url, mode: LaunchMode.externalApplication);
   } else {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
