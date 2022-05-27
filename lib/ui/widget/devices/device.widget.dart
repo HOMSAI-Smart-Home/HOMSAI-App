@@ -109,59 +109,58 @@ class _DeviceState extends State<Device> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          (widget.status.isGroup)
-                              ? RichText(
-                                  text: TextSpan(
-                                    children: [
-                                      WidgetSpan(
-                                        child: Icon(
-                                          Icons.house,
-                                          size: 20,
-                                          color: HomsaiColors.primaryGrey,
+                      Flexible(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            (widget.status.isGroup)
+                                ? RichText(
+                                    text: TextSpan(
+                                      children: [
+                                        WidgetSpan(
+                                          child: Icon(
+                                            Icons.house,
+                                            size: 20,
+                                            color: HomsaiColors.primaryGrey,
+                                          ),
                                         ),
-                                      ),
-                                      TextSpan(
-                                        text: HomsaiLocalizations.of(context)!
-                                            .groupDeviceGeneralLabel,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyText2!
-                                            .copyWith(
-                                              height: 1,
-                                            ),
-                                      ),
-                                    ],
+                                        TextSpan(
+                                          text: HomsaiLocalizations.of(context)!
+                                              .groupDeviceGeneralLabel,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyText2!
+                                              .copyWith(
+                                                height: 1,
+                                              ),
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                : Text(
+                                    widget.room,
+                                    overflow: TextOverflow.ellipsis,
+                                    style:
+                                        Theme.of(context).textTheme.bodyText2!,
                                   ),
-                                )
-                              : Text(
-                                  widget.room,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyText2!
-                                      .copyWith(
-                                        height: 1,
-                                      ),
-                                ),
-                          const SizedBox(height: 12),
-                          FittedBox(
-                            fit: BoxFit.fitWidth,
-                            child: Text(
-                              widget.info.toUpperCase(),
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyText1
-                                  ?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    height: 1,
-                                    color: getColor(widget),
-                                  ),
+                            const SizedBox(height: 12),
+                            FittedBox(
+                              fit: BoxFit.fitWidth,
+                              child: Text(
+                                widget.info.toUpperCase(),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyText1
+                                    ?.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                      height: 1,
+                                      color: getColor(widget),
+                                    ),
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                       buildIcon(widget)
                     ],

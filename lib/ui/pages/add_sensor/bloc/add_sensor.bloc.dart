@@ -82,9 +82,15 @@ class AddSensorBloc extends Bloc<AddSensorEvent, AddSensorState> {
       emit(
         state.copyWith(
             selectedConsumptionSensor:
-                consumptionSensor as MesurableSensorEntity,
-            selectedProductionSensor: productionSensor as MesurableSensorEntity,
-            selectedBatterySensor: batterySensor as MesurableSensorEntity,
+                (consumptionSensor is MesurableSensorEntity)
+                    ? consumptionSensor
+                    : null,
+            selectedProductionSensor:
+                (productionSensor is MesurableSensorEntity)
+                    ? productionSensor
+                    : null,
+            selectedBatterySensor:
+                (batterySensor is MesurableSensorEntity) ? batterySensor : null,
             initialPhotovoltaicNominalPower: plant.photovoltaicNominalPower,
             initialPhotovoltaicInstallationDate:
                 parseMonthYearString(plant.photovoltaicInstallationDate),
