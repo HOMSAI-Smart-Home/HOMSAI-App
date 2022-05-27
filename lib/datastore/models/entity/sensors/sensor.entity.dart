@@ -12,6 +12,8 @@ part 'sensor.entity.g.dart';
 
 @JsonSerializable()
 class SensorEntity extends Entity with EquatableMixin {
+  static const String type = "sensor";
+
   @override
   covariant SensorAttributes attributes;
 

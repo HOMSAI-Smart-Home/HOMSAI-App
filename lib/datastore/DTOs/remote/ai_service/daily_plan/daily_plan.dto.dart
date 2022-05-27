@@ -1,3 +1,4 @@
+import 'package:homsai/crossconcern/utilities/util/anonimizer.util.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'daily_plan.dto.g.dart';
@@ -7,6 +8,9 @@ class DailyPlanDto {
   List<HourDto> dailyPlan = [];
 
   DailyPlanDto(this.dailyPlan);
+
+  DailyPlanDto decipher(Anonymizer anonymizer) =>
+      DailyPlanDto(dailyPlan.map((plan) => plan.decipher(anonymizer)).toList());
 
   factory DailyPlanDto.fromJson(Map<String, dynamic> json) =>
       _$DailyPlanDtoFromJson(json);
@@ -40,6 +44,17 @@ class HourDto {
       deviceId.add(DeviceDto.fromJson(element));
     }
   }
+
+  HourDto decipher(Anonymizer anonymizer) => copyWith(
+        deviceId:
+            deviceId.map((device) => device.decipher(anonymizer)).toList(),
+      );
+
+  HourDto copyWith({
+    String? hour,
+    List<DeviceDto>? deviceId,
+  }) =>
+      HourDto(hour ?? this.hour, deviceId ?? this.deviceId);
 }
 
 @JsonSerializable()
@@ -54,4 +69,17 @@ class DeviceDto {
       _$DeviceDtoFromJson(json);
 
   Map<String, dynamic> toJson() => _$DeviceDtoToJson(this);
+
+  DeviceDto decipher(Anonymizer anonymizer) {
+    List<String> entity = entityId?.split('.') ?? List.empty();
+    return copyWith(
+      entityId: anonymizer.decipherAll(entity).join("."),
+    );
+  }
+
+  DeviceDto copyWith({
+    int? order,
+    String? entityId,
+  }) =>
+      DeviceDto(order ?? this.order, entityId ?? this.entityId);
 }

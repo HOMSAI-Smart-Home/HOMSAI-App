@@ -15,7 +15,7 @@ extension ListEntity on List {
       }
       if (entity is T) return entity;
       return null;
-    }).where((entity) => entity != null).map<T>((entity) => entity!).toList();
+    }).whereType<T>().toList();
   }
 }
 

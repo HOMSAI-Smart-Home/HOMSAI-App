@@ -10,6 +10,8 @@ part 'light.entity.g.dart';
 
 @JsonSerializable()
 class LightEntity extends Entity with TogglableEntity, EquatableMixin {
+  static const String type = "light";
+
   @override
   covariant LightAttributes attributes;
 

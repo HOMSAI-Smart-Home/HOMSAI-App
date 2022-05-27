@@ -12,6 +12,8 @@ part 'binary_sensor.entity.g.dart';
 @JsonSerializable()
 class BinarySensorEntity extends SensorEntity
     with TogglableEntity, EquatableMixin {
+  static const String type = "binary_sensor";
+
   @override
   covariant BinarySensorAttributes attributes;
 

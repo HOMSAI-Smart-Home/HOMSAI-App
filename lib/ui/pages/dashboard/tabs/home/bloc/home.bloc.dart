@@ -150,7 +150,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         dailyPlan = await aiServiceInterface.getDailyPlan(
           dailyPlanBodyDto,
           event.entities.getEntities<LightEntity>().length,
-          ["light"],
+          [LightEntity.type],
         );
       }
       final lights = event.entities.getEntities<LightEntity>();

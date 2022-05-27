@@ -22,7 +22,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   @override
   void initState() {
-    WidgetsBinding.instance!.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
     context.read<WebSocketBloc>().add(ConnectWebSocket(
       onWebSocketConnected: () {
         context.read<HomeBloc>().add(FetchStates());
@@ -34,7 +34,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   @override
   void dispose() {
-    WidgetsBinding.instance!.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
@@ -199,7 +199,7 @@ Widget generateChartGraphics(HomeState state, BuildContext context) {
         ],
       ),
     );
-  } 
+  }
   return DailyConsumptionChart(
     autoConsumptionPlot: state.autoConsumption,
     consumptionPlot: (state.isPlotOptimized)
@@ -270,32 +270,30 @@ class DailyConsumptionBalanceInfo extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: BlocBuilder<HomeBloc, HomeState>(
-        builder: (context, state) => Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            DailyConsumptionBalanceItemInfo(
-              HomsaiLocalizations.of(context)!.homePagePurchasedEnergyLabel,
-              amount: balance(state)?.boughtEnergyExpense,
-              power: balance(state)?.boughtEnergy,
-              unit: state.consumptionSensor?.unitMesurement,
-            ),
-            DailyConsumptionBalanceItemInfo(
-              HomsaiLocalizations.of(context)!.homePageEnergyInjectedLabel,
-              amount: balance(state)?.soldEnergyEarning,
-              power: balance(state)?.soldEnergy,
-              unit: state.productionSensor?.unitMesurement,
-            ),
-            DailyConsumptionBalanceItemInfo(
-              HomsaiLocalizations.of(context)!.homePageBalanceLabel,
-              amount: balance(state)?.balance,
-              colored: true,
-            ),
-            EarnWithHomsaiItemInfo(amount: balanceWithHomesai(state)),
-            const SizedBox(
-              height: 10,
-            ),
-          ]
-        ),
+        builder: (context, state) =>
+            Column(mainAxisSize: MainAxisSize.min, children: [
+          DailyConsumptionBalanceItemInfo(
+            HomsaiLocalizations.of(context)!.homePagePurchasedEnergyLabel,
+            amount: balance(state)?.boughtEnergyExpense,
+            power: balance(state)?.boughtEnergy,
+            unit: state.consumptionSensor?.unitMesurement,
+          ),
+          DailyConsumptionBalanceItemInfo(
+            HomsaiLocalizations.of(context)!.homePageEnergyInjectedLabel,
+            amount: balance(state)?.soldEnergyEarning,
+            power: balance(state)?.soldEnergy,
+            unit: state.productionSensor?.unitMesurement,
+          ),
+          DailyConsumptionBalanceItemInfo(
+            HomsaiLocalizations.of(context)!.homePageBalanceLabel,
+            amount: balance(state)?.balance,
+            colored: true,
+          ),
+          EarnWithHomsaiItemInfo(amount: balanceWithHomesai(state)),
+          const SizedBox(
+            height: 10,
+          ),
+        ]),
       ),
     );
   }

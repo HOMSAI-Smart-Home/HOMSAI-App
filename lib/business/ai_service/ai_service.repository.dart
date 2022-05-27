@@ -2,12 +2,12 @@ import 'dart:io';
 
 import 'package:homsai/business/ai_service/ai_service.interface.dart';
 import 'package:homsai/crossconcern/utilities/properties/api.proprties.dart';
+import 'package:homsai/crossconcern/utilities/util/anonimizer.util.dart';
 import 'package:homsai/datastore/DTOs/remote/ai_service/consumption_optimizations_forecast/consumption_optimizations_forecast_body.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/ai_service/consumption_optimizations_forecast/consumption_optimizations_forecast.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/ai_service/daily_plan/daily_plan.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/ai_service/daily_plan/daily_plan_body.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/ai_service/daily_plan/daily_plan_cached.dto.dart';
-import 'package:homsai/datastore/DTOs/remote/ai_service/daily_plan/log.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/ai_service/login/login.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/ai_service/login/login_body.dto.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.dart';
@@ -20,10 +20,6 @@ class AIServiceRepository implements AIServiceInterface {
   final RemoteInterface remoteInterface = getIt.get<RemoteInterface>();
   final AppPreferencesInterface appPreferences =
       getIt.get<AppPreferencesInterface>();
-
-  final Uuid uuid = const Uuid();
-  final Map<String, String> _anonToPlain = {};
-  final Map<String, String> _plainToAnon = {};
 
   Map<String, String> _getHeader() {
     final headers = {HttpHeaders.contentTypeHeader: 'application/json'};
@@ -109,21 +105,22 @@ class AIServiceRepository implements AIServiceInterface {
     int deviceNumber,
     List<String> entitysType,
   ) async {
-    //dailyPlanBodyDto = _anonymizeDayliPlanBodyDto(dailyPlanBodyDto);
+    final Anonymizer anonymizer = Anonymizer();
+
     Map<String, dynamic> result = await remoteInterface.post(
       Uri.parse(ApiProprties.aIServiceBaseUrl).replace(
         path: ApiProprties.aiServiceDailyPlanPath,
-        queryParameters: {"n": deviceNumber.toString(), "device": "light"},
+        queryParameters: {
+          "n": deviceNumber.toString(),
+          "device": anonymizer.cipherAll(entitysType)
+        },
       ),
       headers: _getHeader(),
-      body: dailyPlanBodyDto.toJson()["dailyLog"],
+      body: dailyPlanBodyDto.cipher(anonymizer).toJson()["dailyLog"],
     );
 
-    /*final dailyPlan = _deanonymizeDayliPlanDto(
-      DailyPlanDto.fromJson(result),
-    );*/
-
-    final dailyPlan = DailyPlanDto.fromResult(result["data"]);
+    final dailyPlan =
+        DailyPlanDto.fromResult(result["data"]).decipher(anonymizer);
 
     DateTime today = DateTime.now();
     today = DateTime(
@@ -142,45 +139,5 @@ class AIServiceRepository implements AIServiceInterface {
     );
 
     return dailyPlan;
-  }
-
-  DailyPlanBodyDto _anonymizeDayliPlanBodyDto(
-      DailyPlanBodyDto dailyPlanBodyDto) {
-    DailyPlanBodyDto anonymizedDailyPlanBodyDto =
-        DailyPlanBodyDto.fromJson(dailyPlanBodyDto.toJson());
-
-    for (LogDto dailyLog in anonymizedDailyPlanBodyDto.dailyLog) {
-      List<String> entity = dailyLog.entityId?.split('.') ?? List.empty();
-      if (entity.isNotEmpty) {
-        dailyLog.name = _toAnon(dailyLog.name!);
-        dailyLog.entityId = '${_toAnon(entity[0])}.${_toAnon(entity[1])}';
-      }
-    }
-
-    return anonymizedDailyPlanBodyDto;
-  }
-
-  DailyPlanDto _deanonymizeDayliPlanDto(DailyPlanDto dailyPlanDto) {
-    DailyPlanDto deanonymizedDailyPlanDto =
-        DailyPlanDto.fromJson(dailyPlanDto.toJson());
-
-    for (HourDto dailyLog in deanonymizedDailyPlanDto.dailyPlan) {
-      for (DeviceDto deviceDto in dailyLog.deviceId) {
-        List<String> entity = deviceDto.entityId!.split('.');
-        deviceDto.entityId =
-            '${_anonToPlain[entity[0]]}.${_anonToPlain[entity[1]]}';
-      }
-    }
-
-    return deanonymizedDailyPlanDto;
-  }
-
-  String _toAnon(String plain) {
-    if (!_plainToAnon.containsKey(plain)) {
-      _plainToAnon[plain] = uuid.v4();
-      _anonToPlain[_plainToAnon[plain]!] = plain;
-    }
-
-    return _plainToAnon[plain]!;
   }
 }
