@@ -7,7 +7,7 @@ import 'package:homsai/themes/colors.theme.dart';
 
 class MonthYearField<Bloc extends MonthYearFieldBloc> extends StatelessWidget {
   const MonthYearField({
-    this.key,
+    Key? key,
     this.obscureText = false,
     this.enabled = true,
     required this.labelText,
@@ -15,7 +15,6 @@ class MonthYearField<Bloc extends MonthYearFieldBloc> extends StatelessWidget {
     this.initialValue,
   }) : super(key: key);
 
-  final Key? key;
   final bool obscureText;
   final bool enabled;
   final String labelText;
@@ -36,7 +35,7 @@ class MonthYearField<Bloc extends MonthYearFieldBloc> extends StatelessWidget {
 
 class _MonthYearField<Bloc extends MonthYearFieldBloc> extends StatelessWidget {
   _MonthYearField({
-    this.key,
+    Key? key,
     this.obscureText = false,
     this.enabled = true,
     required this.labelText,
@@ -44,7 +43,6 @@ class _MonthYearField<Bloc extends MonthYearFieldBloc> extends StatelessWidget {
     this.initialValue,
   }) : super(key: key);
 
-  final Key? key;
   final bool obscureText;
   final bool enabled;
   final String labelText;

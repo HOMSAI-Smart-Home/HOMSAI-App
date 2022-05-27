@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:floor/floor.dart';
 
 class DateTimeConverter extends TypeConverter<DateTime?, String> {

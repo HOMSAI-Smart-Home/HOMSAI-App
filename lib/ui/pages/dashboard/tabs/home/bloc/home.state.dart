@@ -14,7 +14,7 @@ class HomeState extends Equatable {
     this.minOffset,
     this.maxOffset,
     this.isPlotOptimized = false,
-    this.isLoading = false,
+    this.isLoading = true,
     this.alerts = const {},
     this.forecastData = const [],
     this.forecastMinOffset = Offset.zero,
@@ -40,7 +40,7 @@ class HomeState extends Equatable {
   final List<FlSpot> forecastData;
   final Offset forecastMinOffset;
   final Offset forecastMaxOffset;
-  final String? activeGraphicChart;
+  final GraphicTypes? activeGraphicChart;
 
   HomeState copyWith({
     List<LightEntity>? lights,
@@ -60,7 +60,7 @@ class HomeState extends Equatable {
     List<FlSpot>? forecastData,
     Offset? forecastMinOffset,
     Offset? forecastMaxOffset,
-    String? activeGraphicChart,
+    GraphicTypes? activeGraphicChart,
   }) {
     return HomeState(
       lights: lights ?? this.lights,
@@ -105,3 +105,5 @@ class HomeState extends Equatable {
         activeGraphicChart,
       ];
 }
+
+enum GraphicStates { loading, error, photovoltaic, optimizedConsumption }

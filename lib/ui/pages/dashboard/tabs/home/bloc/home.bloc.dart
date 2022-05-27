@@ -227,17 +227,23 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     FetchSuggestionsChart event,
     Emitter<HomeState> emit,
   ) async {
+    emit(state.copyWith(isLoading: true));
+    try {
     final suggestionsChartResult =
         await aiServiceInterface.getSuggestionsChart();
     switch (mapSuggestionsChart[suggestionsChartResult.chart]) {
-      case pvForecast:
-        emit(state.copyWith(activeGraphicChart: pvForecast));
+        case GraphicTypes.pvForecast:
+          emit(state.copyWith(activeGraphicChart: GraphicTypes.pvForecast));
         add(FetchPhotovoltaicForecast());
         break;
       default:
-        emit(state.copyWith(activeGraphicChart: consumptionOptimizations));
+          emit(state.copyWith(
+              activeGraphicChart: GraphicTypes.consumptionOptimizations));
         add(FetchHistory());
         break;
+    }
+    } catch (e) {
+      emit(state.copyWith(isLoading: false));
     }
   }
 
@@ -319,20 +325,26 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
                 optimizedInfo?.maxRange,
               ),
               isLoading: false));
+        } else {
+          emit(state.copyWith(lights: state.lights, isLoading: false));
         }
       } catch (e) {
-        emit(HomeState(lights: state.lights));
+        emit(HomeState(lights: state.lights, isLoading: false));
       }
+    } else {
+      emit(state.copyWith(isLoading: false));
     }
   }
 
   void _onFetchPhotovoltaicForecast(
       FetchPhotovoltaicForecast event, Emitter<HomeState> emit) async {
+    emit(state.copyWith(isLoading: true));
     final plant = await appDatabase.getPlant();
     if (plant != null &&
         plant.photovoltaicNominalPower != null &&
         plant.photovoltaicInstallationDate != null) {
-      final photovoltaicForecast = await _getPhotovoltaicForecast(
+      try {
+        final photovoltaicForecast = await _getPhotovoltaicForecast(
         double.parse(plant.photovoltaicNominalPower!),
         plant.photovoltaicInstallationDate!.difference(DateTime.now()).inDays,
         plant.latitude,
@@ -342,7 +354,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         forecastData: photovoltaicForecast.data,
         forecastMinOffset: photovoltaicForecast.min,
         forecastMaxOffset: photovoltaicForecast.max,
+          isLoading: false,
       ));
+      } catch (e) {
+        emit(state.copyWith(isLoading: true));
+      }
+    } else {
+      emit(state.copyWith(isLoading: false));
     }
   }
 

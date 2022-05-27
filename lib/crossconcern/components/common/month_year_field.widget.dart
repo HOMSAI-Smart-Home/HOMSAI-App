@@ -4,13 +4,12 @@ import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
 
 class MonthYearField extends StatelessWidget {
   const MonthYearField({
-    this.key,
+    Key? key,
     this.obscureText = false,
     this.enabled = true,
     required this.labelText,
   }) : super(key: key);
 
-  final Key? key;
   final bool obscureText;
   final bool enabled;
   final String labelText;

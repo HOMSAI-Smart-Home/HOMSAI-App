@@ -27,8 +27,6 @@ class LightRepository extends LightRepositoryInterface {
     webSocket.callingAService(
         WebSocketSubscriber(
           (data) {},
-          //TODO:remove
-          onError: (error) => print(error),
         ),
         'light',
         'turn_off',
@@ -43,8 +41,6 @@ class LightRepository extends LightRepositoryInterface {
     webSocket.callingAService(
         WebSocketSubscriber(
           (data) {},
-          //TODO:remove
-          onError: (error) => print(error),
         ),
         'light',
         'turn_on',

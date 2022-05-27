@@ -12,9 +12,10 @@ const bugReportUrl =
     "https://homsai-app.atlassian.net/servicedesk/customer/portal/1/create/1";
 
 // Map indicating which chart to show
-const Map<String, String> mapSuggestionsChart = {
-  "CONSUMPTION_OPTIMIZATIONS": consumptionOptimizations,
-  "PV_FORECAST": pvForecast,
+const Map<String, GraphicTypes> mapSuggestionsChart = {
+  "CONSUMPTION_OPTIMIZATIONS": GraphicTypes.consumptionOptimizations,
+  "PV_FORECAST": GraphicTypes.pvForecast,
 };
-const consumptionOptimizations = "CONSUMPTION_OPTIMIZATIONS";
-const pvForecast = "PV_FORECAST";
+
+// Type of home page graphic charts
+enum GraphicTypes { consumptionOptimizations, pvForecast }

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:homsai/business/home_assistant/home_assistant.interface.dart';
 import 'package:homsai/crossconcern/helpers/blocs/websocket/websocket.bloc.dart';
 import 'package:homsai/crossconcern/utilities/properties/api.proprties.dart';
@@ -240,8 +241,9 @@ class HomeAssistantWebSocketRepository
 
       webSocket?.stream.listen(
         (data) {
-          //TODO: remove
-          print(data);
+          if (kDebugMode) {
+            print(data);      
+          }
 
           data = jsonDecode(data);
 
@@ -254,9 +256,10 @@ class HomeAssistantWebSocketRepository
               try {
                 _responseHandler(data);
               } catch (e) {
-                //TODO: remove
-                print(data);
-                print(e);
+                if (kDebugMode) {
+                  print(data);
+                  print(e);
+                }
               }
               break;
             default:
@@ -308,7 +311,9 @@ class HomeAssistantWebSocketRepository
     bool force = false,
   }) {
     if (status != HomeAssistantWebSocketStatus.connected && !force) return;
-    print(_message);
+    if (kDebugMode) {
+      print(_message);      
+    }
     if (!flush) return webSocket?.sink.add(_message.removeAt(0));
 
     while (_message.isNotEmpty) {

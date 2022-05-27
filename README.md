@@ -33,6 +33,7 @@ HOMSAI Flutter application
 - dropdown_button2: allows dropdown to be more versatile.
 - uuid: package to generate unique universal identifier.
 - url_launcher: library that allow you to go to web pages
+- carousel_slider: Library that allows you to make versatile sliders
 
 ## Auto Router Generator
 
