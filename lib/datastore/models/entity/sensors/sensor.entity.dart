@@ -2,11 +2,11 @@
 
 import 'package:equatable/equatable.dart';
 import 'package:homsai/crossconcern/helpers/factories/home_assistant_sensor.factory.dart';
+import 'package:homsai/datastore/models/area/base.area.dart';
 import 'package:homsai/datastore/models/entity/attributes/attributes.entity.dart';
 import 'package:homsai/datastore/models/entity/base/base.entity.dart';
 import 'package:homsai/datastore/models/entity/context/context.entity.dart';
 import 'package:json_annotation/json_annotation.dart';
-
 
 part 'sensor.entity.g.dart';
 
@@ -23,14 +23,16 @@ class SensorEntity extends Entity with EquatableMixin {
     this.attributes,
     DateTime lastChanged,
     DateTime lastUpdated,
-    ContextEntity context,
-  ) : super(
+    ContextEntity context, {
+    Area? area,
+  }) : super(
           entityId,
           state,
           attributes,
           lastChanged,
           lastUpdated,
           context,
+          area: area,
         );
 
   factory SensorEntity.fromJson(Map<String, dynamic> json) =>

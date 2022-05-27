@@ -8,14 +8,14 @@ part of 'device.dto.dart';
 
 DeviceDto _$DeviceDtoFromJson(Map<String, dynamic> json) => DeviceDto(
       id: json['id'] as String,
-      area: json['areaId'] as String?,
+      area: json['area_id'] as String?,
       configurationUrl: json['configuration_url'] as String?,
       configEntries: (json['config_entries'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
-      connections: json['connections'] as List<dynamic>?,
+      connections: json['connections'] as List<dynamic>,
       disabledBy: json['disabled_by'],
-      entryType: json['entry_type'],
+      entryType: json['entry_type'] as String?,
       identifiers: json['identifiers'] as List<dynamic>,
       manufacturer: json['manufacturer'] as String,
       model: json['model'] as String,
@@ -28,7 +28,7 @@ DeviceDto _$DeviceDtoFromJson(Map<String, dynamic> json) => DeviceDto(
 
 Map<String, dynamic> _$DeviceDtoToJson(DeviceDto instance) => <String, dynamic>{
       'id': instance.id,
-      'areaId': instance.area,
+      'area_id': instance.area,
       'configuration_url': instance.configurationUrl,
       'config_entries': instance.configEntries,
       'connections': instance.connections,

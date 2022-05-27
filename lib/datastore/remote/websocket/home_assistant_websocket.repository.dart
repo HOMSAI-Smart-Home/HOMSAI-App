@@ -7,7 +7,7 @@ import 'package:homsai/business/home_assistant/home_assistant.interface.dart';
 import 'package:homsai/crossconcern/helpers/blocs/websocket/websocket.bloc.dart';
 import 'package:homsai/crossconcern/utilities/properties/api.proprties.dart';
 import 'package:homsai/datastore/DTOs/websocket/configuration/configuration_body.dto.dart';
-import 'package:homsai/datastore/DTOs/websocket/device_related/entitys_from_device_body.dto.dart';
+import 'package:homsai/datastore/DTOs/websocket/device_related/device_related_body.dto.dart';
 import 'package:homsai/datastore/DTOs/websocket/error/error.dto.dart';
 import 'package:homsai/datastore/DTOs/websocket/response/response.dto.dart';
 import 'package:homsai/datastore/DTOs/websocket/service/service_body.dto.dart';
@@ -24,7 +24,7 @@ import 'package:web_socket_channel/io.dart';
 
 class WebSocketSubscriber implements WebSocketSubscriberInterface {
   @override
-  Function(Map<String, dynamic>) onDone;
+  Function(dynamic) onDone;
   @override
   Function(ErrorDto)? onError;
 
@@ -243,7 +243,7 @@ class HomeAssistantWebSocketRepository
       webSocket?.stream.listen(
         (data) {
           if (kDebugMode) {
-            print(data);      
+            print(data);
           }
 
           data = jsonDecode(data);
@@ -315,7 +315,7 @@ class HomeAssistantWebSocketRepository
   }) {
     if (status != HomeAssistantWebSocketStatus.connected && !force) return;
     if (kDebugMode) {
-      print(_message);      
+      print(_message);
     }
     if (!flush) return webSocket?.sink.add(_message.removeAt(0));
 

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
 import 'package:flutter_localized_locales/flutter_localized_locales.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -13,6 +14,7 @@ import 'package:homsai/business/home_assistant/home_assistant.repository.dart';
 import 'package:homsai/business/home_assistant_scanner/home_assistant_scanner.interface.dart';
 import 'package:homsai/business/home_assistant_scanner/home_assistant_scanner.repository.dart';
 import 'package:homsai/business/light/light.interface.dart';
+import 'package:homsai/crossconcern/helpers/blocs/websocket/websocket.bloc.dart';
 import 'package:homsai/datastore/models/database/plant.entity.dart';
 import 'package:homsai/datastore/models/home_assistant_auth.model.dart';
 import 'package:homsai/datastore/remote/network/network_manager.interface.dart';
@@ -181,17 +183,20 @@ class _AppState extends State<App> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      debugShowCheckedModeBanner: true,
-      title: appName,
-      theme: HomsaiThemeData.lightThemeData,
-      localizationsDelegates: const [
-        ...HomsaiLocalizations.localizationsDelegates,
-        LocaleNamesLocalizationsDelegate()
-      ],
-      supportedLocales: HomsaiLocalizations.supportedLocales,
-      routerDelegate: _appRouter.delegate(),
-      routeInformationParser: _appRouter.defaultRouteParser(),
+    return BlocProvider<WebSocketBloc>(
+      create: (_) => WebSocketBloc(),
+      child: MaterialApp.router(
+        debugShowCheckedModeBanner: true,
+        title: appName,
+        theme: HomsaiThemeData.lightThemeData,
+        localizationsDelegates: const [
+          ...HomsaiLocalizations.localizationsDelegates,
+          LocaleNamesLocalizationsDelegate()
+        ],
+        supportedLocales: HomsaiLocalizations.supportedLocales,
+        routerDelegate: _appRouter.delegate(),
+        routeInformationParser: _appRouter.defaultRouteParser(),
+      ),
     );
   }
 }

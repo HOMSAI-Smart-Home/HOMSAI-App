@@ -13,11 +13,15 @@ SensorEntity _$SensorEntityFromJson(Map<String, dynamic> json) => SensorEntity(
       DateTime.parse(json['last_changed'] as String),
       DateTime.parse(json['last_updated'] as String),
       ContextEntity.fromJson(json['context'] as Map<String, dynamic>),
+      area: json['area'] == null
+          ? null
+          : Area.fromJson(json['area'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$SensorEntityToJson(SensorEntity instance) =>
     <String, dynamic>{
       'entity_id': instance.entityId,
+      'area': instance.area?.toJson(),
       'state': instance.state,
       'last_changed': instance.lastChanged.toIso8601String(),
       'last_updated': instance.lastUpdated.toIso8601String(),

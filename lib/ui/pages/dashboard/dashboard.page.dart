@@ -38,14 +38,13 @@ class _DashboardPageState extends State<DashboardPage> {
         builder: (context, child, animation) {
           return HomsaiBlocScaffold(
             providers: [
-              BlocProvider<WebSocketBloc>(
-                create: (BuildContext context) => WebSocketBloc(),
-              ),
               BlocProvider<DashboardBloc>(
                 create: (BuildContext context) => DashboardBloc(),
               ),
               BlocProvider<HomeBloc>(
-                create: (BuildContext context) => HomeBloc(),
+                create: (BuildContext context) => HomeBloc(
+                  context.read<WebSocketBloc>(),
+                ),
               ),
             ],
             appBar: _dashboardAppBar(context),

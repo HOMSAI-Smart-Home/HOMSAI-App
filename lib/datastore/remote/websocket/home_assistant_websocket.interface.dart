@@ -1,13 +1,13 @@
 import 'dart:async';
 
 import 'package:homsai/datastore/DTOs/websocket/configuration/configuration_body.dto.dart';
-import 'package:homsai/datastore/DTOs/websocket/device_related/entitys_from_device_body.dto.dart';
+import 'package:homsai/datastore/DTOs/websocket/device_related/device_related_body.dto.dart';
 import 'package:homsai/datastore/DTOs/websocket/error/error.dto.dart';
 import 'package:homsai/datastore/DTOs/websocket/service/service_body.dto.dart';
 import 'package:homsai/datastore/DTOs/websocket/trigger/trigger_body.dto.dart';
 
 abstract class WebSocketSubscriberInterface {
-  Function(Map<String, dynamic>) onDone;
+  Function(dynamic) onDone;
   Function(ErrorDto)? onError;
 
   WebSocketSubscriberInterface(

@@ -8,7 +8,7 @@ part of 'device_related.dto.dart';
 
 DeviceRelatedDto _$DeviceRelatedDtoFromJson(Map<String, dynamic> json) =>
     DeviceRelatedDto(
-      area: (json['area'] as List<dynamic>).map((e) => e as String).toList(),
+      area: (json['area'] as List<dynamic>?)?.map((e) => e as String).toList(),
       configEntry: (json['config_entry'] as List<dynamic>)
           .map((e) => e as String)
           .toList(),

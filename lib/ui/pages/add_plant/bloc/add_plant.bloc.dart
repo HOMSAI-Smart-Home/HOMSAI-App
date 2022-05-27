@@ -8,7 +8,6 @@ import 'package:homsai/datastore/local/app.database.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.dart';
 import 'package:homsai/datastore/models/database/configuration.entity.dart';
 import 'package:homsai/datastore/models/database/plant.entity.dart';
-import 'package:homsai/datastore/models/entity/base/base.entity.dart';
 import 'package:homsai/datastore/remote/websocket/home_assistant_websocket.interface.dart';
 import 'package:homsai/main.dart';
 import 'package:timezone/timezone.dart';
@@ -45,11 +44,6 @@ class AddPlantBloc extends Bloc<AddPlantEvent, AddPlantState> {
                 onConfigurationFetched: (config) {
                   add(ConfigurationFetched(Configuration.fromDto(config)));
                 },
-              ),
-            );
-            webSocketBloc.add(
-              FetchEntites(
-                onEntitiesFetched: (entities) => add(StatesFetched(entities)),
               ),
             );
           },

@@ -12,7 +12,7 @@ class FetchStates extends HomeEvent {}
 class FetchedLights extends HomeEvent {
   const FetchedLights({required this.entities});
 
-  final List<dynamic> entities;
+  final List<Entity> entities;
 
   @override
   List<Object> get props => [entities];

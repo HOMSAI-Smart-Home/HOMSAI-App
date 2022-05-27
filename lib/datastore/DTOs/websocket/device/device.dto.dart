@@ -5,23 +5,23 @@ part 'device.dto.g.dart';
 @JsonSerializable()
 class DeviceDto {
   String id;
-  @JsonKey(name: 'areaId')
+  @JsonKey(name: 'area_id')
   String? area;
   @JsonKey(name: 'configuration_url')
   String? configurationUrl;
   @JsonKey(name: 'config_entries')
   List<String>? configEntries;
-  List? connections;
+  List connections;
   @JsonKey(name: 'disabled_by')
   dynamic disabledBy;
   @JsonKey(name: 'entry_type')
-  dynamic entryType;
+  String? entryType;
   List identifiers;
   String manufacturer;
   String model;
   @JsonKey(name: 'name_by_user')
   String? nameByUser;
-  String name = "Casa (Indoor)";
+  String name;
   @JsonKey(name: 'sw_version')
   dynamic swVersion;
   @JsonKey(name: 'hw_version')
@@ -34,7 +34,7 @@ class DeviceDto {
     required this.area,
     this.configurationUrl,
     this.configEntries,
-    this.connections,
+    required this.connections,
     this.disabledBy,
     this.entryType,
     required this.identifiers,

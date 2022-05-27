@@ -10,7 +10,7 @@ import 'package:homsai/business/ai_service/ai_service.interface.dart';
 import 'package:homsai/business/home_assistant/home_assistant.interface.dart';
 import 'package:homsai/crossconcern/components/alerts/general_alert.widget.dart';
 import 'package:homsai/crossconcern/components/charts/daily_consumption_chart.widget.dart';
-import 'package:homsai/crossconcern/exceptions/invalid_sensor.exception.dart';
+import 'package:homsai/crossconcern/helpers/blocs/websocket/websocket.bloc.dart';
 import 'package:homsai/crossconcern/helpers/extensions/list.extension.dart';
 import 'package:homsai/crossconcern/utilities/properties/connection.properties.dart';
 import 'package:homsai/crossconcern/utilities/properties/constants.util.dart';
@@ -32,7 +32,6 @@ import 'package:homsai/datastore/models/entity/base/base.entity.dart';
 import 'package:homsai/datastore/models/entity/sensors/mesurable/mesurable_sensor.entity.dart';
 import 'package:homsai/datastore/remote/network/network.manager.dart';
 import 'package:homsai/datastore/remote/websocket/home_assistant_websocket.interface.dart';
-import 'package:homsai/datastore/remote/websocket/home_assistant_websocket.repository.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.dart';
 import 'package:homsai/datastore/models/entity/light/light.entity.dart';
 import 'package:homsai/main.dart';
@@ -59,8 +58,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final AppDatabase appDatabase = getIt.get<AppDatabase>();
 
   bool _active = true;
+  final WebSocketBloc _webSocketBloc;
 
-  HomeBloc() : super(const HomeState()) {
+  HomeBloc(this._webSocketBloc) : super(const HomeState()) {
     on<FetchStates>(_onFetchState);
     on<FetchedLights>(_onFetchedLights);
     on<FetchHistory>(_onFetchHistory);
@@ -98,11 +98,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   void _onFetchState(FetchStates event, Emitter<HomeState> emit) async {
-    webSocketRepository.fetchingStates(
-      WebSocketSubscriber((res) {
-        if (_active) add(FetchedLights(entities: res));
-      }),
-    );
+    _webSocketBloc.add(FetchEntities(
+      onEntitiesFetched: (entities) {
+        if (_active) add(FetchedLights(entities: entities));
+      },
+    ));
   }
 
   void _onAddAlert(AddAlert event, Emitter<HomeState> emit) async {

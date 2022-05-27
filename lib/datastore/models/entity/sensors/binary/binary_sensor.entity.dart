@@ -2,6 +2,7 @@
 
 import 'package:equatable/equatable.dart';
 import 'package:homsai/crossconcern/helpers/factories/home_assistant_sensor.factory.dart';
+import 'package:homsai/datastore/models/area/base.area.dart';
 import 'package:homsai/datastore/models/entity/base/base.entity.dart';
 import 'package:homsai/datastore/models/entity/context/context.entity.dart';
 import 'package:homsai/datastore/models/entity/sensors/sensor.entity.dart';
@@ -23,7 +24,9 @@ class BinarySensorEntity extends SensorEntity
     this.attributes,
     DateTime lastChanged,
     DateTime lastUpdated,
-    ContextEntity context,
+    ContextEntity context,{
+    Area? area,
+    }
   ) : super(
           entityId,
           state,
@@ -31,6 +34,7 @@ class BinarySensorEntity extends SensorEntity
           lastChanged,
           lastUpdated,
           context,
+          area: area,
         );
 
   factory BinarySensorEntity.fromJson(Map<String, dynamic> json) =>

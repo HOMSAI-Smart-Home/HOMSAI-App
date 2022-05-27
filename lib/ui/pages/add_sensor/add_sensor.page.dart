@@ -34,9 +34,6 @@ class _AddSensorPageState extends State<AddSensorPage> {
   Widget build(BuildContext context) {
     return HomsaiBlocScaffold(
       providers: [
-        BlocProvider<WebSocketBloc>(
-          create: (_) => WebSocketBloc(),
-        ),
         BlocProvider<AddSensorBloc>(
           create: (context) =>
               AddSensorBloc(context.read<WebSocketBloc>(), widget.url),

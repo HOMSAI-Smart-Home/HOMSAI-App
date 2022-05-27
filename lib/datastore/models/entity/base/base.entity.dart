@@ -1,3 +1,4 @@
+import 'package:homsai/datastore/models/area/base.area.dart';
 import 'package:homsai/datastore/models/entity/attributes/attributes.entity.dart';
 import 'package:homsai/datastore/models/entity/context/context.entity.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -8,6 +9,7 @@ part 'base.entity.g.dart';
 class Entity {
   @JsonKey(name: 'entity_id')
   String entityId;
+  Area? area;
   @JsonKey(name: "state")
   String state;
   Attributes attributes;
@@ -24,6 +26,9 @@ class Entity {
     this.lastChanged,
     this.lastUpdated,
     this.context,
+    {
+      this.area,
+    }
   );
 
   String get id => context.id;

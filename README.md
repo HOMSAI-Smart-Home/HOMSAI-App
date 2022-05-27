@@ -25,7 +25,7 @@ HOMSAI Flutter application
 - floor: dependency to handle OMR database for sqlfite.
 - connectivity_plus: allow Flutter apps to know connectivity status.
 - timezone: allow Flutter datetime to handle timezones.
-- flutter_launcher_icons: help to generate flutter app icons. 
+- flutter_launcher_icons: help to generate flutter app icons.
 - rive: used to handle .riv animation file.
 - flutter_web_auth: used for handling web authentication like google auth.
 - network_info_plus: allows Flutter apps to discover network info and configure themselves accordingly.
@@ -40,30 +40,38 @@ HOMSAI Flutter application
 Flutter generates route name from app.router.dar automatically.
 
 Use the [watch] flag to watch the files' system for edits and rebuild as necessary.
-```
+
+```bash
 flutter packages pub run build_runner watch
 ```
 
 If you want the generator to run one time and exits use
-```
+
+```bash
 flutter packages pub run build_runner watch
 ```
 
+or
+
+```bash
 flutter packages pub run build_runner watch --delete-conflicting-outputs
+```
 
 ## Localization files
 
 Flutter generates localizations files on when building the app.
 
 To generate Flutter localiztion files manually
-```
+
+```bash
 flutter gen-l10n
 ```
 
 ## Linting
 
 To run Flutter code analysis
-```
+
+```bash
 flutter analyze
 ```
 
@@ -73,41 +81,47 @@ You can simply look at linting errors in the Android Studio Dart Analysis sectio
 ## Build
 
 To build the release apk
-```
+
+```bash
 flutter build apk --target {{path of Main.dart}} --release
 ```
 
 ## Pre-commit hook integration
+
 This will perform the lint on every commit and will abort it in case of errors
 
 In the root of the project run
-```
+
+```bash
 cp pre-commit-hook .git/hooks/pre-commit
 ```
 
 Then give permission with command
-```
+
+```bash
 chmod +x .git/hooks/pre-commit
 ```
 
 ### Pre-commit hook fails in Fork
 
-If your commit fails due to flutter command not being found, your flutter sdk is not in your $PATH. 
+If your commit fails due to flutter command not being found, your flutter sdk is not in your $PATH.
 
-Follow flutter documentation to [update your path](https://docs.flutter.dev/get-started/install/macos#update-your-path). 
+Follow flutter documentation to [update your path](https://docs.flutter.dev/get-started/install/macos#update-your-path).
 
 Then add the following line to pre-commit-hook file and change [FLUTTER_SDK_LOCATION] to be the path of your clone of the Flutter git repo, for example $HOME/flutter
 
-```
+```bash
 export PATH=[FLUTTER_SDK_LOCATION]/bin:$PATH
 ```
 
 Then in the root of the project run
-```
+
+```bash
 cp pre-commit-hook .git/hooks/pre-commit
 ```
 
 Finally give permission with command
-```
+
+```bash
 chmod +x .git/hooks/pre-commit
 ```

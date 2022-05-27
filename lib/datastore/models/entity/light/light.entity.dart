@@ -1,6 +1,7 @@
 // ignore_for_file: overridden_fields
 
 import 'package:equatable/equatable.dart';
+import 'package:homsai/datastore/models/area/base.area.dart';
 import 'package:homsai/datastore/models/entity/attributes/attributes.entity.dart';
 import 'package:homsai/datastore/models/entity/base/base.entity.dart';
 import 'package:homsai/datastore/models/entity/context/context.entity.dart';
@@ -21,7 +22,9 @@ class LightEntity extends Entity with TogglableEntity, EquatableMixin {
     this.attributes,
     DateTime lastChanged,
     DateTime lastUpdated,
-    ContextEntity context,
+    ContextEntity context,{
+      Area? area,
+    }
   ) : super(
           entityId,
           state,
@@ -29,6 +32,7 @@ class LightEntity extends Entity with TogglableEntity, EquatableMixin {
           lastChanged,
           lastUpdated,
           context,
+          area: area,
         );
 
   factory LightEntity.fromJson(Map<String, dynamic> json) =>

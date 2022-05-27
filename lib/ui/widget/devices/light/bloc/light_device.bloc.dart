@@ -41,11 +41,14 @@ class LightDeviceBloc extends Bloc<LightDeviceEvent, LightDeviceState> {
 
   void _onChanged(LightOnChanged event, Emitter<LightDeviceState> emit) {
     lightRepository.onChanged(
-        state.light, (entity) => add(LightNewState(entity)));
+      state.light,
+      (entity) => add(LightNewState(entity)),
+    );
   }
 
   void _onNewState(LightNewState event, Emitter<LightDeviceState> emit) async {
     LightEntity light = event.light;
+    light.area = state.light.area;
     final plant = await appDatabase.getPlant();
     if (plant != null) {
       await appDatabase.homeAssitantDao

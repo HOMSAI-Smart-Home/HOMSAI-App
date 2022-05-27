@@ -49,7 +49,7 @@ class _LightDeviceCardState extends State<_LightDeviceCard> {
       iconPath: "assets/icons/bulb.svg",
       baseColor: HomsaiColors.primaryYellow,
       title: state.light.attributes.friendlyName,
-      room: "",
+      room: state.light.area?.name ?? '',
       info: (state.light.isOn) ? "on" : "off",
       onTap: () {
         context.read<LightDeviceBloc>().add(

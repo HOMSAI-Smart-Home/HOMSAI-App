@@ -20,15 +20,6 @@ class FetchLocalConfig extends AddPlantEvent {
   // Empty
 }
 
-class StatesFetched extends AddPlantEvent {
-  const StatesFetched(this.entities);
-
-  final List<Entity> entities;
-
-  @override
-  List<Object> get props => [entities];
-}
-
 class PlantNameChanged extends AddPlantEvent {
   const PlantNameChanged(this.plantName);
 

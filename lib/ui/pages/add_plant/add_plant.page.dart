@@ -32,7 +32,6 @@ class _AddPlantPageState extends State<AddPlantPage> {
   Widget build(BuildContext context) {
     return HomsaiBlocScaffold(
       providers: [
-        BlocProvider<WebSocketBloc>(create: (_) => WebSocketBloc()),
         BlocProvider<AddPlantBloc>(
           create: (context) => AddPlantBloc(
             context.read<WebSocketBloc>(),

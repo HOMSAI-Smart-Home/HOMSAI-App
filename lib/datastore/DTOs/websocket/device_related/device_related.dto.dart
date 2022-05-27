@@ -4,13 +4,13 @@ part 'device_related.dto.g.dart';
 
 @JsonSerializable()
 class DeviceRelatedDto {
-  List<String> area;
+  List<String>? area;
   @JsonKey(name: "config_entry")
   List<String> configEntry;
   List<String> entity;
 
   DeviceRelatedDto({
-    required this.area,
+    this.area,
     required this.configEntry,
     required this.entity,
   });

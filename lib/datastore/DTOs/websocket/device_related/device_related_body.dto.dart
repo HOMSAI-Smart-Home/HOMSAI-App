@@ -1,15 +1,18 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'entitys_from_device_body.dto.g.dart';
+part 'device_related_body.dto.g.dart';
 
 @JsonSerializable()
 class DeviceRelatedBodyDto {
   @JsonKey(name: "item_type")
-  final String itemType = "device";
+  final String itemType;
   @JsonKey(name: "item_id")
   final String itemId;
 
-  DeviceRelatedBodyDto(this.itemId);
+  DeviceRelatedBodyDto(
+    this.itemId, {
+    this.itemType = "device",
+  });
 
   factory DeviceRelatedBodyDto.fromJson(Map<String, dynamic> json) =>
       _$DeviceRelatedBodyDtoFromJson(json);
