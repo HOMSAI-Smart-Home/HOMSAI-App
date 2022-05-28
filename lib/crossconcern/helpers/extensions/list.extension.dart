@@ -21,13 +21,13 @@ extension ListEntity on List {
   }
 
   List<DeviceDto> getDevicesDto() {
-    return map((device) => DeviceDto.fromJson(device))
-        .toList();
+    return map((device) {
+      return DeviceDto.fromJson(device);
+    }).toList();
   }
 
   List<Area> getAreas() {
-    return map((area) => Area.fromJson(area))
-        .toList();
+    return map((area) => Area.fromJson(area)).toList();
   }
 }
 

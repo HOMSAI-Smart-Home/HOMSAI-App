@@ -18,7 +18,7 @@ DeviceDto _$DeviceDtoFromJson(Map<String, dynamic> json) => DeviceDto(
       entryType: json['entry_type'] as String?,
       identifiers: json['identifiers'] as List<dynamic>,
       manufacturer: json['manufacturer'] as String,
-      model: json['model'] as String,
+      model: json['model'] as String?,
       nameByUser: json['name_by_user'] as String?,
       name: json['name'] as String,
       swVersion: json['sw_version'],

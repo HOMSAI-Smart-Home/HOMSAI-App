@@ -18,7 +18,7 @@ class DeviceDto {
   String? entryType;
   List identifiers;
   String manufacturer;
-  String model;
+  String? model;
   @JsonKey(name: 'name_by_user')
   String? nameByUser;
   String name;
