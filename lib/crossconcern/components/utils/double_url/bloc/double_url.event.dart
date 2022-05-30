@@ -48,3 +48,5 @@ class DoubleUrlSubmitted extends DoubleUrlEvent {
 }
 
 class DoubleUrlError extends DoubleUrlEvent {}
+
+class Clear extends DoubleUrlEvent {}

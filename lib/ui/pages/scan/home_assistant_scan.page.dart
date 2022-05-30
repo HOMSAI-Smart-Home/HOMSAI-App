@@ -66,7 +66,7 @@ class _HomeAssistantScanPage extends State<HomeAssistantScanPage> {
       children: <Widget>[
         _HomeAssistantScanDialog(),
         const SizedBox(height: 24),
-        _SearchLocalInstance(onResult: widget.onResult)
+        _SearchLocalInstance(onResult: widget.onResult),
       ],
     );
   }

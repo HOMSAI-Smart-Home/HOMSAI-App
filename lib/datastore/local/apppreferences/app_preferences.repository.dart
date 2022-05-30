@@ -193,6 +193,7 @@ class AppPreferences implements AppPreferencesInterface {
     preferences?.remove(AppPreferencesProperties.prefDailyPlan);
   }
 
+  @override
   List<HistoryDto>? getBatteryInfo() {
     final batteryInfo =
         preferences?.getString(AppPreferencesProperties.prefBatteryInfo);

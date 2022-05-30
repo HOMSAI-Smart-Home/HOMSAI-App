@@ -7,8 +7,8 @@ part 'double_url.event.dart';
 part 'double_url.state.dart';
 
 class DoubleUrlBloc extends Bloc<DoubleUrlEvent, DoubleUrlState> {
-  late LocalUrlTextFieldBloc localUrlTextFieldBloc;
-  late RemoteUrlTextFieldBloc remoteUrlTextFieldBloc;
+  LocalUrlTextFieldBloc? localUrlTextFieldBloc;
+  RemoteUrlTextFieldBloc? remoteUrlTextFieldBloc;
 
   DoubleUrlBloc() : super(const DoubleUrlState()) {
     on<DoubleUrlAutoComplete>(_onAutoColplete);
@@ -16,6 +16,7 @@ class DoubleUrlBloc extends Bloc<DoubleUrlEvent, DoubleUrlState> {
     on<DoubleUrlRemoteUrlChanged>(_onRemoteUrlChange);
     on<DoubleUrlSubmitted>(_onUrlSubmitted);
     on<DoubleUrlError>(_onUrlError);
+    on<Clear>(_onClear);
   }
 
   void initializeBlocs({
@@ -33,9 +34,9 @@ class DoubleUrlBloc extends Bloc<DoubleUrlEvent, DoubleUrlState> {
   void _onAutoColplete(
     DoubleUrlAutoComplete event,
     Emitter<DoubleUrlState> emit,
-  ) async {
-    localUrlTextFieldBloc.add(UrlAutoComplete(url: event.localUrl));
-    remoteUrlTextFieldBloc.add(UrlAutoComplete(url: event.remoteUrl));
+  ) {
+    localUrlTextFieldBloc?.add(UrlAutoComplete(url: event.localUrl));
+    remoteUrlTextFieldBloc?.add(UrlAutoComplete(url: event.remoteUrl));
 
     emit(
       state.copyWith(status: _isFormValidate()),
@@ -59,26 +60,45 @@ class DoubleUrlBloc extends Bloc<DoubleUrlEvent, DoubleUrlState> {
   void _onUrlSubmitted(
     DoubleUrlSubmitted event,
     Emitter<DoubleUrlState> emit,
-  ) async {
+  ) {
     event.onSubmit(
-      localUrlTextFieldBloc.state.url.value,
-      remoteUrlTextFieldBloc.state.url.value,
+      localUrlTextFieldBloc?.state.url.value ?? '',
+      remoteUrlTextFieldBloc?.state.url.value ?? '',
     );
   }
 
   void _onUrlError(
     DoubleUrlError event,
     Emitter<DoubleUrlState> emit,
-  ) async {
-    localUrlTextFieldBloc.add(UrlError());
-    remoteUrlTextFieldBloc.add(UrlError());
+   ) {
+    try {
+      localUrlTextFieldBloc?.add(UrlError());
+      remoteUrlTextFieldBloc?.add(UrlError());
+    } catch (_) {}
+  }
+
+  void _onClear(
+    Clear event,
+    Emitter<DoubleUrlState> emit,
+  ) {
+    try {
+      localUrlTextFieldBloc?.add(const UrlChanged(url: ''));
+      remoteUrlTextFieldBloc?.add(const UrlChanged(url: ''));
+    } catch (_) {}
+
+    emit(state.copyWith(status: FormzStatus.invalid));
   }
 
   FormzStatus _isFormValidate() {
-    if (localUrlTextFieldBloc.state.status != UrlTextFieldStatus.invalid &&
-        remoteUrlTextFieldBloc.state.status != UrlTextFieldStatus.invalid &&
-        (localUrlTextFieldBloc.state.status != UrlTextFieldStatus.empity ||
-            remoteUrlTextFieldBloc.state.status != UrlTextFieldStatus.empity)) {
+    if (localUrlTextFieldBloc == null || remoteUrlTextFieldBloc == null) {
+      return FormzStatus.invalid;
+    }
+
+    if (localUrlTextFieldBloc!.state.status != UrlTextFieldStatus.invalid &&
+        remoteUrlTextFieldBloc!.state.status != UrlTextFieldStatus.invalid &&
+        (localUrlTextFieldBloc!.state.status != UrlTextFieldStatus.empity ||
+            remoteUrlTextFieldBloc!.state.status !=
+                UrlTextFieldStatus.empity)) {
       return FormzStatus.valid;
     }
 

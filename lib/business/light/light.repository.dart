@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:homsai/datastore/models/entity/base/base.entity.dart';
 import 'package:homsai/datastore/remote/websocket/home_assistant.broker.dart';
 import 'package:homsai/datastore/remote/websocket/home_assistant_websocket.interface.dart';

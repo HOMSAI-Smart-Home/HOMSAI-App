@@ -53,12 +53,16 @@ class HomeAssistantScanBloc
   void _onScanPressed(
       ScanPressed event, Emitter<HomeAssistantScanState> emit) async {
     emit(state.copyWith(
-      selectedUrl: const Url.pure(),
+      selectedUrl: state.scannedUrls.contains(state.selectedUrl.value)
+          ? state.selectedUrl
+          : const Url.pure(),
       scannedUrls: state.scannedUrls.isEmpty ? [] : state.scannedUrls,
       status: state.status != HomeAssistantScanStatus.scanningSuccess
           ? HomeAssistantScanStatus.scanningInProgress
           : state.status,
     ));
+
+    doubleUrlBloc.add(Clear());
 
     try {
       await _scanSubscription?.cancel();
@@ -80,9 +84,11 @@ class HomeAssistantScanBloc
       if (scannedUrls.contains(hostFound.host)) return;
 
       scannedUrls.add(hostFound.host);
-      emit(state.copyWith(
-          scannedUrls: List.from(scannedUrls),
-          status: HomeAssistantScanStatus.scanningSuccess));
+      emit(
+        state.copyWith(
+            scannedUrls: List.from(scannedUrls),
+            status: HomeAssistantScanStatus.scanningSuccess),
+      );
       GlobalKeys.scannedUrlsAnimatedList.currentState?.insertItem(
           scannedUrls.length - 1,
           duration: const Duration(milliseconds: 250));

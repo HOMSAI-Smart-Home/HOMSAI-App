@@ -2,7 +2,7 @@ part of 'double_url.bloc.dart';
 
 class DoubleUrlState extends Equatable {
   const DoubleUrlState({
-    this.status = FormzStatus.pure,
+    this.status = FormzStatus.invalid,
   });
 
   final FormzStatus status;
