@@ -179,6 +179,7 @@ class _PhotovoltaicNominalPower extends StatelessWidget {
           inputFormatters: [
             _PhotovoltaicNominalPowerFormatter(),
           ],
+          textInputAction: TextInputAction.next,
           decoration: InputDecoration(
             prefixIcon: Padding(
               padding: const EdgeInsets.all(14.0),
@@ -208,7 +209,7 @@ class _PhotovoltaicNominalPowerFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(
       TextEditingValue oldValue, TextEditingValue newValue) {
-    final stringCheck = RegExp(r'^(\d+(,|.){0,1}\d*){0,1}$');
+    final stringCheck = RegExp(r'^(\d+(,|\.){0,1}\d*){0,1}$');
     return stringCheck.hasMatch(newValue.text) ? newValue : oldValue;
   }
 }
