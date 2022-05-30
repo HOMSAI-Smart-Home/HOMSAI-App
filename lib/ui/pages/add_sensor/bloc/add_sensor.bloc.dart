@@ -79,33 +79,31 @@ class AddSensorBloc extends Bloc<AddSensorEvent, AddSensorState> {
             await appDatabase.getEntity<SensorEntity>(plant.batterySensor!);
       }
 
-      emit(
-        state.copyWith(
-            selectedConsumptionSensor:
-                (consumptionSensor is MesurableSensorEntity)
-                    ? consumptionSensor
-                    : null,
-            selectedProductionSensor:
-                (productionSensor is MesurableSensorEntity)
-                    ? productionSensor
-                    : null,
-            selectedBatterySensor:
-                (batterySensor is MesurableSensorEntity) ? batterySensor : null,
-            initialPhotovoltaicNominalPower:
-                plant.photovoltaicNominalPower?.toString(),
-            initialPhotovoltaicInstallationDate:
-                parseMonthYearString(plant.photovoltaicInstallationDate),
-            photovoltaicInstallationDate: plant.photovoltaicInstallationDate),
-      );
+      emit(state.copyWith(
+        selectedConsumptionSensor: (consumptionSensor is MesurableSensorEntity)
+            ? consumptionSensor
+            : null,
+        selectedProductionSensor: (productionSensor is MesurableSensorEntity)
+            ? productionSensor
+            : null,
+        selectedBatterySensor:
+            (batterySensor is MesurableSensorEntity) ? batterySensor : null,
+        initialPhotovoltaicNominalPower:
+            plant.photovoltaicNominalPower?.toString(),
+        initialPhotovoltaicInstallationDate:
+            parseMonthYearString(plant.photovoltaicInstallationDate),
+        photovoltaicInstallationDate: plant.photovoltaicInstallationDate,
+      ));
     }
 
     final sensors = event.entities.getEntities<SensorEntity>();
     final powerSensors = sensors
         .filterSensorByDeviceClass<MesurableSensorEntity>(DeviceClass.power);
     emit(state.copyWith(
-        productionSensors: List<MesurableSensorEntity>.from(powerSensors),
-        consumptionSensors: List<MesurableSensorEntity>.from(powerSensors),
-        batterySensors: List<MesurableSensorEntity>.from(powerSensors)));
+      productionSensors: List<MesurableSensorEntity>.from(powerSensors),
+      consumptionSensors: List<MesurableSensorEntity>.from(powerSensors),
+      batterySensors: List<MesurableSensorEntity>.from(powerSensors),
+    ));
   }
 
   void _onProductionSensorChanged(

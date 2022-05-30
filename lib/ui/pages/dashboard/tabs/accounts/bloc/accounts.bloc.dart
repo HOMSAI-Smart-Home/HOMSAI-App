@@ -66,6 +66,10 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
       consumptionSensor: consumptionSensor?.name,
       productionSensor: productionSensor?.name,
       batterySensor: batterySensor?.name,
+      photovoltaicNominalPower:
+          plant.photovoltaicNominalPower?.toString() ?? '',
+      photovoltaicInstallationDate:
+          '${plant.photovoltaicInstallationDate?.month ?? '-'}/${plant.photovoltaicInstallationDate?.year ?? '-'}',
       plantName: plant.name,
       position: (plant.latitude).toStringAsFixed(5) +
           ', ' +

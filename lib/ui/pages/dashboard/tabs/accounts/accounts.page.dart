@@ -52,11 +52,13 @@ class _AccountsPageState extends State<_AccountsPage> {
         _ProductionSensorButton(),
         _ConsumptionSensorButton(),
         _BatterySensorButton(),
+        _PhotovoltaicNominalPowerButton(),
+        _InstallationDateButton(),
         _NameButton(),
         _PositionButton(),
         _EmailButton(),
         _VersionButton(),
-        _BugReportButton()
+        _BugReportButton(),
       ],
     );
   }
@@ -169,6 +171,53 @@ class _BatterySensorButton extends StatelessWidget {
         return _AccountButton(
           title: HomsaiLocalizations.of(context)!.accountBatterySensor,
           caption: state.batterySensor ?? '-',
+          onTap: (context) => context.router.push(AddSensorRoute(
+            onResult: (_) async {
+              await context.router.pop();
+              context.read<AccountsBloc>().add(SensorUpdate());
+            },
+            wizard: false,
+          )),
+        );
+      },
+    );
+  }
+}
+
+class _PhotovoltaicNominalPowerButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<AccountsBloc, AccountsState>(
+      builder: (context, state) {
+        return _AccountButton(
+          title: HomsaiLocalizations.of(context)!.photovoltaicNominalPowerLabel,
+          caption:
+          state.photovoltaicNominalPower != null
+          ? '${state.photovoltaicNominalPower} '
+              '${HomsaiLocalizations.of(context)!
+                .photovoltaicNominalPowerUnitOfMeasure}'
+          : '-',
+          onTap: (context) => context.router.push(AddSensorRoute(
+            onResult: (_) async {
+              await context.router.pop();
+              context.read<AccountsBloc>().add(SensorUpdate());
+            },
+            wizard: false,
+          )),
+        );
+      },
+    );
+  }
+}
+
+class _InstallationDateButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<AccountsBloc, AccountsState>(
+      builder: (context, state) {
+        return _AccountButton(
+          title: HomsaiLocalizations.of(context)!.photovoltaicInstallationDate,
+          caption: state.photovoltaicInstallationDate ?? '-',
           onTap: (context) => context.router.push(AddSensorRoute(
             onResult: (_) async {
               await context.router.pop();

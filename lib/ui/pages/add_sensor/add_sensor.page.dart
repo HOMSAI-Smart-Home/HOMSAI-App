@@ -187,7 +187,10 @@ class _PhotovoltaicNominalPower extends StatelessWidget {
               ),
             ),
             labelText:
-                HomsaiLocalizations.of(context)!.photovoltaicNominalPowerLabel,
+            '${HomsaiLocalizations.of(context)!.photovoltaicNominalPowerLabel} ('
+              '${HomsaiLocalizations.of(context)!
+                .photovoltaicNominalPowerUnitOfMeasure})'
+                ,
           ),
           onChanged: (value) {
             context.read<AddSensorBloc>().add(

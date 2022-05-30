@@ -7,6 +7,8 @@ class AccountsState extends Equatable {
     this.consumptionSensor,
     this.productionSensor,
     this.batterySensor,
+    this.photovoltaicNominalPower,
+    this.photovoltaicInstallationDate,
     this.plantName,
     this.position,
     this.email,
@@ -18,6 +20,8 @@ class AccountsState extends Equatable {
   final String? consumptionSensor;
   final String? productionSensor;
   final String? batterySensor;
+  final String? photovoltaicNominalPower;
+  final String? photovoltaicInstallationDate;
   final String? plantName;
   final String? position;
   final String? email;
@@ -29,6 +33,8 @@ class AccountsState extends Equatable {
     String? consumptionSensor,
     String? productionSensor,
     String? batterySensor,
+    String? photovoltaicNominalPower,
+    String? photovoltaicInstallationDate,
     String? plantName,
     String? position,
     String? email,
@@ -48,6 +54,10 @@ class AccountsState extends Equatable {
       consumptionSensor: consumptionSensor ?? this.consumptionSensor,
       productionSensor: productionSensor ?? this.productionSensor,
       batterySensor: batterySensor ?? this.batterySensor,
+      photovoltaicNominalPower:
+          photovoltaicNominalPower ?? this.photovoltaicNominalPower,
+      photovoltaicInstallationDate:
+          photovoltaicInstallationDate ?? this.photovoltaicInstallationDate,
       plantName: plantName ?? this.plantName,
       position: position ?? this.position,
       email: email ?? this.email,
@@ -62,6 +72,8 @@ class AccountsState extends Equatable {
         consumptionSensor,
         productionSensor,
         batterySensor,
+        photovoltaicNominalPower,
+        photovoltaicInstallationDate,
         plantName,
         position,
         email,
