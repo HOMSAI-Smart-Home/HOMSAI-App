@@ -52,6 +52,8 @@ class HomeAssistantScanBloc
 
   void _onScanPressed(
       ScanPressed event, Emitter<HomeAssistantScanState> emit) async {
+    if(state.status.isManual) doubleUrlBloc.add(Clear());
+
     emit(state.copyWith(
       selectedUrl: state.scannedUrls.contains(state.selectedUrl.value)
           ? state.selectedUrl
@@ -61,8 +63,6 @@ class HomeAssistantScanBloc
           ? HomeAssistantScanStatus.scanningInProgress
           : state.status,
     ));
-
-    doubleUrlBloc.add(Clear());
 
     try {
       await _scanSubscription?.cancel();
