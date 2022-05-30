@@ -52,7 +52,9 @@ class BatterySensorChanged extends AddSensorEvent {
 }
 
 class OnSubmit extends AddSensorEvent {
-  const OnSubmit(this.onSubmit);
+  const OnSubmit(
+    this.onSubmit
+  );
 
   final void Function() onSubmit;
 

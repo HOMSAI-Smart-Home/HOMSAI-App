@@ -91,7 +91,8 @@ class AddSensorBloc extends Bloc<AddSensorEvent, AddSensorState> {
                     : null,
             selectedBatterySensor:
                 (batterySensor is MesurableSensorEntity) ? batterySensor : null,
-            initialPhotovoltaicNominalPower: plant.photovoltaicNominalPower,
+            initialPhotovoltaicNominalPower:
+                plant.photovoltaicNominalPower?.toString(),
             initialPhotovoltaicInstallationDate:
                 parseMonthYearString(plant.photovoltaicInstallationDate),
             photovoltaicInstallationDate: plant.photovoltaicInstallationDate),
@@ -151,7 +152,9 @@ class AddSensorBloc extends Bloc<AddSensorEvent, AddSensorState> {
       productionSensor: state.selectedProductionSensor?.entityId,
       consumptionSensor: state.selectedConsumptionSensor?.entityId,
       photovoltaicInstallationDate: state.photovoltaicInstallationDate,
-      photovoltaicNominalPower: state.photovoltaicNominalPower,
+      photovoltaicNominalPower: state.photovoltaicNominalPower != null
+          ? double.parse(state.photovoltaicNominalPower!.replaceAll(',', '.'))
+          : null,
       batterySensor: state.selectedBatterySensor?.entityId,
     );
     if (newPlant != null) {

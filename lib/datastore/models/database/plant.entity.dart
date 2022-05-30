@@ -25,7 +25,7 @@ class Plant extends BaseEntity {
   @ColumnInfo(name: 'consumption_sensor_id')
   final String? consumptionSensor;
   @ColumnInfo(name: 'photovoltaic_nominal_power')
-  final String? photovoltaicNominalPower;
+  final double? photovoltaicNominalPower;
   @ColumnInfo(name: 'photovoltaic_installation_date')
   final DateTime? photovoltaicInstallationDate;
   @ColumnInfo(name: 'battery_sensor_id')
@@ -57,7 +57,7 @@ class Plant extends BaseEntity {
     int? configurationId,
     String? productionSensor,
     String? consumptionSensor,
-    String? photovoltaicNominalPower,
+    double? photovoltaicNominalPower,
     DateTime? photovoltaicInstallationDate,
     String? batterySensor,
   }) =>

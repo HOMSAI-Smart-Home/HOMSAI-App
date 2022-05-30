@@ -458,7 +458,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         plant.photovoltaicInstallationDate != null) {
       try {
         final photovoltaicForecast = await _getPhotovoltaicForecast(
-          double.parse(plant.photovoltaicNominalPower!),
+          plant.photovoltaicNominalPower!,
           plant.photovoltaicInstallationDate!.difference(DateTime.now()).inDays,
           plant.latitude,
           plant.longitude,

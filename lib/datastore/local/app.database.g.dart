@@ -90,7 +90,7 @@ class _$AppDatabase extends AppDatabase {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `User` (`id` TEXT NOT NULL, `email` TEXT NOT NULL, `plant_id` INTEGER, FOREIGN KEY (`plant_id`) REFERENCES `Plant` (`id`) ON UPDATE NO ACTION ON DELETE NO ACTION, PRIMARY KEY (`id`))');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `Plant` (`local_url` TEXT, `remote_url` TEXT, `name` TEXT NOT NULL, `latitude` REAL NOT NULL, `longitude` REAL NOT NULL, `configuration_id` INTEGER NOT NULL, `production_sensor_id` TEXT, `consumption_sensor_id` TEXT, `photovoltaic_nominal_power` TEXT, `photovoltaic_installation_date` TEXT, `battery_sensor_id` TEXT, `id` INTEGER PRIMARY KEY AUTOINCREMENT, FOREIGN KEY (`configuration_id`) REFERENCES `Configuration` (`id`) ON UPDATE NO ACTION ON DELETE NO ACTION)');
+            'CREATE TABLE IF NOT EXISTS `Plant` (`local_url` TEXT, `remote_url` TEXT, `name` TEXT NOT NULL, `latitude` REAL NOT NULL, `longitude` REAL NOT NULL, `configuration_id` INTEGER NOT NULL, `production_sensor_id` TEXT, `consumption_sensor_id` TEXT, `photovoltaic_nominal_power` REAL, `photovoltaic_installation_date` TEXT, `battery_sensor_id` TEXT, `id` INTEGER PRIMARY KEY AUTOINCREMENT, FOREIGN KEY (`configuration_id`) REFERENCES `Configuration` (`id`) ON UPDATE NO ACTION ON DELETE NO ACTION)');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `Configuration` (`latitude` REAL NOT NULL, `longitude` REAL NOT NULL, `elevation` REAL NOT NULL, `locationName` TEXT NOT NULL, `version` TEXT NOT NULL, `state` TEXT NOT NULL, `currency` TEXT NOT NULL, `source` TEXT NOT NULL, `dir` TEXT NOT NULL, `timezone` TEXT NOT NULL, `isSafeMode` INTEGER NOT NULL, `externalUrl` TEXT, `internalUrl` TEXT, `whitelistExternalDirs` TEXT NOT NULL, `allowExternalDirs` TEXT NOT NULL, `allowExternalUrls` TEXT NOT NULL, `components` TEXT NOT NULL, `unitSystem` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT)');
         await database.execute(
@@ -315,7 +315,7 @@ class _$PlantDao extends PlantDao {
             productionSensor: row['production_sensor_id'] as String?,
             consumptionSensor: row['consumption_sensor_id'] as String?,
             photovoltaicNominalPower:
-                row['photovoltaic_nominal_power'] as String?,
+                row['photovoltaic_nominal_power'] as double?,
             photovoltaicInstallationDate: _dateTimeConverter
                 .decode(row['photovoltaic_installation_date'] as String),
             batterySensor: row['battery_sensor_id'] as String?));
@@ -335,7 +335,7 @@ class _$PlantDao extends PlantDao {
             productionSensor: row['production_sensor_id'] as String?,
             consumptionSensor: row['consumption_sensor_id'] as String?,
             photovoltaicNominalPower:
-                row['photovoltaic_nominal_power'] as String?,
+                row['photovoltaic_nominal_power'] as double?,
             photovoltaicInstallationDate: _dateTimeConverter
                 .decode(row['photovoltaic_installation_date'] as String),
             batterySensor: row['battery_sensor_id'] as String?),
