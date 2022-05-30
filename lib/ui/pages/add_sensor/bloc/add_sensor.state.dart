@@ -48,8 +48,11 @@ class AddSensorState extends Equatable {
           photovoltaicNominalPower ?? this.photovoltaicNominalPower,
       initialPhotovoltaicNominalPower: initialPhotovoltaicNominalPower ??
           this.initialPhotovoltaicNominalPower,
-      photovoltaicInstallationDate: photovoltaicInstallationDate,
-      initialPhotovoltaicInstallationDate: initialPhotovoltaicInstallationDate,
+      photovoltaicInstallationDate:
+          photovoltaicInstallationDate ?? this.photovoltaicInstallationDate,
+      initialPhotovoltaicInstallationDate:
+          initialPhotovoltaicInstallationDate ??
+              this.initialPhotovoltaicInstallationDate,
       batterySensors: batterySensors ?? this.batterySensors,
       selectedBatterySensor:
           selectedBatterySensor ?? this.selectedBatterySensor,
