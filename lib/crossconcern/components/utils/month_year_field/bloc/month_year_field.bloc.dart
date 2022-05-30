@@ -39,9 +39,13 @@ DateTime? parseMonthYearDate(String dateString) {
 }
 
 String? parseMonthYearString(DateTime? date) {
-  return date == null
-      ? null
-      : "${date.month.toString()}/${date.year.toString()}";
+  if (date == null) {
+    return null;
+  }
+  final year = date.year.toString();
+  final month =
+      date.month >= 10 ? date.month.toString() : "0${date.month.toString()}";
+  return "$month/$year";
 }
 
 bool checkMonthYearDate(String dateString, DateTime dateParsed) {

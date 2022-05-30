@@ -129,13 +129,16 @@ class AddSensorBloc extends Bloc<AddSensorEvent, AddSensorState> {
 
   void _onPhotovoltaicInstallatioDateChanged(
       PhotovoltaicInstallatioDateChanged event, Emitter<AddSensorState> emit) {
-    final date = parseMonthYearDate(event.date);
+    final parsedDate = parseMonthYearDate(event.date);
+    final date =
+        parsedDate != null && checkMonthYearDate(event.date, parsedDate)
+            ? parsedDate
+            : null;
     emit(
       state.copyWith(
-          photovoltaicInstallationDate:
-              date != null && checkMonthYearDate(event.date, date)
-                  ? date
-                  : null),
+        photovoltaicInstallationDate: date,
+        initialPhotovoltaicInstallationDate: parseMonthYearString(date),
+      ),
     );
   }
 
