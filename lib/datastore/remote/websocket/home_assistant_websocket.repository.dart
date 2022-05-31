@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:homsai/business/home_assistant/home_assistant.interface.dart';
 import 'package:homsai/crossconcern/helpers/blocs/websocket/websocket.bloc.dart';
@@ -256,11 +257,12 @@ class HomeAssistantWebSocketRepository
             case HomeAssistantWebSocketStatus.connected:
               try {
                 _responseHandler(data);
-              } catch (e) {
+              } catch (exception, stacktrace) {
                 if (kDebugMode) {
                   print(data);
-                  print(e);
+                  print(exception);
                 }
+                FirebaseCrashlytics.instance.recordError(exception, stacktrace);
               }
               break;
             default:

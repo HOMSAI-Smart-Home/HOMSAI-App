@@ -70,21 +70,17 @@ class DoubleUrlBloc extends Bloc<DoubleUrlEvent, DoubleUrlState> {
   void _onUrlError(
     DoubleUrlError event,
     Emitter<DoubleUrlState> emit,
-   ) {
-    try {
-      localUrlTextFieldBloc?.add(UrlError());
-      remoteUrlTextFieldBloc?.add(UrlError());
-    } catch (_) {}
+  ) {
+    localUrlTextFieldBloc?.add(UrlError());
+    remoteUrlTextFieldBloc?.add(UrlError());
   }
 
   void _onClear(
     Clear event,
     Emitter<DoubleUrlState> emit,
   ) {
-    try {
-      localUrlTextFieldBloc?.add(const UrlChanged(url: ''));
-      remoteUrlTextFieldBloc?.add(const UrlChanged(url: ''));
-    } catch (_) {}
+    localUrlTextFieldBloc?.add(const UrlChanged(url: ''));
+    remoteUrlTextFieldBloc?.add(const UrlChanged(url: ''));
 
     emit(state.copyWith(status: FormzStatus.invalid));
   }

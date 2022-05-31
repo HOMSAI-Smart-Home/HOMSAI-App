@@ -82,33 +82,34 @@ Future<void> setup() async {
 }
 
 Future<void> main() async {
-  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  runZonedGuarded<Future<void>>(() async {
+    WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+    FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
-  await dotenv.load();
+    await dotenv.load();
 
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
 
-  // Pass all uncaught errors from the framework to Crashlytics.
-  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+    FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
 
-  // Initialize singletons
-  await setup();
+    // Initialize singletons
+    await setup();
 
-  getAppVersion();
+    getAppVersion();
 
-  Timer(const Duration(seconds: 3), () {
-    FlutterNativeSplash.remove();
-  });
+    Timer(const Duration(seconds: 3), () {
+      FlutterNativeSplash.remove();
+    });
 
-  await SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+    await SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
-  tz.initializeTimeZones();
+    tz.initializeTimeZones();
 
-  runApp(const App());
+    runApp(const App());
+  }, (error, stack) => FirebaseCrashlytics.instance.recordError(error, stack));
 }
 
 void getAppVersion() async {
