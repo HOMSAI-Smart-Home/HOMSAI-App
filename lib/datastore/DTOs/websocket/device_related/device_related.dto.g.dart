@@ -9,11 +9,11 @@ part of 'device_related.dto.dart';
 DeviceRelatedDto _$DeviceRelatedDtoFromJson(Map<String, dynamic> json) =>
     DeviceRelatedDto(
       area: (json['area'] as List<dynamic>?)?.map((e) => e as String).toList(),
-      configEntry: (json['config_entry'] as List<dynamic>)
-          .map((e) => e as String)
+      configEntry: (json['config_entry'] as List<dynamic>?)
+          ?.map((e) => e as String)
           .toList(),
       entity:
-          (json['entity'] as List<dynamic>).map((e) => e as String).toList(),
+          (json['entity'] as List<dynamic>?)?.map((e) => e as String).toList(),
     );
 
 Map<String, dynamic> _$DeviceRelatedDtoToJson(DeviceRelatedDto instance) =>

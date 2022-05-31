@@ -73,20 +73,23 @@ class WebSocketBloc extends Bloc<WebSocketEvent, WebSocketState> {
               (entity) => entities.putIfAbsent(entity.entityId, () => entity));
 
           webSocketRepository.getDeviceList(WebSocketSubscriber((data) {
-            int devicesDone = 1;
             final devicesDto = (data as List<dynamic>).getDevicesDto();
+
+            List<String> ids = devicesDto.map((d) => d.id).toList();
 
             for (var deviceDto in devicesDto) {
               webSocketRepository.getDeviceRelated(WebSocketSubscriber((data) {
                 final deviceRelatedDto = DeviceRelatedDto.fromJson(data);
-
-                for (var entityId in deviceRelatedDto.entity) {
-                  entities[entityId]?.area = areas[deviceDto.area];
+                if (deviceRelatedDto.entity != null) {
+                  for (var entityId in deviceRelatedDto.entity!) {
+                    entities[entityId]?.area = areas[deviceDto.area];
+                  }
                 }
 
-                devicesDone == devicesDto.length
-                ? event.onEntitiesFetched(entities.values.toList())
-                : devicesDone++;
+                ids.remove(deviceDto.id);
+                if (ids.isEmpty) {
+                  event.onEntitiesFetched(entities.values.toList());
+                }
               }), DeviceRelatedBodyDto(deviceDto.id));
             }
           }));

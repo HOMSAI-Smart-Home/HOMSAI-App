@@ -13,14 +13,14 @@ DeviceDto _$DeviceDtoFromJson(Map<String, dynamic> json) => DeviceDto(
       configEntries: (json['config_entries'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
-      connections: json['connections'] as List<dynamic>,
+      connections: json['connections'] as List<dynamic>?,
       disabledBy: json['disabled_by'],
       entryType: json['entry_type'] as String?,
-      identifiers: json['identifiers'] as List<dynamic>,
-      manufacturer: json['manufacturer'] as String,
+      identifiers: json['identifiers'] as List<dynamic>?,
+      manufacturer: json['manufacturer'] as String?,
       model: json['model'] as String?,
       nameByUser: json['name_by_user'] as String?,
-      name: json['name'] as String,
+      name: json['name'] as String?,
       swVersion: json['sw_version'],
       hwVersion: json['hw_version'],
       viaDeviceId: json['via_device_id'],

@@ -11,17 +11,17 @@ class DeviceDto {
   String? configurationUrl;
   @JsonKey(name: 'config_entries')
   List<String>? configEntries;
-  List connections;
+  List? connections;
   @JsonKey(name: 'disabled_by')
   dynamic disabledBy;
   @JsonKey(name: 'entry_type')
   String? entryType;
-  List identifiers;
-  String manufacturer;
+  List? identifiers;
+  String? manufacturer;
   String? model;
   @JsonKey(name: 'name_by_user')
   String? nameByUser;
-  String name;
+  String? name;
   @JsonKey(name: 'sw_version')
   dynamic swVersion;
   @JsonKey(name: 'hw_version')
@@ -31,17 +31,17 @@ class DeviceDto {
 
   DeviceDto({
     required this.id,
-    required this.area,
+    this.area,
     this.configurationUrl,
     this.configEntries,
-    required this.connections,
+    this.connections,
     this.disabledBy,
     this.entryType,
-    required this.identifiers,
-    required this.manufacturer,
-    required this.model,
+    this.identifiers,
+    this.manufacturer,
+    this.model,
     this.nameByUser,
-    required this.name,
+    this.name,
     this.swVersion,
     this.hwVersion,
     this.viaDeviceId,
