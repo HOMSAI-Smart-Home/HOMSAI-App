@@ -55,7 +55,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final AppPreferencesInterface appPreferencesInterface =
       getIt.get<AppPreferencesInterface>();
 
-  final AppDatabase appDatabase = getIt.get<AppDatabase>();
+  final HomsaiDatabase appDatabase = getIt.get<HomsaiDatabase>();
 
   bool _active = true;
   final WebSocketBloc _webSocketBloc;

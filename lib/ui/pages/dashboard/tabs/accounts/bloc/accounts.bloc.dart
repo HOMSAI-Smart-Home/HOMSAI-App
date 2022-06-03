@@ -12,7 +12,7 @@ part 'accounts.state.dart';
 
 class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
   AccountsState? initialState;
-  final AppDatabase appDatabase = getIt.get<AppDatabase>();
+  final HomsaiDatabase appDatabase = getIt.get<HomsaiDatabase>();
   final AppPreferencesInterface appPreferences =
       getIt.get<AppPreferencesInterface>();
   final HomeAssistantWebSocketInterface websocket =
@@ -83,7 +83,8 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
     add(Autocomplete());
   }
 
-  Future<void> _onWebsocketUpdate(WebsocketUpdate event, Emitter<AccountsState> emit) async {
+  Future<void> _onWebsocketUpdate(
+      WebsocketUpdate event, Emitter<AccountsState> emit) async {
     if (initialState == null) return;
     await _onAutocomplete(Autocomplete(), emit);
 
@@ -93,7 +94,8 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
     }
   }
 
-  Future<void> _onSensorUpdate(SensorUpdate event, Emitter<AccountsState> emit) async {
+  Future<void> _onSensorUpdate(
+      SensorUpdate event, Emitter<AccountsState> emit) async {
     if (initialState == null) return;
     await _onAutocomplete(Autocomplete(), emit);
     if (initialState!.consumptionSensor != state.consumptionSensor ||

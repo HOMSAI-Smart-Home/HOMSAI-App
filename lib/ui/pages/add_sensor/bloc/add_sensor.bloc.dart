@@ -15,7 +15,7 @@ part 'add_sensor.event.dart';
 part 'add_sensor.state.dart';
 
 class AddSensorBloc extends Bloc<AddSensorEvent, AddSensorState> {
-  final AppDatabase appDatabase = getIt.get<AppDatabase>();
+  final HomsaiDatabase appDatabase = getIt.get<HomsaiDatabase>();
   final HomeAssistantWebSocketInterface webSocketRepository =
       getIt.get<HomeAssistantWebSocketInterface>();
   final WebSocketBloc webSocketBloc;

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:f_logs/f_logs.dart';
 import 'package:get_it/get_it.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.dart';
 import 'package:homsai/datastore/remote/rest/remote.Interface.dart';
@@ -20,6 +21,13 @@ class RemoteRepository implements RemoteInterface {
     dynamic body;
     dynamic bodyList;
 
+    FLog.info(
+      className: "RemoteRepository",
+      methodName: "_parseResponse_response",
+      text: response.body,
+      dataLogType: DataLogType.NETWORK.toString(),
+    );
+
     try {
       body = json.decode(response.body);
     } on FormatException {
@@ -31,6 +39,12 @@ class RemoteRepository implements RemoteInterface {
       body = {'data': bodyList};
     }
 
+    FLog.info(
+      className: "RemoteRepository",
+      methodName: "_parseResponse_parsed_response",
+      text: body.toString(),
+      dataLogType: DataLogType.NETWORK.toString(),
+    );
     return body;
   }
 
@@ -64,13 +78,23 @@ class RemoteRepository implements RemoteInterface {
     final Response response = await _fallback<Response>(
       url,
       fallbackUrl: fallbackUrl,
-      function: (url) => client
-          .get(
-            url,
-            headers: headers,
-          )
-          .timeout(timeout),
+      function: (url) {
+        FLog.info(
+          className: "RemoteRepository",
+          methodName: "_get",
+          text: url.toString(),
+          dataLogType: DataLogType.NETWORK.toString(),
+        );
+
+        return client
+            .get(
+              url,
+              headers: headers,
+            )
+            .timeout(timeout);
+      },
     );
+
     return parseResponse(response);
   }
 
@@ -86,17 +110,31 @@ class RemoteRepository implements RemoteInterface {
     final Response response = await _fallback<Response>(
       url,
       fallbackUrl: fallbackUrl,
-      function: (url) => client
-          .post(
-            url,
-            headers: headers,
-            body:
-                (headers?[HttpHeaders.contentTypeHeader] == 'application/json')
-                    ? jsonEncode(body)
-                    : body,
-            encoding: encoding,
-          )
-          .timeout(timeout),
+      function: (url) {
+        FLog.info(
+          className: "RemoteRepository",
+          methodName: "_post_url",
+          text: url.toString(),
+          dataLogType: DataLogType.NETWORK.toString(),
+        );
+        FLog.info(
+          className: "RemoteRepository",
+          methodName: "_post_body",
+          text: body.toString(),
+          dataLogType: DataLogType.NETWORK.toString(),
+        );
+        return client
+            .post(
+              url,
+              headers: headers,
+              body: (headers?[HttpHeaders.contentTypeHeader] ==
+                      'application/json')
+                  ? jsonEncode(body)
+                  : body,
+              encoding: encoding,
+            )
+            .timeout(timeout);
+      },
     );
     return parseResponse(response);
   }
@@ -113,16 +151,31 @@ class RemoteRepository implements RemoteInterface {
     final Response response = await _fallback<Response>(
       url,
       fallbackUrl: fallbackUrl,
-      function: (url) => client
-          .put(
-            url,
-            headers: headers,
-            body:
-                (headers?[HttpHeaders.contentTypeHeader] == 'application/json')
-                    ? jsonEncode(body)
-                    : body,
-          )
-          .timeout(timeout),
+      function: (url) {
+        FLog.info(
+          className: "RemoteRepository",
+          methodName: "_put_url",
+          text: url.toString(),
+          dataLogType: DataLogType.NETWORK.toString(),
+        );
+        FLog.info(
+          className: "RemoteRepository",
+          methodName: "_put_body",
+          text: body.toString(),
+          dataLogType: DataLogType.NETWORK.toString(),
+        );
+
+        return client
+            .put(
+              url,
+              headers: headers,
+              body: (headers?[HttpHeaders.contentTypeHeader] ==
+                      'application/json')
+                  ? jsonEncode(body)
+                  : body,
+            )
+            .timeout(timeout);
+      },
     );
     return parseResponse(response);
   }
@@ -139,12 +192,21 @@ class RemoteRepository implements RemoteInterface {
     final Response response = await _fallback<Response>(
       url,
       fallbackUrl: fallbackUrl,
-      function: (url) => client
-          .delete(
-            url,
-            headers: headers,
-          )
-          .timeout(timeout),
+      function: (url) {
+        FLog.info(
+          className: "RemoteRepository",
+          methodName: "_delete",
+          text: url.toString(),
+          dataLogType: DataLogType.NETWORK.toString(),
+        );
+
+        return client
+            .delete(
+              url,
+              headers: headers,
+            )
+            .timeout(timeout);
+      },
     );
     return parseResponse(response);
   }

@@ -14,7 +14,7 @@ part 'url_update.state.dart';
 class UrlUpdateBloc extends Bloc<UrlUpdateEvent, UrlUpdateState> {
   final HomeAssistantInterface homeAssistantRepository =
       getIt.get<HomeAssistantInterface>();
-  final AppDatabase appDatabase = getIt.get<AppDatabase>();
+  final HomsaiDatabase appDatabase = getIt.get<HomsaiDatabase>();
 
   DoubleUrlBloc doubleUrlBloc;
   Plant? plant;

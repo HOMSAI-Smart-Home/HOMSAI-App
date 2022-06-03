@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:f_logs/f_logs.dart';
+import 'package:f_logs/model/flog/flog_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -53,9 +55,10 @@ Future<void> setup() async {
   await appPreferences.initialize();
   getIt.registerLazySingleton<AppPreferencesInterface>(() => appPreferences);
   // Local interfaces
-  final database =
-      await $FloorAppDatabase.databaseBuilder(DatabaseProperties.name).build();
-  getIt.registerLazySingleton<AppDatabase>(() => database);
+  final database = await $FloorHomsaiDatabase
+      .databaseBuilder(DatabaseProperties.name)
+      .build();
+  getIt.registerLazySingleton<HomsaiDatabase>(() => database);
   getIt.registerLazySingleton<UserLocalInterface>(() => UserLocalRepository());
   getIt.registerLazySingleton<NetworkManagerInterface>(() => NetworkManager());
 
@@ -108,6 +111,12 @@ Future<void> main() async {
 
     tz.initializeTimeZones();
 
+    LogsConfig config = FLog.getDefaultConfigurations()
+      ..isDevelopmentDebuggingEnabled = true
+      ..timestampFormat = TimestampFormat.TIME_FORMAT_FULL_2;
+
+    FLog.applyConfigurations(config);
+
     runApp(const App());
   }, (error, stack) => FirebaseCrashlytics.instance.recordError(error, stack));
 }
@@ -131,7 +140,7 @@ class _AppState extends State<App> with WidgetsBindingObserver {
       getIt.get<HomeAssistantWebSocketInterface>();
   final AppPreferencesInterface _appPreferencesInterface =
       getIt.get<AppPreferencesInterface>();
-  final AppDatabase _appDatabase = getIt.get<AppDatabase>();
+  final HomsaiDatabase _appDatabase = getIt.get<HomsaiDatabase>();
 
   final _appRouter = AppRouter(authGuard: AuthGuard());
 

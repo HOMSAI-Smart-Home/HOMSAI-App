@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:f_logs/f_logs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
@@ -246,7 +247,10 @@ class _BugReportButton extends StatelessWidget {
         return _AccountButton(
           title: HomsaiLocalizations.of(context)!.accountBugReportTitle,
           caption: HomsaiLocalizations.of(context)!.accountBugReportCaption,
-          onTap: (context) => openUrl(context, bugReportUrl),
+          onTap: (context) async {
+            openUrl(context, bugReportUrl);
+            await FLog.exportLogs();
+          },
         );
       },
     );

@@ -25,14 +25,12 @@ class Entity {
     this.attributes,
     this.lastChanged,
     this.lastUpdated,
-    this.context,
-    {
-      this.area,
-    }
-  );
+    this.context, {
+    this.area,
+  });
 
   String get id => context.id;
-  String get name => attributes.friendlyName;
+  String get name => attributes.friendlyName ?? id;
 
   factory Entity.fromJson(Map<String, dynamic> json) => _$EntityFromJson(json);
 

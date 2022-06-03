@@ -20,7 +20,7 @@ class IntroBetaBloc extends Bloc<IntroBetaEvent, IntroBetaState> {
       getIt.get<AppPreferencesInterface>();
   final AIServiceInterface aiServiceInterface = getIt.get<AIServiceInterface>();
 
-  final AppDatabase appDatabase = getIt.get<AppDatabase>();
+  final HomsaiDatabase appDatabase = getIt.get<HomsaiDatabase>();
 
   IntroBetaBloc() : super(const IntroBetaState()) {
     on<EmailChanged>(_onEmailChanged);

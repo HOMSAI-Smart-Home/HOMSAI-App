@@ -22,7 +22,7 @@ class WebSocketBloc extends Bloc<WebSocketEvent, WebSocketState> {
   final AppPreferencesInterface appPreferencesInterface =
       getIt.get<AppPreferencesInterface>();
 
-  final AppDatabase appDatabase = getIt.get<AppDatabase>();
+  final HomsaiDatabase appDatabase = getIt.get<HomsaiDatabase>();
 
   WebSocketBloc() : super(const WebSocketState()) {
     on<ConnectWebSocket>(_onWebsocketConnect);

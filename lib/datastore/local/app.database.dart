@@ -27,7 +27,7 @@ part 'app.database.g.dart';
 @Database(
     version: DatabaseProperties.version,
     entities: [User, Plant, Configuration, HomeAssistantEntity])
-abstract class AppDatabase extends FloorDatabase {
+abstract class HomsaiDatabase extends FloorDatabase {
   final AppPreferencesInterface _appPreferences =
       getIt.get<AppPreferencesInterface>();
 

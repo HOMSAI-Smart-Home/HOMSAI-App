@@ -5,7 +5,7 @@ part 'attributes.entity.g.dart';
 @JsonSerializable()
 class Attributes {
   @JsonKey(name: 'friendly_name')
-  String friendlyName;
+  String? friendlyName;
 
   Attributes(this.friendlyName);
 

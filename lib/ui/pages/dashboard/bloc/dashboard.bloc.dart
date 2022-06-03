@@ -10,7 +10,7 @@ part 'dashboard.event.dart';
 part 'dashboard.state.dart';
 
 class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
-  final AppDatabase _appDatabase = getIt.get<AppDatabase>();
+  final HomsaiDatabase _appDatabase = getIt.get<HomsaiDatabase>();
   final HomeAssistantInterface _homeAssistantInterface =
       getIt.get<HomeAssistantInterface>();
   final HomeAssistantWebSocketInterface _homeAssistantWebSocketInterface =

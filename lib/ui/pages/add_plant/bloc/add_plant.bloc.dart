@@ -22,12 +22,16 @@ class AddPlantBloc extends Bloc<AddPlantEvent, AddPlantState> {
   final AppPreferencesInterface appPreferencesInterface =
       getIt.get<AppPreferencesInterface>();
 
-  final AppDatabase appDatabase = getIt.get<AppDatabase>();
+  final HomsaiDatabase appDatabase = getIt.get<HomsaiDatabase>();
   final WebSocketBloc webSocketBloc;
   final bool wizard;
 
-  AddPlantBloc(this.webSocketBloc, String? baseUrl, String? fallback, this.wizard,)
-      : super(const AddPlantState()) {
+  AddPlantBloc(
+    this.webSocketBloc,
+    String? baseUrl,
+    String? fallback,
+    this.wizard,
+  ) : super(const AddPlantState()) {
     on<ConfigurationFetched>(_onConfigurationFetched);
     on<FetchLocalConfig>(_onFetchLocalConfig);
     on<PlantNameChanged>(_onPlantNameChanged);

@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:f_logs/f_logs.dart';
+import 'package:f_logs/model/flog/flog.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:homsai/business/home_assistant/home_assistant.interface.dart';
@@ -77,7 +79,7 @@ class HomeAssistantWebSocketRepository
       getIt.get<AppPreferencesInterface>();
   final HomeAssistantInterface homeAssistantRepository =
       getIt.get<HomeAssistantInterface>();
-  final AppDatabase appDatabase = getIt.get<AppDatabase>();
+  final HomsaiDatabase appDatabase = getIt.get<HomsaiDatabase>();
 
   WebSocketChannel? webSocket;
   HomeAssistantAuth? homeAssistantAuth;
@@ -243,9 +245,12 @@ class HomeAssistantWebSocketRepository
 
       webSocket?.stream.listen(
         (data) {
-          if (kDebugMode) {
-            print(data);
-          }
+          FLog.error(
+            className: "HomeAssistantWebSocketRepository",
+            methodName: "_websocket_raw_data",
+            text: data.toString(),
+            dataLogType: DataLogType.NETWORK.toString(),
+          );
 
           data = jsonDecode(data);
 
@@ -258,10 +263,13 @@ class HomeAssistantWebSocketRepository
               try {
                 _responseHandler(data);
               } catch (exception, stacktrace) {
-                if (kDebugMode) {
-                  print(data);
-                  print(exception);
-                }
+                FLog.error(
+                  className: "HomeAssistantWebSocketRepository",
+                  methodName: "_websocket_error",
+                  text: data.toString(),
+                  dataLogType: DataLogType.NETWORK.toString(),
+                  exception: exception,
+                );
                 FirebaseCrashlytics.instance.recordError(exception, stacktrace);
               }
               break;
@@ -316,9 +324,12 @@ class HomeAssistantWebSocketRepository
     bool force = false,
   }) {
     if (status != HomeAssistantWebSocketStatus.connected && !force) return;
-    if (kDebugMode) {
-      print(_message);
-    }
+    FLog.error(
+      className: "HomeAssistantWebSocketRepository",
+      methodName: "_websocket_send",
+      text: _message.toString(),
+      dataLogType: DataLogType.NETWORK.toString(),
+    );
     if (!flush) return webSocket?.sink.add(_message.removeAt(0));
 
     while (_message.isNotEmpty) {

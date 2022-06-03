@@ -52,7 +52,7 @@ class HomeAssistantScanBloc
 
   void _onScanPressed(
       ScanPressed event, Emitter<HomeAssistantScanState> emit) async {
-    if(state.status.isManual) doubleUrlBloc.add(Clear());
+    if (state.status.isManual) doubleUrlBloc.add(Clear());
 
     emit(state.copyWith(
       selectedUrl: state.scannedUrls.contains(state.selectedUrl.value)

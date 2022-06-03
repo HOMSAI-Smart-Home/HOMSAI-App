@@ -297,7 +297,6 @@ class HomeAssistantRepository implements HomeAssistantInterface {
           queryParameters: logbookBodyDto?.toJson(),
         );
 
-    // print(LogbookBodyDto.fromJson(logbookBodyDto?.toJson() ?? Map()).toJson());
     final fallback = plant.getFallbackUrl()?.replace(
           path: HomeAssistantApiProprties.logbookPath +
               '/' +

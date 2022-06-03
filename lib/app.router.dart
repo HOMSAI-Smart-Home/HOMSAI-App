@@ -80,7 +80,7 @@ class AppRouter extends _$AppRouter {
 }
 
 class AuthGuard extends AutoRouteGuard {
-  final AppDatabase _appDatabase = getIt.get<AppDatabase>();
+  final HomsaiDatabase _appDatabase = getIt.get<HomsaiDatabase>();
   final AppPreferencesInterface _appPreferences =
       getIt.get<AppPreferencesInterface>();
 
@@ -118,12 +118,14 @@ class AuthGuard extends AutoRouteGuard {
             getIt.get<HomeAssistantWebSocketInterface>();
         final AppPreferencesInterface appPreferencesInterface =
             getIt.get<AppPreferencesInterface>();
-        final AppDatabase appDatabase = getIt.get<AppDatabase>();
+        final HomsaiDatabase appDatabase = getIt.get<HomsaiDatabase>();
         final plant = await appDatabase.getPlant();
 
         HomeAssistantAuth? auth =
             appPreferencesInterface.getHomeAssistantToken();
-        if (!webSocketRepository.isConnected() && !webSocketRepository.isConnecting() && auth != null) {
+        if (!webSocketRepository.isConnected() &&
+            !webSocketRepository.isConnecting() &&
+            auth != null) {
           await webSocketRepository.connect(
             onConnected: () => webSocketRepository.fetchingConfig(
               WebSocketSubscriber(

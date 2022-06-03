@@ -13,7 +13,7 @@ class LightDeviceBloc extends Bloc<LightDeviceEvent, LightDeviceState> {
   final LightRepositoryInterface lightRepository =
       getIt.get<LightRepositoryInterface>();
 
-  final AppDatabase appDatabase = getIt.get<AppDatabase>();
+  final HomsaiDatabase appDatabase = getIt.get<HomsaiDatabase>();
 
   LightDeviceBloc(LightEntity light) : super(LightDeviceState(light: light)) {
     on<LightOn>(_onLightOn);

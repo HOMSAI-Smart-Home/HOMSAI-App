@@ -7,7 +7,7 @@ part of 'attributes.entity.dart';
 // **************************************************************************
 
 Attributes _$AttributesFromJson(Map<String, dynamic> json) => Attributes(
-      json['friendly_name'] as String,
+      json['friendly_name'] as String?,
     );
 
 Map<String, dynamic> _$AttributesToJson(Attributes instance) =>
