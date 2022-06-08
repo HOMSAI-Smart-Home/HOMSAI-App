@@ -28,6 +28,12 @@ abstract class HomeAssistantWebSocketInterface {
   bool isConnected();
   bool isConnecting();
 
+  setErrorFunction({
+    required onTokenException,
+    required onUrlException,
+    required onGenericException,
+  });
+
   Future<void> connect({
     Uri? baseUrl,
     Uri? fallback,

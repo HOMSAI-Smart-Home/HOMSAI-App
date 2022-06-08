@@ -35,3 +35,12 @@ class FetchEntities extends WebSocketEvent {
   @override
   List<Object> get props => [onEntitiesFetched];
 }
+
+class WebSocketLogOut extends WebSocketEvent {
+  const WebSocketLogOut({this.onLogOut});
+
+  final void Function()? onLogOut;
+
+  @override
+  List<Object> get props => [];
+}

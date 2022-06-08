@@ -1,9 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:homsai/business/home_assistant/home_assistant.interface.dart';
+import 'package:homsai/crossconcern/exceptions/token.exception.dart';
+import 'package:homsai/crossconcern/helpers/blocs/websocket/websocket.bloc.dart';
 import 'package:homsai/datastore/local/app.database.dart';
-import 'package:homsai/datastore/models/database/plant.entity.dart';
-import 'package:homsai/datastore/remote/websocket/home_assistant_websocket.interface.dart';
 import 'package:homsai/main.dart';
 
 part 'dashboard.event.dart';
@@ -13,13 +13,23 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   final HomsaiDatabase _appDatabase = getIt.get<HomsaiDatabase>();
   final HomeAssistantInterface _homeAssistantInterface =
       getIt.get<HomeAssistantInterface>();
-  final HomeAssistantWebSocketInterface _homeAssistantWebSocketInterface =
-      getIt.get<HomeAssistantWebSocketInterface>();
 
-  DashboardBloc() : super(const DashboardState()) {
+  final WebSocketBloc _webSocketBloc;
+  Function()? onLogOut;
+
+  DashboardBloc(this._webSocketBloc, {this.onLogOut})
+      : super(const DashboardState()) {
     on<RetrievePlantName>(_onRetrievePlantName);
     on<Logout>(_onLogout);
     add(RetrievePlantName());
+
+    _webSocketBloc.subscribeToExeption(
+      TokenException,
+      () => add(Logout(
+        () {},
+        deleteUser: false,
+      )),
+    );
   }
 
   @override
@@ -34,12 +44,21 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   }
 
   void _onLogout(Logout event, Emitter<DashboardState> emit) async {
-    await _homeAssistantWebSocketInterface.logout();
+    _webSocketBloc.add(WebSocketLogOut(
+      onLogOut: () async {
+        //TODO:fix when websocket factory
+        final plant = await _appDatabase.getPlant();
+        _homeAssistantInterface.revokeToken(plant: plant!);
+        _appDatabase.logout(deleteUser: event.deleteUser);
+        event.onLogout();
+        if (onLogOut != null) onLogOut!();
+      },
+    ));
+  }
 
-    //TODO:fix when websocket factory
-    Plant plant = (await _appDatabase.getPlant())!;
-    await _homeAssistantInterface.revokeToken(plant: plant);
-    await _appDatabase.logout();
-    event.onLogout();
+  @override
+  Future<void> close() {
+    _webSocketBloc.add(const WebSocketLogOut());
+    return super.close();
   }
 }

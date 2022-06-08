@@ -8,7 +8,7 @@ import 'package:get_it/get_it.dart';
 import 'package:homsai/business/home_assistant/home_assistant.interface.dart';
 import 'package:homsai/business/home_assistant_scanner/home_assistant_scanner.interface.dart';
 import 'package:homsai/crossconcern/exceptions/scanning_not_found.exception.dart';
-import 'package:homsai/crossconcern/exceptions/token.exception.dart';
+import 'package:homsai/crossconcern/exceptions/url.exception.dart';
 import 'package:homsai/crossconcern/utilities/properties/api.proprties.dart';
 import 'package:homsai/datastore/DTOs/remote/history/history.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/history/history_body.dto.dart';
@@ -148,8 +148,7 @@ class HomeAssistantRepository implements HomeAssistantInterface {
 
     throwIf(
       response.containsKey("error"),
-      InvalidRequest(
-          message: '${response['error']}: ${response['error_description']}'),
+      UrlException('${response['error']}: ${response['error_description']}'),
     );
 
     return response;

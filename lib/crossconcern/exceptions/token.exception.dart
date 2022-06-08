@@ -1,7 +1,7 @@
-class InvalidRequest implements Exception {
-  final String message;
+class TokenException implements Exception {
+  final dynamic _msg;
 
-  InvalidRequest({this.message="Empty request"});
+  TokenException([this._msg="Token error"]);
 
-  String errMsg() => message;
-}
+  @override
+  String toString() => _msg.toString();}

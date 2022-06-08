@@ -4,10 +4,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:homsai/app.router.dart';
+import 'package:homsai/crossconcern/components/alerts/general_alert.widget.dart';
 import 'package:homsai/crossconcern/components/common/scaffold/homsai_bloc_scaffold.widget.dart';
 import 'package:homsai/crossconcern/helpers/blocs/websocket/websocket.bloc.dart';
-import 'package:homsai/datastore/remote/websocket/home_assistant_websocket.interface.dart';
-import 'package:homsai/main.dart';
+import 'package:homsai/crossconcern/utilities/properties/connection.properties.dart';
 import 'package:homsai/themes/button.theme.dart';
 import 'package:homsai/themes/colors.theme.dart';
 import 'package:homsai/ui/pages/dashboard/bloc/dashboard.bloc.dart';
@@ -39,7 +39,13 @@ class _DashboardPageState extends State<DashboardPage> {
           return HomsaiBlocScaffold(
             providers: [
               BlocProvider<DashboardBloc>(
-                create: (BuildContext context) => DashboardBloc(),
+                create: (BuildContext context) => DashboardBloc(
+                  context.read<WebSocketBloc>(),
+                  onLogOut: () {
+                    context.router.replace(const DashboardRoute());
+                    context.router.popAndPush(const DashboardRoute());
+                  },
+                ),
               ),
               BlocProvider<HomeBloc>(
                 create: (BuildContext context) => HomeBloc(
@@ -61,14 +67,6 @@ class _DashboardPageState extends State<DashboardPage> {
         },
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    final HomeAssistantWebSocketInterface webSocketRepository =
-        getIt.get<HomeAssistantWebSocketInterface>();
-    webSocketRepository.logout();
   }
 }
 
@@ -92,9 +90,25 @@ class _DashboardAppBarLeading extends StatelessWidget {
     return IconButton(
       onPressed: () async {
         await context.router.push(const AccountsRoute());
+
+        context.read<HomeBloc>().add(const RemoveAlert(
+            ConnectionProperties.noInternetConnectionAlertKey));
+        context.read<HomeBloc>().add(const RemoveAlert(
+            ConnectionProperties.noHomeAssistantConnectionAlertKey));
+
+        if (!context.read<WebSocketBloc>().isConnected) {
+          return context.read<HomeBloc>().add(const AddAlert(
+                NoHomeAssistantConnectionAlert(
+                  key: Key(
+                      ConnectionProperties.noHomeAssistantConnectionAlertKey),
+                ),
+                ConnectionProperties.noHomeAssistantConnectionAlertKey,
+              ));
+        }
+
         context.read<DashboardBloc>().add(RetrievePlantName());
         context.read<HomeBloc>().add(FetchStates());
-        context.read<HomeBloc>().add(FetchHistory());
+        context.read<HomeBloc>().add(FetchSuggestionsChart());
       },
       icon: SvgPicture.asset(
         "assets/icons/settings.svg",
@@ -119,14 +133,21 @@ class _DashboardAppBarExitAction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      onPressed: () => {
-        showDialog(
-          context: context,
-          builder: (context) => BlocProvider<DashboardBloc>(
-              create: (BuildContext context) => DashboardBloc(),
-              child: _DashboardLogoutDialog()),
-        )
-      },
+      onPressed: () => showDialog(
+        context: context,
+        builder: (context) => BlocProvider<DashboardBloc>(
+          create: (BuildContext context) => DashboardBloc(
+            context.read<WebSocketBloc>(),
+            onLogOut: () {
+              context.router.replace(const DashboardRoute());
+              context.router.popAndPush(const DashboardRoute());
+            },
+          ),
+          child: context.read<WebSocketBloc>().isConnected
+              ? _DashboardLogoutDialog()
+              : _DashboardLogoutFaliureDialog(),
+        ),
+      ),
       icon: SvgPicture.asset(
         "assets/icons/logout.svg",
       ),
@@ -141,18 +162,44 @@ class _DashboardLogoutDialog extends StatelessWidget {
       content: Text(HomsaiLocalizations.of(context)!.logoutDialogMessage),
       actions: [
         TextButton(
-            onPressed: () => context.read<DashboardBloc>().add(
-                  Logout(
-                    () => context.router.popAndPush(const DashboardRoute()),
-                  ),
-                ),
-            child: Text(HomsaiLocalizations.of(context)!.confirm)),
+          style: HomsaiButtonsTheme.lightTextButtonStyle(Theme.of(context)),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: Text(HomsaiLocalizations.of(context)!.cancel),
+        ),
+        TextButton(
+          onPressed: () => context.read<DashboardBloc>().add(Logout(
+                () => context.router.popAndPush(const DashboardRoute()),
+              )),
+          child: Text(HomsaiLocalizations.of(context)!.confirm),
+        ),
+      ],
+    );
+  }
+}
+
+class _DashboardLogoutFaliureDialog extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      content:
+          Text(HomsaiLocalizations.of(context)!.logoutfaliureDialogMessage),
+      actions: [
         TextButton(
           style: HomsaiButtonsTheme.lightTextButtonStyle(Theme.of(context)),
           onPressed: () {
             Navigator.pop(context);
           },
           child: Text(HomsaiLocalizations.of(context)!.cancel),
+        ),
+        TextButton(
+          onPressed: () => context.read<DashboardBloc>().add(
+                Logout(
+                  () => context.router.popAndPush(const DashboardRoute()),
+                ),
+              ),
+          child: Text(HomsaiLocalizations.of(context)!.confirm),
         ),
       ],
     );

@@ -10,7 +10,9 @@ abstract class DashboardEvent extends Equatable {
 class RetrievePlantName extends DashboardEvent {}
 
 class Logout extends DashboardEvent {
-  const Logout(this.onLogout);
+  final bool deleteUser;
+
+  const Logout(this.onLogout, {this.deleteUser=true});
 
   final void Function() onLogout;
 

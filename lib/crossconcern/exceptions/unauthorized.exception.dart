@@ -1,7 +1,8 @@
 class UnauthorizedException implements Exception {
-  final String message;
+  final dynamic _msg;
 
-  UnauthorizedException({this.message="Unauthorized Access"});
+  UnauthorizedException([this._msg="Unauthorized Access"]);
 
-  String errMsg() => message;
+  @override
+  String toString() => _msg.toString();
 }

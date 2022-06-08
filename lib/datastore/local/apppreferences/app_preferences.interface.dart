@@ -23,7 +23,7 @@ abstract class AppPreferencesInterface {
   void setUserId(String id);
   String? getUserId();
 
-  void logout();
+  void logout({bool deleteUser});
 
   void setOptimizationForecast(ConsumptionOptimizationsForecastDto forecastDto);
   ConsumptionOptimizationsForecastDto? getOptimizationForecast();

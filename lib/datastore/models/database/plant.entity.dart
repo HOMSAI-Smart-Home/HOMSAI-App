@@ -91,6 +91,7 @@ class Plant extends BaseEntity {
   }
 
   Uri? getFallbackUrl() {
-    return localUrl != null ? Uri.parse(remoteUrl ?? '') : null;
+    if(localUrl != null && remoteUrl != null) return Uri.parse(remoteUrl ?? '');
+    return null;
   }
 }

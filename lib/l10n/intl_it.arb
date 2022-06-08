@@ -74,8 +74,11 @@
     "introductionSkip": "Salta",
     "introductionPageInfo": "Step %1 di 3",
 
-    "homePageNoInternetConnectionAlertTitle": "Connessione internet assente",
-    "homePageNoInternetConnectionAlertContent": "Le funzionalità non sono disponibili riconnettiti per continuare ad usare l’app.",
+    "alertNoInternetConnectionAlertTitle": "Connessione internet assente",
+    "alertNoInternetConnectionAlertContent": "Le funzionalità non sono disponibili riconnettiti per continuare ad usare l’app.",
+    "alertNoHomeAssistantConnectionAlertTitle": "Connessione Home Assistant assente",
+    "alertNoHomeAssistantConnectionAlertContent": "Le funzionalità non sono disponibili riconnettiti dalle impostazioni per continuare ad usare l’app.",
+
     "homePageImprovementAvailableLabel": "Miglioramento disponibile",
     "homePageMockTurnOffLightLabel": "Potresti spegnere *Lampadario Salotto* alle 19.",
     "homePageCurrentConsumptionLabel": "Consumo di ieri",
@@ -146,6 +149,7 @@
     "addSensorPopUpModify": "Modifica",
 
     "logoutDialogMessage": "Stai per effettuare il logout dall'applicazione. Sei sicuro?",
+    "logoutfaliureDialogMessage": "Non e' possibile eseguire il logout in modo sicuro senza una connessione al tuo Home Assistant.\nDisconnettersi comunque?",
 
     "localUrlLabel": "Inserisci l'Url locale",
     "remoteUrlLabel": "Inserisci l'Url remoto",

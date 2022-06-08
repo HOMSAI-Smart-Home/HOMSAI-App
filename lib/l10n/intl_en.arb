@@ -74,8 +74,11 @@
     "introductionSkip": "Skip",
     "introductionPageInfo": "Step %1 of 3",
 
-    "homePageNoInternetConnectionAlertTitle": "No internet connection",
-    "homePageNoInternetConnectionAlertContent": "The features are not available reconnect to continue using the app.",
+    "alertNoInternetConnectionAlertTitle": "No internet connection",
+    "alertNoInternetConnectionAlertContent": "The features are not available reconnect to continue using the app.",
+    "alertNoHomeAssistantConnectionAlertTitle": "Home Assistant connection absent",
+    "alertNoHomeAssistantConnectionAlertContent": "The features are not available reconnect from the settings to continue using the app.",
+
     "homePageImprovementAvailableLabel": "Improvement available",
     "homePageMockTurnOffLightLabel": "Potresti spegnere *Lampadario Salotto* alle 19.",
     "homePageCurrentConsumptionLabel": "Consumption of yesterday",
@@ -148,6 +151,7 @@
     "addSensorPopUpModify": "Modify",
 
     "logoutDialogMessage": "You will logout from the app. Are you sure?",
+    "logoutfaliureDialogMessage": "For security reasons, it is not possible to log out without a connection to your Home Assistant",
 
     "localUrlLabel": "Insert local Url",
     "remoteUrlLabel": "Insert remote Url",

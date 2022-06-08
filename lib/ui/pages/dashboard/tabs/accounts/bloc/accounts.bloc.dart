@@ -12,7 +12,7 @@ part 'accounts.state.dart';
 
 class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
   AccountsState? initialState;
-  final HomsaiDatabase appDatabase = getIt.get<HomsaiDatabase>();
+  final HomsaiDatabase _appDatabase = getIt.get<HomsaiDatabase>();
   final AppPreferencesInterface appPreferences =
       getIt.get<AppPreferencesInterface>();
   final HomeAssistantWebSocketInterface websocket =
@@ -39,24 +39,24 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
     SensorEntity? productionSensor;
     SensorEntity? batterySensor;
 
-    final plant = await appDatabase.getPlant();
+    final plant = await _appDatabase.getPlant();
 
     if (plant == null) return;
 
     if (plant.consumptionSensor != null) {
       consumptionSensor =
-          await appDatabase.getEntity<SensorEntity>(plant.consumptionSensor!);
+          await _appDatabase.getEntity<SensorEntity>(plant.consumptionSensor!);
     }
     if (plant.productionSensor != null) {
       productionSensor =
-          await appDatabase.getEntity<SensorEntity>(plant.productionSensor!);
+          await _appDatabase.getEntity<SensorEntity>(plant.productionSensor!);
     }
     if (plant.batterySensor != null) {
       batterySensor =
-          await appDatabase.getEntity<SensorEntity>(plant.batterySensor!);
+          await _appDatabase.getEntity<SensorEntity>(plant.batterySensor!);
     }
 
-    final user = await appDatabase.getUser();
+    final user = await _appDatabase.getUser();
 
     if (user == null) return;
 
@@ -94,7 +94,8 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
 
     if (initialState!.localUrl != state.localUrl ||
         initialState!.remoteUrl != state.remoteUrl) {
-      _restartWebsocket();
+      await _restartWebsocket();
+      initialState = state;
     }
   }
 
@@ -108,8 +109,8 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
     }
   }
 
-  void _restartWebsocket() {
-    websocket.reconnect();
+  Future<void> _restartWebsocket() {
+    return websocket.reconnect();
   }
 
   void _resetPlot() {

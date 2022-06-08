@@ -3,10 +3,10 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:f_logs/f_logs.dart';
-import 'package:f_logs/model/flog/flog.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:flutter/foundation.dart';
 import 'package:homsai/business/home_assistant/home_assistant.interface.dart';
+import 'package:homsai/crossconcern/exceptions/token.exception.dart';
+import 'package:homsai/crossconcern/exceptions/url.exception.dart';
 import 'package:homsai/crossconcern/helpers/blocs/websocket/websocket.bloc.dart';
 import 'package:homsai/crossconcern/utilities/properties/api.proprties.dart';
 import 'package:homsai/datastore/DTOs/websocket/configuration/configuration_body.dto.dart';
@@ -95,6 +95,21 @@ class HomeAssistantWebSocketRepository
 
   List<Function> onConnected = [];
 
+  Function(TokenException)? _onTokenException;
+  Function(UrlException)? _onUrlException;
+  Function(Exception)? _onGenericException;
+
+  @override
+  void setErrorFunction({
+    required onTokenException,
+    required onUrlException,
+    required onGenericException,
+  }) {
+    _onTokenException = onTokenException;
+    _onUrlException = onUrlException;
+    _onGenericException = onGenericException;
+  }
+
   @override
   bool isConnected() {
     return status == HomeAssistantWebSocketStatus.connected;
@@ -124,12 +139,12 @@ class HomeAssistantWebSocketRepository
     if (baseUrl != null) {
       return await _listen(
         baseUrl,
-        retry: (exeption) {
+        retry: (exeption) async {
           if (fallback != null &&
               status != HomeAssistantWebSocketStatus.retry) {
             status = HomeAssistantWebSocketStatus.retry;
             if (_message.isNotEmpty) _message.removeAt(0);
-            _listen(fallback);
+            await _listen(fallback);
             return;
           }
           throw exeption;
@@ -152,7 +167,7 @@ class HomeAssistantWebSocketRepository
     if (onConnected != null) this.onConnected.add(onConnected);
 
     if (_plant != null) {
-      return _listen(
+      return await _listen(
         _plant!.getBaseUrl(),
       );
     }
@@ -205,7 +220,7 @@ class HomeAssistantWebSocketRepository
         return;
 
       case HomeAssistantApiProprties.authInvalid:
-        throw Exception(data["message"]);
+        throw TokenException(data["message"]);
     }
   }
 
@@ -213,12 +228,12 @@ class HomeAssistantWebSocketRepository
     ResponseDto response = ResponseDto.fromJson(data);
 
     if (response.success ?? false) {
-      events[response.id]!.publish(response.result);
+      events[response.id]?.publish(response.result);
     } else {
       if (response.event != null) {
-        events[response.id]!.publish(response.event);
+        events[response.id]?.publish(response.event);
       } else {
-        events[response.id]!.publish(response.error);
+        events[response.id]?.publish(response.error);
       }
     }
 
@@ -257,7 +272,13 @@ class HomeAssistantWebSocketRepository
           switch (status) {
             case HomeAssistantWebSocketStatus.retry:
             case HomeAssistantWebSocketStatus.connecting:
-              _auth(data);
+              try {
+                _auth(data);
+              } on TokenException catch (e) {
+                if (_onTokenException != null) _onTokenException!(e);
+                logout();
+              }
+
               break;
             case HomeAssistantWebSocketStatus.connected:
               try {
@@ -280,7 +301,7 @@ class HomeAssistantWebSocketRepository
           if (status == HomeAssistantWebSocketStatus.connected) {
             status = HomeAssistantWebSocketStatus.disconnected;
             await Future.delayed(const Duration(seconds: 1));
-            _listen(url);
+            await _listen(url);
           }
         },
         onError: (e) {
@@ -299,24 +320,24 @@ class HomeAssistantWebSocketRepository
       if ((e is SocketException || e is TimeoutException) &&
           status != HomeAssistantWebSocketStatus.error) {
         return retry != null
-            ? retry(e as Exception)
-            : _retry(url, e as Exception);
+            ? await retry(UrlException(e.toString()))
+            : await _retry(url, UrlException(e.toString()));
       }
-      rethrow;
+      if (_onGenericException != null) _onGenericException!(e as Exception);
     }
   }
 
-  void _retry(Uri url, Exception e) {
+  Future<void> _retry(Uri url, UrlException e) async {
     if (_plant != null && status != HomeAssistantWebSocketStatus.retry) {
       final fallback = _plant?.getFallbackUrl();
       if (fallback != null) {
         status = HomeAssistantWebSocketStatus.retry;
         if (_message.isNotEmpty) _message.removeAt(0);
-        _listen(fallback);
+        await _listen(fallback);
         return;
       }
     }
-    throw e;
+    if (_onUrlException != null) _onUrlException!(e);
   }
 
   void _send({

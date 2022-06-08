@@ -1,13 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:homsai/datastore/DTOs/websocket/configuration/configuration.dto.dart';
 import 'package:homsai/datastore/local/app.database.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.dart';
 import 'package:homsai/datastore/models/database/configuration.entity.dart';
 import 'package:homsai/datastore/models/database/user.entity.dart';
 import 'package:homsai/datastore/models/home_assistant_auth.model.dart';
-import 'package:homsai/datastore/remote/websocket/home_assistant_websocket.interface.dart';
-import 'package:homsai/datastore/remote/websocket/home_assistant_websocket.repository.dart';
 import 'package:homsai/main.dart';
 import 'package:homsai/ui/pages/add_plant/add_plant.page.dart';
 import 'package:homsai/ui/pages/add_sensor/add_sensor.page.dart';
@@ -114,14 +111,10 @@ class AuthGuard extends AutoRouteGuard {
       resolver,
       router,
       onSuccess: () async {
-        final HomeAssistantWebSocketInterface webSocketRepository =
-            getIt.get<HomeAssistantWebSocketInterface>();
-        final AppPreferencesInterface appPreferencesInterface =
-            getIt.get<AppPreferencesInterface>();
         final HomsaiDatabase appDatabase = getIt.get<HomsaiDatabase>();
         final plant = await appDatabase.getPlant();
 
-        HomeAssistantAuth? auth =
+        /*HomeAssistantAuth? auth =
             appPreferencesInterface.getHomeAssistantToken();
         if (!webSocketRepository.isConnected() &&
             !webSocketRepository.isConnecting() &&
@@ -141,7 +134,7 @@ class AuthGuard extends AutoRouteGuard {
               ),
             ),
           );
-        }
+        }*/
 
         if (plant != null) {
           Configuration? configuration = await appDatabase.getConfiguration();

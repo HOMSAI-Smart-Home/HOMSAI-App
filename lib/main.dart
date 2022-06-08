@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:f_logs/f_logs.dart';
-import 'package:f_logs/model/flog/flog_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -146,13 +145,13 @@ class _AppState extends State<App> with WidgetsBindingObserver {
 
   @override
   void initState() {
-    WidgetsBinding.instance?.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
     super.initState();
   }
 
   @override
   void dispose() {
-    WidgetsBinding.instance?.removeObserver(this);
+    WidgetsBinding.instance.removeObserver(this);
     _logout();
     super.dispose();
   }

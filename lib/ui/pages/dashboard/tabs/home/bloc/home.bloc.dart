@@ -10,6 +10,7 @@ import 'package:homsai/business/ai_service/ai_service.interface.dart';
 import 'package:homsai/business/home_assistant/home_assistant.interface.dart';
 import 'package:homsai/crossconcern/components/alerts/general_alert.widget.dart';
 import 'package:homsai/crossconcern/components/charts/daily_consumption_chart.widget.dart';
+import 'package:homsai/crossconcern/exceptions/url.exception.dart';
 import 'package:homsai/crossconcern/helpers/blocs/websocket/websocket.bloc.dart';
 import 'package:homsai/crossconcern/helpers/extensions/list.extension.dart';
 import 'package:homsai/crossconcern/utilities/properties/connection.properties.dart';
@@ -31,7 +32,6 @@ import 'package:homsai/datastore/models/database/plant.entity.dart';
 import 'package:homsai/datastore/models/entity/base/base.entity.dart';
 import 'package:homsai/datastore/models/entity/sensors/mesurable/mesurable_sensor.entity.dart';
 import 'package:homsai/datastore/remote/network/network.manager.dart';
-import 'package:homsai/datastore/remote/websocket/home_assistant_websocket.interface.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.dart';
 import 'package:homsai/datastore/models/entity/light/light.entity.dart';
 import 'package:homsai/main.dart';
@@ -43,9 +43,6 @@ part 'home.state.dart';
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final NetworkManagerInterface _networkManagerInterface =
       getIt.get<NetworkManagerInterface>();
-
-  final HomeAssistantWebSocketInterface webSocketRepository =
-      getIt.get<HomeAssistantWebSocketInterface>();
 
   final AIServiceInterface aiServiceInterface = getIt.get<AIServiceInterface>();
 
@@ -69,8 +66,18 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<FetchSuggestionsChart>(_onFetchSuggestionsChart);
     on<AddAlert>(_onAddAlert);
     on<RemoveAlert>(_onRemoveAlert);
-    _networkManagerInterface.subscribe(
-        NetworkManagerSubscriber((result) => {_checkConnection(result)}));
+
+    _networkManagerInterface.subscribe(NetworkManagerSubscriber(
+      (result) => {_checkConnection(result)},
+    ));
+    _webSocketBloc.subscribeToExeption(
+      UrlException,
+      () => add(const AddAlert(
+          NoHomeAssistantConnectionAlert(
+            key: Key(ConnectionProperties.noHomeAssistantConnectionAlertKey),
+          ),
+          ConnectionProperties.noHomeAssistantConnectionAlertKey)),
+    );
   }
 
   void _checkConnection(ConnectivityResult result) {
@@ -97,7 +104,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     super.onTransition(transition);
   }
 
-  void _onFetchState(FetchStates event, Emitter<HomeState> emit) async {
+  void _onFetchState(FetchStates event, Emitter<HomeState> emit) {
     _webSocketBloc.add(FetchEntities(
       onEntitiesFetched: (entities) {
         if (_active) add(FetchedLights(entities: entities));
@@ -105,26 +112,26 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     ));
   }
 
-  void _onAddAlert(AddAlert event, Emitter<HomeState> emit) async {
+  void _onAddAlert(AddAlert event, Emitter<HomeState> emit) {
     final Map<String, Widget> alerts = Map.from(state.alerts);
     alerts.putIfAbsent(event.alertId, () => event.alert);
     emit(state.copyWith(alerts: alerts));
   }
 
-  void _onRemoveAlert(RemoveAlert event, Emitter<HomeState> emit) async {
+  void _onRemoveAlert(RemoveAlert event, Emitter<HomeState> emit) {
     final Map<String, Widget> alerts = Map.from(state.alerts);
     alerts.remove(event.alertId);
     emit(state.copyWith(alerts: alerts));
   }
 
-  void _onFetchedLights(FetchedLights event, Emitter<HomeState> emit) async {
+  Future<void> _onFetchedLights(
+      FetchedLights event, Emitter<HomeState> emit) async {
     final plant = await appDatabase.getPlant();
     if (plant != null && plant.id != null) {
       await appDatabase.homeAssitantDao.refreshPlantEntities(
           plant.id!, event.entities.getEntities<Entity>());
     }
     if (_active) {
-      // appPreferencesInterface.resetLogBook();
       LogbookDto logBook;
       DailyPlanBodyDto dailyPlanBodyDto;
       DailyPlanDto dailyPlan;
@@ -470,7 +477,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           isLoading: false,
         ));
       } catch (e) {
-        emit(state.copyWith(isLoading: true));
+        emit(state.copyWith(isLoading: false));
       }
     } else {
       emit(state.copyWith(isLoading: false));

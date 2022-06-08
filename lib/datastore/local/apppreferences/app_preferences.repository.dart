@@ -97,8 +97,8 @@ class AppPreferences implements AppPreferencesInterface {
   }
 
   @override
-  void logout() {
-    resetUserId();
+  void logout({bool deleteUser=true}) {
+    if(deleteUser) resetUserId();
     resetHomeAssistantToken();
     resetAiServiceToken();
   }

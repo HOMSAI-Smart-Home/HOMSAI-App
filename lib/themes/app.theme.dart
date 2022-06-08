@@ -18,6 +18,7 @@ class HomsaiThemeData {
         textTheme: _textTheme,
         primaryColor: HomsaiColors.primaryBlack,
         disabledColor: HomsaiColors.primaryGrey,
+        // ignore: deprecated_member_use
         androidOverscrollIndicator: AndroidOverscrollIndicator.glow,
         appBarTheme: AppBarTheme(
           backgroundColor: colorScheme.background,

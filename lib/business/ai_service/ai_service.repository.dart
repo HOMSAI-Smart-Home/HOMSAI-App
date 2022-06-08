@@ -147,9 +147,11 @@ class AIServiceRepository implements AIServiceInterface {
     Map<String, dynamic> result = await remoteInterface.get(
         Uri.parse(ApiProprties.aIServiceBaseUrl).replace(
           path: ApiProprties.aiServicePhotovoltaicForecast,
-          queryParameters: dailyPlanBodyDto
-              .toJson()
-              .map((key, value) => MapEntry(key, value.toString())),
+          queryParameters:
+              dailyPlanBodyDto.toJson().map((key, value) => MapEntry(
+                    key,
+                    value.toString(),
+                  )),
         ),
         headers: _getHeader());
     return PhotovoltaicForecastDto.fromList(result["data"]);

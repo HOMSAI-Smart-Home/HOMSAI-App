@@ -22,12 +22,41 @@ class NoInternetConnectionAlert extends StatelessWidget {
         ),
         title: Text(
           HomsaiLocalizations.of(context)!
-              .homePageNoInternetConnectionAlertTitle,
+              .alertNoInternetConnectionAlertTitle,
           style: Theme.of(context).textTheme.headline3,
         ),
         message: SuperRichText(
           text: HomsaiLocalizations.of(context)!
-              .homePageNoInternetConnectionAlertContent,
+              .alertNoInternetConnectionAlertContent,
+          style: Theme.of(context).textTheme.bodyText2,
+        ),
+        closeBtnAction: () => {
+              _homeBloc.add(const RemoveAlert(
+                  ConnectionProperties.noInternetConnectionAlertKey))
+            });
+  }
+}
+
+class NoHomeAssistantConnectionAlert extends StatelessWidget {
+  const NoHomeAssistantConnectionAlert({required Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final _homeBloc = BlocProvider.of<HomeBloc>(context);
+    return Alert(AlertType.error,
+        key: key,
+        icon: SvgPicture.asset(
+          "assets/icons/wifi.svg",
+          color: HomsaiColors.primaryRed,
+        ),
+        title: Text(
+          HomsaiLocalizations.of(context)!
+              .alertNoHomeAssistantConnectionAlertTitle,
+          style: Theme.of(context).textTheme.headline3,
+        ),
+        message: SuperRichText(
+          text: HomsaiLocalizations.of(context)!
+              .alertNoHomeAssistantConnectionAlertContent,
           style: Theme.of(context).textTheme.bodyText2,
         ),
         closeBtnAction: () => {
