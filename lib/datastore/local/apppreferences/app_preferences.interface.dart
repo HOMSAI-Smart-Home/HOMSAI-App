@@ -9,39 +9,39 @@ abstract class AppPreferencesInterface {
 
   bool canSkipIntroduction();
   void setIntroduction(bool canSkip);
-  void resetIntroduction();
+  Future<void> resetIntroduction();
 
   HomeAssistantAuth? getHomeAssistantToken();
   void setHomeAssistantToken(HomeAssistantAuth homeAssistantAuth);
-  void resetHomeAssistantToken();
+  Future<void> resetHomeAssistantToken();
 
   AiServiceAuth? getAiServiceToken();
   void setAiServicetToken(AiServiceAuth aiServiceAuth);
-  void resetAiServiceToken();
+  Future<void> resetAiServiceToken();
 
-  void resetUserId();
+  Future<void> resetUserId();
   void setUserId(String id);
   String? getUserId();
 
-  void logout({bool deleteUser});
+  Future<void> logout({bool deleteUser});
 
   void setOptimizationForecast(ConsumptionOptimizationsForecastDto forecastDto);
   ConsumptionOptimizationsForecastDto? getOptimizationForecast();
-  void resetOptimizationForecast();
+  Future<void> resetOptimizationForecast();
 
   void setConsumptionInfo(List<HistoryDto> consumptionInfo);
   List<HistoryDto>? getConsumptionInfo();
-  void resetConsumptionInfo();
+  Future<void> resetConsumptionInfo();
 
   void setProductionInfo(List<HistoryDto> productionInfo);
   List<HistoryDto>? getProductionInfo();
-  void resetProductionInfo();
+  Future<void> resetProductionInfo();
 
   void setDailyPlan(DailyPlanCachedDto dailyPlan);
   DailyPlanCachedDto? getDailyPlan();
-  void resetDailyPlan();
+  Future<void> resetDailyPlan();
 
   void setBatteryInfo(List<HistoryDto> batteryInfo);
   List<HistoryDto>? getBatteryInfo();
-  void resetBatteryInfo();
+  Future<void> resetBatteryInfo();
 }

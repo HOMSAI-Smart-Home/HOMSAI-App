@@ -8,6 +8,7 @@ import 'package:homsai/datastore/models/database/plant.entity.dart';
     childColumns: ["plant_id"],
     parentColumns: ["id"],
     entity: Plant,
+    onDelete: ForeignKeyAction.setNull
   ),
 ])
 class User {

@@ -7,6 +7,7 @@ import 'package:homsai/datastore/models/database/configuration.entity.dart';
     childColumns: ['configuration_id'],
     parentColumns: ['id'],
     entity: Configuration,
+    onDelete: ForeignKeyAction.cascade
   ),
 ])
 class Plant extends BaseEntity {

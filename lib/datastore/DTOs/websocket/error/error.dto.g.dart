@@ -7,8 +7,8 @@ part of 'error.dto.dart';
 // **************************************************************************
 
 ErrorDto _$ErrorDtoFromJson(Map<String, dynamic> json) => ErrorDto(
-      json['code'] as String,
-      json['message'] as String,
+      json['code'] as int?,
+      json['message'] as String?,
     );
 
 Map<String, dynamic> _$ErrorDtoToJson(ErrorDto instance) => <String, dynamic>{

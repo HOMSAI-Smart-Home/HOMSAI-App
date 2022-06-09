@@ -11,6 +11,7 @@ import 'package:homsai/datastore/models/entity/base/base.entity.dart' as hass;
     childColumns: ['plant_id'],
     parentColumns: ['id'],
     entity: Plant,
+    onDelete: ForeignKeyAction.cascade
   )
 ])
 class HomeAssistantEntity extends Equatable {

@@ -7,6 +7,7 @@ class ApiProprties {
   static const aiServiceDailyPlanPath =
       "/aiservice/statistics/suggestions/dailyplan";
   static const aiServiceLoginPath = "/aiservice/auth/login";
+  static const aiServiceRefreshTokenPath = "/aiservice/auth/token";
   static const aiServiceSubscribeToBetaPath = "/aiservice/users/requestdemo";
   static const aiServicePhotovoltaicForecast =
       "/aiservice/forecast/photovoltaic";

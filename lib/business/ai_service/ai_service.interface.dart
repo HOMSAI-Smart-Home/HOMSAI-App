@@ -25,6 +25,10 @@ abstract class AIServiceInterface {
     LoginBodyDto loginBodyDto,
   );
 
+  Future<AiServiceAuth?> refreshToken(
+    AiServiceAuth aiServiceAuth,
+  );
+
   Future subscribeToBeta(
     LoginBodyDto loginBodyDto,
   );

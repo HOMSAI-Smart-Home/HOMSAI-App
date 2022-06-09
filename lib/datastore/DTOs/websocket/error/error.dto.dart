@@ -4,8 +4,8 @@ part 'error.dto.g.dart';
 
 @JsonSerializable()
 class ErrorDto {
-  String code;
-  String message;
+  int? code;
+  String? message;
 
   ErrorDto(this.code, this.message);
 

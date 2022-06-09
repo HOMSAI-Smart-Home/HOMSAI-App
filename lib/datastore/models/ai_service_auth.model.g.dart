@@ -8,8 +8,8 @@ part of 'ai_service_auth.model.dart';
 
 AiServiceAuth _$AiServiceAuthFromJson(Map<String, dynamic> json) =>
     AiServiceAuth(
-      json['token'] as String?,
-      json['refreshToken'] as String?,
+      token: json['token'] as String?,
+      refreshToken: json['refreshToken'] as String?,
     );
 
 Map<String, dynamic> _$AiServiceAuthToJson(AiServiceAuth instance) =>

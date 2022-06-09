@@ -27,8 +27,8 @@ class AppPreferences implements AppPreferencesInterface {
   }
 
   @override
-  void resetHomeAssistantToken() {
-    preferences
+  Future<void> resetHomeAssistantToken() async {
+    await preferences
         ?.remove(AppPreferencesProperties.prefKeyHomeAssistantAccessToken);
   }
 
@@ -48,8 +48,8 @@ class AppPreferences implements AppPreferencesInterface {
   }
 
   @override
-  void resetIntroduction() {
-    preferences?.remove(AppPreferencesProperties.prefKeySkipIntroduction);
+  Future<void> resetIntroduction() async {
+    await preferences?.remove(AppPreferencesProperties.prefKeySkipIntroduction);
   }
 
   @override
@@ -61,8 +61,8 @@ class AppPreferences implements AppPreferencesInterface {
   }
 
   @override
-  void resetUserId() {
-    preferences?.remove(AppPreferencesProperties.prefKeyUserId);
+  Future<void> resetUserId() async {
+    await preferences?.remove(AppPreferencesProperties.prefKeyUserId);
   }
 
   @override
@@ -84,8 +84,8 @@ class AppPreferences implements AppPreferencesInterface {
   }
 
   @override
-  void resetAiServiceToken() {
-    preferences?.remove(AppPreferencesProperties.prefKeyAiServiceAccessToken);
+  Future<void> resetAiServiceToken() async {
+    await preferences?.remove(AppPreferencesProperties.prefKeyAiServiceAccessToken);
   }
 
   @override
@@ -97,10 +97,10 @@ class AppPreferences implements AppPreferencesInterface {
   }
 
   @override
-  void logout({bool deleteUser=true}) {
-    if(deleteUser) resetUserId();
-    resetHomeAssistantToken();
-    resetAiServiceToken();
+  Future<void> logout({bool deleteUser=true}) async {
+    if(deleteUser) await resetUserId();
+    await resetHomeAssistantToken();
+    await resetAiServiceToken();
   }
 
   @override
@@ -121,8 +121,8 @@ class AppPreferences implements AppPreferencesInterface {
   }
 
   @override
-  void resetOptimizationForecast() {
-    preferences?.remove(AppPreferencesProperties.prefOptimizationForecast);
+  Future<void> resetOptimizationForecast() async {
+    await preferences?.remove(AppPreferencesProperties.prefOptimizationForecast);
   }
 
   @override
@@ -142,8 +142,8 @@ class AppPreferences implements AppPreferencesInterface {
   }
 
   @override
-  void resetConsumptionInfo() {
-    preferences?.remove(AppPreferencesProperties.prefConsumptionInfo);
+  Future<void> resetConsumptionInfo() async {
+    await preferences?.remove(AppPreferencesProperties.prefConsumptionInfo);
   }
 
   @override
@@ -163,8 +163,8 @@ class AppPreferences implements AppPreferencesInterface {
   }
 
   @override
-  void resetProductionInfo() {
-    preferences?.remove(AppPreferencesProperties.prefProductionInfo);
+  Future<void> resetProductionInfo() async {
+    await preferences?.remove(AppPreferencesProperties.prefProductionInfo);
   }
 
   @override
@@ -189,8 +189,8 @@ class AppPreferences implements AppPreferencesInterface {
   }
 
   @override
-  void resetDailyPlan() {
-    preferences?.remove(AppPreferencesProperties.prefDailyPlan);
+  Future<void> resetDailyPlan() async {
+    await preferences?.remove(AppPreferencesProperties.prefDailyPlan);
   }
 
   @override
@@ -202,8 +202,8 @@ class AppPreferences implements AppPreferencesInterface {
   }
 
   @override
-  void resetBatteryInfo() {
-    preferences?.remove(AppPreferencesProperties.prefBatteryInfo);
+  Future<void> resetBatteryInfo() async {
+    await preferences?.remove(AppPreferencesProperties.prefBatteryInfo);
   }
 
   @override

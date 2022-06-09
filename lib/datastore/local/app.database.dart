@@ -85,20 +85,15 @@ abstract class HomsaiDatabase extends FloorDatabase {
   }
 
   Future<void> logout({bool deleteUser = true}) async {
-    final user = await getUser();
-    if (user == null) return;
-    user.plantId = null;
-
     if (deleteUser) {
+      final user = await getUser();
+      if (user == null) return;
       await userDao.deleteItem(user);
     } else {
-      await userDao.updateItem(user);
+      final plant = await getPlant();
+      if (plant == null) return;
+      await plantDao.deleteItem(plant);
     }
-
-    _appPreferences.logout(deleteUser: deleteUser);
-
-    final plant = await getPlant();
-    if (plant == null) return;
-    await plantDao.deleteItem(plant);
+    await _appPreferences.logout(deleteUser: deleteUser);
   }
 }

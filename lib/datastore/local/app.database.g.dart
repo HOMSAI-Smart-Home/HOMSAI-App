@@ -88,13 +88,13 @@ class _$HomsaiDatabase extends HomsaiDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `User` (`id` TEXT NOT NULL, `email` TEXT NOT NULL, `plant_id` INTEGER, FOREIGN KEY (`plant_id`) REFERENCES `Plant` (`id`) ON UPDATE NO ACTION ON DELETE NO ACTION, PRIMARY KEY (`id`))');
+            'CREATE TABLE IF NOT EXISTS `User` (`id` TEXT NOT NULL, `email` TEXT NOT NULL, `plant_id` INTEGER, FOREIGN KEY (`plant_id`) REFERENCES `Plant` (`id`) ON UPDATE NO ACTION ON DELETE SET NULL, PRIMARY KEY (`id`))');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `Plant` (`local_url` TEXT, `remote_url` TEXT, `name` TEXT NOT NULL, `latitude` REAL NOT NULL, `longitude` REAL NOT NULL, `configuration_id` INTEGER NOT NULL, `production_sensor_id` TEXT, `consumption_sensor_id` TEXT, `photovoltaic_nominal_power` REAL, `photovoltaic_installation_date` TEXT, `battery_sensor_id` TEXT, `id` INTEGER PRIMARY KEY AUTOINCREMENT, FOREIGN KEY (`configuration_id`) REFERENCES `Configuration` (`id`) ON UPDATE NO ACTION ON DELETE NO ACTION)');
+            'CREATE TABLE IF NOT EXISTS `Plant` (`local_url` TEXT, `remote_url` TEXT, `name` TEXT NOT NULL, `latitude` REAL NOT NULL, `longitude` REAL NOT NULL, `configuration_id` INTEGER NOT NULL, `production_sensor_id` TEXT, `consumption_sensor_id` TEXT, `photovoltaic_nominal_power` REAL, `photovoltaic_installation_date` TEXT, `battery_sensor_id` TEXT, `id` INTEGER PRIMARY KEY AUTOINCREMENT, FOREIGN KEY (`configuration_id`) REFERENCES `Configuration` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE)');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `Configuration` (`latitude` REAL NOT NULL, `longitude` REAL NOT NULL, `elevation` REAL NOT NULL, `locationName` TEXT NOT NULL, `version` TEXT NOT NULL, `state` TEXT NOT NULL, `currency` TEXT NOT NULL, `source` TEXT NOT NULL, `dir` TEXT NOT NULL, `timezone` TEXT NOT NULL, `isSafeMode` INTEGER NOT NULL, `externalUrl` TEXT, `internalUrl` TEXT, `whitelistExternalDirs` TEXT NOT NULL, `allowExternalDirs` TEXT NOT NULL, `allowExternalUrls` TEXT NOT NULL, `components` TEXT NOT NULL, `unitSystem` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT)');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `Entity` (`entity_id` TEXT NOT NULL, `plant_id` INTEGER NOT NULL, `entity` TEXT NOT NULL, FOREIGN KEY (`plant_id`) REFERENCES `Plant` (`id`) ON UPDATE NO ACTION ON DELETE NO ACTION, PRIMARY KEY (`entity_id`, `plant_id`))');
+            'CREATE TABLE IF NOT EXISTS `Entity` (`entity_id` TEXT NOT NULL, `plant_id` INTEGER NOT NULL, `entity` TEXT NOT NULL, FOREIGN KEY (`plant_id`) REFERENCES `Plant` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE, PRIMARY KEY (`entity_id`, `plant_id`))');
         await database.execute(
             'CREATE UNIQUE INDEX `index_User_email` ON `User` (`email`)');
 
@@ -216,6 +216,11 @@ class _$UserDao extends UserDao {
   @override
   Future<void> updateItems(List<User> items) async {
     await _userUpdateAdapter.updateList(items, OnConflictStrategy.abort);
+  }
+
+  @override
+  Future<void> forceDeleteItem(User item) async {
+    await _userDeletionAdapter.delete(item);
   }
 
   @override
@@ -369,6 +374,11 @@ class _$PlantDao extends PlantDao {
   @override
   Future<void> updateItems(List<Plant> items) async {
     await _plantUpdateAdapter.updateList(items, OnConflictStrategy.abort);
+  }
+
+  @override
+  Future<void> forceDeleteItem(Plant item) async {
+    await _plantDeletionAdapter.delete(item);
   }
 
   @override
@@ -532,6 +542,11 @@ class _$ConfigurationDao extends ConfigurationDao {
   }
 
   @override
+  Future<void> forceDeleteItem(Configuration item) async {
+    await _configurationDeletionAdapter.delete(item);
+  }
+
+  @override
   Future<void> deleteItem(Configuration item) async {
     await _configurationDeletionAdapter.delete(item);
   }
@@ -645,6 +660,11 @@ class _$HomeAssistantDao extends HomeAssistantDao {
   Future<void> updateItems(List<HomeAssistantEntity> items) async {
     await _homeAssistantEntityUpdateAdapter.updateList(
         items, OnConflictStrategy.abort);
+  }
+
+  @override
+  Future<void> forceDeleteItem(HomeAssistantEntity item) async {
+    await _homeAssistantEntityDeletionAdapter.delete(item);
   }
 
   @override

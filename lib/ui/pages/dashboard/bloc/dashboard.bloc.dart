@@ -49,7 +49,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
         //TODO:fix when websocket factory
         final plant = await _appDatabase.getPlant();
         _homeAssistantInterface.revokeToken(plant: plant!);
-        _appDatabase.logout(deleteUser: event.deleteUser);
+        await _appDatabase.logout(deleteUser: event.deleteUser);
         event.onLogout();
         if (onLogOut != null) onLogOut!();
       },
