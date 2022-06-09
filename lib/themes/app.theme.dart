@@ -18,8 +18,6 @@ class HomsaiThemeData {
         textTheme: _textTheme,
         primaryColor: HomsaiColors.primaryBlack,
         disabledColor: HomsaiColors.primaryGrey,
-        // ignore: deprecated_member_use
-        androidOverscrollIndicator: AndroidOverscrollIndicator.glow,
         appBarTheme: AppBarTheme(
           backgroundColor: colorScheme.background,
           elevation: 0,
@@ -86,21 +84,45 @@ class HomsaiThemeData {
 
   static final TextTheme _textTheme = const TextTheme(
     headline1: TextStyle(
-        fontFamily: "JoyrideExtended", fontWeight: _regular, fontSize: 22.0, height: 1.5),
+        fontFamily: "JoyrideExtended",
+        fontWeight: _regular,
+        fontSize: 22.0,
+        height: 1.5),
     headline2: TextStyle(
-        fontFamily: "HelveticaNowText", fontWeight: _medium, fontSize: 22.0, height: 1.5),
+        fontFamily: "HelveticaNowText",
+        fontWeight: _medium,
+        fontSize: 22.0,
+        height: 1.5),
     headline3: TextStyle(
-        fontFamily: "HelveticaNowText", fontWeight: _medium, fontSize: 18.0, height: 1.5),
+        fontFamily: "HelveticaNowText",
+        fontWeight: _medium,
+        fontSize: 18.0,
+        height: 1.5),
     headline4: TextStyle(
-        fontFamily: "HelveticaNowText", fontWeight: _bold, fontSize: 16.0, height: 1.5),
+        fontFamily: "HelveticaNowText",
+        fontWeight: _bold,
+        fontSize: 16.0,
+        height: 1.5),
     headline5: TextStyle(
-        fontFamily: "HelveticaNowText", fontWeight: _bold, fontSize: 14.0, height: 1.5),
+        fontFamily: "HelveticaNowText",
+        fontWeight: _bold,
+        fontSize: 14.0,
+        height: 1.5),
     bodyText1: TextStyle(
-        fontFamily: "HelveticaNowText", fontWeight: _light, fontSize: 16.0, height: 1.5),
+        fontFamily: "HelveticaNowText",
+        fontWeight: _light,
+        fontSize: 16.0,
+        height: 1.5),
     bodyText2: TextStyle(
-        fontFamily: "HelveticaNowText", fontWeight: _light, fontSize: 12.0, height: 1.5),
+        fontFamily: "HelveticaNowText",
+        fontWeight: _light,
+        fontSize: 12.0,
+        height: 1.5),
     caption: TextStyle(
-        fontFamily: "HelveticaNowText", fontWeight: _light, fontSize: 14.0, height: 1.5),
+        fontFamily: "HelveticaNowText",
+        fontWeight: _light,
+        fontSize: 14.0,
+        height: 1.5),
     button: TextStyle(
         fontFamily: "HelveticaNowText", fontWeight: _medium, fontSize: 18.0),
   ).apply(

@@ -48,7 +48,7 @@ class _LightDeviceCardState extends State<_LightDeviceCard> {
       (state.light.isOn) ? DeviceStatus.enabled : DeviceStatus.disabled,
       iconPath: "assets/icons/bulb.svg",
       baseColor: HomsaiColors.primaryYellow,
-      title: state.light.attributes.friendlyName ?? state.light.id,
+      title: state.light.name,
       room: state.light.area?.name ?? '',
       info: (state.light.isOn) ? "on" : "off",
       onTap: () {
@@ -64,7 +64,7 @@ class _LightDeviceCardState extends State<_LightDeviceCard> {
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(state.light.attributes.friendlyName),
+                  Text(state.light.name),
                 ],
               );
             },

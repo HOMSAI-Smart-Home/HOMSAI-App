@@ -17,7 +17,7 @@ class PhotovoltaicForecastBodyDto {
   PhotovoltaicForecastBodyDto(
     this.kwp,
     this.plantLifeDays, {
-    this.days = 2,
+    this.days = 3,
     required this.latitude,
     required this.longitude,
   });

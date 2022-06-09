@@ -1,4 +1,5 @@
 {
+    "ok": "Ok",
     "confirm": "Confirm",
     "retry": "Retry",
     "next": "Next",
@@ -120,6 +121,17 @@
 
     "dailyCosumptionChartLoadingLabel": "Loading data...",
     "dailyCosumptionChartErrorLabel": "We are unable to retrieve the graph data, check in the settings that you have entered the correct data on the sensors.",
+
+    "photovoltaicChartTitle": "Energy production forecast",
+    "photovoltaicChartLegendaSolarPanels": "Photovoltaic",
+    "photovoltaicChartDialogTitle": "Energy production forecast",
+    "photovoltaicChartDialogDescriptionHeadline": "Description",
+    "photovoltaicChartDialogDescription": "This graph shows the trend of energy production in the next 24 hours.\nBased on the average performance of the photovoltaic system, Homsai estimates how much energy will be produced based on the weather forecasts collected. This allows you to act in time on air conditioning and consumption, favoring self-consumption rather than the purchase of energy from the grid.\nThanks to the energy production forecast you can save on energy costs. ",
+    "photovoltaicChartDialogLegendaTitle": "Legend",
+    "photovoltaicChartDialogLegendaStraightLineTitle": "Continuous Line",
+    "photovoltaicChartDialogLegendaStraightLineMessage": ": shows the production of the last 3 hours",
+    "photovoltaicChartDialogLegendaDashedLineTitle": "Dashed line",
+    "photovoltaicChartDialogLegendaDashedLineMessage": ": shows the forecast for the next 24 hours",
 
     "addSensorTitleWizard": "Configure system",
     "productionSensorLabel": "Production",

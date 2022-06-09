@@ -162,10 +162,10 @@ class AuthGuardBuilder {
   }
 
   void next(NavigationResolver resolver, StackRouter router,
-      {void Function()? onSuccess}) async {
-    final build = _buildRedirect(resolver, router, (success) {
+      {Future<void> Function()? onSuccess}) async {
+    final build = _buildRedirect(resolver, router, (success) async {
       router.removeUntil((route) => false);
-      if (success && onSuccess != null) onSuccess();
+      if (success && onSuccess != null) await onSuccess();
       resolver.next(success);
     });
     (await build)(true);

@@ -1,8 +1,14 @@
+import 'dart:math' as math;
+
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:homsai/crossconcern/components/utils/dialog.widget.dart';
 import 'package:homsai/crossconcern/utilities/util/plot.util.dart';
+import 'package:homsai/main.dart';
 import 'package:homsai/themes/colors.theme.dart';
 import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
+import 'package:timezone/timezone.dart';
 
 class PhotovoltaicForecastChart extends StatelessWidget {
   static final emptyPlot = Plot.sample(
@@ -10,22 +16,49 @@ class PhotovoltaicForecastChart extends StatelessWidget {
 
   static const defaultMinRange = Offset.zero;
   static final defaultMaxRange = Offset(Duration.minutesPerDay.toDouble(), 6.0);
+  static const spanRatio = 0.2;
 
   final double barWidth = 1;
   final bool isCurved = true;
 
   final List<FlSpot>? forecastData;
-  final FlSpot? currentForecastData;
   final Offset? min;
   final Offset? max;
 
   const PhotovoltaicForecastChart(
-      {Key? key,
-      this.forecastData,
-      this.currentForecastData,
-      required this.min,
-      required this.max})
+      {Key? key, this.forecastData, required this.min, required this.max})
       : super(key: key);
+
+  Widget photovoltaicDialogContent(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ...dialogParagraph(
+            HomsaiLocalizations.of(context)!.photovoltaicChartDialogDescription,
+            title: HomsaiLocalizations.of(context)!
+                .photovoltaicChartDialogDescriptionHeadline,
+          ),
+          Text(
+            HomsaiLocalizations.of(context)!
+                .photovoltaicChartDialogLegendaTitle,
+            style: const TextStyle(color: HomsaiColors.primaryGreen),
+          ),
+          bulletListItem(
+              HomsaiLocalizations.of(context)!
+                  .photovoltaicChartDialogLegendaStraightLineTitle,
+              HomsaiLocalizations.of(context)!
+                  .photovoltaicChartDialogLegendaStraightLineMessage),
+          bulletListItem(
+              HomsaiLocalizations.of(context)!
+                  .photovoltaicChartDialogLegendaDashedLineTitle,
+              HomsaiLocalizations.of(context)!
+                  .photovoltaicChartDialogLegendaDashedLineMessage),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,28 +66,59 @@ class PhotovoltaicForecastChart extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 30, right: 30, bottom: 2),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.end,
+          padding: const EdgeInsets.only(left: 30, right: 10, bottom: 2),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Text(
-                HomsaiLocalizations.of(context)!.dailyCosumptionChartPower,
-                style: TextStyle(
-                  color: HomsaiColors.primaryGrey,
-                  fontSize: 9,
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Spacer(),
+                  Text(
+                    HomsaiLocalizations.of(context)!
+                        .photovoltaicChartDialogTitle,
+                    style: Theme.of(context).textTheme.headline5,
+                  ),
+                  const Spacer(),
+                  ClipOval(
+                    child: Material(
+                      color: Colors.transparent,
+                      child: ShowDialog(
+                          title: HomsaiLocalizations.of(context)!
+                              .photovoltaicChartTitle,
+                          child: SvgPicture.asset("assets/icons/help.svg"),
+                          content: photovoltaicDialogContent),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 4,
               ),
               Flexible(
                 child: Wrap(
-                  alignment: WrapAlignment.end,
-                  verticalDirection: VerticalDirection.up,
+                  alignment: WrapAlignment.center,
+                  verticalDirection: VerticalDirection.down,
                   children: [
                     _legenda(
                         HomsaiLocalizations.of(context)!
-                            .dailyCosumptionChartLegendaSolarPanels,
+                            .photovoltaicChartLegendaSolarPanels,
                         HomsaiColors.primaryGreen),
                   ],
+                ),
+              ),
+              const SizedBox(
+                height: 4,
+              ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  HomsaiLocalizations.of(context)!.dailyCosumptionChartPower,
+                  style: const TextStyle(
+                    color: HomsaiColors.primaryGrey,
+                    fontSize: 9,
+                  ),
                 ),
               ),
             ],
@@ -139,14 +203,17 @@ class PhotovoltaicForecastChart extends StatelessWidget {
   FlGridData get gridData => FlGridData(
         show: true,
         drawVerticalLine: false,
-        horizontalInterval: 10,
+        horizontalInterval: horizontalInterval,
         getDrawingHorizontalLine: (value) {
           return FlLine(
             color: HomsaiColors.primaryGrey.withOpacity(0.5),
-            strokeWidth: 1,
+            strokeWidth: 1.5,
           );
         },
       );
+
+  double get horizontalInterval =>
+      math.max(1, ((max?.dy ?? 10) * spanRatio).floorToDouble());
 
   FlTitlesData get titlesData => FlTitlesData(
         bottomTitles: AxisTitles(
@@ -170,18 +237,23 @@ class PhotovoltaicForecastChart extends StatelessWidget {
         getTitlesWidget: bottomTitleWidgets,
       );
 
-  bool canShowBottomTitle(int value) {
-    int hour = (value.toInt() ~/ 60) % Duration.hoursPerDay - 2;
+  bool canShowBottomTitle(double value) {
+    int offset =
+        (forecastData != null) ? getHourFromX(forecastData!.first.x) : 0;
+    int hour = getHourFromX(value) - 3;
     return value.toInt() % Duration.minutesPerDay % 60 == 0 &&
-        hour >= 0 &&
-        hour < 22 &&
-        hour.toInt() % 6 == 0;
+        (hour.toInt()) % 4 == offset % 4;
   }
 
   Widget bottomTitleWidgets(double value, TitleMeta meta) {
-    TextStyle style = TextStyle(color: HomsaiColors.primaryWhite, fontSize: 10);
-    int hour = (value.toInt() ~/ 60) % Duration.hoursPerDay;
-    String time = canShowBottomTitle(value.toInt()) ? "$hour:00" : '';
+    TextStyle style =
+        const TextStyle(color: HomsaiColors.primaryWhite, fontSize: 10);
+    Duration timezoneOffset =
+        TZDateTime.now(getIt.get<Location>()).timeZoneOffset;
+    int hour = (getHourFromX(value) +
+            (((timezoneOffset.isNegative) ? -1 : 1) * timezoneOffset.inHours)) %
+        24;
+    String time = canShowBottomTitle(value) ? "$hour:00" : '';
     return Padding(
         child: Text(
           time,
@@ -189,6 +261,27 @@ class PhotovoltaicForecastChart extends StatelessWidget {
         ),
         padding: const EdgeInsets.only(top: 10.0));
   }
+
+  int getHourFromX(double value) {
+    return (value.toInt() ~/ 60) % Duration.hoursPerDay;
+  }
+
+  static FlSpot getSpotFromTime(List<FlSpot>? forecastData, DateTime time) {
+    return forecastData?.firstWhere(
+          (element) => DateTime.fromMillisecondsSinceEpoch(
+                  element.x.toInt() * Duration.millisecondsPerMinute)
+              .isAfter(time),
+          orElse: () => FlSpot.zero,
+        ) ??
+        FlSpot.zero;
+  }
+
+  static DateTime getDateTimeFromSpot(FlSpot spot) {
+    return DateTime.fromMillisecondsSinceEpoch(
+        spot.x.toInt() * Duration.millisecondsPerMinute);
+  }
+
+  FlSpot get currentTimeSpot => getSpotFromTime(forecastData, DateTime.now());
 
   SideTitles get leftTitles => SideTitles(
         getTitlesWidget: leftTitleWidgets,
@@ -198,12 +291,17 @@ class PhotovoltaicForecastChart extends StatelessWidget {
       );
 
   Widget leftTitleWidgets(double value, TitleMeta meta) {
-    TextStyle style = TextStyle(
+    if (value <= 0 ||
+        value.toInt() % horizontalInterval.toInt() != 0 ||
+        (value.toInt() % (horizontalInterval.toInt() * 2)) == 0) {
+      return Container();
+    }
+
+    TextStyle style = const TextStyle(
       color: HomsaiColors.primaryGrey,
       fontWeight: FontWeight.bold,
       fontSize: 9,
     );
-    if (value <= 0 || value % 10 != 0) return Container();
 
     return Padding(
         padding: const EdgeInsets.only(right: 6),
@@ -217,7 +315,7 @@ class PhotovoltaicForecastChart extends StatelessWidget {
           top: BorderSide(
             color: HomsaiColors.primaryGrey.withOpacity(0.5),
           ),
-          bottom: BorderSide(
+          bottom: const BorderSide(
             width: 2.0,
             color: HomsaiColors.primaryWhite,
           ),
@@ -225,23 +323,26 @@ class PhotovoltaicForecastChart extends StatelessWidget {
       );
 
   List<LineChartBarData> get lineBarsData => [
-        //lineChartBarData_1,
+        lineChartBarData_1,
         lineChartBarData_2,
       ];
 
-  LineChartBarData get lineChartBarData_1 => LineChartBarData(
-        spots: (forecastData != null)
-            ? forecastData!
-                .sublist(0, forecastData!.indexOf(currentForecastData!))
-            : null,
-        isCurved: isCurved,
-        color: HomsaiColors.primaryGreen,
-        barWidth: barWidth,
-        isStrokeCapRound: true,
-        dotData: FlDotData(show: false),
-        belowBarData: belowBarAreaData,
-        aboveBarData: aboveBarAreaData,
-      );
+  LineChartBarData get lineChartBarData_1 {
+    var data = (forecastData != null)
+        ? forecastData!.sublist(0, forecastData!.indexOf(currentTimeSpot))
+        : null;
+    return LineChartBarData(
+      showingIndicators: [(data?.length ?? 1) - 1],
+      spots: data,
+      isCurved: isCurved,
+      color: HomsaiColors.primaryGreen,
+      barWidth: barWidth,
+      isStrokeCapRound: true,
+      dotData: FlDotData(show: false),
+      belowBarData: belowBarAreaData,
+      aboveBarData: aboveBarAreaData,
+    );
+  }
 
   BarAreaData get belowBarAreaData => BarAreaData(
         show: true,
@@ -273,15 +374,19 @@ class PhotovoltaicForecastChart extends StatelessWidget {
             checkToShowSpotLine: checkToShowSpotLine),
       );
 
-  bool checkToShowSpotLine(FlSpot spot) => spot == currentForecastData;
+  bool checkToShowSpotLine(FlSpot spot) =>
+      spot ==
+      ((forecastData != null)
+              ? forecastData!.sublist(0, forecastData!.indexOf(currentTimeSpot))
+              : null)
+          ?.last;
 
   FlLine get dashedLine => FlLine(
-      color: HomsaiColors.primaryWhite, strokeWidth: 2, dashArray: [5, 5]);
+      color: HomsaiColors.primaryWhite, strokeWidth: 1, dashArray: [3, 3]);
 
   LineChartBarData get lineChartBarData_2 => LineChartBarData(
-        showingIndicators: [0],
         spots: (forecastData != null)
-            ? forecastData! /* .sublist(forecastData!.indexOf(currentForecastData!)) */
+            ? forecastData!.sublist(forecastData!.indexOf(currentTimeSpot))
             : null,
         isCurved: isCurved,
         color: HomsaiColors.primaryGreen,

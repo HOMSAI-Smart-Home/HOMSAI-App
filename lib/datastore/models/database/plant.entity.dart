@@ -4,11 +4,10 @@ import 'package:homsai/datastore/models/database/configuration.entity.dart';
 
 @Entity(tableName: 'Plant', foreignKeys: [
   ForeignKey(
-    childColumns: ['configuration_id'],
-    parentColumns: ['id'],
-    entity: Configuration,
-    onDelete: ForeignKeyAction.cascade
-  ),
+      childColumns: ['configuration_id'],
+      parentColumns: ['id'],
+      entity: Configuration,
+      onDelete: ForeignKeyAction.cascade),
 ])
 class Plant extends BaseEntity {
   @ColumnInfo(name: 'local_url')
@@ -48,6 +47,12 @@ class Plant extends BaseEntity {
     this.photovoltaicInstallationDate,
     this.batterySensor,
   }) : super(id);
+
+  bool get canShowConsumptionOptimization =>
+      productionSensor != null && consumptionSensor != null;
+
+  bool get canShowPhotovoltaicForecast =>
+      photovoltaicNominalPower != null && photovoltaicInstallationDate != null;
 
   Plant copyWith({
     String? localUrl,
@@ -92,7 +97,8 @@ class Plant extends BaseEntity {
   }
 
   Uri? getFallbackUrl() {
-    if(localUrl != null && remoteUrl != null) return Uri.parse(remoteUrl ?? '');
-    return null;
+    return localUrl != null && remoteUrl != null
+        ? Uri.parse(remoteUrl ?? '')
+        : null;
   }
 }

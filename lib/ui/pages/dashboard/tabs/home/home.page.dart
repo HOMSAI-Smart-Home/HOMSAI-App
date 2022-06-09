@@ -1,9 +1,9 @@
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:homsai/crossconcern/components/charts/daily_consumption_chart.widget.dart';
 import 'package:homsai/crossconcern/components/charts/photovoltaic_forecast_chart.widget.dart';
+import 'package:homsai/crossconcern/components/utils/dialog.widget.dart';
 import 'package:homsai/crossconcern/components/utils/shadow.widget.dart';
 import 'package:homsai/crossconcern/components/utils/toggle_text.widget.dart';
 import 'package:homsai/crossconcern/helpers/blocs/websocket/websocket.bloc.dart';
@@ -29,7 +29,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
     context.read<WebSocketBloc>().add(ConnectWebSocket(
       onWebSocketConnected: () {
-        context.read<HomeBloc>().add(FetchStates());
+        if (mounted) {
+          context.read<HomeBloc>().add(FetchStates());
+        }
+        //context.read<HomeBloc>().add(FetchHistory());
       },
     ));
 
@@ -272,13 +275,12 @@ class PhotovoltaicForecastChartInfo extends StatelessWidget {
           color: HomsaiColors.primaryGrey,
           child: Card(
             child: Padding(
-              padding: const EdgeInsets.only(top: 10),
+              padding: const EdgeInsets.only(top: 6),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   PhotovoltaicForecastChart(
                     forecastData: state.forecastData,
-                    currentForecastData: FlSpot.zero,
                     min: state.forecastMinOffset,
                     max: state.forecastMaxOffset,
                   ),
@@ -481,81 +483,48 @@ class EarnWithHomsaiItemInfo extends StatelessWidget {
         borderRadius: BorderRadius.circular(5),
       ),
       child: SizedBox.fromSize(
-        size: const Size.fromHeight(40),
-        child: InkWell(
-          borderRadius: BorderRadius.circular(5),
-          onTap: () => {
-            showDialog(
-                context: context,
-                builder: (context) => AlertDialog(
-                      content: earnWithHomsaiDialogContent(context),
-                      insetPadding: const EdgeInsets.symmetric(
-                          horizontal: 20.0, vertical: 24.0),
-                      titlePadding: const EdgeInsets.only(
-                          top: 10, left: 20, right: 10, bottom: 0),
-                      contentPadding: const EdgeInsets.only(
-                          top: 15, left: 20, right: 10, bottom: 0),
-                      title: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            HomsaiLocalizations.of(context)!
-                                .homePageEarnWithHomesaiDialogTitle,
-                            style: TextStyle(
-                              color: HomsaiColors.primaryWhite,
-                            ),
-                          ),
-                          InkWell(
-                            onTap: () => {Navigator.of(context).pop()},
-                            borderRadius: BorderRadius.circular(5),
-                            child: SizedBox(
-                                height: 30,
-                                width: 30,
-                                child:
-                                    SvgPicture.asset("assets/icons/close.svg")),
-                          )
-                        ],
+          size: const Size.fromHeight(40),
+          child: ShowDialog(
+            title: HomsaiLocalizations.of(context)!
+                .homePageEarnWithHomesaiDialogTitle,
+            content: earnWithHomsaiDialogContent,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        HomsaiLocalizations.of(context)!
+                            .homePageEarnWithHomesaiLabel,
+                        style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            height: 1,
+                            color: HomsaiColors.primaryWhite),
                       ),
-                    ))
-          },
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    Text(
-                      HomsaiLocalizations.of(context)!
-                          .homePageEarnWithHomesaiLabel,
-                      style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          height: 1,
-                          color: HomsaiColors.primaryWhite),
-                    ),
-                    SvgPicture.asset("assets/icons/help.svg"),
-                  ],
-                ),
-                Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      (amount != null)
-                          ? "${amount!.toStringAsFixed(2)} €"
-                          : HomsaiLocalizations.of(context)!
-                              .homePageBalanceDefaultPlaceholder,
-                      style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                          fontWeight: FontWeight.w400,
-                          height: 1,
-                          color: HomsaiColors.primaryWhite),
-                    ),
-                  ],
-                )
-              ],
+                      SvgPicture.asset("assets/icons/help.svg"),
+                    ],
+                  ),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        (amount != null)
+                            ? "${amount!.toStringAsFixed(2)} €"
+                            : HomsaiLocalizations.of(context)!
+                                .homePageBalanceDefaultPlaceholder,
+                        style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                            fontWeight: FontWeight.w400,
+                            height: 1,
+                            color: HomsaiColors.primaryWhite),
+                      ),
+                    ],
+                  )
+                ],
+              ),
             ),
-          ),
-        ),
-      ),
+          )),
     );
   }
 }
@@ -565,130 +534,78 @@ Widget earnWithHomsaiDialogContent(BuildContext context) {
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        ...generateEarnWithHomsaiParagraph(
+        ...dialogParagraph(
           HomsaiLocalizations.of(context)!
               .homePageEarnWithHomesaiDialogP1Content,
           title: HomsaiLocalizations.of(context)!
               .homePageEarnWithHomesaiDialogP1Title,
         ),
-        ...generateEarnWithHomsaiParagraph(
+        ...dialogParagraph(
           HomsaiLocalizations.of(context)!
               .homePageEarnWithHomesaiDialogP2Content,
           title: HomsaiLocalizations.of(context)!
               .homePageEarnWithHomesaiDialogP2Title,
         ),
-        ...generateEarnWithHomsaiParagraph(
+        ...dialogParagraph(
           HomsaiLocalizations.of(context)!
               .homePageEarnWithHomesaiDialogP3Content,
           title: HomsaiLocalizations.of(context)!
               .homePageEarnWithHomesaiDialogP3Title,
         ),
-        ...generateEarnWithHomsaiParagraph(
+        ...dialogParagraph(
             HomsaiLocalizations.of(context)!
                 .homePageEarnWithHomesaiDialogP4Content,
             title: HomsaiLocalizations.of(context)!
                 .homePageEarnWithHomesaiDialogP4Title,
             removeBottomPadding: true),
-        generateEarnWithHomsaiBulletListItem(
-            HomsaiColors.primaryGreen,
-            HomsaiLocalizations.of(context)!
-                .dailyCosumptionChartLegendaSolarPanels,
-            HomsaiLocalizations.of(context)!
-                .homePageEarnWithHomesaiDialogBulletListContent1),
-        generateEarnWithHomsaiBulletListItem(
-            HomsaiColors.primaryYellow,
-            HomsaiLocalizations.of(context)!
-                .dailyCosumptionChartLegendaConsumption,
-            HomsaiLocalizations.of(context)!
-                .homePageEarnWithHomesaiDialogBulletListContent2),
-        ...generateEarnWithHomsaiParagraph(
+        bulletListItem(
+          HomsaiLocalizations.of(context)!
+              .dailyCosumptionChartLegendaSolarPanels,
+          HomsaiLocalizations.of(context)!
+              .homePageEarnWithHomesaiDialogBulletListContent1,
+          color: HomsaiColors.primaryGreen,
+        ),
+        bulletListItem(
+          HomsaiLocalizations.of(context)!
+              .dailyCosumptionChartLegendaConsumption,
+          HomsaiLocalizations.of(context)!
+              .homePageEarnWithHomesaiDialogBulletListContent2,
+          color: HomsaiColors.primaryYellow,
+        ),
+        ...dialogParagraph(
             HomsaiLocalizations.of(context)!
                 .homePageEarnWithHomesaiDialogP5Content,
             removeBottomPadding: true),
-        generateEarnWithHomsaiBulletListItem(
-            HomsaiColors.primaryGreen,
+        bulletListItem(
             HomsaiLocalizations.of(context)!
                 .dailyCosumptionChartLegendaAvailable,
             HomsaiLocalizations.of(context)!
-                .homePageEarnWithHomesaiDialogBulletListContent3),
-        generateEarnWithHomsaiBulletListItem(
-            HomsaiColors.primaryBlue,
-            HomsaiLocalizations.of(context)!
-                .dailyCosumptionChartLegendaSelfConsumption,
-            HomsaiLocalizations.of(context)!
-                .homePageEarnWithHomesaiDialogBulletListContent4),
-        generateEarnWithHomsaiBulletListItem(
-            HomsaiColors.primaryRed,
-            HomsaiLocalizations.of(context)!
-                .dailyCosumptionChartLegendaSelfPurchased,
-            HomsaiLocalizations.of(context)!
-                .homePageEarnWithHomesaiDialogBulletListContent5),
+                .homePageEarnWithHomesaiDialogBulletListContent3,
+            color: HomsaiColors.primaryGreen),
+        bulletListItem(
+          HomsaiLocalizations.of(context)!
+              .dailyCosumptionChartLegendaSelfConsumption,
+          HomsaiLocalizations.of(context)!
+              .homePageEarnWithHomesaiDialogBulletListContent4,
+          color: HomsaiColors.primaryBlue,
+        ),
+        bulletListItem(
+          HomsaiLocalizations.of(context)!
+              .dailyCosumptionChartLegendaSelfPurchased,
+          HomsaiLocalizations.of(context)!
+              .homePageEarnWithHomesaiDialogBulletListContent5,
+          color: HomsaiColors.primaryRed,
+        ),
         const SizedBox(height: 15),
-        ...generateEarnWithHomsaiParagraph(
+        ...dialogParagraph(
             HomsaiLocalizations.of(context)!
                 .homePageEarnWithHomesaiDialogP6Content,
             removeBottomPadding: true),
-        ...generateEarnWithHomsaiParagraph(HomsaiLocalizations.of(context)!
+        ...dialogParagraph(HomsaiLocalizations.of(context)!
             .homePageEarnWithHomesaiDialogP7Content),
-        ...generateEarnWithHomsaiParagraph(HomsaiLocalizations.of(context)!
+        ...dialogParagraph(HomsaiLocalizations.of(context)!
             .homePageEarnWithHomesaiDialogP8Content),
       ],
     ),
   );
-}
-
-List<Widget> generateEarnWithHomsaiParagraph(
-  String content, {
-  bool? removeBottomPadding,
-  String? title,
-}) {
-  return [
-    if (title != null)
-      Text(
-        title,
-        textAlign: TextAlign.left,
-        style: TextStyle(
-            color: HomsaiColors.primaryGreen, fontWeight: FontWeight.bold),
-      ),
-    const SizedBox(height: 5),
-    Text(content,
-        textAlign: TextAlign.left,
-        style: TextStyle(color: HomsaiColors.primaryWhite)),
-    if (removeBottomPadding != true) const SizedBox(height: 15),
-  ];
-}
-
-Widget generateEarnWithHomsaiBulletListItem(
-    Color color, String title, String content) {
-  return ListTile(
-      leading: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: const [
-          Bullet(),
-        ],
-      ),
-      horizontalTitleGap: -25,
-      contentPadding: const EdgeInsets.symmetric(horizontal: 10.0),
-      title: Text.rich(TextSpan(children: [
-        TextSpan(
-          text: title,
-          style: TextStyle(color: color),
-        ),
-        TextSpan(
-            text: content, style: TextStyle(color: HomsaiColors.primaryWhite)),
-      ])));
-}
-
-class Bullet extends StatelessWidget {
-  const Bullet({Key? key}) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 2.5,
-      width: 2.5,
-      decoration: BoxDecoration(
-        color: HomsaiColors.primaryWhite,
-      ),
-    );
-  }
 }

@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:homsai/crossconcern/components/common/dropdown.widget.dart';
 import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
 import 'package:homsai/crossconcern/components/common/scaffold/homsai_bloc_scaffold.widget.dart';
+import 'package:homsai/crossconcern/components/utils/bullet.widget.dart';
 import 'package:homsai/crossconcern/components/utils/month_year_field/bloc/month_year_field.bloc.dart';
 import 'package:homsai/crossconcern/components/utils/month_year_field/month_year_field.widget.dart';
 import 'package:homsai/crossconcern/helpers/blocs/websocket/websocket.bloc.dart';
@@ -360,7 +361,7 @@ class _AddSensorSubmit extends StatelessWidget {
                                 child: Text(
                                   HomsaiLocalizations.of(context)!
                                       .addSensorPopUpModify,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       color: HomsaiColors.primaryGreen),
                                 ),
                               ),

@@ -1,4 +1,5 @@
 {
+    "ok": "Ok",
     "confirm": "Conferma",
     "retry": "Riprova",
     "next": "Avanti",
@@ -120,6 +121,17 @@
 
     "dailyCosumptionChartLoadingLabel": "Recupero dati...",
     "dailyCosumptionChartErrorLabel": "Non riusciamo a recuperare i dati del grafico, controlla nelle impostazioni di aver inserito i dati corretti sui sensori.",
+
+    "photovoltaicChartTitle": "Previsione produzione energia",
+    "photovoltaicChartLegendaSolarPanels": "Fotovoltaico",
+    "photovoltaicChartDialogTitle": "Previsione produzione energia",
+    "photovoltaicChartDialogDescriptionHeadline": "Descrizione",
+    "photovoltaicChartDialogDescription": "Questo grafico mostra l’andamento della produzione di energia nelle prossime 24h.\nIn base alle prestazioni medie dell’impianto fotovoltaico Homsai stima quanta energia verrà prodotta in funzione delle previsioni meteo raccolte. Questo permette di agire per tempo sulla climatizzazione e sui consumi, favorendo l’autoconsumo piuttosto che l’acquisto di energia dalla rete.\nGrazie alla previsione di produzione energetica potrai risparmiare sui costi dell’energia.",
+    "photovoltaicChartDialogLegendaTitle": "Legenda",
+    "photovoltaicChartDialogLegendaStraightLineTitle": "Linea Continua",
+    "photovoltaicChartDialogLegendaStraightLineMessage": ": mostra la produzione delle ultime 3 ore",
+    "photovoltaicChartDialogLegendaDashedLineTitle": "Linea tratteggiata",
+    "photovoltaicChartDialogLegendaDashedLineMessage": ": mostra la previsione delle prossime 24 ore",
 
     "addSensorTitleWizard": "Configura impianto",
     "productionSensorLabel": "Produzione",

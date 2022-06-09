@@ -11,6 +11,7 @@ import 'package:homsai/business/home_assistant/home_assistant.interface.dart';
 import 'package:homsai/crossconcern/components/alerts/general_alert.widget.dart';
 import 'package:homsai/crossconcern/components/charts/daily_consumption_chart.widget.dart';
 import 'package:homsai/crossconcern/exceptions/url.exception.dart';
+import 'package:homsai/crossconcern/components/charts/photovoltaic_forecast_chart.widget.dart';
 import 'package:homsai/crossconcern/helpers/blocs/websocket/websocket.bloc.dart';
 import 'package:homsai/crossconcern/helpers/extensions/list.extension.dart';
 import 'package:homsai/crossconcern/utilities/properties/connection.properties.dart';
@@ -36,6 +37,7 @@ import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.
 import 'package:homsai/datastore/models/entity/light/light.entity.dart';
 import 'package:homsai/main.dart';
 import 'package:homsai/datastore/remote/network/network_manager.interface.dart';
+import 'package:timezone/timezone.dart';
 
 part 'home.event.dart';
 part 'home.state.dart';
@@ -175,7 +177,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     DailyPlanDto dailyPlan,
     List<LightEntity> lights,
   ) {
-    final currentHour = DateTime.now().hour;
+    final currentHour = TZDateTime.now(getIt.get<Location>()).hour;
     List<DeviceDto> currentDevicePlan =
         dailyPlan.dailyPlan[currentHour].deviceId;
 
@@ -242,17 +244,20 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     }
 
     final autoConsumption = consumptionPlot.intersect(productionPlot);
-    return autoConsumption
-        .sample(
-          autoConsumption[0].x,
-          autoConsumption[0].x + const Duration(days: 1).inMinutes,
-          10,
-        )
-        .stack(batteryPlot.sample(
-          batteryPlot[0].x,
-          batteryPlot[0].x + const Duration(days: 1).inMinutes,
-          10,
-        ));
+    autoConsumption.sample(
+      autoConsumption[0].x,
+      autoConsumption[0].x + const Duration(days: 1).inMinutes,
+      10,
+    );
+    if (batteryPlot.isNotEmpty) {
+      autoConsumption.stack(batteryPlot.sample(
+        batteryPlot[0].x,
+        batteryPlot[0].x + const Duration(days: 1).inMinutes,
+        10,
+      ));
+    }
+
+    return autoConsumption;
   }
 
   List<FlSpot> _checkCharge({
@@ -275,18 +280,20 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           )
           .stack(autoConsumption);
     } else {
-      return batteryPlot
+      final battery = batteryPlot
           .map((flSpot) => FlSpot(
                 flSpot.x,
                 min(flSpot.y, 0) * -1,
               ))
-          .toList()
-          .sample(
-            batteryPlot[0].x,
-            batteryPlot[0].x + const Duration(days: 1).inMinutes,
-            10,
-          )
-          .stack(autoConsumption);
+          .toList();
+      if (batteryPlot.isNotEmpty) {
+        battery.sample(
+          batteryPlot[0].x,
+          batteryPlot[0].x + const Duration(days: 1).inMinutes,
+          10,
+        );
+      }
+      return battery.stack(autoConsumption);
     }
   }
 
@@ -309,18 +316,31 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   ) async {
     emit(state.copyWith(isLoading: true));
     try {
-      final suggestionsChartResult =
-          await aiServiceInterface.getSuggestionsChart();
-      switch (mapSuggestionsChart[suggestionsChartResult.chart]) {
-        case GraphicTypes.pvForecast:
-          emit(state.copyWith(activeGraphicChart: GraphicTypes.pvForecast));
-          add(FetchPhotovoltaicForecast());
-          break;
-        default:
-          emit(state.copyWith(
-              activeGraphicChart: GraphicTypes.consumptionOptimizations));
-          add(FetchHistory());
-          break;
+      Plant? plant = await appDatabase.getPlant();
+      if (plant != null) {
+        GraphicTypes? chartType;
+        if (plant.canShowConsumptionOptimization) {
+          chartType = GraphicTypes.consumptionOptimizations;
+        }
+        if (plant.canShowPhotovoltaicForecast) {
+          chartType = GraphicTypes.pvForecast;
+        }
+        if (plant.canShowConsumptionOptimization &&
+            plant.canShowPhotovoltaicForecast) {
+          final suggestionsChartResult =
+              await aiServiceInterface.getSuggestionsChart();
+          chartType = mapSuggestionsChart[suggestionsChartResult.chart];
+        }
+
+        switch (chartType) {
+          case GraphicTypes.pvForecast:
+            add(FetchPhotovoltaicForecast());
+            break;
+          default:
+            add(FetchHistory());
+            break;
+        }
+        emit(state.copyWith(activeGraphicChart: chartType));
       }
     } catch (e) {
       emit(state.copyWith(isLoading: false));
@@ -504,7 +524,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   PhotovoltaicForecastInfo _parsePhotovoltaicForecastInfo(
       List<PhotovoltaicForecastDto> photovoltaicForecast) {
     final dataParsed =
-        photovoltaicForecast.map((element) => element.toSpot).toList();
+        photovoltaicForecast.map((element) => element.toSpot).where((spot) {
+      final spotTime = PhotovoltaicForecastChart.getDateTimeFromSpot(spot);
+      return spotTime
+              .isAfter(DateTime.now().subtract(const Duration(hours: 3))) &&
+          spotTime.isBefore(DateTime.now().add(const Duration(hours: 27)));
+    }).toList();
 
     return PhotovoltaicForecastInfo(
       data: dataParsed,
