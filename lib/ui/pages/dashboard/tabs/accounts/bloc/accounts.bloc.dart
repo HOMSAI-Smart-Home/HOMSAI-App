@@ -104,7 +104,8 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
     if (initialState == null) return;
     await _onAutocomplete(Autocomplete(), emit);
     if (initialState!.consumptionSensor != state.consumptionSensor ||
-        initialState!.productionSensor != state.productionSensor) {
+        initialState!.productionSensor != state.productionSensor ||
+        initialState!.batterySensor != state.batterySensor) {
       _resetPlot();
     }
   }
@@ -117,5 +118,6 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
     appPreferences.resetConsumptionInfo();
     appPreferences.resetOptimizationForecast();
     appPreferences.resetProductionInfo();
+    appPreferences.resetBatteryInfo();
   }
 }
