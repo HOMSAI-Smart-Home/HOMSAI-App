@@ -11,7 +11,7 @@ PhotovoltaicForecastBodyDto _$PhotovoltaicForecastBodyDtoFromJson(
     PhotovoltaicForecastBodyDto(
       (json['kwp'] as num).toDouble(),
       json['plant_life_days'] as int,
-      days: json['days'] as int? ?? 2,
+      days: json['days'] as int? ?? 3,
       latitude: (json['lat'] as num).toDouble(),
       longitude: (json['lng'] as num).toDouble(),
     );

@@ -318,7 +318,8 @@ class HomeAssistantWebSocketRepository
       );
     } catch (e) {
       if ((e is SocketException || e is TimeoutException) &&
-          status != HomeAssistantWebSocketStatus.error) {
+              status != HomeAssistantWebSocketStatus.error &&
+          status != HomeAssistantWebSocketStatus.disconnected) {
         return retry != null
             ? await retry(UrlException(e.toString()))
             : await _retry(url, UrlException(e.toString()));
@@ -337,6 +338,7 @@ class HomeAssistantWebSocketRepository
         return;
       }
     }
+    status = HomeAssistantWebSocketStatus.error;
     if (_onUrlException != null) _onUrlException!(e);
   }
 

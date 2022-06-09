@@ -53,7 +53,7 @@ class HomsaiThemeData {
         scaffoldBackgroundColor: colorScheme.background,
         highlightColor: Colors.transparent,
         focusColor: focusColor,
-        textSelectionTheme: TextSelectionThemeData(
+        textSelectionTheme: const TextSelectionThemeData(
           cursorColor: HomsaiColors.primaryWhite,
         ),
         scrollbarTheme: ScrollbarThemeData(
@@ -61,7 +61,7 @@ class HomsaiThemeData {
         ));
   }
 
-  static ColorScheme lightColorScheme = ColorScheme(
+  static ColorScheme lightColorScheme = const ColorScheme(
     primary: HomsaiColors.primaryGreen,
     secondary: HomsaiColors.secondaryGreen,
     background: HomsaiColors.primaryBlack,

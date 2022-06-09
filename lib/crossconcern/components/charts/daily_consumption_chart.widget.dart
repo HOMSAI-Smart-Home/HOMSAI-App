@@ -69,7 +69,7 @@ class DailyConsumptionChart extends StatelessWidget {
                 children: [
                   Text(
                     HomsaiLocalizations.of(context)!.dailyCosumptionChartPower,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: HomsaiColors.primaryGrey,
                       fontSize: 9,
                     ),
@@ -172,7 +172,7 @@ class DailyConsumptionChart extends StatelessWidget {
   }
 
   Widget bottomTitleWidgets(double value, TitleMeta meta) {
-    TextStyle style = TextStyle(color: HomsaiColors.primaryWhite, fontSize: 10);
+    TextStyle style = const TextStyle(color: HomsaiColors.primaryWhite, fontSize: 10);
     int hour = (value.toInt() ~/ 60);
     String time = canShowBottomTitle(value.toInt()) ? "$hour:00" : '';
     return Padding(
@@ -191,7 +191,7 @@ class DailyConsumptionChart extends StatelessWidget {
       );
 
   Widget leftTitleWidgets(double value, TitleMeta meta) {
-    TextStyle style = TextStyle(
+    TextStyle style = const TextStyle(
       color: HomsaiColors.primaryGrey,
       fontWeight: FontWeight.bold,
       fontSize: 9,
@@ -210,7 +210,7 @@ class DailyConsumptionChart extends StatelessWidget {
           top: BorderSide(
             color: HomsaiColors.primaryGrey.withOpacity(0.5),
           ),
-          bottom: BorderSide(
+          bottom: const BorderSide(
             width: 2.0,
             color: HomsaiColors.primaryWhite,
           ),

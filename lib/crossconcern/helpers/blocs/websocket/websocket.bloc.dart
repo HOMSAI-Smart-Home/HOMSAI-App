@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:homsai/crossconcern/exceptions/token.exception.dart';
 import 'package:homsai/crossconcern/exceptions/url.exception.dart';
 import 'package:homsai/crossconcern/helpers/extensions/list.extension.dart';
@@ -10,6 +12,8 @@ import 'package:homsai/datastore/local/app.database.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.dart';
 import 'package:homsai/datastore/models/area/base.area.dart';
 import 'package:homsai/datastore/models/entity/base/base.entity.dart';
+import 'package:homsai/datastore/remote/network/network.manager.dart';
+import 'package:homsai/datastore/remote/network/network_manager.interface.dart';
 import 'package:homsai/datastore/remote/websocket/home_assistant_websocket.interface.dart';
 import 'package:homsai/datastore/remote/websocket/home_assistant_websocket.repository.dart';
 import 'package:homsai/main.dart';
@@ -64,6 +68,35 @@ class WebSocketBloc extends Bloc<WebSocketEvent, WebSocketState> {
     }, onGenericException: (e) {
       throw e;
     });
+
+    final networkManagerInterface = getIt.get<NetworkManagerInterface>();
+    networkManagerInterface.subscribe(NetworkManagerSubscriber(
+      (state) async {
+        switch (state) {
+          case ConnectivityResult.wifi:
+          case ConnectivityResult.ethernet:
+          case ConnectivityResult.mobile:
+            final _homsaiDatabase = getIt.get<HomsaiDatabase>();
+            final plant = await _homsaiDatabase.getPlant();
+
+            if (plant != null) {
+              await _onWebsocketConnect(
+                ConnectWebSocket(onWebSocketConnected: () {
+                  if (kDebugMode) {
+                    print('#### $isConnected');
+                  }
+                }),
+                null,
+              );
+            }
+
+            break;
+          case ConnectivityResult.bluetooth:
+          case ConnectivityResult.none:
+            _webSocketInterface.logout();
+        }
+      },
+    ));
   }
 
   bool get isConnected => _webSocketInterface.isConnected();
@@ -82,9 +115,9 @@ class WebSocketBloc extends Bloc<WebSocketEvent, WebSocketState> {
     super.onTransition(transition);
   }
 
-  void _onWebsocketConnect(
+  Future<void> _onWebsocketConnect(
     ConnectWebSocket event,
-    Emitter<WebSocketState> emit,
+    Emitter<WebSocketState>? emit,
   ) async {
     try {
       await _webSocketInterface.connect(

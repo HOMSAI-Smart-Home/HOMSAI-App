@@ -12,7 +12,6 @@ import 'package:homsai/crossconcern/helpers/blocs/websocket/websocket.bloc.dart'
 import 'package:homsai/datastore/models/entity/sensors/mesurable/mesurable_sensor.entity.dart';
 import 'package:homsai/themes/colors.theme.dart';
 import 'package:homsai/ui/pages/add_sensor/bloc/add_sensor.bloc.dart';
-import 'package:homsai/ui/pages/dashboard/tabs/home/home.page.dart';
 
 class AddSensorPage extends StatefulWidget {
   final void Function(bool) onResult;
@@ -320,7 +319,7 @@ class _AddSensorSubmit extends StatelessWidget {
                   children: [
                     Text(
                       HomsaiLocalizations.of(context)!.addSensorPopUpTitle,
-                      style: TextStyle(color: HomsaiColors.primaryWhite),
+                      style: const TextStyle(color: HomsaiColors.primaryWhite),
                     ),
                   ],
                 ),

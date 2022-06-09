@@ -118,7 +118,7 @@ class _DeviceState extends State<Device> {
                                 ? RichText(
                                     text: TextSpan(
                                       children: [
-                                        WidgetSpan(
+                                        const WidgetSpan(
                                           child: Icon(
                                             Icons.house,
                                             size: 20,
