@@ -145,20 +145,19 @@ class _AppState extends State<App> with WidgetsBindingObserver {
 
   @override
   void initState() {
-    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding?.instance?.addObserver(this);
     super.initState();
   }
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
+    WidgetsBinding?.instance?.removeObserver(this);
     _logout();
     super.dispose();
   }
 
   void _logout() {
-    if (_webSocketInterface.isConnected ||
-        _webSocketInterface.isConnecting) {
+    if (_webSocketInterface.isConnected || _webSocketInterface.isConnecting) {
       _webSocketInterface.logout();
     }
   }
