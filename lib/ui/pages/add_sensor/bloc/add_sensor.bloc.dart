@@ -30,7 +30,7 @@ class AddSensorBloc extends Bloc<AddSensorEvent, AddSensorState> {
         _onPhotovoltaicInstallatioDateChanged);
     on<BatterySensorChanged>(_onBatterySensorChanged);
     on<OnSubmit>(_onSubmit);
-    if (!webSocketRepository.isConnected()) {
+    if (!webSocketRepository.isConnected) {
       webSocketBloc.add(ConnectWebSocket(
         onWebSocketConnected: () {
           webSocketBloc.add(FetchEntities(

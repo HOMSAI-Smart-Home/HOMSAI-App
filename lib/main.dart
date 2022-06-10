@@ -157,8 +157,8 @@ class _AppState extends State<App> with WidgetsBindingObserver {
   }
 
   void _logout() {
-    if (_webSocketInterface.isConnected() ||
-        _webSocketInterface.isConnecting()) {
+    if (_webSocketInterface.isConnected ||
+        _webSocketInterface.isConnecting) {
       _webSocketInterface.logout();
     }
   }
@@ -173,8 +173,8 @@ class _AppState extends State<App> with WidgetsBindingObserver {
       switch (state) {
         case AppLifecycleState.resumed:
           if (userId != null && auth != null && plant != null) {
-            if (!_webSocketInterface.isConnected() &&
-                !_webSocketInterface.isConnecting()) {
+            if (!_webSocketInterface.isConnected &&
+                !_webSocketInterface.isConnecting) {
               _webSocketInterface.connect();
             }
           }

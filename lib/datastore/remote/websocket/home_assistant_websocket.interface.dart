@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:homsai/crossconcern/helpers/blocs/websocket/websocket.bloc.dart';
 import 'package:homsai/datastore/DTOs/websocket/configuration/configuration_body.dto.dart';
 import 'package:homsai/datastore/DTOs/websocket/device_related/device_related_body.dto.dart';
 import 'package:homsai/datastore/DTOs/websocket/error/error.dto.dart';
@@ -25,8 +26,9 @@ abstract class WebSocketSubscribersHandlerInterface {
 }
 
 abstract class HomeAssistantWebSocketInterface {
-  bool isConnected();
-  bool isConnecting();
+  bool get isConnected => false;
+  bool get isConnecting => false;
+  HomeAssistantWebSocketStatus get status => HomeAssistantWebSocketStatus.disconnected;
 
   setErrorFunction({
     required onTokenException,

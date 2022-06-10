@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
 import 'package:homsai/crossconcern/exceptions/token.exception.dart';
 import 'package:homsai/crossconcern/exceptions/url.exception.dart';
 import 'package:homsai/crossconcern/helpers/extensions/list.extension.dart';
@@ -55,6 +54,8 @@ class WebSocketBloc extends Bloc<WebSocketEvent, WebSocketState> {
   final WebSocketBlockSubscribersHandler _webSocketBlockSubscribersHandler =
       WebSocketBlockSubscribersHandler();
 
+  final List<Function> onReconnect = [];
+
   WebSocketBloc() : super(const WebSocketState()) {
     on<ConnectWebSocket>(_onWebsocketConnect);
     on<FetchConfig>(_onFetchConfig);
@@ -68,6 +69,15 @@ class WebSocketBloc extends Bloc<WebSocketEvent, WebSocketState> {
     }, onGenericException: (e) {
       throw e;
     });
+  }
+
+  bool get isConnected => _webSocketInterface.isConnected;
+  bool get isNotConnected =>
+      !_webSocketInterface.isConnected || !_webSocketInterface.isConnecting;
+  bool get isConnecting => _webSocketInterface.isConnecting;
+
+  void subscribeToReconnect(Function onReconnect) {
+    this.onReconnect.add(onReconnect);
 
     final networkManagerInterface = getIt.get<NetworkManagerInterface>();
     networkManagerInterface.subscribe(NetworkManagerSubscriber(
@@ -82,8 +92,8 @@ class WebSocketBloc extends Bloc<WebSocketEvent, WebSocketState> {
             if (plant != null) {
               await _onWebsocketConnect(
                 ConnectWebSocket(onWebSocketConnected: () {
-                  if (kDebugMode) {
-                    print('#### $isConnected');
+                  for (var element in this.onReconnect) {
+                    element();
                   }
                 }),
                 null,
@@ -98,11 +108,6 @@ class WebSocketBloc extends Bloc<WebSocketEvent, WebSocketState> {
       },
     ));
   }
-
-  bool get isConnected => _webSocketInterface.isConnected();
-  bool get isNotConnected =>
-      !_webSocketInterface.isConnected() || !_webSocketInterface.isConnecting();
-  bool get isConnecting => _webSocketInterface.isConnecting();
 
   void subscribeToExeption(Type type, void Function() subscriber) =>
       _webSocketBlockSubscribersHandler.subscribe(type, subscriber);

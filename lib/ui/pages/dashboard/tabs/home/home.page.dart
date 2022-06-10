@@ -7,6 +7,7 @@ import 'package:homsai/crossconcern/components/utils/dialog.widget.dart';
 import 'package:homsai/crossconcern/components/utils/shadow.widget.dart';
 import 'package:homsai/crossconcern/components/utils/toggle_text.widget.dart';
 import 'package:homsai/crossconcern/helpers/blocs/websocket/websocket.bloc.dart';
+import 'package:homsai/crossconcern/utilities/properties/connection.properties.dart';
 import 'package:homsai/crossconcern/utilities/properties/constants.util.dart';
 import 'package:homsai/datastore/DTOs/remote/ai_service/forecast/consumption_optimizations/consumption_optimizations_forecast.dto.dart';
 import 'package:homsai/themes/colors.theme.dart';
@@ -30,13 +31,21 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     context.read<WebSocketBloc>().add(ConnectWebSocket(
       onWebSocketConnected: () {
         if (mounted) {
+          context.read<HomeBloc>().add(const RemoveAlert(
+              ConnectionProperties.noHomeAssistantConnectionAlertKey));
           context.read<HomeBloc>().add(FetchStates());
+          context.read<HomeBloc>().add(FetchSuggestionsChart());
         }
-        //context.read<HomeBloc>().add(FetchHistory());
       },
     ));
 
-    context.read<HomeBloc>().add(FetchSuggestionsChart());
+    context.read<WebSocketBloc>().subscribeToReconnect((){
+      context.read<HomeBloc>().add(const RemoveAlert(
+              ConnectionProperties.noHomeAssistantConnectionAlertKey));
+          context.read<HomeBloc>().add(FetchStates());
+          context.read<HomeBloc>().add(FetchSuggestionsChart());
+    });
+
     super.initState();
   }
 

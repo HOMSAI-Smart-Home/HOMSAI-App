@@ -84,9 +84,10 @@ class HomeAssistantWebSocketRepository
   WebSocketChannel? webSocket;
   HomeAssistantAuth? homeAssistantAuth;
   int id = 2;
-  HomeAssistantWebSocketStatus status =
+  HomeAssistantWebSocketStatus _status =
       HomeAssistantWebSocketStatus.disconnected;
   final List<String> _message = [];
+  final List<String> _authMessage = [];
 
   Plant? _plant;
 
@@ -111,15 +112,15 @@ class HomeAssistantWebSocketRepository
   }
 
   @override
-  bool isConnected() {
-    return status == HomeAssistantWebSocketStatus.connected;
-  }
+  bool get isConnected => _status == HomeAssistantWebSocketStatus.connected;
 
   @override
-  bool isConnecting() {
-    return status == HomeAssistantWebSocketStatus.connecting ||
-        status == HomeAssistantWebSocketStatus.retry;
-  }
+  bool get isConnecting =>
+      _status == HomeAssistantWebSocketStatus.connecting ||
+      _status == HomeAssistantWebSocketStatus.retry;
+  
+  @override
+  HomeAssistantWebSocketStatus get status => _status;
 
   @override
   Future<void> connect({
@@ -127,22 +128,22 @@ class HomeAssistantWebSocketRepository
     Uri? fallback,
     Function? onConnected,
   }) async {
-    if (isConnected()) {
+    if (isConnected) {
       if (onConnected != null) onConnected();
       return;
     }
     if (onConnected != null) this.onConnected.add(onConnected);
-    if (isConnecting()) return;
+    if (isConnecting) return;
 
-    status = HomeAssistantWebSocketStatus.connecting;
+    _status = HomeAssistantWebSocketStatus.connecting;
 
     if (baseUrl != null) {
       return await _listen(
         baseUrl,
         retry: (exeption) async {
           if (fallback != null &&
-              status != HomeAssistantWebSocketStatus.retry) {
-            status = HomeAssistantWebSocketStatus.retry;
+              _status != HomeAssistantWebSocketStatus.retry) {
+            _status = HomeAssistantWebSocketStatus.retry;
             if (_message.isNotEmpty) _message.removeAt(0);
             await _listen(fallback);
             return;
@@ -195,8 +196,8 @@ class HomeAssistantWebSocketRepository
       scheme: scheme,
     );
 
-    _message.insert(
-      0,
+    _authMessage.clear();
+    _authMessage.add(
       jsonEncode({
         "type": "auth",
         "access_token": homeAssistantAuth!.token,
@@ -211,11 +212,11 @@ class HomeAssistantWebSocketRepository
   void _auth(Map<String, dynamic> data) {
     switch (data["type"]) {
       case HomeAssistantApiProprties.authRequired:
-        _send(force: true);
+        _send(auth: true);
         break;
 
       case HomeAssistantApiProprties.authOk:
-        status = HomeAssistantWebSocketStatus.connected;
+        _status = HomeAssistantWebSocketStatus.connected;
         _send(flush: true);
         return;
 
@@ -244,8 +245,8 @@ class HomeAssistantWebSocketRepository
 
   Future<void> _listen(Uri url, {Function(Exception exception)? retry}) async {
     try {
-      if (status != HomeAssistantWebSocketStatus.retry) {
-        status = HomeAssistantWebSocketStatus.connecting;
+      if (_status != HomeAssistantWebSocketStatus.retry) {
+        _status = HomeAssistantWebSocketStatus.connecting;
       }
 
       url = await _connect(url);
@@ -269,7 +270,7 @@ class HomeAssistantWebSocketRepository
 
           data = jsonDecode(data);
 
-          switch (status) {
+          switch (_status) {
             case HomeAssistantWebSocketStatus.retry:
             case HomeAssistantWebSocketStatus.connecting:
               try {
@@ -298,8 +299,8 @@ class HomeAssistantWebSocketRepository
           }
         },
         onDone: () async {
-          if (status == HomeAssistantWebSocketStatus.connected) {
-            status = HomeAssistantWebSocketStatus.disconnected;
+          if (_status == HomeAssistantWebSocketStatus.connected) {
+            _status = HomeAssistantWebSocketStatus.disconnected;
             await Future.delayed(const Duration(seconds: 1));
             await _listen(url);
           }
@@ -313,47 +314,59 @@ class HomeAssistantWebSocketRepository
               }
             }
           }
-          status = HomeAssistantWebSocketStatus.error;
+          _status = HomeAssistantWebSocketStatus.error;
         },
       );
     } catch (e) {
       if ((e is SocketException || e is TimeoutException) &&
-              status != HomeAssistantWebSocketStatus.error &&
-          status != HomeAssistantWebSocketStatus.disconnected) {
+          _status != HomeAssistantWebSocketStatus.error &&
+          _status != HomeAssistantWebSocketStatus.disconnected) {
         return retry != null
             ? await retry(UrlException(e.toString()))
             : await _retry(url, UrlException(e.toString()));
       }
+      if (_message.isNotEmpty) _message.removeAt(0);
       if (_onGenericException != null) _onGenericException!(e as Exception);
     }
   }
 
   Future<void> _retry(Uri url, UrlException e) async {
-    if (_plant != null && status != HomeAssistantWebSocketStatus.retry) {
+    if (_plant != null && _status != HomeAssistantWebSocketStatus.retry) {
       final fallback = _plant?.getFallbackUrl();
       if (fallback != null) {
-        status = HomeAssistantWebSocketStatus.retry;
-        if (_message.isNotEmpty) _message.removeAt(0);
+        _status = HomeAssistantWebSocketStatus.retry;
         await _listen(fallback);
         return;
       }
     }
-    status = HomeAssistantWebSocketStatus.error;
+    _status = HomeAssistantWebSocketStatus.error;
     if (_onUrlException != null) _onUrlException!(e);
   }
 
   void _send({
     bool flush = false,
-    bool force = false,
+    bool auth = false,
   }) {
-    if (status != HomeAssistantWebSocketStatus.connected && !force) return;
+    if (_status != HomeAssistantWebSocketStatus.connected && !auth) return;
     FLog.error(
       className: "HomeAssistantWebSocketRepository",
       methodName: "_websocket_send",
       text: _message.toString(),
       dataLogType: DataLogType.NETWORK.toString(),
     );
-    if (!flush) return webSocket?.sink.add(_message.removeAt(0));
+    if (auth) {
+      if (_authMessage.isNotEmpty) {
+        while (_authMessage.isNotEmpty) {
+          webSocket?.sink.add(_authMessage.removeAt(0));
+        }
+      }
+      return;
+    }
+
+    if (!flush) {
+      if (_message.isNotEmpty) webSocket?.sink.add(_message.removeAt(0));
+      return;
+    }
 
     while (_message.isNotEmpty) {
       webSocket?.sink.add(_message.removeAt(0));
@@ -364,7 +377,9 @@ class HomeAssistantWebSocketRepository
   Future<void> logout() async {
     events = {};
     eventsId = {};
-    status = HomeAssistantWebSocketStatus.disconnected;
+    _authMessage.clear();
+    _message.clear();
+    _status = HomeAssistantWebSocketStatus.disconnected;
     await webSocket?.sink.close();
   }
 
