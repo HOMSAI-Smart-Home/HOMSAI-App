@@ -243,14 +243,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
               ));
     }
 
-    final autoConsumption = consumptionPlot.intersect(productionPlot);
+    var autoConsumption = consumptionPlot.intersect(productionPlot);
     autoConsumption.sample(
       autoConsumption[0].x,
       autoConsumption[0].x + const Duration(days: 1).inMinutes,
       10,
     );
     if (batteryPlot.isNotEmpty) {
-      autoConsumption.stack(batteryPlot.sample(
+      autoConsumption = autoConsumption.stack(batteryPlot.sample(
         batteryPlot[0].x,
         batteryPlot[0].x + const Duration(days: 1).inMinutes,
         10,
