@@ -34,7 +34,7 @@ Map<String, dynamic> _$BinarySensorEntityToJson(BinarySensorEntity instance) =>
 BinarySensorAttributes _$BinarySensorAttributesFromJson(
         Map<String, dynamic> json) =>
     BinarySensorAttributes(
-      json['friendly_name'] as String,
+      json['friendly_name'] as String?,
       $enumDecodeNullable(_$DeviceClassEnumMap, json['device_class'],
               unknownValue: DeviceClass.unknown) ??
           DeviceClass.unknown,

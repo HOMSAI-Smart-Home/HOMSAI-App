@@ -59,7 +59,7 @@ class MesurableSensorAttributes extends SensorAttributes {
   String? stateClass;
 
   MesurableSensorAttributes(
-    String friendlyName,
+    String? friendlyName,
     String? icon,
     DeviceClass deviceClass,
     this.unit,

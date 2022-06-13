@@ -65,7 +65,7 @@ class SensorAttributes extends Attributes {
   String? icon;
 
   SensorAttributes(
-    String friendlyName,
+    String? friendlyName,
     this.deviceClass,
     this.icon,
   ) : super(friendlyName);

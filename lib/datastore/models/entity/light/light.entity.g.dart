@@ -31,7 +31,7 @@ Map<String, dynamic> _$LightEntityToJson(LightEntity instance) =>
 
 LightAttributes _$LightAttributesFromJson(Map<String, dynamic> json) =>
     LightAttributes(
-      json['friendly_name'] as String,
+      json['friendly_name'] as String?,
     )
       ..colorMode = json['color_mode'] as String?
       ..colorTemp = json['color_temp'] as int?

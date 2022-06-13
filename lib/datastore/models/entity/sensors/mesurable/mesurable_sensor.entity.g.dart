@@ -36,7 +36,7 @@ Map<String, dynamic> _$MesurableSensorEntityToJson(
 MesurableSensorAttributes _$MesurableSensorAttributesFromJson(
         Map<String, dynamic> json) =>
     MesurableSensorAttributes(
-      json['friendly_name'] as String,
+      json['friendly_name'] as String?,
       json['icon'] as String?,
       $enumDecodeNullable(_$DeviceClassEnumMap, json['device_class'],
               unknownValue: DeviceClass.unknown) ??

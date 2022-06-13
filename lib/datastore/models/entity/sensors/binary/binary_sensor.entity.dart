@@ -24,10 +24,9 @@ class BinarySensorEntity extends SensorEntity
     this.attributes,
     DateTime lastChanged,
     DateTime lastUpdated,
-    ContextEntity context,{
+    ContextEntity context, {
     Area? area,
-    }
-  ) : super(
+  }) : super(
           entityId,
           state,
           attributes,
@@ -55,7 +54,7 @@ class BinarySensorEntity extends SensorEntity
 @JsonSerializable()
 class BinarySensorAttributes extends SensorAttributes {
   BinarySensorAttributes(
-    String friendlyName,
+    String? friendlyName,
     DeviceClass deviceClass,
     String? icon,
   ) : super(friendlyName, deviceClass, icon);

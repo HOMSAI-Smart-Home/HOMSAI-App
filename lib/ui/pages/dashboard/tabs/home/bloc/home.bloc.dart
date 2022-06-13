@@ -139,7 +139,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       DailyPlanDto dailyPlan;
       final dailyPlanCached = appPreferencesInterface.getDailyPlan();
       if (dailyPlanCached != null &&
-          _checkIfDateIsYesterday(dailyPlanCached.dateFetched)) {
+          _checkIfDateIsSameDay(dailyPlanCached.dateFetched)) {
         dailyPlan = dailyPlanCached.dailyPlan;
       } else {
         DateTime today = DateTime.now();
@@ -306,6 +306,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   bool _checkIfDateIsYesterday(DateTime date) {
     // Check if the forecast date is yesterday
     var yesterday = DateTime.now().subtract(const Duration(days: 1));
+    yesterday = DateTime(yesterday.year, yesterday.month, yesterday.day);
+    return date.isAtSameMomentAs(yesterday);
+  }
+
+  bool _checkIfDateIsSameDay(DateTime date) {
+    // Check if the forecast date is yesterday
+    var yesterday = DateTime.now();
     yesterday = DateTime(yesterday.year, yesterday.month, yesterday.day);
     return date.isAtSameMomentAs(yesterday);
   }

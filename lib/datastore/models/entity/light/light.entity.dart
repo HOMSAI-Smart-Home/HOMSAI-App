@@ -22,10 +22,9 @@ class LightEntity extends Entity with TogglableEntity, EquatableMixin {
     this.attributes,
     DateTime lastChanged,
     DateTime lastUpdated,
-    ContextEntity context,{
-      Area? area,
-    }
-  ) : super(
+    ContextEntity context, {
+    Area? area,
+  }) : super(
           entityId,
           state,
           attributes,
@@ -83,7 +82,7 @@ class LightAttributes extends Attributes {
   @JsonKey(name: 'supported_features')
   int? supportedFeatures;
 
-  LightAttributes(String friendlyName) : super(friendlyName);
+  LightAttributes(String? friendlyName) : super(friendlyName);
 
   factory LightAttributes.fromJson(Map<String, dynamic> json) =>
       _$LightAttributesFromJson(json);
