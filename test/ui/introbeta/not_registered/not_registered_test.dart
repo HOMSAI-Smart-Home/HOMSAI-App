@@ -19,7 +19,7 @@ import 'package:mockito/mockito.dart';
 import 'package:test/test.dart' as test;
 import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
 
-import 'intro_beta_page_test.mocks.dart';
+import 'not_registered_test.mocks.dart';
 
 class MockIntroBetaBloc extends MockBloc<IntroBetaEvent, IntroBetaState>
     implements IntroBetaBloc {}

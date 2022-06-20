@@ -66,7 +66,7 @@ class _$AppRouter extends RootStackRouter {
           child: IntroBetaPage(
               key: args.key,
               onResult: args.onResult,
-              introBetBloc: args.introBetBloc));
+              introBetaBloc: args.introBetaBloc));
     },
     UrlUpdateRoute.name: (routeData) {
       final args = routeData.argsAs<UrlUpdateRouteArgs>();
@@ -270,28 +270,28 @@ class IntroBetaRoute extends PageRouteInfo<IntroBetaRouteArgs> {
   IntroBetaRoute(
       {Key? key,
       required void Function(bool) onResult,
-      IntroBetaBloc? introBetBloc})
+      IntroBetaBloc? introBetaBloc})
       : super(IntroBetaRoute.name,
             path: '/intro-beta',
             args: IntroBetaRouteArgs(
-                key: key, onResult: onResult, introBetBloc: introBetBloc));
+                key: key, onResult: onResult, introBetaBloc: introBetaBloc));
 
   static const String name = 'IntroBetaRoute';
 }
 
 class IntroBetaRouteArgs {
   const IntroBetaRouteArgs(
-      {this.key, required this.onResult, this.introBetBloc});
+      {this.key, required this.onResult, this.introBetaBloc});
 
   final Key? key;
 
   final void Function(bool) onResult;
 
-  final IntroBetaBloc? introBetBloc;
+  final IntroBetaBloc? introBetaBloc;
 
   @override
   String toString() {
-    return 'IntroBetaRouteArgs{key: $key, onResult: $onResult, introBetBloc: $introBetBloc}';
+    return 'IntroBetaRouteArgs{key: $key, onResult: $onResult, introBetaBloc: $introBetaBloc}';
   }
 }
 
