@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:formz/formz.dart';
 import 'package:homsai/business/ai_service/ai_service.interface.dart';
 import 'package:homsai/crossconcern/helpers/models/forms/credentials/email.model.dart';
@@ -22,7 +23,8 @@ class IntroBetaBloc extends Bloc<IntroBetaEvent, IntroBetaState> {
 
   final HomsaiDatabase appDatabase = getIt.get<HomsaiDatabase>();
 
-  IntroBetaBloc() : super(const IntroBetaState()) {
+  IntroBetaBloc({@visibleForTesting IntroBetaState? state})
+      : super(state ?? const IntroBetaState()) {
     on<EmailChanged>(_onEmailChanged);
     on<EmaiAutocomplete>(_onEmailAutocomplete);
     on<OnSubmit>(_onSubmit);
@@ -73,17 +75,15 @@ class IntroBetaBloc extends Bloc<IntroBetaEvent, IntroBetaState> {
     try {
       aiServiceAuth = await aiServiceInterface.getToken(loginBodyDto);
     } catch (e) {
-      emit(state.copyWith(
+      return emit(state.copyWith(
         introBetaStatus: IntroBetaStatus.notRegistered,
       ));
-      return;
     }
 
     if (aiServiceAuth == null) {
-      emit(state.copyWith(
+      return emit(state.copyWith(
         introBetaStatus: IntroBetaStatus.pending,
       ));
-      return;
     }
 
     appPreferencesInterface.setAiServicetToken(aiServiceAuth);

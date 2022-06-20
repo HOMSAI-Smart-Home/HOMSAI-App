@@ -63,7 +63,10 @@ class _$AppRouter extends RootStackRouter {
       final args = routeData.argsAs<IntroBetaRouteArgs>();
       return CupertinoPageX<dynamic>(
           routeData: routeData,
-          child: IntroBetaPage(key: args.key, onResult: args.onResult));
+          child: IntroBetaPage(
+              key: args.key,
+              onResult: args.onResult,
+              introBetBloc: args.introBetBloc));
     },
     UrlUpdateRoute.name: (routeData) {
       final args = routeData.argsAs<UrlUpdateRouteArgs>();
@@ -264,24 +267,31 @@ class IntroductionRouteArgs {
 /// generated route for
 /// [IntroBetaPage]
 class IntroBetaRoute extends PageRouteInfo<IntroBetaRouteArgs> {
-  IntroBetaRoute({Key? key, required void Function(bool) onResult})
+  IntroBetaRoute(
+      {Key? key,
+      required void Function(bool) onResult,
+      IntroBetaBloc? introBetBloc})
       : super(IntroBetaRoute.name,
             path: '/intro-beta',
-            args: IntroBetaRouteArgs(key: key, onResult: onResult));
+            args: IntroBetaRouteArgs(
+                key: key, onResult: onResult, introBetBloc: introBetBloc));
 
   static const String name = 'IntroBetaRoute';
 }
 
 class IntroBetaRouteArgs {
-  const IntroBetaRouteArgs({this.key, required this.onResult});
+  const IntroBetaRouteArgs(
+      {this.key, required this.onResult, this.introBetBloc});
 
   final Key? key;
 
   final void Function(bool) onResult;
 
+  final IntroBetaBloc? introBetBloc;
+
   @override
   String toString() {
-    return 'IntroBetaRouteArgs{key: $key, onResult: $onResult}';
+    return 'IntroBetaRouteArgs{key: $key, onResult: $onResult, introBetBloc: $introBetBloc}';
   }
 }
 

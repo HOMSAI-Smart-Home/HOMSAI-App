@@ -11,7 +11,13 @@ import 'package:rive/rive.dart' as rive;
 class IntroBetaPage extends StatefulWidget {
   final void Function(bool) onResult;
 
-  const IntroBetaPage({Key? key, required this.onResult}) : super(key: key);
+  const IntroBetaPage({
+    Key? key,
+    required this.onResult,
+    @visibleForTesting this.introBetaBloc,
+  }) : super(key: key);
+
+  final IntroBetaBloc? introBetaBloc;
 
   @override
   State<IntroBetaPage> createState() => _IntroBetaPageState();
@@ -23,7 +29,7 @@ class _IntroBetaPageState extends State<IntroBetaPage> {
     return HomsaiBlocScaffold(
       providers: [
         BlocProvider<IntroBetaBloc>(
-          create: (_) => IntroBetaBloc(),
+          create: (_) => widget.introBetaBloc ?? IntroBetaBloc(),
         ),
       ],
       mainAxisAlignment: MainAxisAlignment.center,

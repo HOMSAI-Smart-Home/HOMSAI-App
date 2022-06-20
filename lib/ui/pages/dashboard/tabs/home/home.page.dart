@@ -26,7 +26,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   @override
   void initState() {
-    WidgetsBinding?.instance?.addObserver(this);
+    WidgetsBinding?.instance.addObserver(this);
 
     context.read<WebSocketBloc>().add(ConnectWebSocket(
       onWebSocketConnected: () {
@@ -51,7 +51,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   @override
   void dispose() {
-    WidgetsBinding?.instance?.removeObserver(this);
+    WidgetsBinding?.instance.removeObserver(this);
     super.dispose();
   }
 

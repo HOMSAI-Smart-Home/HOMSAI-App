@@ -13,6 +13,7 @@ import 'package:homsai/ui/pages/dashboard/tabs/accounts/accounts.page.dart';
 import 'package:homsai/ui/pages/dashboard/tabs/history/history.page.dart';
 import 'package:homsai/ui/pages/dashboard/tabs/home/home.page.dart';
 import 'package:homsai/ui/pages/dashboard/tabs/search/search.page.dart';
+import 'package:homsai/ui/pages/intro_beta/bloc/intro_beta.bloc.dart';
 import 'package:homsai/ui/pages/intro_beta/intro_beta.page.dart';
 import 'package:homsai/ui/pages/introduction/introduction.page.dart';
 import 'package:homsai/ui/pages/scan/home_assistant_scan.page.dart';
