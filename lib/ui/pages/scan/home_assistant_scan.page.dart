@@ -18,9 +18,15 @@ import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
 
 class HomeAssistantScanPage extends StatefulWidget {
   final void Function(bool) onResult;
+  final HomeAssistantScanBloc? scanBloc;
+  final DoubleUrlBloc? doubleUrlBloc;
 
-  const HomeAssistantScanPage({Key? key, required this.onResult})
-      : super(key: key);
+  const HomeAssistantScanPage({
+    Key? key,
+    required this.onResult,
+    @visibleForTesting this.scanBloc,
+    @visibleForTesting this.doubleUrlBloc,
+  }) : super(key: key);
 
   @override
   State<HomeAssistantScanPage> createState() => _HomeAssistantScanPage();
@@ -50,10 +56,11 @@ class _HomeAssistantScanPage extends State<HomeAssistantScanPage> {
     return HomsaiBlocScaffold(
       providers: [
         BlocProvider<DoubleUrlBloc>(
-          create: (_) => DoubleUrlBloc(),
+          create: (_) => widget.doubleUrlBloc ?? DoubleUrlBloc(),
         ),
         BlocProvider<HomeAssistantScanBloc>(
           create: (context) =>
+              widget.scanBloc ??
               HomeAssistantScanBloc(context.read<DoubleUrlBloc>()),
         ),
       ],

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:formz/formz.dart';
 import 'package:homsai/business/home_assistant/home_assistant.interface.dart';
 import 'package:homsai/crossconcern/components/utils/double_url/bloc/double_url.bloc.dart';
@@ -24,8 +25,10 @@ class HomeAssistantScanBloc
   StreamSubscription<String>? _scanSubscription;
   DoubleUrlBloc doubleUrlBloc;
 
-  HomeAssistantScanBloc(this.doubleUrlBloc)
-      : super(const HomeAssistantScanState()) {
+  HomeAssistantScanBloc(
+    this.doubleUrlBloc, {
+    @visibleForTesting HomeAssistantScanState? state,
+  }) : super(state ?? const HomeAssistantScanState()) {
     on<ScanPressed>(_onScanPressed, transformer: restartable());
     on<ManualUrlPressed>(_onManualUrlPressed);
     on<UrlSelected>(_onUrlSelected);

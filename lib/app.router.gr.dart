@@ -25,7 +25,11 @@ class _$AppRouter extends RootStackRouter {
       final args = routeData.argsAs<HomeAssistantScanRouteArgs>();
       return CupertinoPageX<dynamic>(
           routeData: routeData,
-          child: HomeAssistantScanPage(key: args.key, onResult: args.onResult));
+          child: HomeAssistantScanPage(
+              key: args.key,
+              onResult: args.onResult,
+              scanBloc: args.scanBloc,
+              doubleUrlBloc: args.doubleUrlBloc));
     },
     AddPlantRoute.name: (routeData) {
       final args = routeData.argsAs<AddPlantRouteArgs>();
@@ -125,24 +129,37 @@ class _$AppRouter extends RootStackRouter {
 /// generated route for
 /// [HomeAssistantScanPage]
 class HomeAssistantScanRoute extends PageRouteInfo<HomeAssistantScanRouteArgs> {
-  HomeAssistantScanRoute({Key? key, required void Function(bool) onResult})
+  HomeAssistantScanRoute(
+      {Key? key,
+      required void Function(bool) onResult,
+      HomeAssistantScanBloc? scanBloc,
+      DoubleUrlBloc? doubleUrlBloc})
       : super(HomeAssistantScanRoute.name,
             path: '/scanner',
-            args: HomeAssistantScanRouteArgs(key: key, onResult: onResult));
+            args: HomeAssistantScanRouteArgs(
+                key: key,
+                onResult: onResult,
+                scanBloc: scanBloc,
+                doubleUrlBloc: doubleUrlBloc));
 
   static const String name = 'HomeAssistantScanRoute';
 }
 
 class HomeAssistantScanRouteArgs {
-  const HomeAssistantScanRouteArgs({this.key, required this.onResult});
+  const HomeAssistantScanRouteArgs(
+      {this.key, required this.onResult, this.scanBloc, this.doubleUrlBloc});
 
   final Key? key;
 
   final void Function(bool) onResult;
 
+  final HomeAssistantScanBloc? scanBloc;
+
+  final DoubleUrlBloc? doubleUrlBloc;
+
   @override
   String toString() {
-    return 'HomeAssistantScanRouteArgs{key: $key, onResult: $onResult}';
+    return 'HomeAssistantScanRouteArgs{key: $key, onResult: $onResult, scanBloc: $scanBloc, doubleUrlBloc: $doubleUrlBloc}';
   }
 }
 
