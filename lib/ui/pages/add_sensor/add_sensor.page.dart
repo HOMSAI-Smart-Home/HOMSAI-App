@@ -128,8 +128,8 @@ class _ProductionSensorsSelect extends StatelessWidget {
         items: state.productionSensors
             .map(
               (sensor) => DropdownMenuItem<MesurableSensorEntity>(
-                child: Text(sensor.name),
                 value: sensor,
+                child: Text(sensor.name),
               ),
             )
             .toList(),
@@ -152,8 +152,8 @@ class _ConsumptionSensorsSelect extends StatelessWidget {
         items: state.consumptionSensors
             .map(
               (sensor) => DropdownMenuItem<MesurableSensorEntity>(
-                child: Text(sensor.name),
                 value: sensor,
+                child: Text(sensor.name),
               ),
             )
             .toList(),
@@ -188,10 +188,8 @@ class _PhotovoltaicNominalPower extends StatelessWidget {
               ),
             ),
             labelText:
-            '${HomsaiLocalizations.of(context)!.photovoltaicNominalPowerLabel} ('
-              '${HomsaiLocalizations.of(context)!
-                .photovoltaicNominalPowerUnitOfMeasure})'
-                ,
+                '${HomsaiLocalizations.of(context)!.photovoltaicNominalPowerLabel} ('
+                '${HomsaiLocalizations.of(context)!.photovoltaicNominalPowerUnitOfMeasure})',
           ),
           onChanged: (value) {
             context.read<AddSensorBloc>().add(
@@ -245,8 +243,8 @@ class _BatterySensorsSelect extends StatelessWidget {
         items: state.batterySensors
             .map(
               (sensor) => DropdownMenuItem<MesurableSensorEntity>(
-                child: Text(sensor.name),
                 value: sensor,
+                child: Text(sensor.name),
               ),
             )
             .toList(),
@@ -325,6 +323,7 @@ class _AddSensorSubmit extends StatelessWidget {
                 ),
                 actions: [
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(
                         flex: 1,
@@ -332,6 +331,7 @@ class _AddSensorSubmit extends StatelessWidget {
                           onTap: () =>
                               {bloc.add(OnSubmit(() => onResult(true)))},
                           child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Padding(
                                 padding:
@@ -342,7 +342,6 @@ class _AddSensorSubmit extends StatelessWidget {
                                 ),
                               ),
                             ],
-                            mainAxisAlignment: MainAxisAlignment.center,
                           ),
                         ),
                       ),
@@ -353,6 +352,7 @@ class _AddSensorSubmit extends StatelessWidget {
                             Navigator.pop(context);
                           },
                           child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Padding(
                                 padding:
@@ -365,12 +365,10 @@ class _AddSensorSubmit extends StatelessWidget {
                                 ),
                               ),
                             ],
-                            mainAxisAlignment: MainAxisAlignment.center,
                           ),
                         ),
                       ),
                     ],
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   )
                 ],
               ));

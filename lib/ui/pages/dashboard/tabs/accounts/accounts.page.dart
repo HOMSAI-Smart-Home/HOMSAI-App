@@ -121,7 +121,13 @@ class _RemoteUrlButton extends StatelessWidget {
   }
 }
 
-class _ProductionSensorButton extends StatelessWidget {
+class _ProductionSensorButton extends StatefulWidget {
+  @override
+  State<_ProductionSensorButton> createState() =>
+      _ProductionSensorButtonState();
+}
+
+class _ProductionSensorButtonState extends State<_ProductionSensorButton> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AccountsBloc, AccountsState>(
@@ -132,6 +138,7 @@ class _ProductionSensorButton extends StatelessWidget {
           onTap: (context) => context.router.push(AddSensorRoute(
             onResult: (_) async {
               await context.router.pop();
+              if (!mounted) return;
               context.read<AccountsBloc>().add(SensorUpdate());
             },
             wizard: false,
@@ -142,7 +149,13 @@ class _ProductionSensorButton extends StatelessWidget {
   }
 }
 
-class _ConsumptionSensorButton extends StatelessWidget {
+class _ConsumptionSensorButton extends StatefulWidget {
+  @override
+  State<_ConsumptionSensorButton> createState() =>
+      _ConsumptionSensorButtonState();
+}
+
+class _ConsumptionSensorButtonState extends State<_ConsumptionSensorButton> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AccountsBloc, AccountsState>(
@@ -153,6 +166,7 @@ class _ConsumptionSensorButton extends StatelessWidget {
           onTap: (context) => context.router.push(AddSensorRoute(
             onResult: (_) async {
               await context.router.pop();
+              if (!mounted) return;
               context.read<AccountsBloc>().add(SensorUpdate());
             },
             wizard: false,
@@ -163,7 +177,12 @@ class _ConsumptionSensorButton extends StatelessWidget {
   }
 }
 
-class _BatterySensorButton extends StatelessWidget {
+class _BatterySensorButton extends StatefulWidget {
+  @override
+  State<_BatterySensorButton> createState() => _BatterySensorButtonState();
+}
+
+class _BatterySensorButtonState extends State<_BatterySensorButton> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AccountsBloc, AccountsState>(
@@ -174,6 +193,7 @@ class _BatterySensorButton extends StatelessWidget {
           onTap: (context) => context.router.push(AddSensorRoute(
             onResult: (_) async {
               await context.router.pop();
+              if (!mounted) return;
               context.read<AccountsBloc>().add(SensorUpdate());
             },
             wizard: false,
@@ -184,22 +204,28 @@ class _BatterySensorButton extends StatelessWidget {
   }
 }
 
-class _PhotovoltaicNominalPowerButton extends StatelessWidget {
+class _PhotovoltaicNominalPowerButton extends StatefulWidget {
+  @override
+  State<_PhotovoltaicNominalPowerButton> createState() =>
+      _PhotovoltaicNominalPowerButtonState();
+}
+
+class _PhotovoltaicNominalPowerButtonState
+    extends State<_PhotovoltaicNominalPowerButton> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AccountsBloc, AccountsState>(
       builder: (context, state) {
         return _AccountButton(
           title: HomsaiLocalizations.of(context)!.photovoltaicNominalPowerLabel,
-          caption:
-          state.photovoltaicNominalPower != null
-          ? '${state.photovoltaicNominalPower} '
-              '${HomsaiLocalizations.of(context)!
-                .photovoltaicNominalPowerUnitOfMeasure}'
-          : '-',
+          caption: state.photovoltaicNominalPower != null
+              ? '${state.photovoltaicNominalPower} '
+                  '${HomsaiLocalizations.of(context)!.photovoltaicNominalPowerUnitOfMeasure}'
+              : '-',
           onTap: (context) => context.router.push(AddSensorRoute(
             onResult: (_) async {
               await context.router.pop();
+              if (!mounted) return;
               context.read<AccountsBloc>().add(SensorUpdate());
             },
             wizard: false,
@@ -210,7 +236,13 @@ class _PhotovoltaicNominalPowerButton extends StatelessWidget {
   }
 }
 
-class _InstallationDateButton extends StatelessWidget {
+class _InstallationDateButton extends StatefulWidget {
+  @override
+  State<_InstallationDateButton> createState() =>
+      _InstallationDateButtonState();
+}
+
+class _InstallationDateButtonState extends State<_InstallationDateButton> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AccountsBloc, AccountsState>(
@@ -221,6 +253,7 @@ class _InstallationDateButton extends StatelessWidget {
           onTap: (context) => context.router.push(AddSensorRoute(
             onResult: (_) async {
               await context.router.pop();
+              if (!mounted) return;
               context.read<AccountsBloc>().add(SensorUpdate());
             },
             wizard: false,

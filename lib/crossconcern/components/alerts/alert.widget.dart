@@ -60,6 +60,7 @@ class _AlertState extends State<Alert> {
   Widget build(BuildContext context) {
     if (isClosed) return const SizedBox.shrink();
     return Theme(
+      data: getCardTheme(context, widget.type),
       child: Card(
         child: Padding(
           padding:
@@ -71,8 +72,7 @@ class _AlertState extends State<Alert> {
             children: <Widget>[
               if (widget.icon != null)
                 Padding(
-                    padding: const EdgeInsets.only(
-                        top: 5),
+                    padding: const EdgeInsets.only(top: 5),
                     child: widget.icon!),
               const SizedBox(
                 width: 8,
@@ -93,9 +93,9 @@ class _AlertState extends State<Alert> {
                           ),
                           if (widget.cancelable)
                             InkWell(
-                              child: const Icon(Icons.close_rounded),
                               onTap: widget.closeBtnAction ?? close,
                               borderRadius: BorderRadius.circular(20),
+                              child: const Icon(Icons.close_rounded),
                             ),
                         ],
                       ),
@@ -118,7 +118,6 @@ class _AlertState extends State<Alert> {
           ),
         ),
       ),
-      data: getCardTheme(context, widget.type),
     );
   }
 }

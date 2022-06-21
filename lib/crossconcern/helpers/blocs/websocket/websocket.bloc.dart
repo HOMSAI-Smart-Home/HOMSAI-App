@@ -86,8 +86,8 @@ class WebSocketBloc extends Bloc<WebSocketEvent, WebSocketState> {
           case ConnectivityResult.wifi:
           case ConnectivityResult.ethernet:
           case ConnectivityResult.mobile:
-            final _homsaiDatabase = getIt.get<HomsaiDatabase>();
-            final plant = await _homsaiDatabase.getPlant();
+            final homsaiDatabase = getIt.get<HomsaiDatabase>();
+            final plant = await homsaiDatabase.getPlant();
 
             if (plant != null) {
               await _onWebsocketConnect(

@@ -8,7 +8,6 @@
 // AutoRouteGenerator
 // **************************************************************************
 //
-// ignore_for_file: type=lint
 
 part of 'app.router.dart';
 

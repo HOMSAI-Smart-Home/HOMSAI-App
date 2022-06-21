@@ -29,7 +29,7 @@ class AIServiceRepository implements AIServiceInterface {
 
     final AiServiceAuth? token = _appPreferences.getAiServiceToken();
     if (token != null && token.token != null) {
-      headers[HttpHeaders.authorizationHeader] = 'Bearer ' + token.token!;
+      headers[HttpHeaders.authorizationHeader] = 'Bearer ${token.token!}';
     }
 
     return headers;
@@ -69,7 +69,7 @@ class AIServiceRepository implements AIServiceInterface {
     Map<String, String> headers = _getHeaders();
     headers["X-Requested-With"] = "XMLHttpRequest";
     headers[HttpHeaders.authorizationHeader] =
-        'Bearer ' + aiServiceAuth.refreshToken!;
+        'Bearer ${aiServiceAuth.refreshToken!}';
 
     Map<String, dynamic> result = await remoteInterface.get(
       Uri.parse(ApiProprties.aIServiceBaseUrl).replace(

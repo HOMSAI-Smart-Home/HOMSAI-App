@@ -3,7 +3,8 @@ class ErrorParser {
     if (error != null && error['message'] != null && error['errors'] != null) {
       String errorString = error['message'] + '\n\n';
       error['errors'].forEach((_, value) {
-        errorString += value.toString().replaceAll('[', '').replaceAll(']', '') + '.\n\n';
+        errorString +=
+            '${value.toString().replaceAll('[', '').replaceAll(']', '')}.\n\n';
       });
       throw Exception(errorString.substring(0, errorString.length - 2));
     } else if (error != null && error['message'] != null) {

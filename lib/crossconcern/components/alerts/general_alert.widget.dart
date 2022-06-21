@@ -13,7 +13,7 @@ class NoInternetConnectionAlert extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _homeBloc = BlocProvider.of<HomeBloc>(context);
+    final homeBloc = BlocProvider.of<HomeBloc>(context);
     return Alert(AlertType.error,
         key: key,
         icon: SvgPicture.asset(
@@ -21,8 +21,7 @@ class NoInternetConnectionAlert extends StatelessWidget {
           color: HomsaiColors.primaryRed,
         ),
         title: Text(
-          HomsaiLocalizations.of(context)!
-              .alertNoInternetConnectionAlertTitle,
+          HomsaiLocalizations.of(context)!.alertNoInternetConnectionAlertTitle,
           style: Theme.of(context).textTheme.headline3,
         ),
         message: SuperRichText(
@@ -31,7 +30,7 @@ class NoInternetConnectionAlert extends StatelessWidget {
           style: Theme.of(context).textTheme.bodyText2,
         ),
         closeBtnAction: () => {
-              _homeBloc.add(const RemoveAlert(
+              homeBloc.add(const RemoveAlert(
                   ConnectionProperties.noInternetConnectionAlertKey))
             });
   }
@@ -42,7 +41,7 @@ class NoHomeAssistantConnectionAlert extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _homeBloc = BlocProvider.of<HomeBloc>(context);
+    final homeBloc = BlocProvider.of<HomeBloc>(context);
     return Alert(AlertType.error,
         key: key,
         icon: SvgPicture.asset(
@@ -60,7 +59,7 @@ class NoHomeAssistantConnectionAlert extends StatelessWidget {
           style: Theme.of(context).textTheme.bodyText2,
         ),
         closeBtnAction: () => {
-              _homeBloc.add(const RemoveAlert(
+              homeBloc.add(const RemoveAlert(
                   ConnectionProperties.noInternetConnectionAlertKey))
             });
   }

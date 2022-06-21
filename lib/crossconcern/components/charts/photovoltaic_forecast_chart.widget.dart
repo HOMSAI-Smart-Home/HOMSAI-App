@@ -87,8 +87,8 @@ class PhotovoltaicForecastChart extends StatelessWidget {
                       child: ShowDialog(
                           title: HomsaiLocalizations.of(context)!
                               .photovoltaicChartTitle,
-                          child: SvgPicture.asset("assets/icons/help.svg"),
-                          content: photovoltaicDialogContent),
+                          content: photovoltaicDialogContent,
+                          child: SvgPicture.asset("assets/icons/help.svg")),
                     ),
                   ),
                 ],
@@ -255,11 +255,11 @@ class PhotovoltaicForecastChart extends StatelessWidget {
         24;
     String time = canShowBottomTitle(value) ? "$hour:00" : '';
     return Padding(
+        padding: const EdgeInsets.only(top: 10.0),
         child: Text(
           time,
           style: style,
-        ),
-        padding: const EdgeInsets.only(top: 10.0));
+        ));
   }
 
   int getHourFromX(double value) {

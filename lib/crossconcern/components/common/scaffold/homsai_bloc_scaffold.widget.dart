@@ -31,10 +31,10 @@ class HomsaiBlocScaffold extends StatefulWidget {
   final Widget? bottomSheet;
 
   @override
-  _HomsaiBlocScaffoldState createState() => _HomsaiBlocScaffoldState();
+  HomsaiBlocScaffoldState createState() => HomsaiBlocScaffoldState();
 }
 
-class _HomsaiBlocScaffoldState extends State<HomsaiBlocScaffold> {
+class HomsaiBlocScaffoldState extends State<HomsaiBlocScaffold> {
   late Image homeAssistanLogo;
 
   @override

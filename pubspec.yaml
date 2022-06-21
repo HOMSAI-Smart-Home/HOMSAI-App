@@ -43,7 +43,7 @@ dependencies:
   http: ^0.13.4
   flutter_localized_locales: ^2.0.3
   flutter_native_splash: ^2.1.0
-  rive: ^0.8.1
+  rive: ^0.9.0
   rxdart: ^0.27.3
   bloc: ^8.0.3
   flutter_bloc: ^8.0.1
@@ -55,8 +55,8 @@ dependencies:
   package_info_plus: ^1.4.0
   bloc_concurrency: ^0.2.0
   web_socket_channel: ^2.1.0
-  auto_route: ^3.2.4
-  fl_chart: ^0.50.0
+  auto_route: ^4.0.1
+  fl_chart: ^0.55.0
   json_serializable: ^6.1.5
   connectivity_plus: ^2.2.1
   floor: ^1.2.0
@@ -71,6 +71,7 @@ dependencies:
   f_logs: ^2.0.1
   bloc_test: ^9.0.3
   mockito: ^5.2.0
+  json_annotation: ^4.5.0
 
 dev_dependencies:
   flutter_test:
@@ -81,9 +82,9 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^1.0.0
+  flutter_lints: ^2.0.1
 
-  auto_route_generator: ^3.2.3
+  auto_route_generator: ^4.0.0
   floor_generator: ^1.2.0
   build_runner: ^2.1.2
   flutter_launcher_icons:

@@ -172,15 +172,16 @@ class DailyConsumptionChart extends StatelessWidget {
   }
 
   Widget bottomTitleWidgets(double value, TitleMeta meta) {
-    TextStyle style = const TextStyle(color: HomsaiColors.primaryWhite, fontSize: 10);
+    TextStyle style =
+        const TextStyle(color: HomsaiColors.primaryWhite, fontSize: 10);
     int hour = (value.toInt() ~/ 60);
     String time = canShowBottomTitle(value.toInt()) ? "$hour:00" : '';
     return Padding(
+        padding: const EdgeInsets.only(top: 10.0),
         child: Text(
           time,
           style: style,
-        ),
-        padding: const EdgeInsets.only(top: 10.0));
+        ));
   }
 
   SideTitles get leftTitles => SideTitles(

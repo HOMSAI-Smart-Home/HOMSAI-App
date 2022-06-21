@@ -84,12 +84,20 @@ AppBar _dashboardAppBar(context) {
       ]);
 }
 
-class _DashboardAppBarLeading extends StatelessWidget {
+class _DashboardAppBarLeading extends StatefulWidget {
+  @override
+  State<_DashboardAppBarLeading> createState() =>
+      _DashboardAppBarLeadingState();
+}
+
+class _DashboardAppBarLeadingState extends State<_DashboardAppBarLeading> {
   @override
   Widget build(BuildContext context) {
     return IconButton(
       onPressed: () async {
         await context.router.push(const AccountsRoute());
+
+        if (!mounted) return;
 
         context.read<HomeBloc>().add(const RemoveAlert(
             ConnectionProperties.noInternetConnectionAlertKey));
@@ -268,6 +276,7 @@ class _DashboardBottomNavigationBarState
   @override
   Widget build(BuildContext context) {
     return Shadow(
+      offset: const Offset(0, -5),
       child: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         items: buildBottomNavigationBarItems(),
@@ -280,7 +289,6 @@ class _DashboardBottomNavigationBarState
         showUnselectedLabels: false,
         iconSize: 32,
       ),
-      offset: const Offset(0, -5),
     );
   }
 }

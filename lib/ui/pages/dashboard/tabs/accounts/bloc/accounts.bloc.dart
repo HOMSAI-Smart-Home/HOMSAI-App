@@ -71,9 +71,8 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
       photovoltaicInstallationDate:
           '${plant.photovoltaicInstallationDate?.month ?? '-'}/${plant.photovoltaicInstallationDate?.year ?? '-'}',
       plantName: plant.name,
-      position: (plant.latitude).toStringAsFixed(5) +
-          ', ' +
-          (plant.longitude).toStringAsFixed(5),
+      position:
+          '${(plant.latitude).toStringAsFixed(5)}, ${(plant.longitude).toStringAsFixed(5)}',
       email: user.email,
       version: appVersion,
     );

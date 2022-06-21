@@ -51,7 +51,7 @@ class HomeAssistantRepository implements HomeAssistantInterface {
 
     final HomeAssistantAuth? token = appPreferences.getHomeAssistantToken();
     if (token != null) {
-      headers['Authorization'] = 'Bearer ' + token.token;
+      headers['Authorization'] = 'Bearer ${token.token}';
     }
 
     return headers;
@@ -259,13 +259,13 @@ class HomeAssistantRepository implements HomeAssistantInterface {
     Map<String, dynamic> response;
 
     final baseUrl = plant.getBaseUrl().replace(
-          path: HomeAssistantApiProprties.historyPath +
-              "/${historyBodyDto?.start?.toIso8601String() ?? ""}",
+          path:
+              "${HomeAssistantApiProprties.historyPath}/${historyBodyDto?.start?.toIso8601String() ?? ""}",
           queryParameters: historyBodyDto?.toJson(),
         );
     final fallback = plant.getFallbackUrl()?.replace(
-          path: HomeAssistantApiProprties.historyPath +
-              "/${historyBodyDto?.start?.toIso8601String() ?? ""}",
+          path:
+              "${HomeAssistantApiProprties.historyPath}/${historyBodyDto?.start?.toIso8601String() ?? ""}",
           queryParameters: historyBodyDto?.toJson(),
         );
 
@@ -290,16 +290,14 @@ class HomeAssistantRepository implements HomeAssistantInterface {
     Map<String, dynamic> response;
 
     final baseUrl = plant.getBaseUrl().replace(
-          path: HomeAssistantApiProprties.logbookPath +
-              '/' +
-              (start?.toIso8601String() ?? ""),
+          path:
+              '${HomeAssistantApiProprties.logbookPath}/${start?.toIso8601String() ?? ""}',
           queryParameters: logbookBodyDto?.toJson(),
         );
 
     final fallback = plant.getFallbackUrl()?.replace(
-          path: HomeAssistantApiProprties.logbookPath +
-              '/' +
-              (start?.toIso8601String() ?? ""),
+          path:
+              '${HomeAssistantApiProprties.logbookPath}/${start?.toIso8601String() ?? ""}',
           queryParameters: logbookBodyDto?.toJson(),
         );
 

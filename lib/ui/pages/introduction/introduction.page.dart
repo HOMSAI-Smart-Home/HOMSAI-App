@@ -26,7 +26,6 @@ class _IntroductionPageState extends State<IntroductionPage> {
     return HomsaiScaffold(
       resizeToAvoidBottomInset: true,
       padding: EdgeInsets.zero,
-      child: _Steps(widget.onResult, widget.page),
       appBar: AppBar(
         systemOverlayStyle: SystemUiOverlayStyle(
           statusBarColor: HomsaiColors.primaryGreen,
@@ -40,6 +39,7 @@ class _IntroductionPageState extends State<IntroductionPage> {
           const Spacer()
         ]),
       ),
+      child: _Steps(widget.onResult, widget.page),
     );
   }
 }
@@ -58,23 +58,23 @@ class _Steps extends StatelessWidget {
           color: const Color(0xff56bb76),
           width: MediaQuery.of(context).size.width,
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Padding(
+                padding: const EdgeInsets.only(top: 16, bottom: 16),
                 child: SvgPicture.asset(_GetTextFromPage.imgPath(page),
                     height: 188),
-                padding: const EdgeInsets.only(top: 16, bottom: 16),
               )
             ],
-            mainAxisAlignment: MainAxisAlignment.center,
           ),
         ),
         Shadow(
+          offset: const Offset(0, 5),
           child: SvgPicture.asset(
             "assets/icons/banner.svg",
             width: MediaQuery.of(context).size.width,
             fit: BoxFit.fill,
           ),
-          offset: const Offset(0, 5),
         ),
         _TextPadding(onResult, page),
         Align(
@@ -112,10 +112,8 @@ class _TextPadding extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Row(children: [
-              Text(
-                _GetTextFromPage.getTitle(page, context),
-                style: Theme.of(context).textTheme.headline1
-              )
+              Text(_GetTextFromPage.getTitle(page, context),
+                  style: Theme.of(context).textTheme.headline1)
             ]),
             const SizedBox(
               height: 13,
@@ -287,8 +285,7 @@ class _HomeAssistantSuperRichText extends StatelessWidget {
         style: Theme.of(context).textTheme.bodyText1,
         othersMarkers: [
           MarkerText(
-              marker: '*',
-              style: const TextStyle(fontWeight: FontWeight.w700)),
+              marker: '*', style: const TextStyle(fontWeight: FontWeight.w700)),
           MarkerText.withUrl(
               marker: 'l1',
               urls: ["https://www.home-assistant.io"],

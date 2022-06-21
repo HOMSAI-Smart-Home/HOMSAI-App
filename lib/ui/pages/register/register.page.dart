@@ -73,12 +73,12 @@ class _Body extends StatelessWidget {
             ),
           ),
           Shadow(
+            offset: const Offset(0, 5),
             child: SvgPicture.asset(
               "assets/icons/banner.svg",
               width: MediaQuery.of(context).size.width,
               fit: BoxFit.fill,
             ),
-            offset: const Offset(0, 5),
           ),
           Expanded(
             child: Container(
