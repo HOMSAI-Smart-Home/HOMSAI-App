@@ -8,7 +8,6 @@ import 'package:homsai/datastore/local/app.database.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.dart';
 import 'package:homsai/datastore/models/database/configuration.entity.dart';
 import 'package:homsai/datastore/models/database/plant.entity.dart';
-import 'package:homsai/datastore/remote/websocket/home_assistant_websocket.interface.dart';
 import 'package:homsai/main.dart';
 import 'package:timezone/timezone.dart';
 
@@ -16,8 +15,6 @@ part 'add_plant.event.dart';
 part 'add_plant.state.dart';
 
 class AddPlantBloc extends Bloc<AddPlantEvent, AddPlantState> {
-  final HomeAssistantWebSocketInterface webSocketRepository =
-      getIt.get<HomeAssistantWebSocketInterface>();
 
   final AppPreferencesInterface appPreferencesInterface =
       getIt.get<AppPreferencesInterface>();

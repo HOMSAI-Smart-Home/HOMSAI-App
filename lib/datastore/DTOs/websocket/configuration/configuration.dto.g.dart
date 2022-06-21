@@ -8,30 +8,32 @@ part of 'configuration.dto.dart';
 
 ConfigurationDto _$ConfigurationDtoFromJson(Map<String, dynamic> json) =>
     ConfigurationDto(
-      (json['latitude'] as num).toDouble(),
-      (json['longitude'] as num).toDouble(),
-      (json['elevation'] as num).toDouble(),
-      json['location_name'] as String,
-      json['version'] as String,
-      json['state'] as String,
-      json['currency'] as String,
-      json['config_source'] as String,
-      json['config_dir'] as String,
-      json['time_zone'] as String,
-      json['safe_mode'] as bool,
-      (json['whitelist_external_dirs'] as List<dynamic>)
+      latitude: (json['latitude'] as num).toDouble(),
+      longitude: (json['longitude'] as num).toDouble(),
+      elevation: (json['elevation'] as num).toDouble(),
+      locationName: json['location_name'] as String,
+      version: json['version'] as String,
+      state: json['state'] as String,
+      currency: json['currency'] as String,
+      source: json['config_source'] as String,
+      dir: json['config_dir'] as String,
+      timezone: json['time_zone'] as String,
+      isSafeMode: json['safe_mode'] as bool,
+      whitelistExternalDirs: (json['whitelist_external_dirs'] as List<dynamic>)
           .map((e) => e as String)
           .toList(),
-      (json['allowlist_external_dirs'] as List<dynamic>)
+      allowExternalDirs: (json['allowlist_external_dirs'] as List<dynamic>)
           .map((e) => e as String)
           .toList(),
-      (json['allowlist_external_urls'] as List<dynamic>)
+      allowExternalUrls: (json['allowlist_external_urls'] as List<dynamic>)
           .map((e) => e as String)
           .toList(),
-      (json['components'] as List<dynamic>).map((e) => e as String).toList(),
-      Map<String, String>.from(json['unit_system'] as Map),
-      json['external_url'] as String?,
-      json['internal_url'] as String?,
+      components: (json['components'] as List<dynamic>)
+          .map((e) => e as String)
+          .toList(),
+      unitSystem: Map<String, String>.from(json['unit_system'] as Map),
+      externalUrl: json['external_url'] as String?,
+      internalUrl: json['internal_url'] as String?,
     );
 
 Map<String, dynamic> _$ConfigurationDtoToJson(ConfigurationDto instance) =>

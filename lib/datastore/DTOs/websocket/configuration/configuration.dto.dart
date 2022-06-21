@@ -37,25 +37,26 @@ class ConfigurationDto {
   @JsonKey(name: "unit_system")
   Map<String, String> unitSystem;
 
-  ConfigurationDto(
-      this.latitude,
-      this.longitude,
-      this.elevation,
-      this.locationName,
-      this.version,
-      this.state,
-      this.currency,
-      this.source,
-      this.dir,
-      this.timezone,
-      this.isSafeMode,
-      this.whitelistExternalDirs,
-      this.allowExternalDirs,
-      this.allowExternalUrls,
-      this.components,
-      this.unitSystem,
-      this.externalUrl,
-      this.internalUrl);
+  ConfigurationDto({
+    required this.latitude,
+    required this.longitude,
+    required this.elevation,
+    required this.locationName,
+    required this.version,
+    required this.state,
+    required this.currency,
+    required this.source,
+    required this.dir,
+    required this.timezone,
+    required this.isSafeMode,
+    required this.whitelistExternalDirs,
+    required this.allowExternalDirs,
+    required this.allowExternalUrls,
+    required this.components,
+    required this.unitSystem,
+    this.externalUrl,
+    this.internalUrl,
+  });
 
   factory ConfigurationDto.fromJson(Map<String, dynamic> json) =>
       _$ConfigurationDtoFromJson(json);
