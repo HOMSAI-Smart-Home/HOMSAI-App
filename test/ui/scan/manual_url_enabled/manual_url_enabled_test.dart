@@ -46,7 +46,6 @@ testConinueButtonWithUrl(WidgetTester tester, String url, bool isValid) async {
   final MockHomeAssistantRepository mockHomeAssistantRepository =
       MockHomeAssistantRepository();
 
-  // It enables to reassign an implementation of an interface, for example in Unit tests
   getIt.allowReassignment = true;
   getIt
       .registerLazySingleton<AIServiceInterface>(() => mockAIServiceRepository);
@@ -56,10 +55,7 @@ testConinueButtonWithUrl(WidgetTester tester, String url, bool isValid) async {
       () => mockHomeAssistantRepository);
 
   final urlBloc = DoubleUrlBloc();
-  const initialState = HomeAssistantScanState(
-    status: HomeAssistantScanStatus.manual,
-  );
-  final bloc = HomeAssistantScanBloc(urlBloc, state: initialState);
+  final bloc = HomeAssistantScanBloc(urlBloc);
 
   await tester.pumpWidget(MaterialApp(
     title: "scanBloc",

@@ -36,7 +36,6 @@ void main() {
         final MockAIServiceRepository mockAIServiceRepository =
             MockAIServiceRepository();
 
-        // It enables to reassign an implementation of an interface, for example in Unit tests
         getIt.allowReassignment = true;
 
         getIt.registerLazySingleton<AIServiceInterface>(
@@ -67,7 +66,6 @@ void main() {
         final MockAIServiceRepository mockAIServiceRepository =
             MockAIServiceRepository();
 
-        // It enables to reassign an implementation of an interface, for example in Unit tests
         getIt.allowReassignment = true;
         getIt.registerLazySingleton<AIServiceInterface>(
             () => mockAIServiceRepository);
@@ -126,7 +124,6 @@ void main() {
         final MockAIServiceRepository mockAIServiceRepository =
             MockAIServiceRepository();
 
-        // It enables to reassign an implementation of an interface, for example in Unit tests
         getIt.allowReassignment = true;
 
         getIt.registerLazySingleton<AIServiceInterface>(
@@ -155,7 +152,6 @@ void main() {
         final MockAIServiceRepository mockAIServiceRepository =
             MockAIServiceRepository();
 
-        // It enables to reassign an implementation of an interface, for example in Unit tests
         getIt.allowReassignment = true;
         getIt.registerLazySingleton<AIServiceInterface>(
             () => mockAIServiceRepository);

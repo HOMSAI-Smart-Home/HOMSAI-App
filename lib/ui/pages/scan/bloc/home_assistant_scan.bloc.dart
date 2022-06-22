@@ -27,8 +27,9 @@ class HomeAssistantScanBloc
 
   HomeAssistantScanBloc(
     this.doubleUrlBloc, {
-    @visibleForTesting HomeAssistantScanState? state,
-  }) : super(state ?? const HomeAssistantScanState()) {
+    @visibleForTesting HomeAssistantScanState? initialState,
+  }) : super(initialState ?? const HomeAssistantScanState()) {
+
     on<ScanPressed>(_onScanPressed, transformer: restartable());
     on<ManualUrlPressed>(_onManualUrlPressed);
     on<UrlSelected>(_onUrlSelected);
@@ -38,7 +39,7 @@ class HomeAssistantScanBloc
     on<AuthenticationFailure>(_onAuthenticationFailure);
     on<AuthenticationSuccess>(_onAuthenticationSuccess);
 
-    add(const ScanPressed());
+    if(initialState == null) add(const ScanPressed());
   }
 
   @override
@@ -93,8 +94,9 @@ class HomeAssistantScanBloc
             status: HomeAssistantScanStatus.scanningSuccess),
       );
       GlobalKeys.scannedUrlsAnimatedList.currentState?.insertItem(
-          scannedUrls.length - 1,
-          duration: const Duration(milliseconds: 250));
+        scannedUrls.length - 1,
+        duration: const Duration(milliseconds: 250),
+      );
     }
   }
 

@@ -30,7 +30,6 @@ void main() {
           MockAIServiceRepository();
       final MockHomsaiDatabase mockHomsaiDatabase = MockHomsaiDatabase();
 
-      // It enables to reassign an implementation of an interface, for example in Unit tests
       getIt.allowReassignment = true;
       getIt.registerLazySingleton<AIServiceInterface>(
           () => mockAIServiceRepository);
@@ -76,7 +75,6 @@ void main() {
         MockAIServiceRepository();
     final MockHomsaiDatabase mockHomsaiDatabase = MockHomsaiDatabase();
 
-    // It enables to reassign an implementation of an interface, for example in Unit tests
     getIt.allowReassignment = true;
     getIt.registerLazySingleton<AIServiceInterface>(
         () => mockAIServiceRepository);

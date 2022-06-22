@@ -11,16 +11,14 @@ class HomeAssistantScannerRepository implements HomeAssistantScannerInterface {
     bool cancel = false;
 
     void startScan() async {
-      String? ip = await (NetworkInfo().getWifiIP());
-      String? subMask = await (NetworkInfo().getWifiSubmask());
+      String? ip = await NetworkInfo().getWifiIP();
+      String? subMask = await NetworkInfo().getWifiSubmask();
 
       if (ip == null) {
-        controller.addError(Error());
-        return;
+        return controller.addError(Error());
       }
       if (subMask == null || subMask != '255.255.255.0') {
-        controller.addError(Error());
-        return;
+        return controller.addError(Error());
       }
 
       final String net = ip.substring(0, ip.lastIndexOf('.'));

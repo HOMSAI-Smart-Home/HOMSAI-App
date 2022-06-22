@@ -25,13 +25,13 @@ class HomeAssistantRepository implements HomeAssistantInterface {
   final HomeAssistantScannerInterface _homeAssistantScanner =
       getIt.get<HomeAssistantScannerInterface>();
 
-  final NetworkManagerInterface networkManager =
+  final NetworkManagerInterface _networkManager =
       getIt.get<NetworkManagerInterface>();
 
-  final AppPreferencesInterface appPreferences =
+  final AppPreferencesInterface _appPreferences =
       getIt.get<AppPreferencesInterface>();
 
-  final RemoteInterface remote = getIt.get<RemoteInterface>();
+  final RemoteInterface _remote = getIt.get<RemoteInterface>();
 
   @override
   Future<HomeAssistantAuth> authenticate({
@@ -49,7 +49,7 @@ class HomeAssistantRepository implements HomeAssistantInterface {
   Map<String, String> _getHeader() {
     final headers = {HttpHeaders.acceptHeader: 'application/json'};
 
-    final HomeAssistantAuth? token = appPreferences.getHomeAssistantToken();
+    final HomeAssistantAuth? token = _appPreferences.getHomeAssistantToken();
     if (token != null) {
       headers['Authorization'] = 'Bearer ${token.token}';
     }
@@ -87,7 +87,7 @@ class HomeAssistantRepository implements HomeAssistantInterface {
     Duration? timeout,
   }) async {
     throwIf(
-      await networkManager.getConnectionType() != ConnectivityResult.wifi,
+      await _networkManager.getConnectionType() != ConnectivityResult.wifi,
       Exception("Wifi Disabled"),
     );
 
@@ -135,7 +135,7 @@ class HomeAssistantRepository implements HomeAssistantInterface {
       queryParameters: {},
     );
 
-    response = await remote.post(
+    response = await _remote.post(
       baseUrl,
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
@@ -189,7 +189,7 @@ class HomeAssistantRepository implements HomeAssistantInterface {
     required Uri url,
     Duration timeout = const Duration(seconds: 2),
   }) async {
-    HomeAssistantAuth? auth = appPreferences.getHomeAssistantToken();
+    HomeAssistantAuth? auth = _appPreferences.getHomeAssistantToken();
     Map<String, dynamic> body;
     Map<String, dynamic> data;
     int now;
@@ -224,7 +224,7 @@ class HomeAssistantRepository implements HomeAssistantInterface {
     required Plant plant,
     Duration timeout = const Duration(seconds: 2),
   }) async {
-    HomeAssistantAuth? auth = appPreferences.getHomeAssistantToken();
+    HomeAssistantAuth? auth = _appPreferences.getHomeAssistantToken();
     Map<String, dynamic> body;
 
     final baseUrl = plant.getBaseUrl().replace(
@@ -247,7 +247,7 @@ class HomeAssistantRepository implements HomeAssistantInterface {
       fallback: fallback,
       body: body,
     );
-    appPreferences.resetHomeAssistantToken();
+    _appPreferences.resetHomeAssistantToken();
   }
 
   @override
@@ -269,7 +269,7 @@ class HomeAssistantRepository implements HomeAssistantInterface {
           queryParameters: historyBodyDto?.toJson(),
         );
 
-    response = await remote.get(
+    response = await _remote.get(
       baseUrl,
       headers: _getHeader(),
       fallbackUrl: fallback,
@@ -301,7 +301,7 @@ class HomeAssistantRepository implements HomeAssistantInterface {
           queryParameters: logbookBodyDto?.toJson(),
         );
 
-    response = await remote.get(
+    response = await _remote.get(
       baseUrl,
       headers: _getHeader(),
       fallbackUrl: fallback,
