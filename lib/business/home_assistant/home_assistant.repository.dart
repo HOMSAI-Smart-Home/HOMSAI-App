@@ -3,8 +3,10 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:flutter_web_auth/flutter_web_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:homsai/business/flutter_web_auth/flutter_web_auth.interface.dart';
+import 'package:homsai/business/flutter_web_auth/flutter_web_auth.repository.dart';
 import 'package:homsai/business/home_assistant/home_assistant.interface.dart';
 import 'package:homsai/business/home_assistant_scanner/home_assistant_scanner.interface.dart';
 import 'package:homsai/crossconcern/exceptions/scanning_not_found.exception.dart';
@@ -33,6 +35,14 @@ class HomeAssistantRepository implements HomeAssistantInterface {
 
   final RemoteInterface _remote = getIt.get<RemoteInterface>();
 
+  FlutterWebAuthInterface? _flutterWebAuth;
+
+  HomeAssistantRepository({
+    @visibleForTesting FlutterWebAuthInterface? flutterWebAuth,
+  }) {
+    _flutterWebAuth = flutterWebAuth ?? FlutterWebAuthRepository();
+  }
+
   @override
   Future<HomeAssistantAuth> authenticate({
     required Uri baseUrl,
@@ -59,7 +69,7 @@ class HomeAssistantRepository implements HomeAssistantInterface {
 
   Future<HomeAssistantAuth> authenticateHomeAssistant({
     required Uri url,
-  }) {
+  }) async {
     const String callbackUrlScheme =
         HomeAssistantApiProprties.authCallbackScheme;
 
@@ -72,12 +82,11 @@ class HomeAssistantRepository implements HomeAssistantInterface {
       },
     );
 
-    return FlutterWebAuth.authenticate(
+    final result = await _flutterWebAuth!.authenticate(
       url: url.toString(),
-      callbackUrlScheme: callbackUrlScheme,
-    ).then(
-      (result) => _getToken(result: result, url: url),
+      callbackUrlScheme: HomeAssistantApiProprties.authCallbackScheme,
     );
+    return _getToken(result: result, url: url);
   }
 
   @override
@@ -103,14 +112,18 @@ class HomeAssistantRepository implements HomeAssistantInterface {
     Duration timeout = const Duration(seconds: 2),
   }) async {
     Uri? url = await _homeAssistantScanner.canConnectToHomeAssistant(
-        url: baseUrl, timeout: timeout);
+      url: baseUrl,
+      timeout: timeout,
+    );
 
     if (url != null) return url;
 
     throwIf(fallback == null, HostsNotFound);
 
     url = await _homeAssistantScanner.canConnectToHomeAssistant(
-        url: fallback!, timeout: timeout);
+      url: fallback!,
+      timeout: timeout,
+    );
 
     if (url != null) return url;
     throw Exception;
@@ -123,8 +136,6 @@ class HomeAssistantRepository implements HomeAssistantInterface {
     required Map<String, dynamic> body,
   }) async {
     Map<String, dynamic> response = {};
-    HttpClient client = HttpClient();
-    client.connectionTimeout = timeout;
 
     baseUrl = baseUrl.replace(
       path: HomeAssistantApiProprties.tokenPath,

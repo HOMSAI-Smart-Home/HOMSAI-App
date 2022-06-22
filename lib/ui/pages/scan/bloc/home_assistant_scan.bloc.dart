@@ -29,7 +29,6 @@ class HomeAssistantScanBloc
     this.doubleUrlBloc, {
     @visibleForTesting HomeAssistantScanState? initialState,
   }) : super(initialState ?? const HomeAssistantScanState()) {
-
     on<ScanPressed>(_onScanPressed, transformer: restartable());
     on<ManualUrlPressed>(_onManualUrlPressed);
     on<UrlSelected>(_onUrlSelected);
@@ -39,7 +38,7 @@ class HomeAssistantScanBloc
     on<AuthenticationFailure>(_onAuthenticationFailure);
     on<AuthenticationSuccess>(_onAuthenticationSuccess);
 
-    if(initialState == null) add(const ScanPressed());
+    if (initialState == null) add(const ScanPressed());
   }
 
   @override
@@ -166,7 +165,8 @@ class HomeAssistantScanBloc
           }
 
           emit(state.copyWith(
-              status: HomeAssistantScanStatus.authenticationInProgress));
+            status: HomeAssistantScanStatus.authenticationInProgress,
+          ));
 
           try {
             final authResult = await homeAssistantRepository.authenticate(
