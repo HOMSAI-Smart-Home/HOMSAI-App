@@ -27,7 +27,7 @@ class MockIntroBetaBloc extends MockBloc<IntroBetaEvent, IntroBetaState>
 void main() {
   group("HomeAssistantScanPage", () {
     setUp(() async {
-      await MocksHomsaiDatabase.setUp();
+      MocksHomsaiDatabase.setUp();
     });
     testWidgets('should enable button if written url is valid',
         (WidgetTester tester) async {

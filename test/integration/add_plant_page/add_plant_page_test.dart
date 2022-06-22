@@ -41,7 +41,7 @@ Future<void> main() async {
     blocTest<AddPlantBloc, AddPlantState>(
       'Check HomeAssistant Configuration is retrieved correctly',
       setUp: () async {
-        await MocksHomsaiDatabase.setUp();
+        MocksHomsaiDatabase.setUp();
         tz.initializeTimeZones();
         final mockWebSocketRepository = MockHomeAssistantWebSocketInterface();
 

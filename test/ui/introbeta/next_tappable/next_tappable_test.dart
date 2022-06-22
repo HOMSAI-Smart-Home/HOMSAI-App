@@ -25,7 +25,7 @@ class MockIntroBetaBloc extends MockBloc<IntroBetaEvent, IntroBetaState>
 void main() {
   group("IntroBetaPage", () {
     setUp(() async {
-      await MocksHomsaiDatabase.setUp();
+      MocksHomsaiDatabase.setUp();
     });
     testWidgets('should enable button if initial email is valid',
         (WidgetTester tester) async {

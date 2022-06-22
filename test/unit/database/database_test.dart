@@ -7,7 +7,7 @@ import '../../util/mockups.test.dart';
 void main() {
   group("Database", () {
     setUp(() async {
-      await MocksHomsaiDatabase.setUp();
+      MocksHomsaiDatabase.setUp();
     });
 
     test('User id should be correct', () async {
@@ -51,6 +51,26 @@ void main() {
       final database = getIt.get<HomsaiDatabase>();
       final entity = await database.getEntity("light.lampadina_smart_4");
       expect(entity?.name, "Lampadina Smart 4");
+    });
+  });
+
+  group("Faulty Database", () {
+    setUp(() async {
+      MocksHomsaiDatabase.mockEmptyEntities();
+      MocksHomsaiDatabase.mockPlantWithOnlyRemoteUrl();
+    });
+
+    test('Entities should be empty', () async {
+      final database = getIt.get<HomsaiDatabase>();
+      final entities = await database.getEntities();
+      expect(entities.length, 0);
+    });
+
+    test('Plant local url should be null', () async {
+      final database = getIt.get<HomsaiDatabase>();
+
+      final plant = await database.getPlant();
+      expect(plant?.localUrl, null);
     });
   });
 }
