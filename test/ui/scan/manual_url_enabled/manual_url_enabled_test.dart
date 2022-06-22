@@ -6,7 +6,6 @@ import 'package:homsai/business/ai_service/ai_service.repository.dart';
 import 'package:homsai/business/home_assistant/home_assistant.interface.dart';
 import 'package:homsai/business/home_assistant/home_assistant.repository.dart';
 import 'package:homsai/crossconcern/components/utils/double_url/bloc/double_url.bloc.dart';
-import 'package:homsai/datastore/local/app.database.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.repository.dart';
 import 'package:homsai/main.dart';
@@ -18,14 +17,18 @@ import 'package:homsai/ui/pages/scan/bloc/home_assistant_scan.bloc.dart';
 import 'package:homsai/ui/pages/scan/home_assistant_scan.page.dart';
 import 'package:mockito/annotations.dart';
 
+import '../../../util/mockups.test.dart';
 import 'manual_url_enabled_test.mocks.dart';
 
 class MockIntroBetaBloc extends MockBloc<IntroBetaEvent, IntroBetaState>
     implements IntroBetaBloc {}
 
-@GenerateMocks([AIServiceRepository, HomsaiDatabase, HomeAssistantRepository])
+@GenerateMocks([AIServiceRepository, HomeAssistantRepository])
 void main() {
   group("HomeAssistantScanPage", () {
+    setUp(() async {
+      await MocksHomsaiDatabase.setUp();
+    });
     testWidgets('should enable button if written url is valid',
         (WidgetTester tester) async {
       await testConinueButtonWithUrl(tester, "http://192.168.1.168:8123", true);
@@ -42,7 +45,6 @@ void main() {
 testConinueButtonWithUrl(WidgetTester tester, String url, bool isValid) async {
   final MockAIServiceRepository mockAIServiceRepository =
       MockAIServiceRepository();
-  final MockHomsaiDatabase mockHomsaiDatabase = MockHomsaiDatabase();
   final MockHomeAssistantRepository mockHomeAssistantRepository =
       MockHomeAssistantRepository();
 
@@ -50,7 +52,6 @@ testConinueButtonWithUrl(WidgetTester tester, String url, bool isValid) async {
   getIt
       .registerLazySingleton<AIServiceInterface>(() => mockAIServiceRepository);
   getIt.registerLazySingleton<AppPreferencesInterface>(() => AppPreferences());
-  getIt.registerLazySingleton<HomsaiDatabase>(() => mockHomsaiDatabase);
   getIt.registerLazySingleton<HomeAssistantInterface>(
       () => mockHomeAssistantRepository);
 

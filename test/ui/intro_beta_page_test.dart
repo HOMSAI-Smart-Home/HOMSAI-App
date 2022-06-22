@@ -115,7 +115,7 @@ void main() {
             LocaleNamesLocalizationsDelegate()
           ],
           supportedLocales: HomsaiLocalizations.supportedLocales,
-          home: IntroBetaPage(onResult: ((p0) => true), introBetBloc: bloc),
+          home: IntroBetaPage(onResult: ((p0) => true), introBetaBloc: bloc),
           initialRoute: "/",
         ));
         await tester.pumpAndSettle();

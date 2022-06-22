@@ -111,6 +111,8 @@ flutter:
     - assets/animations/
     - assets/icons/
     - assets/splash/
+    - assets/test/entities.json
+    - assets/test/configuration.json
     - .env
 
   fonts:

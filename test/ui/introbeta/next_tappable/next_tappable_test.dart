@@ -5,7 +5,6 @@ import 'package:formz/formz.dart';
 import 'package:homsai/business/ai_service/ai_service.interface.dart';
 import 'package:homsai/business/ai_service/ai_service.repository.dart';
 import 'package:homsai/crossconcern/helpers/models/forms/credentials/email.model.dart';
-import 'package:homsai/datastore/local/app.database.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.repository.dart';
 import 'package:homsai/main.dart';
@@ -16,26 +15,28 @@ import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
 import 'package:flutter_localized_locales/flutter_localized_locales.dart';
 import 'package:mockito/annotations.dart';
 
+import '../../../util/mockups.test.dart';
 import 'next_tappable_test.mocks.dart';
 
 class MockIntroBetaBloc extends MockBloc<IntroBetaEvent, IntroBetaState>
     implements IntroBetaBloc {}
 
-@GenerateMocks([AIServiceRepository, HomsaiDatabase])
+@GenerateMocks([AIServiceRepository])
 void main() {
   group("IntroBetaPage", () {
+    setUp(() async {
+      await MocksHomsaiDatabase.setUp();
+    });
     testWidgets('should enable button if initial email is valid',
         (WidgetTester tester) async {
       final MockAIServiceRepository mockAIServiceRepository =
           MockAIServiceRepository();
-      final MockHomsaiDatabase mockHomsaiDatabase = MockHomsaiDatabase();
 
       getIt.allowReassignment = true;
       getIt.registerLazySingleton<AIServiceInterface>(
           () => mockAIServiceRepository);
       getIt.registerLazySingleton<AppPreferencesInterface>(
           () => AppPreferences());
-      getIt.registerLazySingleton<HomsaiDatabase>(() => mockHomsaiDatabase);
 
       var email = 'demo@demo.it';
       var emailValidator = Email.dirty(email);
@@ -73,14 +74,12 @@ void main() {
       (WidgetTester tester) async {
     final MockAIServiceRepository mockAIServiceRepository =
         MockAIServiceRepository();
-    final MockHomsaiDatabase mockHomsaiDatabase = MockHomsaiDatabase();
 
     getIt.allowReassignment = true;
     getIt.registerLazySingleton<AIServiceInterface>(
         () => mockAIServiceRepository);
     getIt
         .registerLazySingleton<AppPreferencesInterface>(() => AppPreferences());
-    getIt.registerLazySingleton<HomsaiDatabase>(() => mockHomsaiDatabase);
 
     final bloc = IntroBetaBloc();
 

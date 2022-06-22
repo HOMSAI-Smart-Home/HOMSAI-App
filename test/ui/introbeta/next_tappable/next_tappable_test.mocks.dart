@@ -2,39 +2,28 @@
 // in homsai/test/ui/introbeta/next_tappable/next_tappable_test.dart.
 // Do not manually edit this file.
 
-import 'dart:async' as _i10;
+import 'dart:async' as _i7;
 
-import 'package:homsai/business/ai_service/ai_service.repository.dart' as _i12;
-import 'package:homsai/datastore/dao/configuration.dao.dart' as _i8;
-import 'package:homsai/datastore/dao/home_assistant.dao.dart' as _i9;
-import 'package:homsai/datastore/dao/plant.dao.dart' as _i7;
-import 'package:homsai/datastore/dao/user.dao.dart' as _i6;
+import 'package:homsai/business/ai_service/ai_service.repository.dart' as _i6;
 import 'package:homsai/datastore/DTOs/remote/ai_service/daily_plan/daily_plan.dto.dart'
     as _i4;
 import 'package:homsai/datastore/DTOs/remote/ai_service/daily_plan/daily_plan_body.dto.dart'
-    as _i16;
+    as _i11;
 import 'package:homsai/datastore/DTOs/remote/ai_service/forecast/consumption_optimizations/consumption_optimizations_forecast.dto.dart'
     as _i3;
 import 'package:homsai/datastore/DTOs/remote/ai_service/forecast/consumption_optimizations/consumption_optimizations_forecast_body.dto.dart'
-    as _i15;
+    as _i10;
 import 'package:homsai/datastore/DTOs/remote/ai_service/forecast/photovoltaic/photovoltaic.dto.dart'
-    as _i17;
+    as _i12;
 import 'package:homsai/datastore/DTOs/remote/ai_service/forecast/photovoltaic/photovoltaic_body.dto.dart'
-    as _i18;
+    as _i13;
 import 'package:homsai/datastore/DTOs/remote/ai_service/forecast/suggestions_chart/suggestions_chart.dto.dart'
     as _i5;
 import 'package:homsai/datastore/DTOs/remote/ai_service/login/login_body.dto.dart'
-    as _i14;
-import 'package:homsai/datastore/local/app.database.dart' as _i19;
-import 'package:homsai/datastore/models/ai_service_auth.model.dart' as _i13;
-import 'package:homsai/datastore/models/database/configuration.entity.dart'
-    as _i20;
-import 'package:homsai/datastore/models/database/plant.entity.dart' as _i23;
-import 'package:homsai/datastore/models/database/user.entity.dart' as _i22;
-import 'package:homsai/datastore/models/entity/base/base.entity.dart' as _i21;
+    as _i9;
+import 'package:homsai/datastore/models/ai_service_auth.model.dart' as _i8;
 import 'package:homsai/datastore/remote/rest/remote.Interface.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:sqflite/sqflite.dart' as _i11;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -56,27 +45,11 @@ class _FakeDailyPlanDto_2 extends _i1.Fake implements _i4.DailyPlanDto {}
 class _FakeSuggestionsChartDto_3 extends _i1.Fake
     implements _i5.SuggestionsChartDto {}
 
-class _FakeUserDao_4 extends _i1.Fake implements _i6.UserDao {}
-
-class _FakePlantDao_5 extends _i1.Fake implements _i7.PlantDao {}
-
-class _FakeConfigurationDao_6 extends _i1.Fake implements _i8.ConfigurationDao {
-}
-
-class _FakeHomeAssistantDao_7 extends _i1.Fake implements _i9.HomeAssistantDao {
-}
-
-class _FakeStreamController_8<T> extends _i1.Fake
-    implements _i10.StreamController<T> {}
-
-class _FakeDatabaseExecutor_9 extends _i1.Fake
-    implements _i11.DatabaseExecutor {}
-
 /// A class which mocks [AIServiceRepository].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockAIServiceRepository extends _i1.Mock
-    implements _i12.AIServiceRepository {
+    implements _i6.AIServiceRepository {
   MockAIServiceRepository() {
     _i1.throwOnMissingStub(this);
   }
@@ -86,20 +59,20 @@ class MockAIServiceRepository extends _i1.Mock
       (super.noSuchMethod(Invocation.getter(#remoteInterface),
           returnValue: _FakeRemoteInterface_0()) as _i2.RemoteInterface);
   @override
-  _i10.Future<_i13.AiServiceAuth?> getToken(_i14.LoginBodyDto? loginBodyDto) =>
+  _i7.Future<_i8.AiServiceAuth?> getToken(_i9.LoginBodyDto? loginBodyDto) =>
       (super.noSuchMethod(Invocation.method(#getToken, [loginBodyDto]),
-              returnValue: Future<_i13.AiServiceAuth?>.value())
-          as _i10.Future<_i13.AiServiceAuth?>);
+              returnValue: Future<_i8.AiServiceAuth?>.value())
+          as _i7.Future<_i8.AiServiceAuth?>);
   @override
-  _i10.Future<_i13.AiServiceAuth?> refreshToken(
-          _i13.AiServiceAuth? aiServiceAuth) =>
+  _i7.Future<_i8.AiServiceAuth?> refreshToken(
+          _i8.AiServiceAuth? aiServiceAuth) =>
       (super.noSuchMethod(Invocation.method(#refreshToken, [aiServiceAuth]),
-              returnValue: Future<_i13.AiServiceAuth?>.value())
-          as _i10.Future<_i13.AiServiceAuth?>);
+              returnValue: Future<_i8.AiServiceAuth?>.value())
+          as _i7.Future<_i8.AiServiceAuth?>);
   @override
-  _i10.Future<_i3.ConsumptionOptimizationsForecastDto>
+  _i7.Future<_i3.ConsumptionOptimizationsForecastDto>
       getPhotovoltaicSelfConsumptionOptimizerForecast(
-              _i15.ConsumptionOptimizationsForecastBodyDto?
+              _i10.ConsumptionOptimizationsForecastBodyDto?
                   optimizationsForecastBody,
               String? unit) =>
           (super.noSuchMethod(
@@ -107,15 +80,15 @@ class MockAIServiceRepository extends _i1.Mock
                   #getPhotovoltaicSelfConsumptionOptimizerForecast,
                   [optimizationsForecastBody, unit]),
               returnValue: Future<_i3.ConsumptionOptimizationsForecastDto>.value(
-                  _FakeConsumptionOptimizationsForecastDto_1())) as _i10
+                  _FakeConsumptionOptimizationsForecastDto_1())) as _i7
               .Future<_i3.ConsumptionOptimizationsForecastDto>);
   @override
-  _i10.Future<dynamic> subscribeToBeta(_i14.LoginBodyDto? loginBodyDto) =>
+  _i7.Future<dynamic> subscribeToBeta(_i9.LoginBodyDto? loginBodyDto) =>
       (super.noSuchMethod(Invocation.method(#subscribeToBeta, [loginBodyDto]),
-          returnValue: Future<dynamic>.value()) as _i10.Future<dynamic>);
+          returnValue: Future<dynamic>.value()) as _i7.Future<dynamic>);
   @override
-  _i10.Future<_i4.DailyPlanDto> getDailyPlan(
-          _i16.DailyPlanBodyDto? dailyPlanBodyDto,
+  _i7.Future<_i4.DailyPlanDto> getDailyPlan(
+          _i11.DailyPlanBodyDto? dailyPlanBodyDto,
           int? deviceNumber,
           List<String>? entitysType) =>
       (super.noSuchMethod(
@@ -123,96 +96,19 @@ class MockAIServiceRepository extends _i1.Mock
                   #getDailyPlan, [dailyPlanBodyDto, deviceNumber, entitysType]),
               returnValue:
                   Future<_i4.DailyPlanDto>.value(_FakeDailyPlanDto_2()))
-          as _i10.Future<_i4.DailyPlanDto>);
+          as _i7.Future<_i4.DailyPlanDto>);
   @override
-  _i10.Future<List<_i17.PhotovoltaicForecastDto>> getPhotovoltaicForecast(
-          _i18.PhotovoltaicForecastBodyDto? dailyPlanBodyDto) =>
+  _i7.Future<List<_i12.PhotovoltaicForecastDto>> getPhotovoltaicForecast(
+          _i13.PhotovoltaicForecastBodyDto? dailyPlanBodyDto) =>
       (super.noSuchMethod(
               Invocation.method(#getPhotovoltaicForecast, [dailyPlanBodyDto]),
-              returnValue: Future<List<_i17.PhotovoltaicForecastDto>>.value(
-                  <_i17.PhotovoltaicForecastDto>[]))
-          as _i10.Future<List<_i17.PhotovoltaicForecastDto>>);
+              returnValue: Future<List<_i12.PhotovoltaicForecastDto>>.value(
+                  <_i12.PhotovoltaicForecastDto>[]))
+          as _i7.Future<List<_i12.PhotovoltaicForecastDto>>);
   @override
-  _i10.Future<_i5.SuggestionsChartDto> getSuggestionsChart() =>
+  _i7.Future<_i5.SuggestionsChartDto> getSuggestionsChart() =>
       (super.noSuchMethod(Invocation.method(#getSuggestionsChart, []),
               returnValue: Future<_i5.SuggestionsChartDto>.value(
                   _FakeSuggestionsChartDto_3()))
-          as _i10.Future<_i5.SuggestionsChartDto>);
-}
-
-/// A class which mocks [HomsaiDatabase].
-///
-/// See the documentation for Mockito's code generation for more information.
-class MockHomsaiDatabase extends _i1.Mock implements _i19.HomsaiDatabase {
-  MockHomsaiDatabase() {
-    _i1.throwOnMissingStub(this);
-  }
-
-  @override
-  _i6.UserDao get userDao => (super.noSuchMethod(Invocation.getter(#userDao),
-      returnValue: _FakeUserDao_4()) as _i6.UserDao);
-  @override
-  _i7.PlantDao get plantDao => (super.noSuchMethod(Invocation.getter(#plantDao),
-      returnValue: _FakePlantDao_5()) as _i7.PlantDao);
-  @override
-  _i8.ConfigurationDao get configurationDao =>
-      (super.noSuchMethod(Invocation.getter(#configurationDao),
-          returnValue: _FakeConfigurationDao_6()) as _i8.ConfigurationDao);
-  @override
-  _i9.HomeAssistantDao get homeAssitantDao =>
-      (super.noSuchMethod(Invocation.getter(#homeAssitantDao),
-          returnValue: _FakeHomeAssistantDao_7()) as _i9.HomeAssistantDao);
-  @override
-  _i10.StreamController<String> get changeListener =>
-      (super.noSuchMethod(Invocation.getter(#changeListener),
-              returnValue: _FakeStreamController_8<String>())
-          as _i10.StreamController<String>);
-  @override
-  set changeListener(_i10.StreamController<String>? _changeListener) =>
-      super.noSuchMethod(Invocation.setter(#changeListener, _changeListener),
-          returnValueForMissingStub: null);
-  @override
-  _i11.DatabaseExecutor get database =>
-      (super.noSuchMethod(Invocation.getter(#database),
-          returnValue: _FakeDatabaseExecutor_9()) as _i11.DatabaseExecutor);
-  @override
-  set database(_i11.DatabaseExecutor? _database) =>
-      super.noSuchMethod(Invocation.setter(#database, _database),
-          returnValueForMissingStub: null);
-  @override
-  _i10.Future<_i20.Configuration?> getConfiguration() =>
-      (super.noSuchMethod(Invocation.method(#getConfiguration, []),
-              returnValue: Future<_i20.Configuration?>.value())
-          as _i10.Future<_i20.Configuration?>);
-  @override
-  _i10.Future<List<T>> getEntities<T extends _i21.Entity>() =>
-      (super.noSuchMethod(Invocation.method(#getEntities, []),
-          returnValue: Future<List<T>>.value(<T>[])) as _i10.Future<List<T>>);
-  @override
-  _i10.Future<void> updatePlant(int? plantId) => (super.noSuchMethod(
-      Invocation.method(#updatePlant, [plantId]),
-      returnValue: Future<void>.value(),
-      returnValueForMissingStub: Future<void>.value()) as _i10.Future<void>);
-  @override
-  _i10.Future<_i22.User?> getUser() =>
-      (super.noSuchMethod(Invocation.method(#getUser, []),
-          returnValue: Future<_i22.User?>.value()) as _i10.Future<_i22.User?>);
-  @override
-  _i10.Future<_i23.Plant?> getPlant() => (super.noSuchMethod(
-      Invocation.method(#getPlant, []),
-      returnValue: Future<_i23.Plant?>.value()) as _i10.Future<_i23.Plant?>);
-  @override
-  _i10.Future<T?> getEntity<T extends _i21.Entity>(String? entityId) =>
-      (super.noSuchMethod(Invocation.method(#getEntity, [entityId]),
-          returnValue: Future<T?>.value()) as _i10.Future<T?>);
-  @override
-  _i10.Future<void> logout({bool? deleteUser = true}) => (super.noSuchMethod(
-      Invocation.method(#logout, [], {#deleteUser: deleteUser}),
-      returnValue: Future<void>.value(),
-      returnValueForMissingStub: Future<void>.value()) as _i10.Future<void>);
-  @override
-  _i10.Future<void> close() => (super.noSuchMethod(
-      Invocation.method(#close, []),
-      returnValue: Future<void>.value(),
-      returnValueForMissingStub: Future<void>.value()) as _i10.Future<void>);
+          as _i7.Future<_i5.SuggestionsChartDto>);
 }

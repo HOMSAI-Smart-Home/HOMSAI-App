@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:equatable/equatable.dart';
@@ -178,6 +181,8 @@ class WebSocketBloc extends Bloc<WebSocketEvent, WebSocketState> {
 
                 ids.remove(deviceDto.id);
                 if (ids.isEmpty) {
+                  var json = jsonEncode(entities.values.toList());
+                  log(json);
                   event.onEntitiesFetched(entities.values.toList());
                 }
               }), DeviceRelatedBodyDto(deviceDto.id));

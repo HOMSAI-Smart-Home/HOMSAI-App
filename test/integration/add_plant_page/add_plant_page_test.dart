@@ -1,5 +1,4 @@
 import 'package:homsai/crossconcern/helpers/blocs/websocket/websocket.bloc.dart';
-import 'package:homsai/datastore/local/app.database.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.repository.dart';
 import 'package:homsai/datastore/models/database/configuration.entity.dart';
@@ -12,6 +11,7 @@ import 'package:mockito/mockito.dart';
 import 'package:test/test.dart' as test;
 import 'package:timezone/data/latest.dart' as tz;
 
+import '../../util/mockups.test.dart';
 import 'add_plant_page_test.mocks.dart';
 
 const configurationJson = {
@@ -33,7 +33,7 @@ const configurationJson = {
   'whitelist_external_dirs': []
 };
 
-@GenerateMocks([HomsaiDatabase, HomeAssistantWebSocketInterface])
+@GenerateMocks([HomeAssistantWebSocketInterface])
 Future<void> main() async {
   test.group(
       'AddPlantPage, '
@@ -41,6 +41,7 @@ Future<void> main() async {
     blocTest<AddPlantBloc, AddPlantState>(
       'Check HomeAssistant Configuration is retrieved correctly',
       setUp: () async {
+        await MocksHomsaiDatabase.setUp();
         tz.initializeTimeZones();
         final mockWebSocketRepository = MockHomeAssistantWebSocketInterface();
 
@@ -49,7 +50,6 @@ Future<void> main() async {
 
         getIt.registerLazySingleton<AppPreferencesInterface>(
             () => AppPreferences());
-        getIt.registerLazySingleton<HomsaiDatabase>(() => MockHomsaiDatabase());
         getIt.registerLazySingleton<HomeAssistantWebSocketInterface>(
             () => mockWebSocketRepository);
 
