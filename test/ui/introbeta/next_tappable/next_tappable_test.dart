@@ -15,7 +15,7 @@ import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
 import 'package:flutter_localized_locales/flutter_localized_locales.dart';
 import 'package:mockito/annotations.dart';
 
-import '../../../util/mockups.test.dart';
+import '../../../util/database/database.dart';
 import 'next_tappable_test.mocks.dart';
 
 class MockIntroBetaBloc extends MockBloc<IntroBetaEvent, IntroBetaState>

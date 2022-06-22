@@ -17,7 +17,7 @@ import 'package:homsai/ui/pages/scan/bloc/home_assistant_scan.bloc.dart';
 import 'package:homsai/ui/pages/scan/home_assistant_scan.page.dart';
 import 'package:mockito/annotations.dart';
 
-import '../../../util/mockups.test.dart';
+import '../../../util/database/database.dart';
 import 'manual_url_enabled_test.mocks.dart';
 
 class MockIntroBetaBloc extends MockBloc<IntroBetaEvent, IntroBetaState>

@@ -1,0 +1,8 @@
+[
+    {"area_id": "soggiorno", "name": "Soggiorno", "picture": null},
+    {"area_id": "cucina", "name": "Cucina", "picture": null},
+    {"area_id": "camera_da_letto", "name": "Camera da letto", "picture": null},
+    {"area_id": "climatizzazione", "name": "Climatizzazione", "picture": null},
+    {"area_id": "soppalco", "name": "Soppalco", "picture": null},
+    {"area_id": "esterno", "name": "Esterno", "picture": null}
+]

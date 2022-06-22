@@ -152,6 +152,7 @@ class WebSocketBloc extends Bloc<WebSocketEvent, WebSocketState> {
 
   void _onFetchEntities(FetchEntities event, Emitter<WebSocketState> emit) {
     _webSocketInterface.getAreaList(WebSocketSubscriber((data) {
+      log(jsonEncode(data));
       Map<String, Area> areas = {};
 
       (data as List<dynamic>)
@@ -166,12 +167,14 @@ class WebSocketBloc extends Bloc<WebSocketEvent, WebSocketState> {
               (entity) => entities.putIfAbsent(entity.entityId, () => entity));
 
           _webSocketInterface.getDeviceList(WebSocketSubscriber((data) {
+            log(jsonEncode(data));
             final devicesDto = (data as List<dynamic>).getDevicesDto();
 
             List<String> ids = devicesDto.map((d) => d.id).toList();
 
             for (var deviceDto in devicesDto) {
               _webSocketInterface.getDeviceRelated(WebSocketSubscriber((data) {
+                log(jsonEncode(data));
                 final deviceRelatedDto = DeviceRelatedDto.fromJson(data);
                 if (deviceRelatedDto.entity != null) {
                   for (var entityId in deviceRelatedDto.entity!) {
@@ -182,7 +185,6 @@ class WebSocketBloc extends Bloc<WebSocketEvent, WebSocketState> {
                 ids.remove(deviceDto.id);
                 if (ids.isEmpty) {
                   var json = jsonEncode(entities.values.toList());
-                  log(json);
                   event.onEntitiesFetched(entities.values.toList());
                 }
               }), DeviceRelatedBodyDto(deviceDto.id));

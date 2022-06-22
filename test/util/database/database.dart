@@ -9,8 +9,8 @@ import 'package:homsai/main.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import 'mockups.test.mocks.dart';
-import 'util.test.dart';
+import './database.mocks.dart';
+import '../util.test.dart';
 
 @GenerateMocks([HomsaiDatabase])
 class MocksHomsaiDatabase {

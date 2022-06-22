@@ -2,7 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:homsai/datastore/local/app.database.dart';
 import 'package:homsai/main.dart';
 
-import '../../util/mockups.test.dart';
+import '../../util/database/database.dart';
 
 void main() {
   group("Database", () {

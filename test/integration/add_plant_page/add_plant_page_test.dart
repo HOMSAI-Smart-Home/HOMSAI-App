@@ -11,7 +11,7 @@ import 'package:mockito/mockito.dart';
 import 'package:test/test.dart' as test;
 import 'package:timezone/data/latest.dart' as tz;
 
-import '../../util/mockups.test.dart';
+import '../../util/database/database.dart';
 import 'add_plant_page_test.mocks.dart';
 
 const configurationJson = {
