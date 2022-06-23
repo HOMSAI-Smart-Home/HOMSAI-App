@@ -19,10 +19,10 @@ Future<void> main() async {
     test.setUp(() async {
       await MocksHassWebsocket.setUp();
       MocksHomsaiDatabase.setUp();
+      getIt.registerLazySingleton<AppPreferencesInterface>(
+        () => mockAppPreferences);
     });
 
-    getIt.registerLazySingleton<AppPreferencesInterface>(
-        () => mockAppPreferences);
     test.test(
       'Check HomeAssistant Configuration is retrieved correctly with friendly name',
       () async {
