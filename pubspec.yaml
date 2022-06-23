@@ -74,6 +74,8 @@ dependencies:
   json_annotation: ^4.5.0
 
 dev_dependencies:
+  integration_test:
+    sdk: flutter
   flutter_test:
     sdk: flutter
 
@@ -116,6 +118,10 @@ flutter:
     - assets/test/areas.json
     - assets/test/related.json
     - assets/test/devices.json
+    - assets/test/dailyplandto.json
+    - assets/test/dailyplancached.json
+    - assets/test/logbook.json
+    - assets/test/entities_home_page_test.json
     - .env
 
   fonts:

@@ -1,0 +1,1576 @@
+{
+  "data": [
+    {
+      "state": "above_horizon",
+      "entity_id": "sun.sun",
+      "name": "Sun",
+      "when": "2022-06-15T03:35:28.238076Z"
+    },
+    {
+      "state": "sunny",
+      "entity_id": "sensor.izi_weather_condition",
+      "name": "IZI weather condition",
+      "when": "2022-06-15T03:45:59.762901Z"
+    },
+    {
+      "state": "partlycloudy",
+      "entity_id": "sensor.izi_weather_condition",
+      "name": "IZI weather condition",
+      "when": "2022-06-15T04:15:59.906005Z"
+    },
+    {
+      "state": "sunny",
+      "entity_id": "sensor.izi_weather_condition",
+      "name": "IZI weather condition",
+      "when": "2022-06-15T05:15:59.884107Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_1",
+      "name": "Lampadina Smart 1",
+      "when": "2022-06-15T09:39:21.206998Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_1",
+      "name": "Lampadina Smart 1",
+      "when": "2022-06-15T09:39:23.354429Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_2",
+      "name": "Lampadina Smart 2",
+      "when": "2022-06-15T09:39:25.098033Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_2",
+      "name": "Lampadina Smart 2",
+      "when": "2022-06-15T09:39:27.267100Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_3",
+      "name": "Lampadina Smart 3",
+      "when": "2022-06-15T09:39:28.872137Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_3",
+      "name": "Lampadina Smart 3",
+      "when": "2022-06-15T09:39:31.022967Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_4",
+      "name": "Lampadina Smart 4",
+      "when": "2022-06-15T09:39:32.515627Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_4",
+      "name": "Lampadina Smart 4",
+      "when": "2022-06-15T09:39:34.675869Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_1",
+      "name": "Lampadina Smart 1",
+      "when": "2022-06-15T09:39:35.952905Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_2",
+      "name": "Lampadina Smart 2",
+      "when": "2022-06-15T09:39:36.256639Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_3",
+      "name": "Lampadina Smart 3",
+      "when": "2022-06-15T09:39:36.286057Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_4",
+      "name": "Lampadina Smart 4",
+      "when": "2022-06-15T09:39:36.844042Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_3",
+      "name": "Lampadina Smart 3",
+      "when": "2022-06-15T09:39:38.442363Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_2",
+      "name": "Lampadina Smart 2",
+      "when": "2022-06-15T09:39:38.487172Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_4",
+      "name": "Lampadina Smart 4",
+      "when": "2022-06-15T09:39:39.004685Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_1",
+      "name": "Lampadina Smart 1",
+      "when": "2022-06-15T09:39:39.040577Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_3",
+      "name": "Lampadina Smart 3",
+      "when": "2022-06-15T09:39:40.606242Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_2",
+      "name": "Lampadina Smart 2",
+      "when": "2022-06-15T09:39:40.700515Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_4",
+      "name": "Lampadina Smart 4",
+      "when": "2022-06-15T09:39:41.238660Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_3",
+      "name": "Lampadina Smart 3",
+      "when": "2022-06-15T09:39:43.319669Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_4",
+      "name": "Lampadina Smart 4",
+      "when": "2022-06-15T09:39:44.264903Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_1",
+      "name": "Lampadina Smart 1",
+      "when": "2022-06-15T09:39:45.061698Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_2",
+      "name": "Lampadina Smart 2",
+      "when": "2022-06-15T09:39:45.571501Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_4",
+      "name": "Lampadina Smart 4",
+      "when": "2022-06-15T09:39:46.422139Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_2",
+      "name": "Lampadina Smart 2",
+      "when": "2022-06-15T09:39:47.720201Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_4",
+      "name": "Lampadina Smart 4",
+      "when": "2022-06-15T09:39:48.577675Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_1",
+      "name": "Lampadina Smart 1",
+      "when": "2022-06-15T09:39:48.656059Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_3",
+      "name": "Lampadina Smart 3",
+      "when": "2022-06-15T09:39:49.171674Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_4",
+      "name": "Lampadina Smart 4",
+      "when": "2022-06-15T09:39:50.722713Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_3",
+      "name": "Lampadina Smart 3",
+      "when": "2022-06-15T09:39:51.328617Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_1",
+      "name": "Lampadina Smart 1",
+      "when": "2022-06-15T09:39:51.927533Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_2",
+      "name": "Lampadina Smart 2",
+      "when": "2022-06-15T09:39:52.021294Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_4",
+      "name": "Lampadina Smart 4",
+      "when": "2022-06-15T09:39:52.879127Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_3",
+      "name": "Lampadina Smart 3",
+      "when": "2022-06-15T09:39:53.480406Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_1",
+      "name": "Lampadina Smart 1",
+      "when": "2022-06-15T09:39:54.088325Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_2",
+      "name": "Lampadina Smart 2",
+      "when": "2022-06-15T09:39:54.183102Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_4",
+      "name": "Lampadina Smart 4",
+      "when": "2022-06-15T09:39:55.072242Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_3",
+      "name": "Lampadina Smart 3",
+      "when": "2022-06-15T09:39:55.648084Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_1",
+      "name": "Lampadina Smart 1",
+      "when": "2022-06-15T09:39:56.253254Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_2",
+      "name": "Lampadina Smart 2",
+      "when": "2022-06-15T09:39:56.341935Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_4",
+      "name": "Lampadina Smart 4",
+      "when": "2022-06-15T09:39:57.228972Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_3",
+      "name": "Lampadina Smart 3",
+      "when": "2022-06-15T09:39:57.820165Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_2",
+      "name": "Lampadina Smart 2",
+      "when": "2022-06-15T09:39:58.503365Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_4",
+      "name": "Lampadina Smart 4",
+      "when": "2022-06-15T09:39:59.387715Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_3",
+      "name": "Lampadina Smart 3",
+      "when": "2022-06-15T09:40:00.004208Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_1",
+      "name": "Lampadina Smart 1",
+      "when": "2022-06-15T09:40:00.245279Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_2",
+      "name": "Lampadina Smart 2",
+      "when": "2022-06-15T09:40:01.070521Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_4",
+      "name": "Lampadina Smart 4",
+      "when": "2022-06-15T09:40:01.948708Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_3",
+      "name": "Lampadina Smart 3",
+      "when": "2022-06-15T09:40:02.338426Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_1",
+      "name": "Lampadina Smart 1",
+      "when": "2022-06-15T09:40:02.706612Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_2",
+      "name": "Lampadina Smart 2",
+      "when": "2022-06-15T09:40:03.226379Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_4",
+      "name": "Lampadina Smart 4",
+      "when": "2022-06-15T09:40:04.106370Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_3",
+      "name": "Lampadina Smart 3",
+      "when": "2022-06-15T09:40:04.440915Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_1",
+      "name": "Lampadina Smart 1",
+      "when": "2022-06-15T09:40:04.866297Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_2",
+      "name": "Lampadina Smart 2",
+      "when": "2022-06-15T09:40:05.382032Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_4",
+      "name": "Lampadina Smart 4",
+      "when": "2022-06-15T09:40:06.251792Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_3",
+      "name": "Lampadina Smart 3",
+      "when": "2022-06-15T09:40:06.603736Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_1",
+      "name": "Lampadina Smart 1",
+      "when": "2022-06-15T09:40:07.014917Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_2",
+      "name": "Lampadina Smart 2",
+      "when": "2022-06-15T09:40:07.528567Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_4",
+      "name": "Lampadina Smart 4",
+      "when": "2022-06-15T09:40:08.406632Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_3",
+      "name": "Lampadina Smart 3",
+      "when": "2022-06-15T09:40:08.757065Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_1",
+      "name": "Lampadina Smart 1",
+      "when": "2022-06-15T09:40:09.174550Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_3",
+      "name": "Lampadina Smart 3",
+      "when": "2022-06-15T09:40:10.826556Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_1",
+      "name": "Lampadina Smart 1",
+      "when": "2022-06-15T09:40:11.321103Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_2",
+      "name": "Lampadina Smart 2",
+      "when": "2022-06-15T09:40:11.838628Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_2",
+      "name": "Lampadina Smart 2",
+      "when": "2022-06-15T09:40:13.999031Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_4",
+      "name": "Lampadina Smart 4",
+      "when": "2022-06-15T09:40:15.209884Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_3",
+      "name": "Lampadina Smart 3",
+      "when": "2022-06-15T09:40:15.495727Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_1",
+      "name": "Lampadina Smart 1",
+      "when": "2022-06-15T09:40:15.991164Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_2",
+      "name": "Lampadina Smart 2",
+      "when": "2022-06-15T09:40:16.192802Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_1",
+      "name": "Lampadina Smart 1",
+      "when": "2022-06-15T09:40:19.572690Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_1",
+      "name": "Lampadina Smart 1",
+      "when": "2022-06-15T09:40:23.395972Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_1",
+      "name": "Lampadina Smart 1",
+      "when": "2022-06-15T09:40:27.150241Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_1",
+      "name": "Lampadina Smart 1",
+      "when": "2022-06-15T09:40:37.913179Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_1",
+      "name": "Lampadina Smart 1",
+      "when": "2022-06-15T09:48:11.880794Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_1",
+      "name": "Lampadina Smart 1",
+      "when": "2022-06-15T09:48:14.025835Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_1",
+      "name": "Lampadina Smart 1",
+      "when": "2022-06-15T09:48:22.405815Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_1",
+      "name": "Lampadina Smart 1",
+      "when": "2022-06-15T09:48:24.550146Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_1",
+      "name": "Lampadina Smart 1",
+      "when": "2022-06-15T09:54:35.561453Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_2",
+      "name": "Lampadina Smart 2",
+      "when": "2022-06-15T09:54:39.350947Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_1",
+      "name": "Lampadina Smart 1",
+      "when": "2022-06-15T09:54:43.652294Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_3",
+      "name": "Lampadina Smart 3",
+      "when": "2022-06-15T09:54:48.105875Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_4",
+      "name": "Lampadina Smart 4",
+      "when": "2022-06-15T09:54:49.856735Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_2",
+      "name": "Lampadina Smart 2",
+      "when": "2022-06-15T09:54:53.556402Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_4",
+      "name": "Lampadina Smart 4",
+      "when": "2022-06-15T09:54:55.613728Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_3",
+      "name": "Lampadina Smart 3",
+      "when": "2022-06-15T09:54:56.318582Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_2",
+      "name": "Lampadina Smart 2",
+      "when": "2022-06-15T10:02:41.626835Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_2",
+      "name": "Lampadina Smart 2",
+      "when": "2022-06-15T10:02:43.777628Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_3",
+      "name": "Lampadina Smart 3",
+      "when": "2022-06-15T10:02:48.787134Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_4",
+      "name": "Lampadina Smart 4",
+      "when": "2022-06-15T10:02:50.409456Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_3",
+      "name": "Lampadina Smart 3",
+      "when": "2022-06-15T10:02:51.132254Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_4",
+      "name": "Lampadina Smart 4",
+      "when": "2022-06-15T10:02:52.572703Z"
+    },
+    {
+      "state": "partlycloudy",
+      "entity_id": "sensor.izi_weather_condition",
+      "name": "IZI weather condition",
+      "when": "2022-06-15T10:15:59.892676Z"
+    },
+    {
+      "state": "partlycloudy",
+      "entity_id": "weather.casa",
+      "name": "Casa",
+      "when": "2022-06-15T10:16:31.519907Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_3",
+      "name": "Lampadina Smart 3",
+      "when": "2022-06-15T10:18:16.779956Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_3",
+      "name": "Lampadina Smart 3",
+      "when": "2022-06-15T10:18:18.956109Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_2",
+      "name": "Lampadina Smart 2",
+      "when": "2022-06-15T10:21:36.532968Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_2",
+      "name": "Lampadina Smart 2",
+      "when": "2022-06-15T10:21:38.683029Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_1",
+      "name": "Lampadina Smart 1",
+      "when": "2022-06-15T10:21:40.040854Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_3",
+      "name": "Lampadina Smart 3",
+      "when": "2022-06-15T10:21:40.443123Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_4",
+      "name": "Lampadina Smart 4",
+      "when": "2022-06-15T10:21:40.766543Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_2",
+      "name": "Lampadina Smart 2",
+      "when": "2022-06-15T10:21:40.861527Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_2",
+      "name": "Lampadina Smart 2",
+      "when": "2022-06-15T10:21:43.685255Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_4",
+      "name": "Lampadina Smart 4",
+      "when": "2022-06-15T10:21:43.945641Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_1",
+      "name": "Lampadina Smart 1",
+      "when": "2022-06-15T10:21:44.657495Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_3",
+      "name": "Lampadina Smart 3",
+      "when": "2022-06-15T10:21:46.062261Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_1",
+      "name": "Lampadina Smart 1",
+      "when": "2022-06-15T10:24:43.625032Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_1",
+      "name": "Lampadina Smart 1",
+      "when": "2022-06-15T10:24:45.694706Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_1",
+      "name": "Lampadina Smart 1",
+      "when": "2022-06-15T10:25:18.408110Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_1",
+      "name": "Lampadina Smart 1",
+      "when": "2022-06-15T10:25:20.553333Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_4",
+      "name": "Lampadina Smart 4",
+      "when": "2022-06-15T10:26:57.687953Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_4",
+      "name": "Lampadina Smart 4",
+      "when": "2022-06-15T10:26:59.872861Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_4",
+      "name": "Lampadina Smart 4",
+      "when": "2022-06-15T10:27:04.343530Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_4",
+      "name": "Lampadina Smart 4",
+      "when": "2022-06-15T10:27:07.501730Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_4",
+      "name": "Lampadina Smart 4",
+      "when": "2022-06-15T10:27:09.649849Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_4",
+      "name": "Lampadina Smart 4",
+      "when": "2022-06-15T10:27:11.800882Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_4",
+      "name": "Lampadina Smart 4",
+      "when": "2022-06-15T10:27:13.950523Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_4",
+      "name": "Lampadina Smart 4",
+      "when": "2022-06-15T10:27:16.101402Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_4",
+      "name": "Lampadina Smart 4",
+      "when": "2022-06-15T10:27:18.251301Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_4",
+      "name": "Lampadina Smart 4",
+      "when": "2022-06-15T10:27:20.666668Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_4",
+      "name": "Lampadina Smart 4",
+      "when": "2022-06-15T10:27:22.818027Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_4",
+      "name": "Lampadina Smart 4",
+      "when": "2022-06-15T10:27:24.968495Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_4",
+      "name": "Lampadina Smart 4",
+      "when": "2022-06-15T10:27:27.129204Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_4",
+      "name": "Lampadina Smart 4",
+      "when": "2022-06-15T10:27:29.272537Z"
+    },
+    {
+      "state": "unavailable",
+      "entity_id": "binary_sensor.lampadina_smart_3_overheat",
+      "name": "Lampadina Smart 3 overheat",
+      "when": "2022-06-15T10:43:39.009602Z"
+    },
+    {
+      "state": "unavailable",
+      "entity_id": "light.lampadina_smart_3",
+      "name": "Lampadina Smart 3",
+      "when": "2022-06-15T10:43:39.009801Z"
+    },
+    {
+      "state": "False",
+      "entity_id": "binary_sensor.lampadina_smart_3_overheat",
+      "name": "Lampadina Smart 3 overheat",
+      "when": "2022-06-15T10:44:09.268293Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_3",
+      "name": "Lampadina Smart 3",
+      "when": "2022-06-15T10:44:09.268508Z"
+    },
+    {
+      "state": "unavailable",
+      "entity_id": "binary_sensor.lampadina_smart_4_overheat",
+      "name": "Lampadina Smart 4 overheat",
+      "when": "2022-06-15T11:19:57.005188Z"
+    },
+    {
+      "state": "unavailable",
+      "entity_id": "light.lampadina_smart_4",
+      "name": "Lampadina Smart 4",
+      "when": "2022-06-15T11:19:57.005385Z"
+    },
+    {
+      "state": "False",
+      "entity_id": "binary_sensor.lampadina_smart_4_overheat",
+      "name": "Lampadina Smart 4 overheat",
+      "when": "2022-06-15T11:20:27.274231Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_4",
+      "name": "Lampadina Smart 4",
+      "when": "2022-06-15T11:20:27.274448Z"
+    },
+    {
+      "state": "unavailable",
+      "entity_id": "binary_sensor.lampadina_smart_2_overheat",
+      "name": "Lampadina Smart 2 overheat",
+      "when": "2022-06-15T11:54:32.004991Z"
+    },
+    {
+      "state": "unavailable",
+      "entity_id": "light.lampadina_smart_2",
+      "name": "Lampadina Smart 2",
+      "when": "2022-06-15T11:54:32.005199Z"
+    },
+    {
+      "state": "False",
+      "entity_id": "binary_sensor.lampadina_smart_2_overheat",
+      "name": "Lampadina Smart 2 overheat",
+      "when": "2022-06-15T11:55:03.315943Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_2",
+      "name": "Lampadina Smart 2",
+      "when": "2022-06-15T11:55:03.316171Z"
+    },
+    {
+      "state": "unavailable",
+      "entity_id": "binary_sensor.lampadina_smart_2_overheat",
+      "name": "Lampadina Smart 2 overheat",
+      "when": "2022-06-15T17:49:32.004264Z"
+    },
+    {
+      "state": "unavailable",
+      "entity_id": "light.lampadina_smart_2",
+      "name": "Lampadina Smart 2",
+      "when": "2022-06-15T17:49:32.004478Z"
+    },
+    {
+      "state": "False",
+      "entity_id": "binary_sensor.lampadina_smart_2_overheat",
+      "name": "Lampadina Smart 2 overheat",
+      "when": "2022-06-15T17:50:03.324460Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_2",
+      "name": "Lampadina Smart 2",
+      "when": "2022-06-15T17:50:03.324670Z"
+    },
+    {
+      "state": "below_horizon",
+      "entity_id": "sun.sun",
+      "name": "Sun",
+      "when": "2022-06-15T19:05:38.398754Z"
+    },
+    {
+      "state": "cloudy",
+      "entity_id": "sensor.izi_weather_condition",
+      "name": "IZI weather condition",
+      "when": "2022-06-15T19:16:00.068688Z"
+    },
+    {
+      "state": "clear-night",
+      "entity_id": "sensor.izi_weather_condition",
+      "name": "IZI weather condition",
+      "when": "2022-06-15T21:16:00.162058Z"
+    },
+    {
+      "state": "sunny",
+      "entity_id": "weather.casa",
+      "name": "Casa",
+      "when": "2022-06-15T21:16:31.491517Z"
+    },
+    {
+      "state": "fog",
+      "entity_id": "weather.casa",
+      "name": "Casa",
+      "when": "2022-06-16T01:16:31.516005Z"
+    },
+    {
+      "state": "cloudy",
+      "entity_id": "sensor.izi_weather_condition",
+      "name": "IZI weather condition",
+      "when": "2022-06-16T03:16:00.143069Z"
+    },
+    {
+      "state": "above_horizon",
+      "entity_id": "sun.sun",
+      "name": "Sun",
+      "when": "2022-06-16T03:35:29.015957Z"
+    },
+    {
+      "state": "partlycloudy",
+      "entity_id": "sensor.izi_weather_condition",
+      "name": "IZI weather condition",
+      "when": "2022-06-16T03:46:00.119841Z"
+    },
+    {
+      "state": "sunny",
+      "entity_id": "sensor.izi_weather_condition",
+      "name": "IZI weather condition",
+      "when": "2022-06-16T05:16:00.166297Z"
+    },
+    {
+      "state": "sunny",
+      "entity_id": "weather.casa",
+      "name": "Casa",
+      "when": "2022-06-16T05:16:31.604265Z"
+    },
+    {
+      "state": "partlycloudy",
+      "entity_id": "weather.casa",
+      "name": "Casa",
+      "when": "2022-06-16T08:16:31.513844Z"
+    },
+    {
+      "state": "partlycloudy",
+      "entity_id": "sensor.izi_weather_condition",
+      "name": "IZI weather condition",
+      "when": "2022-06-16T13:16:00.345757Z"
+    },
+    {
+      "state": "sunny",
+      "entity_id": "sensor.izi_weather_condition",
+      "name": "IZI weather condition",
+      "when": "2022-06-16T15:16:00.250564Z"
+    },
+    {
+      "state": "below_horizon",
+      "entity_id": "sun.sun",
+      "name": "Sun",
+      "when": "2022-06-16T19:06:02.050030Z"
+    },
+    {
+      "state": "clear-night",
+      "entity_id": "sensor.izi_weather_condition",
+      "name": "IZI weather condition",
+      "when": "2022-06-16T19:16:00.372642Z"
+    },
+    {
+      "state": "sunny",
+      "entity_id": "weather.casa",
+      "name": "Casa",
+      "when": "2022-06-16T20:16:32.515839Z"
+    },
+    {
+      "state": "fog",
+      "entity_id": "weather.casa",
+      "name": "Casa",
+      "when": "2022-06-17T01:16:32.511109Z"
+    },
+    {
+      "state": "above_horizon",
+      "entity_id": "sun.sun",
+      "name": "Sun",
+      "when": "2022-06-17T03:35:31.976793Z"
+    },
+    {
+      "state": "sunny",
+      "entity_id": "sensor.izi_weather_condition",
+      "name": "IZI weather condition",
+      "when": "2022-06-17T03:46:00.620266Z"
+    },
+    {
+      "state": "partlycloudy",
+      "entity_id": "weather.casa",
+      "name": "Casa",
+      "when": "2022-06-17T06:16:32.515109Z"
+    },
+    {
+      "state": "unavailable",
+      "entity_id": "binary_sensor.lampadina_smart_4_overheat",
+      "name": "Lampadina Smart 4 overheat",
+      "when": "2022-06-17T09:01:21.008663Z"
+    },
+    {
+      "state": "unavailable",
+      "entity_id": "light.lampadina_smart_4",
+      "name": "Lampadina Smart 4",
+      "when": "2022-06-17T09:01:21.008866Z"
+    },
+    {
+      "state": "False",
+      "entity_id": "binary_sensor.lampadina_smart_4_overheat",
+      "name": "Lampadina Smart 4 overheat",
+      "when": "2022-06-17T09:01:52.957765Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_4",
+      "name": "Lampadina Smart 4",
+      "when": "2022-06-17T09:01:52.957979Z"
+    },
+    {
+      "state": "rainy",
+      "entity_id": "weather.casa",
+      "name": "Casa",
+      "when": "2022-06-17T10:16:32.498062Z"
+    },
+    {
+      "state": "partlycloudy",
+      "entity_id": "sensor.izi_weather_condition",
+      "name": "IZI weather condition",
+      "when": "2022-06-17T12:16:00.691719Z"
+    },
+    {
+      "state": "partlycloudy",
+      "entity_id": "weather.casa",
+      "name": "Casa",
+      "when": "2022-06-17T12:16:32.559184Z"
+    },
+    {
+      "state": "rainy",
+      "entity_id": "weather.casa",
+      "name": "Casa",
+      "when": "2022-06-17T13:16:32.542865Z"
+    },
+    {
+      "state": "cloudy",
+      "entity_id": "weather.casa",
+      "name": "Casa",
+      "when": "2022-06-17T14:16:32.507567Z"
+    },
+    {
+      "state": "partlycloudy",
+      "entity_id": "weather.casa",
+      "name": "Casa",
+      "when": "2022-06-17T15:16:32.797871Z"
+    },
+    {
+      "state": "cloudy",
+      "entity_id": "sensor.izi_weather_condition",
+      "name": "IZI weather condition",
+      "when": "2022-06-17T16:16:00.720855Z"
+    },
+    {
+      "state": "cloudy",
+      "entity_id": "weather.casa",
+      "name": "Casa",
+      "when": "2022-06-17T16:16:32.568883Z"
+    },
+    {
+      "state": "partlycloudy",
+      "entity_id": "sensor.izi_weather_condition",
+      "name": "IZI weather condition",
+      "when": "2022-06-17T17:16:00.812231Z"
+    },
+    {
+      "state": "partlycloudy",
+      "entity_id": "weather.casa",
+      "name": "Casa",
+      "when": "2022-06-17T17:16:32.503180Z"
+    },
+    {
+      "state": "sunny",
+      "entity_id": "sensor.izi_weather_condition",
+      "name": "IZI weather condition",
+      "when": "2022-06-17T18:16:01.061590Z"
+    },
+    {
+      "state": "below_horizon",
+      "entity_id": "sun.sun",
+      "name": "Sun",
+      "when": "2022-06-17T19:06:23.680549Z"
+    },
+    {
+      "state": "clear-night",
+      "entity_id": "sensor.izi_weather_condition",
+      "name": "IZI weather condition",
+      "when": "2022-06-17T19:16:00.729331Z"
+    },
+    {
+      "state": "cloudy",
+      "entity_id": "weather.casa",
+      "name": "Casa",
+      "when": "2022-06-17T19:16:32.604032Z"
+    },
+    {
+      "state": "partlycloudy",
+      "entity_id": "weather.casa",
+      "name": "Casa",
+      "when": "2022-06-17T20:16:32.571825Z"
+    },
+    {
+      "state": "unavailable",
+      "entity_id": "binary_sensor.lampadina_smart_1_overheat",
+      "name": "Lampadina Smart 1 overheat",
+      "when": "2022-06-18T00:43:59.004425Z"
+    },
+    {
+      "state": "unavailable",
+      "entity_id": "light.lampadina_smart_1",
+      "name": "Lampadina Smart 1",
+      "when": "2022-06-18T00:43:59.004614Z"
+    },
+    {
+      "state": "False",
+      "entity_id": "binary_sensor.lampadina_smart_1_overheat",
+      "name": "Lampadina Smart 1 overheat",
+      "when": "2022-06-18T00:44:29.336728Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_1",
+      "name": "Lampadina Smart 1",
+      "when": "2022-06-18T00:44:29.336935Z"
+    },
+    {
+      "state": "sunny",
+      "entity_id": "weather.casa",
+      "name": "Casa",
+      "when": "2022-06-18T01:16:32.536962Z"
+    },
+    {
+      "state": "partlycloudy",
+      "entity_id": "weather.casa",
+      "name": "Casa",
+      "when": "2022-06-18T02:16:32.491513Z"
+    },
+    {
+      "state": "above_horizon",
+      "entity_id": "sun.sun",
+      "name": "Sun",
+      "when": "2022-06-18T03:35:37.104018Z"
+    },
+    {
+      "state": "sunny",
+      "entity_id": "sensor.izi_weather_condition",
+      "name": "IZI weather condition",
+      "when": "2022-06-18T03:46:00.802528Z"
+    },
+    {
+      "state": "cloudy",
+      "entity_id": "sensor.izi_weather_condition",
+      "name": "IZI weather condition",
+      "when": "2022-06-18T04:16:01.075857Z"
+    },
+    {
+      "state": "sunny",
+      "entity_id": "sensor.izi_weather_condition",
+      "name": "IZI weather condition",
+      "when": "2022-06-18T08:16:00.989132Z"
+    },
+    {
+      "state": "cloudy",
+      "entity_id": "weather.casa",
+      "name": "Casa",
+      "when": "2022-06-18T11:16:32.539940Z"
+    },
+    {
+      "state": "partlycloudy",
+      "entity_id": "sensor.izi_weather_condition",
+      "name": "IZI weather condition",
+      "when": "2022-06-18T14:16:01.366968Z"
+    },
+    {
+      "state": "partlycloudy",
+      "entity_id": "weather.casa",
+      "name": "Casa",
+      "when": "2022-06-18T14:16:32.547739Z"
+    },
+    {
+      "state": "sunny",
+      "entity_id": "sensor.izi_weather_condition",
+      "name": "IZI weather condition",
+      "when": "2022-06-18T16:16:01.295877Z"
+    },
+    {
+      "state": "unavailable",
+      "entity_id": "binary_sensor.lampadina_smart_4_overheat",
+      "name": "Lampadina Smart 4 overheat",
+      "when": "2022-06-18T18:16:19.004791Z"
+    },
+    {
+      "state": "unavailable",
+      "entity_id": "light.lampadina_smart_4",
+      "name": "Lampadina Smart 4",
+      "when": "2022-06-18T18:16:19.005395Z"
+    },
+    {
+      "state": "False",
+      "entity_id": "binary_sensor.lampadina_smart_4_overheat",
+      "name": "Lampadina Smart 4 overheat",
+      "when": "2022-06-18T18:16:49.308247Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_4",
+      "name": "Lampadina Smart 4",
+      "when": "2022-06-18T18:16:49.308459Z"
+    },
+    {
+      "state": "unavailable",
+      "entity_id": "binary_sensor.lampadina_smart_4_overheat",
+      "name": "Lampadina Smart 4 overheat",
+      "when": "2022-06-18T19:00:04.004728Z"
+    },
+    {
+      "state": "unavailable",
+      "entity_id": "light.lampadina_smart_4",
+      "name": "Lampadina Smart 4",
+      "when": "2022-06-18T19:00:04.004931Z"
+    },
+    {
+      "state": "False",
+      "entity_id": "binary_sensor.lampadina_smart_4_overheat",
+      "name": "Lampadina Smart 4 overheat",
+      "when": "2022-06-18T19:00:34.221713Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_4",
+      "name": "Lampadina Smart 4",
+      "when": "2022-06-18T19:00:34.221941Z"
+    },
+    {
+      "state": "below_horizon",
+      "entity_id": "sun.sun",
+      "name": "Sun",
+      "when": "2022-06-18T19:06:43.259939Z"
+    },
+    {
+      "state": "clear-night",
+      "entity_id": "sensor.izi_weather_condition",
+      "name": "IZI weather condition",
+      "when": "2022-06-18T19:16:01.369486Z"
+    },
+    {
+      "state": "sunny",
+      "entity_id": "weather.casa",
+      "name": "Casa",
+      "when": "2022-06-18T20:16:32.509067Z"
+    },
+    {
+      "state": "above_horizon",
+      "entity_id": "sun.sun",
+      "name": "Sun",
+      "when": "2022-06-19T03:35:44.379396Z"
+    },
+    {
+      "state": "sunny",
+      "entity_id": "sensor.izi_weather_condition",
+      "name": "IZI weather condition",
+      "when": "2022-06-19T03:46:01.237912Z"
+    },
+    {
+      "state": "unavailable",
+      "entity_id": "binary_sensor.lampadina_smart_1_overheat",
+      "name": "Lampadina Smart 1 overheat",
+      "when": "2022-06-19T18:41:26.003294Z"
+    },
+    {
+      "state": "unavailable",
+      "entity_id": "light.lampadina_smart_1",
+      "name": "Lampadina Smart 1",
+      "when": "2022-06-19T18:41:26.003508Z"
+    },
+    {
+      "state": "unavailable",
+      "entity_id": "binary_sensor.lampadina_smart_2_overheat",
+      "name": "Lampadina Smart 2 overheat",
+      "when": "2022-06-19T18:41:28.008330Z"
+    },
+    {
+      "state": "unavailable",
+      "entity_id": "light.lampadina_smart_2",
+      "name": "Lampadina Smart 2",
+      "when": "2022-06-19T18:41:28.008535Z"
+    },
+    {
+      "state": "False",
+      "entity_id": "binary_sensor.lampadina_smart_1_overheat",
+      "name": "Lampadina Smart 1 overheat",
+      "when": "2022-06-19T18:41:56.301814Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_1",
+      "name": "Lampadina Smart 1",
+      "when": "2022-06-19T18:41:56.302026Z"
+    },
+    {
+      "state": "False",
+      "entity_id": "binary_sensor.lampadina_smart_2_overheat",
+      "name": "Lampadina Smart 2 overheat",
+      "when": "2022-06-19T18:41:58.259650Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_2",
+      "name": "Lampadina Smart 2",
+      "when": "2022-06-19T18:41:58.259860Z"
+    },
+    {
+      "state": "below_horizon",
+      "entity_id": "sun.sun",
+      "name": "Sun",
+      "when": "2022-06-19T19:07:00.758636Z"
+    },
+    {
+      "state": "clear-night",
+      "entity_id": "sensor.izi_weather_condition",
+      "name": "IZI weather condition",
+      "when": "2022-06-19T19:16:01.516034Z"
+    },
+    {
+      "state": "above_horizon",
+      "entity_id": "sun.sun",
+      "name": "Sun",
+      "when": "2022-06-20T03:35:53.785758Z"
+    },
+    {
+      "state": "sunny",
+      "entity_id": "sensor.izi_weather_condition",
+      "name": "IZI weather condition",
+      "when": "2022-06-20T03:46:01.655129Z"
+    },
+    {
+      "state": "unavailable",
+      "entity_id": "binary_sensor.lampadina_smart_1_overheat",
+      "name": "Lampadina Smart 1 overheat",
+      "when": "2022-06-20T13:22:54.007844Z"
+    },
+    {
+      "state": "unavailable",
+      "entity_id": "light.lampadina_smart_1",
+      "name": "Lampadina Smart 1",
+      "when": "2022-06-20T13:22:54.008638Z"
+    },
+    {
+      "state": "False",
+      "entity_id": "binary_sensor.lampadina_smart_1_overheat",
+      "name": "Lampadina Smart 1 overheat",
+      "when": "2022-06-20T13:23:24.265913Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_1",
+      "name": "Lampadina Smart 1",
+      "when": "2022-06-20T13:23:24.266120Z"
+    },
+    {
+      "state": "below_horizon",
+      "entity_id": "sun.sun",
+      "name": "Sun",
+      "when": "2022-06-20T19:07:16.151955Z"
+    },
+    {
+      "state": "clear-night",
+      "entity_id": "sensor.izi_weather_condition",
+      "name": "IZI weather condition",
+      "when": "2022-06-20T19:16:01.914081Z"
+    },
+    {
+      "state": "unavailable",
+      "entity_id": "binary_sensor.lampadina_smart_4_overheat",
+      "name": "Lampadina Smart 4 overheat",
+      "when": "2022-06-20T21:37:47.007507Z"
+    },
+    {
+      "state": "unavailable",
+      "entity_id": "light.lampadina_smart_4",
+      "name": "Lampadina Smart 4",
+      "when": "2022-06-20T21:37:47.007835Z"
+    },
+    {
+      "state": "False",
+      "entity_id": "binary_sensor.lampadina_smart_4_overheat",
+      "name": "Lampadina Smart 4 overheat",
+      "when": "2022-06-20T21:38:17.221981Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_4",
+      "name": "Lampadina Smart 4",
+      "when": "2022-06-20T21:38:17.222194Z"
+    },
+    {
+      "state": "partlycloudy",
+      "entity_id": "weather.casa",
+      "name": "Casa",
+      "when": "2022-06-20T23:16:32.559137Z"
+    },
+    {
+      "state": "sunny",
+      "entity_id": "weather.casa",
+      "name": "Casa",
+      "when": "2022-06-21T00:16:32.558748Z"
+    },
+    {
+      "state": "partlycloudy",
+      "entity_id": "weather.casa",
+      "name": "Casa",
+      "when": "2022-06-21T01:16:32.609770Z"
+    },
+    {
+      "state": "above_horizon",
+      "entity_id": "sun.sun",
+      "name": "Sun",
+      "when": "2022-06-21T03:36:05.307931Z"
+    },
+    {
+      "state": "sunny",
+      "entity_id": "sensor.izi_weather_condition",
+      "name": "IZI weather condition",
+      "when": "2022-06-21T03:46:02.015060Z"
+    },
+    {
+      "state": "sunny",
+      "entity_id": "weather.casa",
+      "name": "Casa",
+      "when": "2022-06-21T04:16:32.519473Z"
+    },
+    {
+      "state": "partlycloudy",
+      "entity_id": "sensor.izi_weather_condition",
+      "name": "IZI weather condition",
+      "when": "2022-06-21T06:16:02.203349Z"
+    },
+    {
+      "state": "partlycloudy",
+      "entity_id": "weather.casa",
+      "name": "Casa",
+      "when": "2022-06-21T08:16:32.522288Z"
+    },
+    {
+      "state": "sunny",
+      "entity_id": "weather.casa",
+      "name": "Casa",
+      "when": "2022-06-21T11:16:32.511502Z"
+    },
+    {
+      "state": "sunny",
+      "entity_id": "sensor.izi_weather_condition",
+      "name": "IZI weather condition",
+      "when": "2022-06-21T13:16:02.261247Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_4",
+      "name": "Lampadina Smart 4",
+      "when": "2022-06-21T14:37:38.453386Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_4",
+      "name": "Lampadina Smart 4",
+      "when": "2022-06-21T14:37:40.601175Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_4",
+      "name": "Lampadina Smart 4",
+      "when": "2022-06-21T14:38:23.337079Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_4",
+      "name": "Lampadina Smart 4",
+      "when": "2022-06-21T14:38:25.486103Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_1",
+      "name": "Lampadina Smart 1",
+      "when": "2022-06-21T14:38:25.705397Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_1",
+      "name": "Lampadina Smart 1",
+      "when": "2022-06-21T14:38:27.851623Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_3",
+      "name": "Lampadina Smart 3",
+      "when": "2022-06-21T14:38:29.788768Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_3",
+      "name": "Lampadina Smart 3",
+      "when": "2022-06-21T14:38:31.938545Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_2",
+      "name": "Lampadina Smart 2",
+      "when": "2022-06-21T14:38:32.017817Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_2",
+      "name": "Lampadina Smart 2",
+      "when": "2022-06-21T14:38:34.168291Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_2",
+      "name": "Lampadina Smart 2",
+      "when": "2022-06-21T14:38:36.335741Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_2",
+      "name": "Lampadina Smart 2",
+      "when": "2022-06-21T14:38:39.350871Z"
+    },
+    {
+      "state": "on",
+      "entity_id": "light.lampadina_smart_1",
+      "name": "Lampadina Smart 1",
+      "when": "2022-06-21T14:38:57.305601Z"
+    },
+    {
+      "state": "off",
+      "entity_id": "light.lampadina_smart_1",
+      "name": "Lampadina Smart 1",
+      "when": "2022-06-21T14:38:59.568560Z"
+    },
+    {
+      "state": "cloudy",
+      "entity_id": "weather.casa",
+      "name": "Casa",
+      "when": "2022-06-21T16:16:32.549819Z"
+    },
+    {
+      "state": "partlycloudy",
+      "entity_id": "weather.casa",
+      "name": "Casa",
+      "when": "2022-06-21T17:16:32.534288Z"
+    },
+    {
+      "state": "below_horizon",
+      "entity_id": "sun.sun",
+      "name": "Sun",
+      "when": "2022-06-21T19:07:29.414004Z"
+    },
+    {
+      "state": "clear-night",
+      "entity_id": "sensor.izi_weather_condition",
+      "name": "IZI weather condition",
+      "when": "2022-06-21T19:16:02.362089Z"
+    },
+    {
+      "state": "cloudy",
+      "entity_id": "weather.casa",
+      "name": "Casa",
+      "when": "2022-06-21T20:16:32.572606Z"
+    },
+    {
+      "state": "partlycloudy",
+      "entity_id": "weather.casa",
+      "name": "Casa",
+      "when": "2022-06-21T21:16:32.526038Z"
+    }
+  ]
+}

@@ -1,0 +1,1194 @@
+[
+  {
+    "entity_id": "person.hastega",
+    "area": null,
+    "state": "unknown",
+    "attributes": {"friendly_name": "Hastega"},
+    "last_changed": "2022-06-07T10:15:21.857504Z",
+    "last_updated": "2022-06-07T10:15:38.815608Z",
+    "context": {
+      "id": "01G4YTKB1ZM214VDDBTWPDBAEH",
+      "parent_id": null,
+      "user_id": null
+    }
+  },
+  {
+    "entity_id": "update.home_assistant_supervisor_update",
+    "area": null,
+    "state": "off",
+    "attributes": {"friendly_name": "Home Assistant Supervisor: Update"},
+    "last_changed": "2022-06-07T11:26:03.742292Z",
+    "last_updated": "2022-06-07T11:26:03.742292Z",
+    "context": {
+      "id": "01G4YYM8YYJYCNK52HDV5F7P01",
+      "parent_id": null,
+      "user_id": null
+    }
+  },
+  {
+    "entity_id": "update.home_assistant_core_update",
+    "area": null,
+    "state": "on",
+    "attributes": {"friendly_name": "Home Assistant Core: Update"},
+    "last_changed": "2022-06-08T02:19:02.105871Z",
+    "last_updated": "2022-06-15T00:17:38.092867Z",
+    "context": {
+      "id": "01G5JBJ39CM341D4ZERNSSXS5Y",
+      "parent_id": null,
+      "user_id": null
+    }
+  },
+  {
+    "entity_id": "update.samba_share_update",
+    "area": null,
+    "state": "on",
+    "attributes": {"friendly_name": "Samba share: Update"},
+    "last_changed": "2022-06-13T19:21:52.122359Z",
+    "last_updated": "2022-06-13T19:21:52.122359Z",
+    "context": {
+      "id": "01G5F87T7TE80SZBZYWF3TZZA6",
+      "parent_id": null,
+      "user_id": null
+    }
+  },
+  {
+    "entity_id": "sun.sun",
+    "area": null,
+    "state": "above_horizon",
+    "attributes": {"friendly_name": "Sun"},
+    "last_changed": "2022-06-22T03:36:18.908109Z",
+    "last_updated": "2022-06-22T09:08:02.987965Z",
+    "context": {
+      "id": "01G65APB9BBCPRYH7GHNJ4HZA4",
+      "parent_id": null,
+      "user_id": null
+    }
+  },
+  {
+    "entity_id": "zone.home",
+    "area": null,
+    "state": "0",
+    "attributes": {"friendly_name": "Casa"},
+    "last_changed": "2022-06-07T10:15:30.364348Z",
+    "last_updated": "2022-06-07T10:15:30.364348Z",
+    "context": {
+      "id": "01G4YTK2SW5MXWHSXR5QKFVVY3",
+      "parent_id": null,
+      "user_id": null
+    }
+  },
+  {
+    "entity_id": "weather.casa",
+    "area": null,
+    "state": "cloudy",
+    "attributes": {"friendly_name": "Casa"},
+    "last_changed": "2022-06-22T08:16:32.614092Z",
+    "last_updated": "2022-06-22T08:16:32.614092Z",
+    "context": {
+      "id": "01G657R1B6YQT1XFF83G88NJVP",
+      "parent_id": null,
+      "user_id": null
+    }
+  },
+  {
+    "entity_id": "binary_sensor.wr3620284928_connection_state",
+    "area": {"area_id": "soppalco", "name": "Soppalco", "picture": null},
+    "state": "off",
+    "last_changed": "2022-06-10T18:20:47.043171Z",
+    "last_updated": "2022-06-10T18:20:47.043171Z",
+    "context": {
+      "id": "01G57DHT23T8QWSKJAAC4HJWJJ",
+      "parent_id": null,
+      "user_id": null
+    },
+    "attributes": {
+      "friendly_name": "WR3620284928 connection state",
+      "device_class": "connectivity",
+      "icon": null
+    }
+  },
+  {
+    "entity_id": "binary_sensor.climatizzazione_power",
+    "area": {"area_id": "soppalco", "name": "Soppalco", "picture": null},
+    "state": "off",
+    "last_changed": "2022-06-07T10:15:32.325304Z",
+    "last_updated": "2022-06-07T10:15:32.325304Z",
+    "context": {
+      "id": "01G4YTK4Q5EJTGGGZAM90YT5G4",
+      "parent_id": null,
+      "user_id": null
+    },
+    "attributes": {
+      "friendly_name": "Climatizzazione power",
+      "device_class": "power",
+      "icon": null
+    }
+  },
+  {
+    "entity_id": "binary_sensor.climatizzazione_link",
+    "area": {"area_id": "soppalco", "name": "Soppalco", "picture": null},
+    "state": "off",
+    "last_changed": "2022-06-10T18:20:47.290647Z",
+    "last_updated": "2022-06-10T18:20:47.290647Z",
+    "context": {
+      "id": "01G57DHT9TXSP6ME4BDCHRWZQ7",
+      "parent_id": null,
+      "user_id": null
+    },
+    "attributes": {
+      "friendly_name": "Climatizzazione link",
+      "device_class": "connectivity",
+      "icon": null
+    }
+  },
+  {
+    "entity_id": "binary_sensor.climatizzazione_overlay",
+    "area": {"area_id": "soppalco", "name": "Soppalco", "picture": null},
+    "state": "on",
+    "last_changed": "2022-06-07T10:15:32.327055Z",
+    "last_updated": "2022-06-07T10:15:32.327055Z",
+    "context": {
+      "id": "01G4YTK4Q7PSRF4MFJHG72SQ9J",
+      "parent_id": null,
+      "user_id": null
+    },
+    "attributes": {
+      "friendly_name": "Climatizzazione overlay",
+      "device_class": "power",
+      "icon": null
+    }
+  },
+  {
+    "entity_id": "binary_sensor.climatizzazione_open_window",
+    "area": {"area_id": "soppalco", "name": "Soppalco", "picture": null},
+    "state": "off",
+    "last_changed": "2022-06-07T10:15:32.329279Z",
+    "last_updated": "2022-06-07T10:15:32.329279Z",
+    "context": {
+      "id": "01G4YTK4Q94ZE9NS44ZE3PF3PK",
+      "parent_id": null,
+      "user_id": null
+    },
+    "attributes": {
+      "friendly_name": "Climatizzazione open window",
+      "device_class": "window",
+      "icon": null
+    }
+  },
+  {
+    "entity_id": "sensor.izi_outdoor_temperature",
+    "area": {"area_id": "soppalco", "name": "Soppalco", "picture": null},
+    "state": "27.47",
+    "last_changed": "2022-06-22T08:16:03.229758Z",
+    "last_updated": "2022-06-22T09:01:02.362811Z",
+    "context": {
+      "id": "01G65A9GGT7YQQTQXC7PEAW1DH",
+      "parent_id": null,
+      "user_id": null
+    },
+    "attributes": {
+      "friendly_name": "IZI outdoor temperature",
+      "device_class": "temperature",
+      "icon": null,
+      "unit_of_measurement": "°C",
+      "state_class": "measurement"
+    }
+  },
+  {
+    "entity_id": "sensor.izi_solar_percentage",
+    "area": {"area_id": "soppalco", "name": "Soppalco", "picture": null},
+    "state": "88.8",
+    "last_changed": "2022-06-22T09:01:02.363158Z",
+    "last_updated": "2022-06-22T09:01:02.363158Z",
+    "context": {
+      "id": "01G65A9GGV0AK0H45SH8B4JJ3T",
+      "parent_id": null,
+      "user_id": null
+    },
+    "attributes": {
+      "friendly_name": "IZI solar percentage",
+      "device_class": "unknown",
+      "icon": null,
+      "unit_of_measurement": "%",
+      "state_class": "measurement"
+    }
+  },
+  {
+    "entity_id": "sensor.izi_weather_condition",
+    "area": {"area_id": "soppalco", "name": "Soppalco", "picture": null},
+    "state": "sunny",
+    "last_changed": "2022-06-22T08:16:03.230773Z",
+    "last_updated": "2022-06-22T09:01:02.363389Z",
+    "context": {
+      "id": "01G65A9GGVXF8TAZ8J86P3D862",
+      "parent_id": null,
+      "user_id": null
+    },
+    "attributes": {
+      "friendly_name": "IZI weather condition",
+      "device_class": "unknown",
+      "icon": null
+    }
+  },
+  {
+    "entity_id": "sensor.climatizzazione_temperature",
+    "area": {"area_id": "soppalco", "name": "Soppalco", "picture": null},
+    "state": "24.02",
+    "last_changed": "2022-06-10T17:50:47.287245Z",
+    "last_updated": "2022-06-10T17:50:47.287245Z",
+    "context": {
+      "id": "01G57BTWFQVV2Z8CP8RQ4QWK2Q",
+      "parent_id": null,
+      "user_id": null
+    },
+    "attributes": {
+      "friendly_name": "Climatizzazione temperature",
+      "device_class": "temperature",
+      "icon": null,
+      "unit_of_measurement": "°C",
+      "state_class": "measurement"
+    }
+  },
+  {
+    "entity_id": "sensor.climatizzazione_humidity",
+    "area": {"area_id": "soppalco", "name": "Soppalco", "picture": null},
+    "state": "56.7",
+    "last_changed": "2022-06-10T17:50:47.287606Z",
+    "last_updated": "2022-06-10T17:50:47.287606Z",
+    "context": {
+      "id": "01G57BTWFQHWA4MX4SB411JQV6",
+      "parent_id": null,
+      "user_id": null
+    },
+    "attributes": {
+      "friendly_name": "Climatizzazione humidity",
+      "device_class": "humidity",
+      "icon": null,
+      "unit_of_measurement": "%",
+      "state_class": "measurement"
+    }
+  },
+  {
+    "entity_id": "sensor.climatizzazione_ac",
+    "area": {"area_id": "soppalco", "name": "Soppalco", "picture": null},
+    "state": "OFF",
+    "last_changed": "2022-06-07T10:15:32.337868Z",
+    "last_updated": "2022-06-07T10:15:32.337868Z",
+    "context": {
+      "id": "01G4YTK4QH0SRKAT2RKZJM05JA",
+      "parent_id": null,
+      "user_id": null
+    },
+    "attributes": {
+      "friendly_name": "Climatizzazione ac",
+      "device_class": "unknown",
+      "icon": null
+    }
+  },
+  {
+    "entity_id": "sensor.climatizzazione_tado_mode",
+    "area": {"area_id": "soppalco", "name": "Soppalco", "picture": null},
+    "state": "HOME",
+    "last_changed": "2022-06-07T10:15:32.338605Z",
+    "last_updated": "2022-06-07T10:15:32.338605Z",
+    "context": {
+      "id": "01G4YTK4QJCXWKTAZE9MKTDJ97",
+      "parent_id": null,
+      "user_id": null
+    },
+    "attributes": {
+      "friendly_name": "Climatizzazione tado mode",
+      "device_class": "unknown",
+      "icon": null
+    }
+  },
+  {
+    "entity_id": "climate.climatizzazione",
+    "area": {"area_id": "soppalco", "name": "Soppalco", "picture": null},
+    "state": "unavailable",
+    "attributes": {"friendly_name": "Climatizzazione"},
+    "last_changed": "2022-06-10T18:20:47.291680Z",
+    "last_updated": "2022-06-10T18:20:47.291680Z",
+    "context": {
+      "id": "01G57DHT9VTJAEAVKWWK9NCPCY",
+      "parent_id": null,
+      "user_id": null
+    }
+  },
+  {
+    "entity_id": "sensor.hacs",
+    "area": null,
+    "state": "0",
+    "last_changed": "2022-06-07T10:15:48.782455Z",
+    "last_updated": "2022-06-07T10:15:48.782455Z",
+    "context": {
+      "id": "01G4YTKMSE4TB1KY3CPHR6T4RV",
+      "parent_id": null,
+      "user_id": null
+    },
+    "attributes": {
+      "friendly_name": "hacs",
+      "device_class": "unknown",
+      "icon": "hacs:hacs",
+      "unit_of_measurement": "pending update(s)",
+      "state_class": null
+    }
+  },
+  {
+    "entity_id": "sensor.netatmo_casa_indoor_temperature",
+    "area": {
+      "area_id": "camera_da_letto",
+      "name": "Camera da letto",
+      "picture": null
+    },
+    "state": "28",
+    "last_changed": "2022-06-22T09:08:21.527695Z",
+    "last_updated": "2022-06-22T09:08:21.527695Z",
+    "context": {
+      "id": "01G65APXCQ9DBTW97SS8AWNJ8T",
+      "parent_id": null,
+      "user_id": null
+    },
+    "attributes": {
+      "friendly_name": "Netatmo Casa (Indoor) Temperature",
+      "device_class": "temperature",
+      "icon": null,
+      "unit_of_measurement": "°C",
+      "state_class": "measurement"
+    }
+  },
+  {
+    "entity_id": "sensor.netatmo_casa_indoor_co2",
+    "area": {
+      "area_id": "camera_da_letto",
+      "name": "Camera da letto",
+      "picture": null
+    },
+    "state": "654",
+    "last_changed": "2022-06-22T09:08:21.528192Z",
+    "last_updated": "2022-06-22T09:08:21.528192Z",
+    "context": {
+      "id": "01G65APXCRWEXXBD02FGVFAZTJ",
+      "parent_id": null,
+      "user_id": null
+    },
+    "attributes": {
+      "friendly_name": "Netatmo Casa (Indoor) CO2",
+      "device_class": "carbon_dioxide",
+      "icon": null,
+      "unit_of_measurement": "ppm",
+      "state_class": "measurement"
+    }
+  },
+  {
+    "entity_id": "sensor.netatmo_casa_indoor_pressure",
+    "area": {
+      "area_id": "camera_da_letto",
+      "name": "Camera da letto",
+      "picture": null
+    },
+    "state": "1012.6",
+    "last_changed": "2022-06-22T09:08:21.528469Z",
+    "last_updated": "2022-06-22T09:08:21.528469Z",
+    "context": {
+      "id": "01G65APXCR0QM3DTTJ22WWQ63X",
+      "parent_id": null,
+      "user_id": null
+    },
+    "attributes": {
+      "friendly_name": "Netatmo Casa (Indoor) Pressure",
+      "device_class": "pressure",
+      "icon": null,
+      "unit_of_measurement": "mbar",
+      "state_class": "measurement"
+    }
+  },
+  {
+    "entity_id": "sensor.netatmo_casa_indoor_noise",
+    "area": {
+      "area_id": "camera_da_letto",
+      "name": "Camera da letto",
+      "picture": null
+    },
+    "state": "32",
+    "last_changed": "2022-06-22T08:48:20.738007Z",
+    "last_updated": "2022-06-22T08:48:20.738007Z",
+    "context": {
+      "id": "01G659J8R20JFHXHZVQ8EMF589",
+      "parent_id": null,
+      "user_id": null
+    },
+    "attributes": {
+      "friendly_name": "Netatmo Casa (Indoor) Noise",
+      "device_class": "unknown",
+      "icon": "mdi:volume-high",
+      "unit_of_measurement": "dB",
+      "state_class": "measurement"
+    }
+  },
+  {
+    "entity_id": "sensor.netatmo_casa_indoor_humidity",
+    "area": {
+      "area_id": "camera_da_letto",
+      "name": "Camera da letto",
+      "picture": null
+    },
+    "state": "55",
+    "last_changed": "2022-06-22T03:18:20.290965Z",
+    "last_updated": "2022-06-22T03:18:20.290965Z",
+    "context": {
+      "id": "01G64PP0C2G2YMVBQQ69H2EJJM",
+      "parent_id": null,
+      "user_id": null
+    },
+    "attributes": {
+      "friendly_name": "Netatmo Casa (Indoor) Humidity",
+      "device_class": "humidity",
+      "icon": null,
+      "unit_of_measurement": "%",
+      "state_class": "measurement"
+    }
+  },
+  {
+    "entity_id": "sensor.netatmo_casa_indoor_esterno_temperature",
+    "area": {"area_id": "esterno", "name": "Esterno", "picture": null},
+    "state": "26.8",
+    "last_changed": "2022-06-22T09:08:21.528879Z",
+    "last_updated": "2022-06-22T09:08:21.528879Z",
+    "context": {
+      "id": "01G65APXCRF8M19P1VYR034CQ0",
+      "parent_id": null,
+      "user_id": null
+    },
+    "attributes": {
+      "friendly_name": "Netatmo Casa (Indoor) Esterno Temperature",
+      "device_class": "temperature",
+      "icon": null,
+      "unit_of_measurement": "°C",
+      "state_class": "measurement"
+    }
+  },
+  {
+    "entity_id": "sensor.netatmo_casa_indoor_esterno_humidity",
+    "area": {"area_id": "esterno", "name": "Esterno", "picture": null},
+    "state": "58",
+    "last_changed": "2022-06-22T09:08:21.529081Z",
+    "last_updated": "2022-06-22T09:08:21.529081Z",
+    "context": {
+      "id": "01G65APXCSXQNW7GMP4C8HGZ4W",
+      "parent_id": null,
+      "user_id": null
+    },
+    "attributes": {
+      "friendly_name": "Netatmo Casa (Indoor) Esterno Humidity",
+      "device_class": "humidity",
+      "icon": null,
+      "unit_of_measurement": "%",
+      "state_class": "measurement"
+    }
+  },
+  {
+    "entity_id": "sensor.netatmo_casa_indoor_esterno_battery_percent",
+    "area": {"area_id": "esterno", "name": "Esterno", "picture": null},
+    "state": "84",
+    "last_changed": "2022-06-11T04:57:49.928894Z",
+    "last_updated": "2022-06-11T04:57:49.928894Z",
+    "context": {
+      "id": "01G58J09385AS6B08HK1VX66WW",
+      "parent_id": null,
+      "user_id": null
+    },
+    "attributes": {
+      "friendly_name": "Netatmo Casa (Indoor) Esterno Battery Percent",
+      "device_class": "battery",
+      "icon": null,
+      "unit_of_measurement": "%",
+      "state_class": "measurement"
+    }
+  },
+  {
+    "entity_id": "sensor.solaredge_lifetime_energy",
+    "area": null,
+    "state": "unavailable",
+    "last_changed": "2022-06-07T10:15:33.521540Z",
+    "last_updated": "2022-06-07T10:15:33.521540Z",
+    "context": {
+      "id": "01G4YTK5WHA134QPVZSMDXS3TC",
+      "parent_id": null,
+      "user_id": null
+    },
+    "attributes": {
+      "friendly_name": "solaredge (Lifetime energy)",
+      "device_class": "energy",
+      "icon": "mdi:solar-power",
+      "unit_of_measurement": "Wh",
+      "state_class": "total"
+    }
+  },
+  {
+    "entity_id": "sensor.solaredge_energy_this_year",
+    "area": null,
+    "state": "unavailable",
+    "last_changed": "2022-06-07T10:15:33.523789Z",
+    "last_updated": "2022-06-07T10:15:33.523789Z",
+    "context": {
+      "id": "01G4YTK5WK37RJBYD9DEDW9CWN",
+      "parent_id": null,
+      "user_id": null
+    },
+    "attributes": {
+      "friendly_name": "solaredge (Energy this year)",
+      "device_class": "energy",
+      "icon": "mdi:solar-power",
+      "unit_of_measurement": "Wh",
+      "state_class": null
+    }
+  },
+  {
+    "entity_id": "sensor.solaredge_energy_this_month",
+    "area": null,
+    "state": "unavailable",
+    "last_changed": "2022-06-07T10:15:33.524402Z",
+    "last_updated": "2022-06-07T10:15:33.524402Z",
+    "context": {
+      "id": "01G4YTK5WMTXVKR4DMA1MGRE2S",
+      "parent_id": null,
+      "user_id": null
+    },
+    "attributes": {
+      "friendly_name": "solaredge (Energy this month)",
+      "device_class": "energy",
+      "icon": "mdi:solar-power",
+      "unit_of_measurement": "Wh",
+      "state_class": null
+    }
+  },
+  {
+    "entity_id": "sensor.solaredge_energy_today",
+    "area": null,
+    "state": "unavailable",
+    "last_changed": "2022-06-07T10:15:33.524991Z",
+    "last_updated": "2022-06-07T10:15:33.524991Z",
+    "context": {
+      "id": "01G4YTK5WM1QN5KWRX6M73CNCD",
+      "parent_id": null,
+      "user_id": null
+    },
+    "attributes": {
+      "friendly_name": "solaredge (Energy today)",
+      "device_class": "energy",
+      "icon": "mdi:solar-power",
+      "unit_of_measurement": "Wh",
+      "state_class": null
+    }
+  },
+  {
+    "entity_id": "sensor.solaredge_current_power",
+    "area": null,
+    "state": "unavailable",
+    "last_changed": "2022-06-07T10:15:33.525585Z",
+    "last_updated": "2022-06-07T10:15:33.525585Z",
+    "context": {
+      "id": "01G4YTK5WN30HSV62HEQSQ87FE",
+      "parent_id": null,
+      "user_id": null
+    },
+    "attributes": {
+      "friendly_name": "solaredge (Current Power)",
+      "device_class": "power",
+      "icon": "mdi:solar-power",
+      "unit_of_measurement": "W",
+      "state_class": "measurement"
+    }
+  },
+  {
+    "entity_id": "sensor.solaredge_site_details",
+    "area": null,
+    "state": "Active",
+    "last_changed": "2022-06-07T10:15:33.526287Z",
+    "last_updated": "2022-06-07T10:15:33.526287Z",
+    "context": {
+      "id": "01G4YTK5WPJYTP4Z9SH6VFST0Y",
+      "parent_id": null,
+      "user_id": null
+    },
+    "attributes": {
+      "friendly_name": "solaredge (Site details)",
+      "device_class": "unknown",
+      "icon": null
+    }
+  },
+  {
+    "entity_id": "sensor.solaredge_meters",
+    "area": null,
+    "state": "4",
+    "last_changed": "2022-06-07T10:15:33.527022Z",
+    "last_updated": "2022-06-21T22:15:34.209964Z",
+    "context": {
+      "id": "01G645BM21TZ9F846RA5BY8R8R",
+      "parent_id": null,
+      "user_id": null
+    },
+    "attributes": {
+      "friendly_name": "solaredge (Meters)",
+      "device_class": "unknown",
+      "icon": null
+    }
+  },
+  {
+    "entity_id": "sensor.solaredge_sensors",
+    "area": null,
+    "state": "0",
+    "last_changed": "2022-06-07T10:15:33.527652Z",
+    "last_updated": "2022-06-07T10:15:33.527652Z",
+    "context": {
+      "id": "01G4YTK5WQSP708HQGGPGE4FJ1",
+      "parent_id": null,
+      "user_id": null
+    },
+    "attributes": {
+      "friendly_name": "solaredge (Sensors)",
+      "device_class": "unknown",
+      "icon": null
+    }
+  },
+  {
+    "entity_id": "sensor.solaredge_gateways",
+    "area": null,
+    "state": "0",
+    "last_changed": "2022-06-07T10:15:33.528201Z",
+    "last_updated": "2022-06-07T10:15:33.528201Z",
+    "context": {
+      "id": "01G4YTK5WRETB2GFNXHMBV7GQF",
+      "parent_id": null,
+      "user_id": null
+    },
+    "attributes": {
+      "friendly_name": "solaredge (Gateways)",
+      "device_class": "unknown",
+      "icon": null
+    }
+  },
+  {
+    "entity_id": "sensor.solaredge_batteries",
+    "area": null,
+    "state": "1",
+    "last_changed": "2022-06-07T10:15:33.528785Z",
+    "last_updated": "2022-06-07T10:15:33.528785Z",
+    "context": {
+      "id": "01G4YTK5WR58PPHE041QT08XCX",
+      "parent_id": null,
+      "user_id": null
+    },
+    "attributes": {
+      "friendly_name": "solaredge (Batteries)",
+      "device_class": "unknown",
+      "icon": null
+    }
+  },
+  {
+    "entity_id": "sensor.solaredge_inverters",
+    "area": null,
+    "state": "1",
+    "last_changed": "2022-06-07T10:15:33.529888Z",
+    "last_updated": "2022-06-21T22:15:34.210425Z",
+    "context": {
+      "id": "01G645BM22GHT1F8AASDABS9XT",
+      "parent_id": null,
+      "user_id": null
+    },
+    "attributes": {
+      "friendly_name": "solaredge (Inverters)",
+      "device_class": "unknown",
+      "icon": null
+    }
+  },
+  {
+    "entity_id": "sensor.solaredge_power_consumption",
+    "area": null,
+    "state": "3.79",
+    "last_changed": "2022-06-22T09:10:50.191673Z",
+    "last_updated": "2022-06-22T09:10:50.191673Z",
+    "context": {
+      "id": "01G65AVEJFA88QZB30RDVE1F35",
+      "parent_id": null,
+      "user_id": null
+    },
+    "attributes": {
+      "friendly_name": "solaredge (Power Consumption)",
+      "device_class": "power",
+      "icon": "mdi:flash",
+      "unit_of_measurement": "kW",
+      "state_class": null
+    }
+  },
+  {
+    "entity_id": "sensor.solaredge_solar_power",
+    "area": null,
+    "state": "4.31",
+    "last_changed": "2022-06-22T09:10:50.191954Z",
+    "last_updated": "2022-06-22T09:10:50.191954Z",
+    "context": {
+      "id": "01G65AVEJF6GRTAKXE5P900D2F",
+      "parent_id": null,
+      "user_id": null
+    },
+    "attributes": {
+      "friendly_name": "solaredge (Solar Power)",
+      "device_class": "power",
+      "icon": "mdi:solar-power",
+      "unit_of_measurement": "kW",
+      "state_class": null
+    }
+  },
+  {
+    "entity_id": "sensor.solaredge_grid_power",
+    "area": null,
+    "state": "-0.17",
+    "last_changed": "2022-06-22T09:10:50.192124Z",
+    "last_updated": "2022-06-22T09:10:50.192124Z",
+    "context": {
+      "id": "01G65AVEJG7CGEBTX4PRAB6W8Q",
+      "parent_id": null,
+      "user_id": null
+    },
+    "attributes": {
+      "friendly_name": "solaredge (Grid Power)",
+      "device_class": "power",
+      "icon": "mdi:power-plug",
+      "unit_of_measurement": "kW",
+      "state_class": null
+    }
+  },
+  {
+    "entity_id": "sensor.solaredge_storage_power",
+    "area": null,
+    "state": "-0.35",
+    "last_changed": "2022-06-22T09:10:50.192287Z",
+    "last_updated": "2022-06-22T09:10:50.192287Z",
+    "context": {
+      "id": "01G65AVEJGE4JBV1JBBHA42F3G",
+      "parent_id": null,
+      "user_id": null
+    },
+    "attributes": {
+      "friendly_name": "solaredge (Storage Power)",
+      "device_class": "power",
+      "icon": "mdi:car-battery",
+      "unit_of_measurement": "kW",
+      "state_class": null
+    }
+  },
+  {
+    "entity_id": "sensor.solaredge_imported_energy",
+    "area": null,
+    "state": "163.0",
+    "last_changed": "2022-06-22T08:56:35.897361Z",
+    "last_updated": "2022-06-22T08:56:35.897361Z",
+    "context": {
+      "id": "01G65A1C9SBAH7JWBDSNQTKMDN",
+      "parent_id": null,
+      "user_id": null
+    },
+    "attributes": {
+      "friendly_name": "solaredge (Imported Energy)",
+      "device_class": "energy",
+      "icon": null,
+      "unit_of_measurement": "Wh",
+      "state_class": "total_increasing"
+    }
+  },
+  {
+    "entity_id": "sensor.solaredge_production_energy",
+    "area": null,
+    "state": "6002.0",
+    "last_changed": "2022-06-22T08:56:35.897707Z",
+    "last_updated": "2022-06-22T08:56:35.897707Z",
+    "context": {
+      "id": "01G65A1C9SX5FVWCKWWPM4ED61",
+      "parent_id": null,
+      "user_id": null
+    },
+    "attributes": {
+      "friendly_name": "solaredge (Production Energy)",
+      "device_class": "energy",
+      "icon": null,
+      "unit_of_measurement": "Wh",
+      "state_class": "total_increasing"
+    }
+  },
+  {
+    "entity_id": "sensor.solaredge_consumption_energy",
+    "area": null,
+    "state": "6087.0",
+    "last_changed": "2022-06-22T08:56:35.897884Z",
+    "last_updated": "2022-06-22T08:56:35.897884Z",
+    "context": {
+      "id": "01G65A1C9ST6PXEY0A9CWYWCST",
+      "parent_id": null,
+      "user_id": null
+    },
+    "attributes": {
+      "friendly_name": "solaredge (Consumption Energy)",
+      "device_class": "energy",
+      "icon": null,
+      "unit_of_measurement": "Wh",
+      "state_class": "total_increasing"
+    }
+  },
+  {
+    "entity_id": "sensor.solaredge_selfconsumption_energy",
+    "area": null,
+    "state": "5924.0",
+    "last_changed": "2022-06-22T08:56:35.898051Z",
+    "last_updated": "2022-06-22T08:56:35.898051Z",
+    "context": {
+      "id": "01G65A1C9TSB572ETKVX50QKME",
+      "parent_id": null,
+      "user_id": null
+    },
+    "attributes": {
+      "friendly_name": "solaredge (SelfConsumption Energy)",
+      "device_class": "energy",
+      "icon": null,
+      "unit_of_measurement": "Wh",
+      "state_class": "total_increasing"
+    }
+  },
+  {
+    "entity_id": "sensor.solaredge_exported_energy",
+    "area": null,
+    "state": "78.0",
+    "last_changed": "2022-06-22T08:56:35.898217Z",
+    "last_updated": "2022-06-22T08:56:35.898217Z",
+    "context": {
+      "id": "01G65A1C9TNDHB0K5ZSN8RD0QZ",
+      "parent_id": null,
+      "user_id": null
+    },
+    "attributes": {
+      "friendly_name": "solaredge (Exported Energy)",
+      "device_class": "energy",
+      "icon": null,
+      "unit_of_measurement": "Wh",
+      "state_class": "total_increasing"
+    }
+  },
+  {
+    "entity_id": "sensor.solaredge_storage_level",
+    "area": null,
+    "state": "85",
+    "last_changed": "2022-06-22T09:10:50.192470Z",
+    "last_updated": "2022-06-22T09:10:50.192470Z",
+    "context": {
+      "id": "01G65AVEJG7SQF42QG80Z8G058",
+      "parent_id": null,
+      "user_id": null
+    },
+    "attributes": {
+      "friendly_name": "solaredge (Storage Level)",
+      "device_class": "battery",
+      "icon": null,
+      "unit_of_measurement": "%",
+      "state_class": "measurement"
+    }
+  },
+  {
+    "entity_id": "update.homsai_engine_update",
+    "area": null,
+    "state": "off",
+    "attributes": {"friendly_name": "Homsai Engine: Update"},
+    "last_changed": "2022-06-07T11:26:03.748199Z",
+    "last_updated": "2022-06-07T11:26:03.748199Z",
+    "context": {
+      "id": "01G4YYM8Z4X2TE1RNFXCBKGA9F",
+      "parent_id": null,
+      "user_id": null
+    }
+  },
+  {
+    "entity_id": "sensor.lampadina_smart_1_signal_level",
+    "area": {
+      "area_id": "camera_da_letto",
+      "name": "Camera da letto",
+      "picture": null
+    },
+    "state": "-29",
+    "last_changed": "2022-06-22T09:07:14.249324Z",
+    "last_updated": "2022-06-22T09:07:14.249324Z",
+    "context": {
+      "id": "01G65AMVP9B4T8VKWS41DNBBDS",
+      "parent_id": null,
+      "user_id": null
+    },
+    "attributes": {
+      "friendly_name": "Lampadina Smart 1 signal level",
+      "device_class": "signal_strength",
+      "icon": null,
+      "unit_of_measurement": "dBm",
+      "state_class": null
+    }
+  },
+  {
+    "entity_id": "binary_sensor.lampadina_smart_1_overheat",
+    "area": {
+      "area_id": "camera_da_letto",
+      "name": "Camera da letto",
+      "picture": null
+    },
+    "state": "False",
+    "last_changed": "2022-06-20T13:23:24.265913Z",
+    "last_updated": "2022-06-20T13:23:24.265913Z",
+    "context": {
+      "id": "01G60MGFF91NCG4RBG97Q40EMT",
+      "parent_id": null,
+      "user_id": null
+    },
+    "attributes": {
+      "friendly_name": "Lampadina Smart 1 overheat",
+      "device_class": "unknown",
+      "icon": null
+    }
+  },
+  {
+    "entity_id": "light.lampadina_smart_1",
+    "area": {
+      "area_id": "camera_da_letto",
+      "name": "Camera da letto",
+      "picture": null
+    },
+    "state": "off",
+    "last_changed": "2022-06-21T14:38:59.568560Z",
+    "last_updated": "2022-06-21T14:38:59.568560Z",
+    "context": {
+      "id": "01G63B7J641NZGRB6D4WCJASGZ",
+      "parent_id": null,
+      "user_id": "d60616a71e884f858749f90a60093cc2"
+    },
+    "attributes": {
+      "friendly_name": "Lampadina Smart 1",
+      "color_mode": null,
+      "color_temp": null,
+      "brightness": null,
+      "effect": null,
+      "effect_list": null,
+      "hs_color": null,
+      "max_mireds": 400,
+      "min_mireds": 153,
+      "xy_color": null,
+      "rgb_color": null,
+      "rgbw_color": null,
+      "rgbww_color": null,
+      "supported_color_modes": ["color_temp", "hs"],
+      "supported_features": 19
+    }
+  },
+  {
+    "entity_id": "sensor.lampadina_smart_2_signal_level",
+    "area": {"area_id": "cucina", "name": "Cucina", "picture": null},
+    "state": "-35",
+    "last_changed": "2022-06-22T09:08:23.238840Z",
+    "last_updated": "2022-06-22T09:08:23.238840Z",
+    "context": {
+      "id": "01G65APZ265A3RA53RH7BTSGYC",
+      "parent_id": null,
+      "user_id": null
+    },
+    "attributes": {
+      "friendly_name": "Lampadina Smart 2 signal level",
+      "device_class": "signal_strength",
+      "icon": null,
+      "unit_of_measurement": "dBm",
+      "state_class": null
+    }
+  },
+  {
+    "entity_id": "binary_sensor.lampadina_smart_2_overheat",
+    "area": {"area_id": "cucina", "name": "Cucina", "picture": null},
+    "state": "False",
+    "last_changed": "2022-06-19T18:41:58.259650Z",
+    "last_updated": "2022-06-19T18:41:58.259650Z",
+    "context": {
+      "id": "01G5YMB2FKYNA43B6WSYFMM0YX",
+      "parent_id": null,
+      "user_id": null
+    },
+    "attributes": {
+      "friendly_name": "Lampadina Smart 2 overheat",
+      "device_class": "unknown",
+      "icon": null
+    }
+  },
+  {
+    "entity_id": "light.lampadina_smart_2",
+    "area": {"area_id": "cucina", "name": "Cucina", "picture": null},
+    "state": "off",
+    "last_changed": "2022-06-21T14:38:39.350871Z",
+    "last_updated": "2022-06-21T14:38:39.350871Z",
+    "context": {
+      "id": "01G63B6ZCRRDFSAMHKKGDFKQHG",
+      "parent_id": null,
+      "user_id": "d60616a71e884f858749f90a60093cc2"
+    },
+    "attributes": {
+      "friendly_name": "Lampadina Smart 2",
+      "color_mode": null,
+      "color_temp": null,
+      "brightness": null,
+      "effect": null,
+      "effect_list": null,
+      "hs_color": null,
+      "max_mireds": 400,
+      "min_mireds": 153,
+      "xy_color": null,
+      "rgb_color": null,
+      "rgbw_color": null,
+      "rgbww_color": null,
+      "supported_color_modes": ["color_temp", "hs"],
+      "supported_features": 19
+    }
+  },
+  {
+    "entity_id": "sensor.lampadina_smart_3_signal_level",
+    "area": {"area_id": "soggiorno", "name": "Soggiorno", "picture": null},
+    "state": "-32",
+    "last_changed": "2022-06-22T09:08:16.222080Z",
+    "last_updated": "2022-06-22T09:08:16.222080Z",
+    "context": {
+      "id": "01G65APR6Y5XGK6WMTZ6HNTHNV",
+      "parent_id": null,
+      "user_id": null
+    },
+    "attributes": {
+      "friendly_name": "Lampadina Smart 3 signal level",
+      "device_class": "signal_strength",
+      "icon": null,
+      "unit_of_measurement": "dBm",
+      "state_class": null
+    }
+  },
+  {
+    "entity_id": "binary_sensor.lampadina_smart_3_overheat",
+    "area": {"area_id": "soggiorno", "name": "Soggiorno", "picture": null},
+    "state": "False",
+    "last_changed": "2022-06-15T10:44:09.268293Z",
+    "last_updated": "2022-06-15T10:44:09.268293Z",
+    "context": {
+      "id": "01G5KFD9DMRS403R7PXQRT3077",
+      "parent_id": null,
+      "user_id": null
+    },
+    "attributes": {
+      "friendly_name": "Lampadina Smart 3 overheat",
+      "device_class": "unknown",
+      "icon": null
+    }
+  },
+  {
+    "entity_id": "light.lampadina_smart_3",
+    "area": {"area_id": "soggiorno", "name": "Soggiorno", "picture": null},
+    "state": "off",
+    "last_changed": "2022-06-21T14:38:31.938545Z",
+    "last_updated": "2022-06-21T14:38:31.938545Z",
+    "context": {
+      "id": "01G63B6PRFZ5NZANZJW4ZSBYPW",
+      "parent_id": null,
+      "user_id": "d60616a71e884f858749f90a60093cc2"
+    },
+    "attributes": {
+      "friendly_name": "Lampadina Smart 3",
+      "color_mode": null,
+      "color_temp": null,
+      "brightness": null,
+      "effect": null,
+      "effect_list": null,
+      "hs_color": null,
+      "max_mireds": 400,
+      "min_mireds": 153,
+      "xy_color": null,
+      "rgb_color": null,
+      "rgbw_color": null,
+      "rgbww_color": null,
+      "supported_color_modes": ["color_temp", "hs"],
+      "supported_features": 19
+    }
+  },
+  {
+    "entity_id": "sensor.lampadina_smart_4_signal_level",
+    "area": {"area_id": "soppalco", "name": "Soppalco", "picture": null},
+    "state": "-30",
+    "last_changed": "2022-06-22T09:10:19.264527Z",
+    "last_updated": "2022-06-22T09:10:19.264527Z",
+    "context": {
+      "id": "01G65ATGC0J1E2BKHBKXRGXWR5",
+      "parent_id": null,
+      "user_id": null
+    },
+    "attributes": {
+      "friendly_name": "Lampadina Smart 4 signal level",
+      "device_class": "signal_strength",
+      "icon": null,
+      "unit_of_measurement": "dBm",
+      "state_class": null
+    }
+  },
+  {
+    "entity_id": "binary_sensor.lampadina_smart_4_overheat",
+    "area": {"area_id": "soppalco", "name": "Soppalco", "picture": null},
+    "state": "False",
+    "last_changed": "2022-06-20T21:38:17.221981Z",
+    "last_updated": "2022-06-20T21:38:17.221981Z",
+    "context": {
+      "id": "01G61GTMG5YQ6RCRC8PQZSNN5Z",
+      "parent_id": null,
+      "user_id": null
+    },
+    "attributes": {
+      "friendly_name": "Lampadina Smart 4 overheat",
+      "device_class": "unknown",
+      "icon": null
+    }
+  },
+  {
+    "entity_id": "light.lampadina_smart_4",
+    "area": {"area_id": "soppalco", "name": "Soppalco", "picture": null},
+    "state": "off",
+    "last_changed": "2022-06-21T14:38:25.486103Z",
+    "last_updated": "2022-06-21T14:38:25.486103Z",
+    "context": {
+      "id": "01G63B6H2XVABT2EBKDSZH5QC8",
+      "parent_id": null,
+      "user_id": "d60616a71e884f858749f90a60093cc2"
+    },
+    "attributes": {
+      "friendly_name": "Lampadina Smart 4",
+      "color_mode": null,
+      "color_temp": null,
+      "brightness": null,
+      "effect": null,
+      "effect_list": null,
+      "hs_color": null,
+      "max_mireds": 400,
+      "min_mireds": 153,
+      "xy_color": null,
+      "rgb_color": null,
+      "rgbw_color": null,
+      "rgbww_color": null,
+      "supported_color_modes": ["color_temp", "hs"],
+      "supported_features": 19
+    }
+  },
+  {
+    "entity_id": "persistent_notification.http_login",
+    "area": null,
+    "state": "notifying",
+    "attributes": {"friendly_name": "Login attempt failed"},
+    "last_changed": "2022-06-13T09:53:15.830578Z",
+    "last_updated": "2022-06-15T10:22:49.190225Z",
+    "context": {
+      "id": "01G5KE67B6X0JHCNA3XK94K44F",
+      "parent_id": null,
+      "user_id": null
+    }
+  }
+]

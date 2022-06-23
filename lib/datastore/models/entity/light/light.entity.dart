@@ -44,6 +44,10 @@ class LightEntity extends Entity with TogglableEntity, EquatableMixin {
     return LightEntity.fromJson(toJson());
   }
 
+  static List<LightEntity> fromList(List<dynamic> results) {
+    return results.map((result) => LightEntity.fromJson(result)).toList();
+  }
+
   @override
   List<Object?> get props => [entityId, state];
 }

@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'dart:developer';
 import 'dart:math';
 
 import 'package:bloc/bloc.dart';
@@ -109,6 +111,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   void _onFetchState(FetchStates event, Emitter<HomeState> emit) {
     _webSocketBloc.add(FetchEntities(
       onEntitiesFetched: (entities) {
+        print(jsonEncode(entities));
         if (_active) add(FetchedLights(entities: entities));
       },
     ));
@@ -138,6 +141,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       DailyPlanBodyDto dailyPlanBodyDto;
       DailyPlanDto dailyPlan;
       final dailyPlanCached = appPreferencesInterface.getDailyPlan();
+
       if (dailyPlanCached != null &&
           _checkIfDateIsSameDay(dailyPlanCached.dateFetched)) {
         dailyPlan = dailyPlanCached.dailyPlan;
@@ -168,12 +172,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         );
       }
       final lights = event.entities.getEntities<LightEntity>();
-      final orderedDevices = _orderDevicesByDailyPlan(dailyPlan, lights);
+      final orderedDevices = orderDevicesByDailyPlan(dailyPlan, lights);
       emit(state.copyWith(lights: orderedDevices));
     }
   }
 
-  List<LightEntity> _orderDevicesByDailyPlan(
+  @visibleForTesting
+  List<LightEntity> orderDevicesByDailyPlan(
     DailyPlanDto dailyPlan,
     List<LightEntity> lights,
   ) {
@@ -311,10 +316,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   bool _checkIfDateIsSameDay(DateTime date) {
-    // Check if the forecast date is yesterday
-    var yesterday = DateTime.now();
-    yesterday = DateTime(yesterday.year, yesterday.month, yesterday.day);
-    return date.isAtSameMomentAs(yesterday);
+    // Check if the forecast date is today
+    var today = DateTime.now();
+    today = DateTime(today.year, today.month, today.day);
+    return date.isAtSameMomentAs(today);
   }
 
   void _onFetchSuggestionsChart(

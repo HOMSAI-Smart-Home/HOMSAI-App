@@ -1,0 +1,223 @@
+{
+  "daily_plan": {
+  "dailyPlan": [
+    {
+      "hour": "0",
+      "device_id": [
+        {"order": 0, "device_id": "light.lampadina_smart_1"},
+        {"order": 1, "device_id": "light.lampadina_smart_4"},
+        {"order": 2, "device_id": "light.lampadina_smart_2"},
+        {"order": 3, "device_id": "light.lampadina_smart_3"}
+      ]
+    },
+    {
+      "hour": "1",
+      "device_id": [
+        {"order": 0, "device_id": "light.lampadina_smart_4"},
+        {"order": 1, "device_id": "light.lampadina_smart_1"},
+        {"order": 2, "device_id": "light.lampadina_smart_2"},
+        {"order": 3, "device_id": "light.lampadina_smart_3"}
+      ]
+    },
+    {
+      "hour": "2",
+      "device_id": [
+        {"order": 0, "device_id": "light.lampadina_smart_4"},
+        {"order": 1, "device_id": "light.lampadina_smart_1"},
+        {"order": 2, "device_id": "light.lampadina_smart_2"},
+        {"order": 3, "device_id": "light.lampadina_smart_3"}
+      ]
+    },
+    {
+      "hour": "3",
+      "device_id": [
+        {"order": 0, "device_id": "light.lampadina_smart_4"},
+        {"order": 1, "device_id": "light.lampadina_smart_1"},
+        {"order": 2, "device_id": "light.lampadina_smart_2"},
+        {"order": 3, "device_id": "light.lampadina_smart_3"}
+      ]
+    },
+    {
+      "hour": "4",
+      "device_id": [
+        {"order": 0, "device_id": "light.lampadina_smart_4"},
+        {"order": 1, "device_id": "light.lampadina_smart_1"},
+        {"order": 2, "device_id": "light.lampadina_smart_2"},
+        {"order": 3, "device_id": "light.lampadina_smart_3"}
+      ]
+    },
+    {
+      "hour": "5",
+      "device_id": [
+        {"order": 0, "device_id": "light.lampadina_smart_4"},
+        {"order": 1, "device_id": "light.lampadina_smart_1"},
+        {"order": 2, "device_id": "light.lampadina_smart_2"},
+        {"order": 3, "device_id": "light.lampadina_smart_3"}
+      ]
+    },
+    {
+      "hour": "6",
+      "device_id": [
+        {"order": 0, "device_id": "light.lampadina_smart_4"},
+        {"order": 1, "device_id": "light.lampadina_smart_1"},
+        {"order": 2, "device_id": "light.lampadina_smart_2"},
+        {"order": 3, "device_id": "light.lampadina_smart_3"}
+      ]
+    },
+    {
+      "hour": "7",
+      "device_id": [
+        {"order": 0, "device_id": "light.lampadina_smart_4"},
+        {"order": 1, "device_id": "light.lampadina_smart_1"},
+        {"order": 2, "device_id": "light.lampadina_smart_2"},
+        {"order": 3, "device_id": "light.lampadina_smart_3"}
+      ]
+    },
+    {
+      "hour": "8",
+      "device_id": [
+        {"order": 0, "device_id": "light.lampadina_smart_4"},
+        {"order": 1, "device_id": "light.lampadina_smart_1"},
+        {"order": 2, "device_id": "light.lampadina_smart_2"},
+        {"order": 3, "device_id": "light.lampadina_smart_3"}
+      ]
+    },
+    {
+      "hour": "9",
+      "device_id": [
+        {"order": 0, "device_id": "light.lampadina_smart_1"},
+        {"order": 1, "device_id": "light.lampadina_smart_4"},
+        {"order": 2, "device_id": "light.lampadina_smart_2"},
+        {"order": 3, "device_id": "light.lampadina_smart_3"}
+      ]
+    },
+    {
+      "hour": "10",
+      "device_id": [
+        {"order": 0, "device_id": "light.lampadina_smart_4"},
+        {"order": 1, "device_id": "light.lampadina_smart_3"},
+        {"order": 2, "device_id": "light.lampadina_smart_2"},
+        {"order": 3, "device_id": "light.lampadina_smart_1"}
+      ]
+    },
+    {
+      "hour": "11",
+      "device_id": [
+        {"order": 0, "device_id": "light.lampadina_smart_4"},
+        {"order": 1, "device_id": "light.lampadina_smart_2"},
+        {"order": 2, "device_id": "light.lampadina_smart_1"},
+        {"order": 3, "device_id": "light.lampadina_smart_3"}
+      ]
+    },
+    {
+      "hour": "12",
+      "device_id": [
+        {"order": 0, "device_id": "light.lampadina_smart_4"},
+        {"order": 1, "device_id": "light.lampadina_smart_1"},
+        {"order": 2, "device_id": "light.lampadina_smart_2"},
+        {"order": 3, "device_id": "light.lampadina_smart_3"}
+      ]
+    },
+    {
+      "hour": "13",
+      "device_id": [
+        {"order": 0, "device_id": "light.lampadina_smart_1"},
+        {"order": 1, "device_id": "light.lampadina_smart_4"},
+        {"order": 2, "device_id": "light.lampadina_smart_2"},
+        {"order": 3, "device_id": "light.lampadina_smart_3"}
+      ]
+    },
+    {
+      "hour": "14",
+      "device_id": [
+        {"order": 0, "device_id": "light.lampadina_smart_4"},
+        {"order": 1, "device_id": "light.lampadina_smart_1"},
+        {"order": 2, "device_id": "light.lampadina_smart_2"},
+        {"order": 3, "device_id": "light.lampadina_smart_3"}
+      ]
+    },
+    {
+      "hour": "15",
+      "device_id": [
+        {"order": 0, "device_id": "light.lampadina_smart_4"},
+        {"order": 1, "device_id": "light.lampadina_smart_1"},
+        {"order": 2, "device_id": "light.lampadina_smart_2"},
+        {"order": 3, "device_id": "light.lampadina_smart_3"}
+      ]
+    },
+    {
+      "hour": "16",
+      "device_id": [
+        {"order": 0, "device_id": "light.lampadina_smart_4"},
+        {"order": 1, "device_id": "light.lampadina_smart_1"},
+        {"order": 2, "device_id": "light.lampadina_smart_2"},
+        {"order": 3, "device_id": "light.lampadina_smart_3"}
+      ]
+    },
+    {
+      "hour": "17",
+      "device_id": [
+        {"order": 0, "device_id": "light.lampadina_smart_2"},
+        {"order": 1, "device_id": "light.lampadina_smart_4"},
+        {"order": 2, "device_id": "light.lampadina_smart_1"},
+        {"order": 3, "device_id": "light.lampadina_smart_3"}
+      ]
+    },
+    {
+      "hour": "18",
+      "device_id": [
+        {"order": 0, "device_id": "light.lampadina_smart_4"},
+        {"order": 1, "device_id": "light.lampadina_smart_1"},
+        {"order": 2, "device_id": "light.lampadina_smart_2"},
+        {"order": 3, "device_id": "light.lampadina_smart_3"}
+      ]
+    },
+    {
+      "hour": "19",
+      "device_id": [
+        {"order": 0, "device_id": "light.lampadina_smart_4"},
+        {"order": 1, "device_id": "light.lampadina_smart_1"},
+        {"order": 2, "device_id": "light.lampadina_smart_2"},
+        {"order": 3, "device_id": "light.lampadina_smart_3"}
+      ]
+    },
+    {
+      "hour": "20",
+      "device_id": [
+        {"order": 0, "device_id": "light.lampadina_smart_4"},
+        {"order": 1, "device_id": "light.lampadina_smart_1"},
+        {"order": 2, "device_id": "light.lampadina_smart_2"},
+        {"order": 3, "device_id": "light.lampadina_smart_3"}
+      ]
+    },
+    {
+      "hour": "21",
+      "device_id": [
+        {"order": 0, "device_id": "light.lampadina_smart_4"},
+        {"order": 1, "device_id": "light.lampadina_smart_1"},
+        {"order": 2, "device_id": "light.lampadina_smart_2"},
+        {"order": 3, "device_id": "light.lampadina_smart_3"}
+      ]
+    },
+    {
+      "hour": "22",
+      "device_id": [
+        {"order": 0, "device_id": "light.lampadina_smart_4"},
+        {"order": 1, "device_id": "light.lampadina_smart_1"},
+        {"order": 2, "device_id": "light.lampadina_smart_2"},
+        {"order": 3, "device_id": "light.lampadina_smart_3"}
+      ]
+    },
+    {
+      "hour": "23",
+      "device_id": [
+        {"order": 0, "device_id": "light.lampadina_smart_4"},
+        {"order": 1, "device_id": "light.lampadina_smart_1"},
+        {"order": 2, "device_id": "light.lampadina_smart_2"},
+        {"order": 3, "device_id": "light.lampadina_smart_3"}
+      ]
+    }
+  ]
+},
+"data_fetched": "2022-06-22T00:00:00.000"
+}
