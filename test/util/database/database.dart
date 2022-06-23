@@ -1,5 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:homsai/crossconcern/helpers/extensions/list.extension.dart';
+import 'package:homsai/datastore/dao/configuration.dao.dart';
+import 'package:homsai/datastore/dao/home_assistant.dao.dart';
+import 'package:homsai/datastore/dao/plant.dao.dart';
+import 'package:homsai/datastore/dao/user.dao.dart';
 import 'package:homsai/datastore/local/app.database.dart';
 import 'package:homsai/datastore/models/database/configuration.entity.dart';
 import 'package:homsai/datastore/models/database/plant.entity.dart';
@@ -12,7 +16,8 @@ import 'package:mockito/mockito.dart';
 import './database.mocks.dart';
 import '../util.test.dart';
 
-@GenerateMocks([HomsaiDatabase])
+@GenerateMocks(
+    [HomsaiDatabase, HomeAssistantDao, UserDao, ConfigurationDao, PlantDao])
 class MocksHomsaiDatabase {
   static final Map<String, Entity> _entityMap = <String, Entity>{};
   static final MockHomsaiDatabase mockHomsaiDatabase = MockHomsaiDatabase();
@@ -31,7 +36,7 @@ class MocksHomsaiDatabase {
     TestWidgetsFlutterBinding.ensureInitialized();
     getIt.allowReassignment = true;
     getIt.registerLazySingleton<HomsaiDatabase>(() => mockHomsaiDatabase);
-
+    mockDao();
     mockUser(
         user ?? User("886a7145-7acc-40c4-96e5-da2f5ca2d87f", "demo@email.www"));
     mockPlant(plant ??
@@ -42,6 +47,7 @@ class MocksHomsaiDatabase {
           43.826926432510916,
           10.50297260284424,
           2,
+          id: 0,
           productionSensor: productionSensor,
           consumptionSensor: consumptionSensor,
           photovoltaicNominalPower: photovoltaicNominalPower,
@@ -51,6 +57,21 @@ class MocksHomsaiDatabase {
     mockConfigurationFrom(hassConfigJsonPath);
     mockEntitiesFrom(hassEntitiesJsonPath);
     mockEntityFromEntities();
+  }
+
+  static void mockDao() {
+    when(mockHomsaiDatabase.homeAssitantDao)
+        .thenAnswer((_) => MocksHomeAssistantDao.setUp());
+
+    when(mockHomsaiDatabase.userDao).thenAnswer((invocation) {
+      return MocksUserDao.setUp();
+    });
+    when(mockHomsaiDatabase.plantDao).thenAnswer((invocation) {
+      return MocksPlantDao.setUp();
+    });
+    when(mockHomsaiDatabase.configurationDao).thenAnswer((invocation) {
+      return MocksConfigurationDao.setUp();
+    });
   }
 
   static void mockUser(User user) {
@@ -66,25 +87,15 @@ class MocksHomsaiDatabase {
   }
 
   static void mockPlantWithOnlyLocalUrl() {
-    mockPlant(Plant(
-      "http://192.168.1.168:8123",
-      null,
-      "Test Plant",
-      43.826926432510916,
-      10.50297260284424,
-      2,
-    ));
+    mockPlant(Plant("http://192.168.1.168:8123", null, "Test Plant",
+        43.826926432510916, 10.50297260284424, 2,
+        id: 0));
   }
 
   static void mockPlantWithOnlyRemoteUrl() {
-    mockPlant(Plant(
-      null,
-      "https://192.168.1.168:8123",
-      "Test Plant",
-      43.826926432510916,
-      10.50297260284424,
-      2,
-    ));
+    mockPlant(Plant(null, "https://192.168.1.168:8123", "Test Plant",
+        43.826926432510916, 10.50297260284424, 2,
+        id: 0));
   }
 
   static void mockConfigurationFrom(String path) {
@@ -129,5 +140,51 @@ class MocksHomsaiDatabase {
     when(mockHomsaiDatabase.getEntity(any)).thenAnswer((invocation) async {
       return _entityMap[entityId];
     });
+  }
+}
+
+class MocksHomeAssistantDao {
+  static final MockHomeAssistantDao mockHomeAssistantDao =
+      MockHomeAssistantDao();
+
+  static MockHomeAssistantDao setUp() {
+    when(mockHomeAssistantDao.insertEntities(any, any))
+        .thenAnswer((_) async => []);
+    when(mockHomeAssistantDao.updateItem(any)).thenAnswer((_) async => 1);
+    when(mockHomeAssistantDao.deleteItem(any))
+        .thenAnswer((realInvocation) async => {});
+    when(mockHomeAssistantDao.deleteItems(any))
+        .thenAnswer((realInvocation) async => {});
+    when(mockHomeAssistantDao.forceDeleteItem(any))
+        .thenAnswer((realInvocation) async => {});
+    return mockHomeAssistantDao;
+  }
+}
+
+class MocksUserDao {
+  static final MockUserDao mocksUserDao = MockUserDao();
+
+  static MockUserDao setUp() {
+    when(mocksUserDao.updateItem(any)).thenAnswer((_) async => 1);
+    return mocksUserDao;
+  }
+}
+
+class MocksPlantDao {
+  static final MockPlantDao mockPlantDao = MockPlantDao();
+
+  static MockPlantDao setUp() {
+    when(mockPlantDao.updateItem(any)).thenAnswer((_) async => 1);
+    return mockPlantDao;
+  }
+}
+
+class MocksConfigurationDao {
+  static final MockConfigurationDao mockConfigurationDao =
+      MockConfigurationDao();
+
+  static MockConfigurationDao setUp() {
+    when(mockConfigurationDao.updateItem(any)).thenAnswer((_) async => 1);
+    return mockConfigurationDao;
   }
 }

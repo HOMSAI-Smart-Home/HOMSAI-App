@@ -9,8 +9,8 @@ import '../../util/websocket/websocket.dart';
 
 void main() {
   group("Websocket", () {
-    setUp(() {
-      MocksHassWebsocket.setUp();
+    setUp(() async {
+      await MocksHassWebsocket.setUp();
     });
 
     test('Configuration should be retrieved', () async {

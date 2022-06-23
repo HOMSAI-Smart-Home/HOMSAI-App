@@ -41,7 +41,7 @@ Future<void> main() async {
       'Check HomeAssistant Configuration is retrieved correctly',
       setUp: () async {
         MocksHomsaiDatabase.setUp();
-        MocksHassWebsocket.setUp();
+        await MocksHassWebsocket.setUp();
 
         tz.initializeTimeZones();
 

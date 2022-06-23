@@ -14,24 +14,30 @@ class MocksHassWebsocket {
   static final MockHomeAssistantWebSocketRepository _mockWebsocket =
       MockHomeAssistantWebSocketRepository();
 
-  static void setUp({
+  static Future<void> setUp({
     String hassConfigJsonPath = "assets/test/configuration.json",
     String hassEntitiesJsonPath = "assets/test/entities.json",
     String hassAreasJsonPath = "assets/test/areas.json",
     String hassDevicesJsonPath = "assets/test/devices.json",
     String hassRelatedJsonPath = "assets/test/related.json",
-  }) {
+  }) async {
     TestWidgetsFlutterBinding.ensureInitialized();
     getIt.allowReassignment = true;
     getIt.registerLazySingleton<HomeAssistantWebSocketInterface>(
         () => _mockWebsocket);
 
     mockConnection();
-    mockFetchConfig(hassConfigJsonPath);
-    mockFetchStates(hassEntitiesJsonPath);
-    mockAreaList(hassAreasJsonPath);
-    mockDeviceList(hassDevicesJsonPath);
-    mockDeviceRelated(hassRelatedJsonPath);
+    mockIsConnected();
+    await mockFetchConfig(hassConfigJsonPath);
+    await mockFetchStates(hassEntitiesJsonPath);
+    await mockAreaList(hassAreasJsonPath);
+    await mockDeviceList(hassDevicesJsonPath);
+    await mockDeviceRelated(hassRelatedJsonPath);
+    mockErrors();
+  }
+
+  static mockIsConnected() {
+    when(_mockWebsocket.isConnected).thenAnswer((_) => true);
   }
 
   static mockConnection() {
@@ -53,7 +59,7 @@ class MocksHassWebsocket {
     };
   }
 
-  static mockFetchConfig(String path) async {
+  static Future<void> mockFetchConfig(String path) async {
     final answer = _answerFetch(await readJson(path));
     when(_mockWebsocket.fetchingConfig(any)).thenAnswer(answer);
   }
