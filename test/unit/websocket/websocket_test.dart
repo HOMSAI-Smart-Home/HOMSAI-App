@@ -1,6 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:homsai/crossconcern/helpers/extensions/list.extension.dart';
 import 'package:homsai/datastore/DTOs/websocket/configuration/configuration.dto.dart';
 import 'package:homsai/datastore/models/database/configuration.entity.dart';
+import 'package:homsai/datastore/models/entity/base/base.entity.dart';
 import 'package:homsai/datastore/remote/websocket/home_assistant_websocket.interface.dart';
 import 'package:homsai/datastore/remote/websocket/home_assistant_websocket.repository.dart';
 import 'package:homsai/main.dart';
@@ -19,6 +21,16 @@ void main() {
         (data) {
           final config = Configuration.fromDto(ConfigurationDto.fromJson(data));
           expect(config.timezone, isNot("America/Detroit"));
+        },
+      ));
+    });
+
+    test('Entities should be retrived', () async {
+      final websocket = getIt.get<HomeAssistantWebSocketInterface>();
+      websocket.fetchingStates(WebSocketSubscriber(
+        (data) {
+          final List<Entity> entities = (data as List<dynamic>).getEntities();
+          expect(entities.length, 64);
         },
       ));
     });

@@ -124,6 +124,8 @@ flutter:
     - assets/test/entities_home_page_test.json
     - assets/test/empty.json
     - assets/test/photovoltaic.json
+    - assets/test/entities_no_friendly_name.json
+    - assets/test/entities_mix_friendly_name.json
     - .env
 
   fonts:
