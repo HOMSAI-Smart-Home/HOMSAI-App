@@ -20,10 +20,11 @@ import 'package:mockito/mockito.dart';
 import 'package:test/test.dart' as test;
 import 'package:timezone/timezone.dart';
 import '../../util/ai_service/ai_service.dart';
-import '../../util/app_preference/app_preference.dart';
+import '../../util/apppreferences/app_preferences.dart';
 import '../../util/database/database.dart';
 import '../../util/home_assistant/home_assistant.dart';
 import '../../util/util.test.dart';
+import '../../util/websocket/websocket.dart';
 import 'home_test.mocks.dart';
 import 'package:homsai/crossconcern/helpers/extensions/list.extension.dart';
 
@@ -46,12 +47,18 @@ Future<void> main() async {
       MocksHomsaiDatabase.setUp();
       MocksAIService.setUp();
       MocksHomeAssistant.setUp();
+      MocksAppPreferences.setUp();
+      MocksHassWebsocket.setUp();
+
+      getIt.registerLazySingleton<NetworkManagerInterface>(
+          () => NetworkManager());
+
+      getIt.registerLazySingleton<Location>(() => Location('Test', [], [], []));
     });
 
     final mockWebSocketRepository = MockHomeAssistantWebSocketInterface();
     final mockRemoteInterface = MockRemoteInterface();
-    // final mockAppPreferences = MockAppPreferencesInterface();
-    final mockAppPreferences = MocksAppPreference.mockAppPreferencesInterface;
+    final mockAppPreferences = MocksAppPreferences.mockAppPreferences;
 
     final mockHomeAssistantInterface =
         MocksHomeAssistant.mockHomeAssistantInterface;
@@ -59,15 +66,6 @@ Future<void> main() async {
 
     // It enables to reassign an implementation of an interface, for example in Unit tests
     getIt.allowReassignment = true;
-    getIt
-        .registerLazySingleton<NetworkManagerInterface>(() => NetworkManager());
-    getIt.registerLazySingleton<AppPreferencesInterface>(
-        () => mockAppPreferences);
-    getIt.registerLazySingleton<HomeAssistantWebSocketInterface>(
-        () => mockWebSocketRepository);
-
-    getIt.registerLazySingleton<AIServiceInterface>(
-        () => mockAIServiceInterface);
 
     getIt.registerLazySingleton<HomeAssistantInterface>(
         () => mockHomeAssistantInterface);
@@ -75,28 +73,9 @@ Future<void> main() async {
     getIt.registerLazySingleton<HomeAssistantScannerInterface>(
         () => HomeAssistantScannerRepository());
 
-    getIt.registerLazySingleton<Location>(() => Location('Test', [], [], []));
-    getIt.get<AIServiceInterface>();
-
     test.test(
       'Check if daily plan is called once if daily plan cache is not stored yet',
       () async {
-
-        when(mockWebSocketRepository.connect(
-                onConnected: argThat(test.isNotNull, named: 'onConnected')))
-            .thenAnswer((invocation) async {
-          if (invocation.namedArguments['onConnected'] != null) {
-            await invocation.namedArguments['onConnected']();
-          }
-        });
-
-        when(mockWebSocketRepository.setErrorFunction(
-          onGenericException:
-              argThat(test.anything, named: 'onGenericException'),
-          onTokenException: argThat(test.anything, named: 'onTokenException'),
-          onUrlException: argThat(test.anything, named: 'onUrlException'),
-        )).thenAnswer((invocation) => {});
-
         final bloc = HomeBloc(WebSocketBloc());
 
         /**
@@ -133,7 +112,7 @@ Future<void> main() async {
           return dpc;
         });
 
-        MocksAppPreference.mockGetDailyLogCached(
+        MocksAppPreferences.mockGetDailyLogCached(
             "assets/test/dailyplancached.json");
 
         bloc.add(FetchedLights(
@@ -196,7 +175,6 @@ Future<void> main() async {
         entitiesJson
             .getEntities<Entity>()
             .forEach((entity) => entities.add(entity));
-
 
         bloc.add(FetchedLights(
           entities: entities,
@@ -266,7 +244,6 @@ Future<void> main() async {
         entitiesJson
             .getEntities<Entity>()
             .forEach((entity) => entities.add(entity));
-
 
         final Map<String, dynamic> dailyPlanToday =
             await readJson(dailyPlanCachedPath);

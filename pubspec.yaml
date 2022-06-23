@@ -123,6 +123,7 @@ flutter:
     - assets/test/logbook.json
     - assets/test/entities_home_page_test.json
     - assets/test/empty.json
+    - assets/test/photovoltaic.json
     - .env
 
   fonts:

@@ -209,7 +209,6 @@ class AIServiceRepository implements AIServiceInterface {
         dailyPlanBodyDto,
       );
     }
-
     return PhotovoltaicForecastDto.fromList(result["data"]);
   }
 
