@@ -1,5 +1,3 @@
-import 'dart:convert';
-import 'dart:developer';
 import 'dart:math';
 
 import 'package:bloc/bloc.dart';
@@ -111,7 +109,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   void _onFetchState(FetchStates event, Emitter<HomeState> emit) {
     _webSocketBloc.add(FetchEntities(
       onEntitiesFetched: (entities) {
-        print(jsonEncode(entities));
         if (_active) add(FetchedLights(entities: entities));
       },
     ));

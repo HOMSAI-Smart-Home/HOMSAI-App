@@ -50,6 +50,10 @@ class MocksHassWebsocket {
     });
   }
 
+  static mockStateConnection() {
+    when(_mockWebsocket.isConnected).thenReturn(true);
+  }
+
   static _answerFetch(dynamic response) {
     return (invocation) async {
       if (invocation.positionalArguments[0] != null) {

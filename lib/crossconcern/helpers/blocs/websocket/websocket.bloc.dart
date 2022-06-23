@@ -171,6 +171,10 @@ class WebSocketBloc extends Bloc<WebSocketEvent, WebSocketState> {
 
             List<String> ids = devicesDto.map((d) => d.id).toList();
 
+            if (ids.isEmpty) {
+              return event.onEntitiesFetched([]);
+            }
+
             for (var deviceDto in devicesDto) {
               _webSocketInterface.getDeviceRelated(WebSocketSubscriber((data) {
                 final deviceRelatedDto = DeviceRelatedDto.fromJson(data);

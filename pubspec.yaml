@@ -122,6 +122,7 @@ flutter:
     - assets/test/dailyplancached.json
     - assets/test/logbook.json
     - assets/test/entities_home_page_test.json
+    - assets/test/empty.json
     - .env
 
   fonts:

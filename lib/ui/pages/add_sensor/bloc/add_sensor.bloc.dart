@@ -8,7 +8,6 @@ import 'package:homsai/datastore/local/app.database.dart';
 import 'package:homsai/datastore/models/entity/base/base.entity.dart';
 import 'package:homsai/datastore/models/entity/sensors/mesurable/mesurable_sensor.entity.dart';
 import 'package:homsai/datastore/models/entity/sensors/sensor.entity.dart';
-import 'package:homsai/datastore/remote/websocket/home_assistant_websocket.interface.dart';
 import 'package:homsai/main.dart';
 
 part 'add_sensor.event.dart';
@@ -16,8 +15,6 @@ part 'add_sensor.state.dart';
 
 class AddSensorBloc extends Bloc<AddSensorEvent, AddSensorState> {
   final HomsaiDatabase appDatabase = getIt.get<HomsaiDatabase>();
-  final HomeAssistantWebSocketInterface webSocketRepository =
-      getIt.get<HomeAssistantWebSocketInterface>();
   final WebSocketBloc webSocketBloc;
   final Uri? url;
 
@@ -30,7 +27,7 @@ class AddSensorBloc extends Bloc<AddSensorEvent, AddSensorState> {
         _onPhotovoltaicInstallatioDateChanged);
     on<BatterySensorChanged>(_onBatterySensorChanged);
     on<OnSubmit>(_onSubmit);
-    if (!webSocketRepository.isConnected) {
+    if (!webSocketBloc.isConnected) {
       webSocketBloc.add(ConnectWebSocket(
         onWebSocketConnected: () {
           webSocketBloc.add(FetchEntities(
@@ -51,7 +48,9 @@ class AddSensorBloc extends Bloc<AddSensorEvent, AddSensorState> {
   }
 
   void _onEntitiesFetched(
-      EntitiesFetched event, Emitter<AddSensorState> emit) async {
+    EntitiesFetched event,
+    Emitter<AddSensorState> emit,
+  ) async {
     SensorEntity? consumptionSensor;
     SensorEntity? productionSensor;
     SensorEntity? batterySensor;

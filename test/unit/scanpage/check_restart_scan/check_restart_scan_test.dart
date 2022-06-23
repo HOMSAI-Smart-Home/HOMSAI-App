@@ -27,8 +27,8 @@ import 'package:test/test.dart' as test;
 import 'package:flutter_test/flutter_test.dart' as flutter_test;
 import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
 
-import '../../util/database/database.dart';
-import 'scan_page_test.mocks.dart';
+import '../../../util/database/database.dart';
+import 'check_restart_scan_test.mocks.dart';
 
 class MockIntroBetaBloc extends MockBloc<IntroBetaEvent, IntroBetaState>
     implements IntroBetaBloc {}
@@ -49,7 +49,6 @@ void main() {
         final mockNetworkManager = MockNetworkManager();
 
         WidgetsFlutterBinding.ensureInitialized();
-        getIt.allowReassignment = true;
 
         getIt.registerLazySingleton<AIServiceInterface>(
             () => AIServiceRepository());
@@ -115,7 +114,6 @@ void main() {
         final mockNetworkManager = MockNetworkManager();
 
         WidgetsFlutterBinding.ensureInitialized();
-        getIt.allowReassignment = true;
 
         getIt.registerLazySingleton<AIServiceInterface>(
             () => AIServiceRepository());

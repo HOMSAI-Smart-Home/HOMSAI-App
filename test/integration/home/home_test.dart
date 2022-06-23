@@ -81,7 +81,6 @@ Future<void> main() async {
     test.test(
       'Check if daily plan is called once if daily plan cache is not stored yet',
       () async {
-        final mockDatabase = getIt.get<HomsaiDatabase>();
 
         when(mockWebSocketRepository.connect(
                 onConnected: argThat(test.isNotNull, named: 'onConnected')))
@@ -159,7 +158,6 @@ Future<void> main() async {
     test.test(
       'Check if daily plan is called once if daily plan cache is expired',
       () async {
-        final mockDatabase = getIt.get<HomsaiDatabase>();
         final mockAIServiceInterface = MocksAIService.mockAIServiceInterface;
 
         when(mockWebSocketRepository.connect(
@@ -180,7 +178,7 @@ Future<void> main() async {
         final Map<String, dynamic> dailyPlan =
             await readJson(dailyPlanCachedPath);
         final dpcy = DailyPlanCachedDto.fromJson(dailyPlan);
-        var yesterday = DateTime.now().subtract(Duration(days: 1));
+        var yesterday = DateTime.now().subtract(const Duration(days: 1));
         yesterday = DateTime(yesterday.year, yesterday.month, yesterday.day);
         dpcy.dateFetched = yesterday;
 
@@ -243,7 +241,6 @@ Future<void> main() async {
     test.test(
       'Check if daily plan is never called if daily plan cache is stored',
       () async {
-        final mockDatabase = getIt.get<HomsaiDatabase>();
         when(mockWebSocketRepository.connect(
                 onConnected: argThat(test.isNotNull, named: 'onConnected')))
             .thenAnswer((invocation) async {

@@ -38,7 +38,7 @@ class MocksAppPreference {
   static Future<void> mockGetDailyLogExpiredCached(String path) async {
     final Map<String, dynamic> dailyPlan = await readJson(path);
     final dpcy = DailyPlanCachedDto.fromJson(dailyPlan);
-    var yesterday = DateTime.now().subtract(Duration(days: 1));
+    var yesterday = DateTime.now().subtract(const Duration(days: 1));
     yesterday = DateTime(yesterday.year, yesterday.month, yesterday.day);
     dpcy.dateFetched = yesterday;
 

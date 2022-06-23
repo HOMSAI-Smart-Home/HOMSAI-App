@@ -5,8 +5,6 @@ import 'package:formz/formz.dart';
 import 'package:homsai/business/ai_service/ai_service.interface.dart';
 import 'package:homsai/business/ai_service/ai_service.repository.dart';
 import 'package:homsai/crossconcern/helpers/models/forms/credentials/email.model.dart';
-import 'package:homsai/crossconcern/utilities/properties/database.properties.dart';
-import 'package:homsai/datastore/local/app.database.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.repository.dart';
 import 'package:homsai/main.dart';
@@ -19,6 +17,7 @@ import 'package:mockito/mockito.dart';
 import 'package:test/test.dart' as test;
 import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
 
+import '../../../util/database/database.dart';
 import 'not_registered_test.mocks.dart';
 
 class MockIntroBetaBloc extends MockBloc<IntroBetaEvent, IntroBetaState>
@@ -26,27 +25,24 @@ class MockIntroBetaBloc extends MockBloc<IntroBetaEvent, IntroBetaState>
 
 @GenerateMocks([AIServiceRepository])
 void main() {
+  late MockAIServiceRepository mockAIServiceRepository;
   test.group(
-      'Intro Beta Page, '
       'got to not registered state if email is not registered in the database',
       () {
+    test.setUp(() async {
+      MocksHomsaiDatabase.setUp();
+
+      mockAIServiceRepository = MockAIServiceRepository();
+
+      getIt.registerLazySingleton<AIServiceInterface>(
+          () => mockAIServiceRepository);
+      getIt.registerLazySingleton<AppPreferencesInterface>(
+          () => AppPreferences());
+    });
+
     blocTest<IntroBetaBloc, IntroBetaState>(
       'got two state if email is not registered in the database',
       setUp: () async {
-        final MockAIServiceRepository mockAIServiceRepository =
-            MockAIServiceRepository();
-
-        getIt.allowReassignment = true;
-
-        getIt.registerLazySingleton<AIServiceInterface>(
-            () => mockAIServiceRepository);
-        getIt.registerLazySingleton<AppPreferencesInterface>(
-            () => AppPreferences());
-        final database = await $FloorHomsaiDatabase
-            .databaseBuilder(DatabaseProperties.name)
-            .build();
-        getIt.registerLazySingleton<HomsaiDatabase>(() => database);
-
         when(mockAIServiceRepository.getToken(any))
             .thenAnswer((realInvocation) async => throw Exception());
       },
@@ -63,15 +59,6 @@ void main() {
     flutter_test.testWidgets(
       'got not registered state if email is not registered in the database',
       (flutter_test.WidgetTester tester) async {
-        final MockAIServiceRepository mockAIServiceRepository =
-            MockAIServiceRepository();
-
-        getIt.allowReassignment = true;
-        getIt.registerLazySingleton<AIServiceInterface>(
-            () => mockAIServiceRepository);
-        getIt.registerLazySingleton<AppPreferencesInterface>(
-            () => AppPreferences());
-
         when(mockAIServiceRepository.getToken(any))
             .thenAnswer((realInvocation) async => throw Exception());
 
@@ -116,88 +103,76 @@ void main() {
   });
 
   test.group(
-      'Intro Beta Page, '
-      'go to waiting state if email is registered but not enabled', () {
-    blocTest<IntroBetaBloc, IntroBetaState>(
-      'got two state if email is registered but not enabled',
-      setUp: () async {
-        final MockAIServiceRepository mockAIServiceRepository =
-            MockAIServiceRepository();
+    'go to waiting state if email is registered but not enabled',
+    () {
+      test.setUp(() async {
+      MocksHomsaiDatabase.setUp();
 
-        getIt.allowReassignment = true;
+      mockAIServiceRepository = MockAIServiceRepository();
 
-        getIt.registerLazySingleton<AIServiceInterface>(
-            () => mockAIServiceRepository);
-        getIt.registerLazySingleton<AppPreferencesInterface>(
-            () => AppPreferences());
-        final database = await $FloorHomsaiDatabase
-            .databaseBuilder(DatabaseProperties.name)
-            .build();
-        getIt.registerLazySingleton<HomsaiDatabase>(() => database);
+      getIt.registerLazySingleton<AIServiceInterface>(
+          () => mockAIServiceRepository);
+      getIt.registerLazySingleton<AppPreferencesInterface>(
+          () => AppPreferences());
+    });
+      blocTest<IntroBetaBloc, IntroBetaState>(
+        'got two state if email is registered but not enabled',
+        setUp: () async {
+          when(mockAIServiceRepository.getToken(any))
+              .thenAnswer((realInvocation) async => null);
+        },
+        build: () => IntroBetaBloc(),
+        act: (bloc) => bloc.add(OnSubmit(() => {})),
+        expect: () => [
+          test.isA<IntroBetaState>(),
+          test.isA<IntroBetaState>(),
+        ],
+      );
 
-        when(mockAIServiceRepository.getToken(any))
-            .thenAnswer((realInvocation) async => null);
-      },
-      build: () => IntroBetaBloc(),
-      act: (bloc) => bloc.add(OnSubmit(() => {})),
-      expect: () => [
-        test.isA<IntroBetaState>(),
-        test.isA<IntroBetaState>(),
-      ],
-    );
+      flutter_test.testWidgets(
+        'got to not registered state if email is not registered in the database',
+        (flutter_test.WidgetTester tester) async {
+          when(mockAIServiceRepository.getToken(any))
+              .thenAnswer((realInvocation) async => null);
 
-    flutter_test.testWidgets(
-      'got to not registered state if email is not registered in the database',
-      (flutter_test.WidgetTester tester) async {
-        final MockAIServiceRepository mockAIServiceRepository =
-            MockAIServiceRepository();
+          final bloc = IntroBetaBloc(
+            state: const IntroBetaState(
+              initialEmail: 'demo@demo.demo',
+              email: Email.pure('demo@demo.demo'),
+              status: FormzStatus.valid,
+            ),
+          );
 
-        getIt.allowReassignment = true;
-        getIt.registerLazySingleton<AIServiceInterface>(
-            () => mockAIServiceRepository);
-        getIt.registerLazySingleton<AppPreferencesInterface>(
-            () => AppPreferences());
+          await tester.pumpWidget(MaterialApp(
+            title: "introbeta",
+            theme: HomsaiThemeData.lightThemeData,
+            localizationsDelegates: const [
+              ...HomsaiLocalizations.localizationsDelegates,
+              LocaleNamesLocalizationsDelegate()
+            ],
+            supportedLocales: HomsaiLocalizations.supportedLocales,
+            home: IntroBetaPage(onResult: ((p0) => true), introBetaBloc: bloc),
+            initialRoute: "/",
+          ));
+          await tester.pumpAndSettle();
 
-        when(mockAIServiceRepository.getToken(any))
-            .thenAnswer((realInvocation) async => null);
+          await tester.tap(
+            flutter_test.find.textContaining(
+              'Next',
+              findRichText: true,
+            ),
+          );
+          await tester.pump();
 
-        final bloc = IntroBetaBloc(
-          state: const IntroBetaState(
-            initialEmail: 'demo@demo.demo',
-            email: Email.pure('demo@demo.demo'),
-            status: FormzStatus.valid,
-          ),
-        );
-
-        await tester.pumpWidget(MaterialApp(
-          title: "introbeta",
-          theme: HomsaiThemeData.lightThemeData,
-          localizationsDelegates: const [
-            ...HomsaiLocalizations.localizationsDelegates,
-            LocaleNamesLocalizationsDelegate()
-          ],
-          supportedLocales: HomsaiLocalizations.supportedLocales,
-          home: IntroBetaPage(onResult: ((p0) => true), introBetaBloc: bloc),
-          initialRoute: "/",
-        ));
-        await tester.pumpAndSettle();
-
-        await tester.tap(
-          flutter_test.find.textContaining(
-            'Next',
-            findRichText: true,
-          ),
-        );
-        await tester.pump();
-
-        flutter_test.expect(
-          flutter_test.find.textContaining(
-            'You still have some users ahead in the queue.',
-            findRichText: true,
-          ),
-          flutter_test.findsWidgets,
-        );
-      },
-    );
-  });
+          flutter_test.expect(
+            flutter_test.find.textContaining(
+              'You still have some users ahead in the queue.',
+              findRichText: true,
+            ),
+            flutter_test.findsWidgets,
+          );
+        },
+      );
+    },
+  );
 }

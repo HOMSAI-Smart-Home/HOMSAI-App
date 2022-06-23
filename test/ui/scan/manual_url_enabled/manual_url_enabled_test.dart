@@ -1,4 +1,3 @@
-import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:homsai/business/ai_service/ai_service.interface.dart';
@@ -10,7 +9,6 @@ import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.
 import 'package:homsai/datastore/local/apppreferences/app_preferences.repository.dart';
 import 'package:homsai/main.dart';
 import 'package:homsai/themes/app.theme.dart';
-import 'package:homsai/ui/pages/intro_beta/bloc/intro_beta.bloc.dart';
 import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
 import 'package:flutter_localized_locales/flutter_localized_locales.dart';
 import 'package:homsai/ui/pages/scan/bloc/home_assistant_scan.bloc.dart';
@@ -19,9 +17,6 @@ import 'package:mockito/annotations.dart';
 
 import '../../../util/database/database.dart';
 import 'manual_url_enabled_test.mocks.dart';
-
-class MockIntroBetaBloc extends MockBloc<IntroBetaEvent, IntroBetaState>
-    implements IntroBetaBloc {}
 
 @GenerateMocks([AIServiceRepository, HomeAssistantRepository])
 void main() {
