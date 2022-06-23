@@ -27,6 +27,7 @@ import 'package:test/test.dart' as test;
 import 'package:flutter_test/flutter_test.dart' as flutter_test;
 import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
 
+import '../../util/database/database.dart';
 import 'scan_page_test.mocks.dart';
 
 class MockIntroBetaBloc extends MockBloc<IntroBetaEvent, IntroBetaState>
@@ -35,54 +36,11 @@ class MockIntroBetaBloc extends MockBloc<IntroBetaEvent, IntroBetaState>
 @GenerateMocks([HomsaiDatabase, HomeAssistantScannerRepository, NetworkManager])
 void main() {
   test.group("HomeAssistantScanPage", () {
-    const ipTest = '127.0.0.1';
-    test.test(
-      'check that it returns the found host',
-      () async {
-        final mockHomeAssistantScanner = MockHomeAssistantScannerRepository();
-        final mockNetworkManager = MockNetworkManager();
+    const ipTest = 'http://127.0.0.1';
 
-        WidgetsFlutterBinding.ensureInitialized();
-        getIt.allowReassignment = true;
-
-        getIt.registerLazySingleton<AIServiceInterface>(
-            () => AIServiceRepository());
-        getIt.registerLazySingleton<AppPreferencesInterface>(
-            () => AppPreferences());
-        getIt.registerLazySingleton<HomeAssistantInterface>(
-            () => HomeAssistantRepository());
-        getIt.registerLazySingleton<HomsaiDatabase>(() => MockHomsaiDatabase());
-        getIt.registerLazySingleton<HomeAssistantScannerInterface>(
-            () => mockHomeAssistantScanner);
-        getIt.registerLazySingleton<NetworkManagerInterface>(
-            () => mockNetworkManager);
-        getIt.registerLazySingleton<RemoteInterface>(() => RemoteRepository());
-
-        when(mockHomeAssistantScanner.scanNetwork(
-                timeout: argThat(test.anything, named: 'timeout')))
-            .thenAnswer((realInvocation) => Stream.fromIterable([ipTest]));
-        when(mockNetworkManager.getConnectionType())
-            .thenAnswer((realInvocation) async => ConnectivityResult.wifi);
-
-        final bloc = HomeAssistantScanBloc(
-          DoubleUrlBloc(),
-          initialState: const HomeAssistantScanState(
-            status: HomeAssistantScanStatus.manual,
-          ),
-        );
-
-        bloc.add(const ScanPressed());
-
-        await test.expectLater(
-          bloc.stream,
-          test.emits(test.emitsInOrder([
-            test.isA<HomeAssistantScanState>(),
-            test.isA<HomeAssistantScanState>(),
-          ])),
-        );
-        test.expect(bloc.state.scannedUrls, test.isNotEmpty);
-      },
-    );
+    flutter_test.setUp(() async {
+      MocksHomsaiDatabase.setUp();
+    });
 
     flutter_test.testWidgets(
       'check scanner is restarted when tapped on scan button',
@@ -99,7 +57,6 @@ void main() {
             () => AppPreferences());
         getIt.registerLazySingleton<HomeAssistantInterface>(
             () => HomeAssistantRepository());
-        getIt.registerLazySingleton<HomsaiDatabase>(() => MockHomsaiDatabase());
         getIt.registerLazySingleton<HomeAssistantScannerInterface>(
             () => mockHomeAssistantScanner);
         getIt.registerLazySingleton<NetworkManagerInterface>(
@@ -140,7 +97,7 @@ void main() {
         flutter_test.Finder finder = flutter_test.find.byType(OutlinedButton);
         await tester.ensureVisible(finder);
         await tester.tap(finder);
-        await tester.pumpAndSettle(const Duration(seconds: 3));
+        await tester.pump(const Duration(seconds: 3));
         flutter_test.expect(
           flutter_test.find.textContaining(
             ipTest,
@@ -148,6 +105,53 @@ void main() {
           ),
           flutter_test.findsOneWidget,
         );
+      },
+    );
+
+    test.test(
+      'check that it returns the found host',
+      () async {
+        final mockHomeAssistantScanner = MockHomeAssistantScannerRepository();
+        final mockNetworkManager = MockNetworkManager();
+
+        WidgetsFlutterBinding.ensureInitialized();
+        getIt.allowReassignment = true;
+
+        getIt.registerLazySingleton<AIServiceInterface>(
+            () => AIServiceRepository());
+        getIt.registerLazySingleton<AppPreferencesInterface>(
+            () => AppPreferences());
+        getIt.registerLazySingleton<HomeAssistantInterface>(
+            () => HomeAssistantRepository());
+        getIt.registerLazySingleton<HomeAssistantScannerInterface>(
+            () => mockHomeAssistantScanner);
+        getIt.registerLazySingleton<NetworkManagerInterface>(
+            () => mockNetworkManager);
+        getIt.registerLazySingleton<RemoteInterface>(() => RemoteRepository());
+
+        when(mockHomeAssistantScanner.scanNetwork(
+                timeout: argThat(test.anything, named: 'timeout')))
+            .thenAnswer((realInvocation) => Stream.fromIterable([ipTest]));
+        when(mockNetworkManager.getConnectionType())
+            .thenAnswer((realInvocation) async => ConnectivityResult.wifi);
+
+        final bloc = HomeAssistantScanBloc(
+          DoubleUrlBloc(),
+          initialState: const HomeAssistantScanState(
+            status: HomeAssistantScanStatus.manual,
+          ),
+        );
+
+        bloc.add(const ScanPressed());
+
+        await test.expectLater(
+          bloc.stream,
+          test.emits(test.emitsInOrder([
+            test.isA<HomeAssistantScanState>(),
+            test.isA<HomeAssistantScanState>(),
+          ])),
+        );
+        test.expect(bloc.state.scannedUrls, test.isNotEmpty);
       },
     );
   });

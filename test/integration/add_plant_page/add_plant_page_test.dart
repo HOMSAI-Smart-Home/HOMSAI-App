@@ -7,12 +7,11 @@ import 'package:homsai/main.dart';
 import 'package:homsai/ui/pages/add_plant/bloc/add_plant.bloc.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
 import 'package:test/test.dart' as test;
 import 'package:timezone/data/latest.dart' as tz;
 
 import '../../util/database/database.dart';
-import 'add_plant_page_test.mocks.dart';
+import '../../util/websocket/websocket.dart';
 
 const configurationJson = {
   'allowlist_external_dirs': [],
@@ -42,39 +41,12 @@ Future<void> main() async {
       'Check HomeAssistant Configuration is retrieved correctly',
       setUp: () async {
         MocksHomsaiDatabase.setUp();
-        tz.initializeTimeZones();
-        final mockWebSocketRepository = MockHomeAssistantWebSocketInterface();
+        MocksHassWebsocket.setUp();
 
-        // It enables to reassign an implementation of an interface, for example in Unit tests
-        getIt.allowReassignment = true;
+        tz.initializeTimeZones();
 
         getIt.registerLazySingleton<AppPreferencesInterface>(
             () => AppPreferences());
-        getIt.registerLazySingleton<HomeAssistantWebSocketInterface>(
-            () => mockWebSocketRepository);
-
-        when(mockWebSocketRepository.connect(
-                onConnected: argThat(test.isNotNull, named: 'onConnected')))
-            .thenAnswer((invocation) async {
-          if (invocation.namedArguments['onConnected'] != null) {
-            await invocation.namedArguments['onConnected']();
-          }
-        });
-
-        when(mockWebSocketRepository.fetchingConfig(any))
-            .thenAnswer((invocation) {
-          if (invocation.positionalArguments[0] != null) {
-            (invocation.positionalArguments[0] as WebSocketSubscriberInterface)
-                .onDone(configurationJson);
-          }
-        });
-
-        when(mockWebSocketRepository.setErrorFunction(
-          onGenericException:
-              argThat(test.anything, named: 'onGenericException'),
-          onTokenException: argThat(test.anything, named: 'onTokenException'),
-          onUrlException: argThat(test.anything, named: 'onUrlException'),
-        )).thenAnswer((invocation) => {});
       },
       build: () => AddPlantBloc(
         WebSocketBloc(),

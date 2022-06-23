@@ -113,6 +113,9 @@ flutter:
     - assets/splash/
     - assets/test/entities.json
     - assets/test/configuration.json
+    - assets/test/areas.json
+    - assets/test/related.json
+    - assets/test/devices.json
     - .env
 
   fonts:

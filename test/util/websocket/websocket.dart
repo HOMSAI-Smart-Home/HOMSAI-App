@@ -10,7 +10,7 @@ import '../util.test.dart';
 import './websocket.mocks.dart';
 
 @GenerateMocks([HomeAssistantWebSocketRepository])
-class MocksHomsaiDatabase {
+class MocksHassWebsocket {
   static final MockHomeAssistantWebSocketRepository _mockWebsocket =
       MockHomeAssistantWebSocketRepository();
 
@@ -26,11 +26,22 @@ class MocksHomsaiDatabase {
     getIt.registerLazySingleton<HomeAssistantWebSocketInterface>(
         () => _mockWebsocket);
 
+    mockConnection();
     mockFetchConfig(hassConfigJsonPath);
     mockFetchStates(hassEntitiesJsonPath);
     mockAreaList(hassAreasJsonPath);
     mockDeviceList(hassDevicesJsonPath);
     mockDeviceRelated(hassRelatedJsonPath);
+  }
+
+  static mockConnection() {
+    when(_mockWebsocket.connect(
+            onConnected: argThat(test.isNotNull, named: 'onConnected')))
+        .thenAnswer((invocation) async {
+      if (invocation.namedArguments['onConnected'] != null) {
+        await invocation.namedArguments['onConnected']();
+      }
+    });
   }
 
   static _answerFetch(dynamic response) {
@@ -43,28 +54,28 @@ class MocksHomsaiDatabase {
   }
 
   static mockFetchConfig(String path) async {
-    when(_mockWebsocket.fetchingConfig(any))
-        .thenAnswer(_answerFetch(await readJson(path)));
+    final answer = _answerFetch(await readJson(path));
+    when(_mockWebsocket.fetchingConfig(any)).thenAnswer(answer);
   }
 
   static mockFetchStates(String path) async {
-    when(_mockWebsocket.fetchingStates(any))
-        .thenAnswer(_answerFetch(await readJson(path)));
+    final answer = _answerFetch(await readJson(path));
+    when(_mockWebsocket.fetchingStates(any)).thenAnswer(answer);
   }
 
   static mockAreaList(String path) async {
-    when(_mockWebsocket.getAreaList(any))
-        .thenAnswer(_answerFetch(await readJson(path)));
+    final answer = _answerFetch(await readJson(path));
+    when(_mockWebsocket.getAreaList(any)).thenAnswer(answer);
   }
 
   static mockDeviceList(String path) async {
-    when(_mockWebsocket.getDeviceList(any))
-        .thenAnswer(_answerFetch(await readJson(path)));
+    final answer = _answerFetch(await readJson(path));
+    when(_mockWebsocket.getDeviceList(any)).thenAnswer(answer);
   }
 
   static mockDeviceRelated(String path) async {
-    when(_mockWebsocket.getDeviceRelated(any, any))
-        .thenAnswer(_answerFetch(await readJson(path)));
+    final answer = _answerFetch(await readJson(path));
+    when(_mockWebsocket.getDeviceRelated(any, any)).thenAnswer(answer);
   }
 
   static mockErrors() {

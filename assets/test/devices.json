@@ -1,0 +1,291 @@
+[
+    {
+      "area_id": null,
+      "configuration_url": "https://www.met.no/en",
+      "config_entries": ["1cef079e5ecc38664169e8d9d2a9669f"],
+      "connections": [],
+      "disabled_by": null,
+      "entry_type": "service",
+      "id": "c001398b794392a45fee7941e08aa4fd",
+      "identifiers": [
+        ["met"]
+      ],
+      "manufacturer": "Met.no",
+      "model": "Forecast",
+      "name_by_user": null,
+      "name": "Forecast",
+      "sw_version": null,
+      "hw_version": null,
+      "via_device_id": null
+    },
+    {
+      "area_id": null,
+      "configuration_url": "homeassistant://hassio/addon/core_samba",
+      "config_entries": ["fb17b302350792fbaf92a8912976ddf1"],
+      "connections": [],
+      "disabled_by": null,
+      "entry_type": "service",
+      "id": "2ae3e7f270a56debfa29cd31da841cae",
+      "identifiers": [
+        ["hassio", "core_samba"]
+      ],
+      "manufacturer": "Official add-ons",
+      "model": "Home Assistant Add-on",
+      "name_by_user": null,
+      "name": "Samba share",
+      "sw_version": "9.6.1",
+      "hw_version": null,
+      "via_device_id": null
+    },
+    {
+      "area_id": null,
+      "configuration_url": "homeassistant://hacs",
+      "config_entries": ["9d77f45e985762f033c2021aac197317"],
+      "connections": [],
+      "disabled_by": null,
+      "entry_type": "service",
+      "id": "3aa3b6ce1e7a8ac9e7e8a15a76b35ab6",
+      "identifiers": [
+        [
+          "hacs",
+          "0717a0cd-745c-48fd-9b16-c8534c9704f9-bc944b0f-fd42-4a58-a072-ade38d1444cd"
+        ]
+      ],
+      "manufacturer": "hacs.xyz",
+      "model": "",
+      "name_by_user": null,
+      "name": "HACS",
+      "sw_version": "1.25.5",
+      "hw_version": null,
+      "via_device_id": null
+    },
+    {
+      "area_id": "soppalco",
+      "configuration_url":
+          "https://app.tado.com/en/main/settings/rooms-and-devices/device/WR3620284928",
+      "config_entries": ["c594c64b35ee04b748ab732a9d25bedf"],
+      "connections": [],
+      "disabled_by": null,
+      "entry_type": null,
+      "id": "319303c218f1eca4164ef5734a936a2a",
+      "identifiers": [
+        ["tado", "WR3620284928"]
+      ],
+      "manufacturer": "Tado",
+      "model": "WR02",
+      "name_by_user": null,
+      "name": "WR3620284928",
+      "sw_version": "100.0",
+      "hw_version": null,
+      "via_device_id": "319303c218f1eca4164ef5734a936a2a"
+    },
+    {
+      "area_id": "soppalco",
+      "configuration_url": "https://app.tado.com/en/main/home/zoneV2/1",
+      "config_entries": ["c594c64b35ee04b748ab732a9d25bedf"],
+      "connections": [],
+      "disabled_by": null,
+      "entry_type": null,
+      "id": "3314e76e75e353b2e070a04d56ce8a79",
+      "identifiers": [
+        ["tado", "878965_1"]
+      ],
+      "manufacturer": "Tado",
+      "model": "Zone",
+      "name_by_user": null,
+      "name": "Climatizzazione",
+      "sw_version": null,
+      "hw_version": null,
+      "via_device_id": null
+    },
+    {
+      "area_id": "soppalco",
+      "configuration_url": "https://app.tado.com",
+      "config_entries": ["c594c64b35ee04b748ab732a9d25bedf"],
+      "connections": [],
+      "disabled_by": null,
+      "entry_type": null,
+      "id": "d430987e4183ecc539fb148885038184",
+      "identifiers": [
+        ["tado", 878965]
+      ],
+      "manufacturer": "Tado",
+      "model": "Home",
+      "name_by_user": null,
+      "name": "IZI",
+      "sw_version": null,
+      "hw_version": null,
+      "via_device_id": null
+    },
+    {
+      "area_id": "camera_da_letto",
+      "configuration_url": "https://my.netatmo.com/app/weather",
+      "config_entries": ["75ba63fc76bfba907216a0c9be07c9fe"],
+      "connections": [],
+      "disabled_by": null,
+      "entry_type": null,
+      "id": "1aaa48ce89528a7a716262d2e2e06511",
+      "identifiers": [
+        ["netatmo", "70:ee:50:7f:b6:e4"]
+      ],
+      "manufacturer": "Netatmo",
+      "model": "Smart Home Weather station – indoor module",
+      "name_by_user": null,
+      "name": "Casa (Indoor)",
+      "sw_version": null,
+      "hw_version": null,
+      "via_device_id": null
+    },
+    {
+      "area_id": "esterno",
+      "configuration_url": "https://my.netatmo.com/app/weather",
+      "config_entries": ["75ba63fc76bfba907216a0c9be07c9fe"],
+      "connections": [],
+      "disabled_by": null,
+      "entry_type": null,
+      "id": "6ba4f11d756533b2af499aa6d2de6478",
+      "identifiers": [
+        ["netatmo", "02:00:00:7f:d6:26"]
+      ],
+      "manufacturer": "Netatmo",
+      "model": "Smart Home Weather station – outdoor module",
+      "name_by_user": null,
+      "name": "Casa (Indoor) Esterno",
+      "sw_version": null,
+      "hw_version": null,
+      "via_device_id": null
+    },
+    {
+      "area_id": null,
+      "configuration_url": null,
+      "config_entries": ["fb17b302350792fbaf92a8912976ddf1"],
+      "connections": [],
+      "disabled_by": null,
+      "entry_type": "service",
+      "id": "cf467f17a8c1c1b5b9eb1d33ab447ff7",
+      "identifiers": [
+        ["hassio", "core"]
+      ],
+      "manufacturer": "Home Assistant",
+      "model": "Home Assistant Core",
+      "name_by_user": null,
+      "name": "Home Assistant Core",
+      "sw_version": "2022.6.3",
+      "hw_version": null,
+      "via_device_id": null
+    },
+    {
+      "area_id": null,
+      "configuration_url": null,
+      "config_entries": ["fb17b302350792fbaf92a8912976ddf1"],
+      "connections": [],
+      "disabled_by": null,
+      "entry_type": "service",
+      "id": "b88cd6fa1df215c32b30f34f1e757589",
+      "identifiers": [
+        ["hassio", "supervisor"]
+      ],
+      "manufacturer": "Home Assistant",
+      "model": "Home Assistant Supervisor",
+      "name_by_user": null,
+      "name": "Home Assistant Supervisor",
+      "sw_version": "2022.05.3",
+      "hw_version": null,
+      "via_device_id": null
+    },
+    {
+      "area_id": null,
+      "configuration_url": "homeassistant://hassio/addon/local_homsai",
+      "config_entries": ["fb17b302350792fbaf92a8912976ddf1"],
+      "connections": [],
+      "disabled_by": null,
+      "entry_type": "service",
+      "id": "4cfe50cc956c271829465bcc3585f720",
+      "identifiers": [
+        ["hassio", "local_homsai"]
+      ],
+      "manufacturer": "Local add-ons",
+      "model": "Home Assistant Add-on",
+      "name_by_user": null,
+      "name": "Homsai Engine",
+      "sw_version": "0.0.1",
+      "hw_version": null,
+      "via_device_id": null
+    },
+    {
+      "area_id": "camera_da_letto",
+      "configuration_url": null,
+      "config_entries": ["27f2dcbefc5e127f77142d364a00fecb"],
+      "connections": [],
+      "disabled_by": null,
+      "entry_type": null,
+      "id": "3d83818db4d34964d5001b78d74ebfaf",
+      "identifiers": [
+        ["tapo", "802313E5A5558A0577C073B20EFD2F2B1F0FECE0"]
+      ],
+      "manufacturer": "TP-Link",
+      "model": "L530",
+      "name_by_user": null,
+      "name": "Lampadina Smart 1",
+      "sw_version": null,
+      "hw_version": null,
+      "via_device_id": null
+    },
+    {
+      "area_id": "cucina",
+      "configuration_url": null,
+      "config_entries": ["cae68e831ed8681b69ca080204853e92"],
+      "connections": [],
+      "disabled_by": null,
+      "entry_type": null,
+      "id": "08bb63bf1cc96f546289487c3a64683f",
+      "identifiers": [
+        ["tapo", "80233C58595895B2EE71E2B7D4CB1EDD1F0FA425"]
+      ],
+      "manufacturer": "TP-Link",
+      "model": "L530",
+      "name_by_user": null,
+      "name": "Lampadina Smart 2",
+      "sw_version": null,
+      "hw_version": null,
+      "via_device_id": null
+    },
+    {
+      "area_id": "soggiorno",
+      "configuration_url": null,
+      "config_entries": ["c8818d4a9d2d5bb68ad493ccc21c5b9e"],
+      "connections": [],
+      "disabled_by": null,
+      "entry_type": null,
+      "id": "4d3587fcb776d7379ad80d1a66589837",
+      "identifiers": [
+        ["tapo", "802343E3012EFCD25FBD9CA4489DBA111F0E1686"]
+      ],
+      "manufacturer": "TP-Link",
+      "model": "L530",
+      "name_by_user": null,
+      "name": "Lampadina Smart 3",
+      "sw_version": null,
+      "hw_version": null,
+      "via_device_id": null
+    },
+    {
+      "area_id": "soppalco",
+      "configuration_url": null,
+      "config_entries": ["e4f9e69d7db3721e1a3b9c1415b758b8"],
+      "connections": [],
+      "disabled_by": null,
+      "entry_type": null,
+      "id": "71d6ed61049ce7166fdc6454f9a9a956",
+      "identifiers": [
+        ["tapo", "802384EEA2662BD2C6B127BBAFD2B38F1F0F3173"]
+      ],
+      "manufacturer": "TP-Link",
+      "model": "L530",
+      "name_by_user": null,
+      "name": "Lampadina Smart 4",
+      "sw_version": null,
+      "hw_version": null,
+      "via_device_id": null
+    }
+  ]
