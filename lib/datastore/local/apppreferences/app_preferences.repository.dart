@@ -66,8 +66,8 @@ class AppPreferences implements AppPreferencesInterface {
   }
 
   @override
-  void setUserId(String id) {
-    preferences?.setString(AppPreferencesProperties.prefKeyUserId, id);
+  void setUserId(String id) async {
+    await preferences?.setString(AppPreferencesProperties.prefKeyUserId, id);
   }
 
   @override
@@ -85,22 +85,23 @@ class AppPreferences implements AppPreferencesInterface {
 
   @override
   Future<void> resetAiServiceToken() async {
-    await preferences?.remove(AppPreferencesProperties.prefKeyAiServiceAccessToken);
+    await preferences
+        ?.remove(AppPreferencesProperties.prefKeyAiServiceAccessToken);
   }
 
   @override
-  void setAiServicetToken(AiServiceAuth token) {
-    preferences?.setString(
+  void setAiServicetToken(AiServiceAuth token) async {
+    await preferences?.setString(
       AppPreferencesProperties.prefKeyAiServiceAccessToken,
       jsonEncode(token),
     );
   }
 
   @override
-  Future<void> logout({bool deleteUser=true}) async {
-    if(deleteUser) await resetUserId();
-    await resetHomeAssistantToken();
-    await resetAiServiceToken();
+  Future<void> logout({bool deleteUser = true}) async {
+    final userId = getUserId();
+    await preferences?.clear();
+    if (!deleteUser && userId != null) setUserId(userId);
   }
 
   @override
@@ -122,12 +123,13 @@ class AppPreferences implements AppPreferencesInterface {
 
   @override
   Future<void> resetOptimizationForecast() async {
-    await preferences?.remove(AppPreferencesProperties.prefOptimizationForecast);
+    await preferences
+        ?.remove(AppPreferencesProperties.prefOptimizationForecast);
   }
 
   @override
-  void setConsumptionInfo(List<HistoryDto> consumptionInfo) {
-    preferences?.setString(
+  void setConsumptionInfo(List<HistoryDto> consumptionInfo) async {
+    await preferences?.setString(
       AppPreferencesProperties.prefConsumptionInfo,
       jsonEncode(consumptionInfo),
     );
@@ -147,8 +149,8 @@ class AppPreferences implements AppPreferencesInterface {
   }
 
   @override
-  void setProductionInfo(List<HistoryDto> productionInfo) {
-    preferences?.setString(
+  void setProductionInfo(List<HistoryDto> productionInfo) async {
+    await preferences?.setString(
       AppPreferencesProperties.prefProductionInfo,
       jsonEncode(productionInfo),
     );
@@ -168,8 +170,8 @@ class AppPreferences implements AppPreferencesInterface {
   }
 
   @override
-  void setDailyPlan(DailyPlanCachedDto dailyPlan) {
-    preferences?.setString(
+  void setDailyPlan(DailyPlanCachedDto dailyPlan) async {
+    await preferences?.setString(
       AppPreferencesProperties.prefDailyPlan,
       jsonEncode(
         dailyPlan.toJson(),
@@ -207,8 +209,8 @@ class AppPreferences implements AppPreferencesInterface {
   }
 
   @override
-  void setBatteryInfo(List<HistoryDto> batteryInfo) {
-    preferences?.setString(
+  void setBatteryInfo(List<HistoryDto> batteryInfo) async {
+    await preferences?.setString(
       AppPreferencesProperties.prefBatteryInfo,
       jsonEncode(batteryInfo),
     );

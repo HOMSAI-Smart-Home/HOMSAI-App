@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:fl_chart/fl_chart.dart';
 import 'package:homsai/crossconcern/helpers/converters/date_time.converter.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -37,6 +39,6 @@ class HistoryDto {
   FlSpot get spot => FlSpot(
         (lastChanged.minute + lastChanged.hour * Duration.minutesPerHour)
             .toDouble(),
-        double.tryParse(state) ?? double.negativeInfinity,
+        max(0, double.tryParse(state) ?? double.negativeInfinity),
       );
 }
