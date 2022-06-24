@@ -59,7 +59,6 @@ Future<void> main() async {
       () async {
         await MocksHassWebsocket.mockFetchStates(
             "assets/test/entities_mix_friendly_name.json");
-
         final bloc = WebSocketBloc();
         bloc.add(FetchEntities(
           onEntitiesFetched: (entities) {
