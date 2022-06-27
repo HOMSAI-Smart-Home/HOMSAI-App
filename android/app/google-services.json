@@ -40,6 +40,78 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:426483792096:android:c309cefdc1b128b0717885",
+        "android_client_info": {
+          "package_name": "com.izismartsolutions.homsai.qa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "426483792096-medocnegno87tm9bq06sl96uvpcevdlv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1Wal9aJEjz6m3h1GtCU-nvdq65a0bJKQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "426483792096-medocnegno87tm9bq06sl96uvpcevdlv.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "426483792096-5g9jr29v99jpj010dc7iiicarhedknjb.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.izismartsolutions.homsai"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:426483792096:android:595f492923bf294e717885",
+        "android_client_info": {
+          "package_name": "com.izismartsolutions.homsai.staging"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "426483792096-medocnegno87tm9bq06sl96uvpcevdlv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1Wal9aJEjz6m3h1GtCU-nvdq65a0bJKQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "426483792096-medocnegno87tm9bq06sl96uvpcevdlv.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "426483792096-5g9jr29v99jpj010dc7iiicarhedknjb.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.izismartsolutions.homsai"
+              }
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"
