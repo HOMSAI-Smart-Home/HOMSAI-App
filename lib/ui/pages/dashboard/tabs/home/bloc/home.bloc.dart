@@ -72,6 +72,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     _networkManagerInterface.subscribe(NetworkManagerSubscriber(
       (result) => {_checkConnection(result)},
     ));
+
     _webSocketBloc.subscribeToExeption(
       UrlException,
       () => add(const AddAlert(
@@ -87,14 +88,16 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       case ConnectivityResult.none:
         add(const AddAlert(
             NoInternetConnectionAlert(
-                key: Key(ConnectionProperties.noInternetConnectionAlertKey)),
+              key: Key(ConnectionProperties.noInternetConnectionAlertKey),
+            ),
             ConnectionProperties.noInternetConnectionAlertKey));
         break;
       case ConnectivityResult.wifi:
       case ConnectivityResult.ethernet:
       case ConnectivityResult.mobile:
-        add(const RemoveAlert(
-            ConnectionProperties.noInternetConnectionAlertKey));
+        add(
+          const RemoveAlert(ConnectionProperties.noInternetConnectionAlertKey),
+        );
         break;
       default:
         break;
@@ -379,12 +382,16 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           plant,
         );
 
-        final productionSensor = await appDatabase.homeAssitantDao
-            .findEntity<MesurableSensorEntity>(
-                plant.id!, plant.productionSensor!);
-        final consumptionSensor = await appDatabase.homeAssitantDao
-            .findEntity<MesurableSensorEntity>(
-                plant.id!, plant.consumptionSensor!);
+        final productionSensor =
+            await appDatabase.homeAssitantDao.findEntity<MesurableSensorEntity>(
+          plant.id!,
+          plant.productionSensor!,
+        );
+        final consumptionSensor =
+            await appDatabase.homeAssitantDao.findEntity<MesurableSensorEntity>(
+          plant.id!,
+          plant.consumptionSensor!,
+        );
 
         List<FlSpot> autoConsumption = [];
         List<FlSpot> charge = [];
@@ -397,21 +404,22 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           if (forecasts != null &&
               forecasts.optimizedGeneralPowerMeterData.isNotEmpty &&
               _checkIfDateIsYesterday(
-                  forecasts.optimizedGeneralPowerMeterData[0].lastChanged)) {
+                forecasts.optimizedGeneralPowerMeterData[0].lastChanged,
+              )) {
             consumptionForecast = forecasts;
           } else {
             consumptionForecast = await aiServiceInterface
                 .getPhotovoltaicSelfConsumptionOptimizerForecast(
-                    ConsumptionOptimizationsForecastBodyDto(
-                      consumptionInfo.history,
-                      consumptionSensor!.unitMesurement,
-                      productionInfo.history,
-                      productionSensor!.unitMesurement,
-                      batteryMeterData: batteryInfo.history.isNotEmpty
-                          ? batteryInfo.history
-                          : null,
-                    ),
-                    configuration!.unitSystemType);
+              ConsumptionOptimizationsForecastBodyDto(
+                consumptionInfo.history,
+                consumptionSensor!.unitMesurement,
+                productionInfo.history,
+                productionSensor!.unitMesurement,
+                batteryMeterData:
+                    batteryInfo.history.isNotEmpty ? batteryInfo.history : null,
+              ),
+              configuration!.unitSystemType,
+            );
             appPreferencesInterface
                 .setOptimizationForecast(consumptionForecast);
           }
@@ -475,10 +483,16 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
               ),
               isLoading: false));
         } else {
-          emit(state.copyWith(lights: state.lights, isLoading: false));
+          emit(state.copyWith(
+            lights: state.lights,
+            isLoading: false,
+          ));
         }
       } catch (e) {
-        emit(HomeState(lights: state.lights, isLoading: false));
+        emit(HomeState(
+          lights: state.lights,
+          isLoading: false,
+        ));
       }
     } else {
       emit(state.copyWith(isLoading: false));

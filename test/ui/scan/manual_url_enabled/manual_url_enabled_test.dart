@@ -75,8 +75,10 @@ testConinueButtonWithUrl(WidgetTester tester, String url, bool isValid) async {
   await tester.tap(finder);
   await tester.pumpAndSettle(const Duration(milliseconds: 3000));
 
-  expect(tester.widget<ElevatedButton>(find.byType(ElevatedButton)).enabled,
-      isFalse);
+  expect(
+    tester.widget<ElevatedButton>(find.byType(ElevatedButton)).enabled,
+    isFalse,
+  );
 
   await tester.enterText(find.byType(TextFormField).first, url);
   await tester.pump(const Duration(milliseconds: 400));

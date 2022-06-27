@@ -126,6 +126,7 @@ flutter:
     - assets/test/photovoltaic.json
     - assets/test/entities_no_friendly_name.json
     - assets/test/entities_mix_friendly_name.json
+    - assets/test/optimized_chart.json
     - .env
 
   fonts:

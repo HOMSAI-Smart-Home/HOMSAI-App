@@ -8,17 +8,18 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 import '../util.test.dart';
-import './app_preferences.mocks.dart';
+import 'app_preferences.mocks.dart';
 
 @GenerateMocks([AppPreferences])
 class MocksAppPreferences {
   static final MockAppPreferences mockAppPreferences = MockAppPreferences();
 
-  static void setUp({
+  static Future<void> setUp({
     String hassConfigJsonPath = "assets/test/configuration.json",
     String hassEntitiesJsonPath = "assets/test/entities.json",
     String hassLogBookDtoPath = "assets/test/dailyplancached.json",
-  }) {
+    String optimizedChart = "assets/test/optimized_chart.json",
+  }) async {
     TestWidgetsFlutterBinding.ensureInitialized();
     getIt.allowReassignment = true;
     getIt.registerLazySingleton<AppPreferencesInterface>(
@@ -64,6 +65,30 @@ class MocksAppPreferences {
 
   static void mockGetDailyLogEmpty() {
     when(mockAppPreferences.getDailyPlan()).thenAnswer((_) {
+      return null;
+    });
+  }
+
+  static mockGetConsumptionInfoEmpty() {
+    when(mockAppPreferences.getConsumptionInfo()).thenAnswer((_) {
+      return null;
+    });
+  }
+
+  static mockGetProductionInfoEmpty() {
+    when(mockAppPreferences.getProductionInfo()).thenAnswer((_) {
+      return null;
+    });
+  }
+
+  static mockGetBatteryInfoEmpty() {
+    when(mockAppPreferences.getBatteryInfo()).thenAnswer((_) {
+      return null;
+    });
+  }
+
+  static mockGetOptimizationForecast() {
+    when(mockAppPreferences.getOptimizationForecast()).thenAnswer((_) {
       return null;
     });
   }

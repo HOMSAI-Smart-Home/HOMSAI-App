@@ -20,7 +20,7 @@ Future<void> main() async {
       await MocksHassWebsocket.setUp();
       MocksHomsaiDatabase.setUp();
       getIt.registerLazySingleton<AppPreferencesInterface>(
-        () => mockAppPreferences);
+          () => mockAppPreferences);
     });
 
     test.test(
@@ -30,10 +30,7 @@ Future<void> main() async {
         bloc.add(FetchEntities(
           onEntitiesFetched: (entities) {
             for (var element in entities) {
-              {
-                test.expect(element.name, test.isNotNull);
-              }
-              ;
+              test.expect(element.name, test.isNotNull);
             }
           },
         ));

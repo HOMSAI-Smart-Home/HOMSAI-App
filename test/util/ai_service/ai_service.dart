@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:homsai/business/ai_service/ai_service.interface.dart';
 import 'package:homsai/datastore/DTOs/remote/ai_service/daily_plan/daily_plan.dto.dart';
+import 'package:homsai/datastore/DTOs/remote/ai_service/forecast/consumption_optimizations/consumption_optimizations_forecast.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/ai_service/forecast/photovoltaic/photovoltaic.dto.dart';
 import 'package:homsai/main.dart';
 import 'package:mockito/annotations.dart';
@@ -17,6 +18,7 @@ class MocksAIService {
   static void setUp({
     String hassDailyPlanDtoJsonPath = "assets/test/dailyplandto.json",
     String hassPhotovoltaicJsonPath = "assets/test/photovoltaic.json",
+    String optimizedChartJsonPath = "assets/test/optimized_chart.json",
   }) async {
     TestWidgetsFlutterBinding.ensureInitialized();
     getIt.allowReassignment = true;
@@ -24,6 +26,7 @@ class MocksAIService {
         () => mockAIServiceInterface);
     mockDailyPlan(hassDailyPlanDtoJsonPath);
     mockPhotovoltaic(hassPhotovoltaicJsonPath);
+    getPhotovoltaicSelfConsumptionOptimizerForecast(optimizedChartJsonPath);
   }
 
   static void mockDailyPlan(String path) {
@@ -42,6 +45,14 @@ class MocksAIService {
         .thenAnswer((invocation) async {
       final List<dynamic> data = await readJson(path);
       return PhotovoltaicForecastDto.fromList(data);
+    });
+  }
+
+  static getPhotovoltaicSelfConsumptionOptimizerForecast(String path) {
+    when(mockAIServiceInterface.getPhotovoltaicSelfConsumptionOptimizerForecast(any, any))
+        .thenAnswer((invocation) async {
+      final data = await readJson(path);
+      return ConsumptionOptimizationsForecastDto.fromJson(data['consumptionForecast']);
     });
   }
 }

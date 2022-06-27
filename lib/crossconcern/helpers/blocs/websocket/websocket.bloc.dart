@@ -1,5 +1,3 @@
-import 'dart:convert';
-import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -152,7 +150,6 @@ class WebSocketBloc extends Bloc<WebSocketEvent, WebSocketState> {
 
   void _onFetchEntities(FetchEntities event, Emitter<WebSocketState> emit) {
     _webSocketInterface.getAreaList(WebSocketSubscriber((data) {
-      log(jsonEncode(data));
       Map<String, Area> areas = {};
 
       (data as List<dynamic>)
