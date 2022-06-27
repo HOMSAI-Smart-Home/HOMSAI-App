@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:homsai/crossconcern/helpers/blocs/websocket/websocket.bloc.dart';
 import 'package:homsai/crossconcern/helpers/models/forms/add_plant/coordinate.model.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.dart';
@@ -27,7 +25,6 @@ Future<void> main() async {
             () => AppPreferences());
         tz.initializeTimeZones();
       });
-      Future<void> externalAuthBloc() async {}
       test.test(
         'check if autocomplete is correct',
         () async {
