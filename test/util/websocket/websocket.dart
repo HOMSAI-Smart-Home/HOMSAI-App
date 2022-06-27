@@ -19,7 +19,7 @@ class MocksHassWebsocket {
     String hassEntitiesJsonPath = "assets/test/entities.json",
     String hassAreasJsonPath = "assets/test/areas.json",
     String hassDevicesJsonPath = "assets/test/devices.json",
-    String hassRelatedJsonPath = "assets/test/related.json",
+    String hassRelatedJsonPath = "assets/test/device_related.json",
   }) async {
     TestWidgetsFlutterBinding.ensureInitialized();
     getIt.allowReassignment = true;
@@ -84,8 +84,14 @@ class MocksHassWebsocket {
   }
 
   static mockDeviceRelated(String path) async {
-    final answer = _answerFetch(await readJson(path));
-    when(_mockWebsocket.getDeviceRelated(any, any)).thenAnswer(answer);
+    final answer = await readJson(path);
+    var id = 0;
+    when(_mockWebsocket.getDeviceRelated(any, any)).thenAnswer((invocation) {
+      if (invocation.positionalArguments[0] != null) {
+        (invocation.positionalArguments[0] as WebSocketSubscriberInterface)
+            .onDone(answer[id++]);
+      }
+    });
   }
 
   static mockErrors() {

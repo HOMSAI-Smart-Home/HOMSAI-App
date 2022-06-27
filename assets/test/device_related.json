@@ -1,0 +1,70 @@
+[{
+  "config_entry": ["1cef079e5ecc38664169e8d9d2a9669f"],
+  "entity": ["weather.casa"]
+},
+{
+  "config_entry": ["fb17b302350792fbaf92a8912976ddf1"],
+  "entity": ["update.samba_share_update"]
+},
+{
+  "config_entry": ["9d77f45e985762f033c2021aac197317"],
+  "entity": ["sensor.hacs"]
+},
+{
+  "area": ["soppalco"],
+  "config_entry": ["c594c64b35ee04b748ab732a9d25bedf"],
+  "entity": ["binary_sensor.wr3620284928_connection_state"]
+},
+{
+  "area": ["soppalco"],
+  "config_entry": ["c594c64b35ee04b748ab732a9d25bedf"],
+  "entity": ["sensor.climatizzazione_temperature", "sensor.climatizzazione_tado_mode", "sensor.climatizzazione_ac", "binary_sensor.climatizzazione_open_window", "sensor.climatizzazione_humidity", "binary_sensor.climatizzazione_link", "binary_sensor.climatizzazione_overlay", "climate.climatizzazione", "binary_sensor.climatizzazione_power"]
+},
+{
+  "area": ["soppalco"],
+  "config_entry": ["c594c64b35ee04b748ab732a9d25bedf"],
+  "entity": ["sensor.izi_outdoor_temperature", "sensor.izi_weather_condition", "sensor.izi_solar_percentage"]
+},
+{
+  "area": ["camera_da_letto"],
+  "config_entry": ["75ba63fc76bfba907216a0c9be07c9fe"],
+  "entity": ["sensor.netatmo_casa_indoor_temperature", "sensor.netatmo_casa_indoor_noise", "sensor.netatmo_casa_indoor_co2", "sensor.netatmo_casa_indoor_pressure", "sensor.netatmo_casa_indoor_humidity"]
+},
+{
+  "area": ["esterno"],
+  "config_entry": ["75ba63fc76bfba907216a0c9be07c9fe"],
+  "entity": ["sensor.netatmo_casa_indoor_esterno_humidity", "sensor.netatmo_casa_indoor_esterno_battery_percent", "sensor.netatmo_casa_indoor_esterno_temperature"]
+},
+{
+  "config_entry": ["fb17b302350792fbaf92a8912976ddf1"],
+  "entity": ["update.home_assistant_core_update"]
+},
+{
+  "config_entry": ["fb17b302350792fbaf92a8912976ddf1"],
+  "entity": ["update.home_assistant_supervisor_update"]
+},
+{
+  "config_entry": ["fb17b302350792fbaf92a8912976ddf1"],
+  "entity": ["update.homsai_engine_update"]
+},
+{
+  "area": ["camera_da_letto"],
+  "config_entry": ["27f2dcbefc5e127f77142d364a00fecb"],
+  "entity": ["sensor.lampadina_smart_1_signal_level", "binary_sensor.lampadina_smart_1_overheat", "light.lampadina_smart_1"]
+},
+{
+  "area": ["cucina"],
+  "config_entry": ["cae68e831ed8681b69ca080204853e92"],
+  "entity": ["binary_sensor.lampadina_smart_2_overheat", "sensor.lampadina_smart_2_signal_level", "light.lampadina_smart_2"]
+},
+{
+  "area": ["soggiorno"],
+  "config_entry": ["c8818d4a9d2d5bb68ad493ccc21c5b9e"],
+  "entity": ["light.lampadina_smart_3", "sensor.lampadina_smart_3_signal_level", "binary_sensor.lampadina_smart_3_overheat"]
+},
+{
+  "area": ["soppalco"],
+  "config_entry": ["e4f9e69d7db3721e1a3b9c1415b758b8"],
+  "entity": ["light.lampadina_smart_4", "sensor.lampadina_smart_4_signal_level", "binary_sensor.lampadina_smart_4_overheat"]
+}
+]

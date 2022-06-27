@@ -1,0 +1,1161 @@
+[{
+	"entity_id": "person.hastega",
+	"state": "unknown",
+	"attributes": {
+		"editable": false,
+		"id": "hastega",
+		"user_id": "d60616a71e884f858749f90a60093cc2",
+		"friendly_name": "Hastega"
+	},
+	"last_changed": "2022-06-07T10:15:21.857504+00:00",
+	"last_updated": "2022-06-07T10:15:38.815608+00:00",
+	"context": {
+		"id": "01G4YTKB1ZM214VDDBTWPDBAEH",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "update.home_assistant_supervisor_update",
+	"state": "off",
+	"attributes": {
+		"auto_update": true,
+		"installed_version": "2022.05.3",
+		"in_progress": false,
+		"latest_version": "2022.05.3",
+		"release_summary": null,
+		"release_url": "https://github.com/home-assistant/supervisor/releases/tag/2022.05.3",
+		"skipped_version": null,
+		"title": "Home Assistant Supervisor",
+		"entity_picture": "https://brands.home-assistant.io/hassio/icon.png",
+		"friendly_name": "Home Assistant Supervisor: Update",
+		"supported_features": 1
+	},
+	"last_changed": "2022-06-07T11:26:03.742292+00:00",
+	"last_updated": "2022-06-07T11:26:03.742292+00:00",
+	"context": {
+		"id": "01G4YYM8YYJYCNK52HDV5F7P01",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "update.home_assistant_core_update",
+	"state": "on",
+	"attributes": {
+		"auto_update": false,
+		"installed_version": "2022.6.3",
+		"in_progress": false,
+		"latest_version": "2022.6.7",
+		"release_summary": null,
+		"release_url": "https://www.home-assistant.io/latest-release-notes/",
+		"skipped_version": null,
+		"title": "Home Assistant Core",
+		"entity_picture": "https://brands.home-assistant.io/homeassistant/icon.png",
+		"friendly_name": "Home Assistant Core: Update",
+		"supported_features": 11
+	},
+	"last_changed": "2022-06-08T02:19:02.105871+00:00",
+	"last_updated": "2022-06-22T14:18:55.093859+00:00",
+	"context": {
+		"id": "01G65WFJ7NFE8QFSK6TEM1KETG",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "update.samba_share_update",
+	"state": "on",
+	"attributes": {
+		"auto_update": false,
+		"installed_version": "9.6.1",
+		"in_progress": false,
+		"latest_version": "10.0.0",
+		"release_summary": "# Changelog\n\n## 10.0.0\n\nBREAKING CHANGE: Don't mangle filenames\n\nBy default, Samba mangles filenames with special characters to ensure\ncompatibility with really old versions of Windows which have a very limited\ncharset for filenames. The add-on no longer ",
+		"release_url": null,
+		"skipped_version": null,
+		"title": "Samba share",
+		"entity_picture": "/api/hassio/addons/core_samba/icon",
+		"friendly_name": "Samba share: Update",
+		"supported_features": 25
+	},
+	"last_changed": "2022-06-13T19:21:52.122359+00:00",
+	"last_updated": "2022-06-23T22:25:19.086450+00:00",
+	"context": {
+		"id": "01G69APX7ECFYCTX8DG4ED2ZN8",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "sun.sun",
+	"state": "above_horizon",
+	"attributes": {
+		"next_dawn": "2022-06-25T03:00:19.613779+00:00",
+		"next_dusk": "2022-06-24T19:40:48.465180+00:00",
+		"next_midnight": "2022-06-24T23:20:40+00:00",
+		"next_noon": "2022-06-24T11:20:20+00:00",
+		"next_rising": "2022-06-25T03:37:11.986511+00:00",
+		"next_setting": "2022-06-24T19:03:56.179527+00:00",
+		"elevation": 45.94,
+		"azimuth": 101.52,
+		"rising": true,
+		"friendly_name": "Sun"
+	},
+	"last_changed": "2022-06-24T03:36:52.280033+00:00",
+	"last_updated": "2022-06-24T08:08:34.675523+00:00",
+	"context": {
+		"id": "01G6AC2WKKSSDDACYPYEN5E35V",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "zone.home",
+	"state": "0",
+	"attributes": {
+		"latitude": 43.826926432510916,
+		"longitude": 10.50297260284424,
+		"radius": 100,
+		"passive": false,
+		"persons": [],
+		"editable": true,
+		"icon": "mdi:home",
+		"friendly_name": "Casa"
+	},
+	"last_changed": "2022-06-07T10:15:30.364348+00:00",
+	"last_updated": "2022-06-07T10:15:30.364348+00:00",
+	"context": {
+		"id": "01G4YTK2SW5MXWHSXR5QKFVVY3",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "weather.casa",
+	"state": "partlycloudy",
+	"attributes": {
+		"temperature": 25.3,
+		"humidity": 67,
+		"pressure": 1013.4,
+		"wind_bearing": 257.9,
+		"wind_speed": 6.5,
+		"forecast": [{
+			"condition": "sunny",
+			"precipitation": 0.0,
+			"temperature": 29.1,
+			"templow": 20.2,
+			"datetime": "2022-06-25T10:00:00+00:00",
+			"wind_bearing": 256.3,
+			"wind_speed": 14.8
+		}, {
+			"condition": "sunny",
+			"precipitation": 0.0,
+			"temperature": 34.3,
+			"templow": 18.0,
+			"datetime": "2022-06-26T10:00:00+00:00",
+			"wind_bearing": 129.7,
+			"wind_speed": 11.9
+		}, {
+			"condition": "sunny",
+			"precipitation": 0.0,
+			"temperature": 38.6,
+			"templow": 22.5,
+			"datetime": "2022-06-27T10:00:00+00:00",
+			"wind_bearing": 113.8,
+			"wind_speed": 11.2
+		}, {
+			"condition": "cloudy",
+			"precipitation": 0.0,
+			"temperature": 34.6,
+			"templow": 24.4,
+			"datetime": "2022-06-28T10:00:00+00:00",
+			"wind_bearing": 264.8,
+			"wind_speed": 10.8
+		}, {
+			"condition": "sunny",
+			"precipitation": 0.0,
+			"temperature": 33.5,
+			"templow": 24.7,
+			"datetime": "2022-06-29T10:00:00+00:00",
+			"wind_bearing": 244.5,
+			"wind_speed": 12.6
+		}],
+		"attribution": "Weather forecast from met.no, delivered by the Norwegian Meteorological Institute.",
+		"friendly_name": "Casa"
+	},
+	"last_changed": "2022-06-24T07:16:32.567890+00:00",
+	"last_updated": "2022-06-24T07:16:32.567890+00:00",
+	"context": {
+		"id": "01G6A93KNQCK1DJ9ERYD0042K3",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "binary_sensor.wr3620284928_connection_state",
+	"state": "off",
+	"attributes": {
+		"device_class": "connectivity",
+		"friendly_name": "WR3620284928 connection state"
+	},
+	"last_changed": "2022-06-22T21:16:02.444898+00:00",
+	"last_updated": "2022-06-22T21:16:02.444898+00:00",
+	"context": {
+		"id": "01G66MBB0CV8KFWMA5F5B7SEYY",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "binary_sensor.climatizzazione_power",
+	"state": "off",
+	"attributes": {
+		"device_class": "power",
+		"friendly_name": "Climatizzazione power"
+	},
+	"last_changed": "2022-06-22T19:36:02.620506+00:00",
+	"last_updated": "2022-06-22T19:36:02.620506+00:00",
+	"context": {
+		"id": "01G66EM7SW68FE37FZEAS0R5D6",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "binary_sensor.climatizzazione_link",
+	"state": "off",
+	"attributes": {
+		"device_class": "connectivity",
+		"friendly_name": "Climatizzazione link"
+	},
+	"last_changed": "2022-06-22T21:16:02.628074+00:00",
+	"last_updated": "2022-06-22T21:16:02.628074+00:00",
+	"context": {
+		"id": "01G66MBB646DH8HAGXAFWN82AE",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "binary_sensor.climatizzazione_overlay",
+	"state": "on",
+	"attributes": {
+		"termination": "MANUAL",
+		"device_class": "power",
+		"friendly_name": "Climatizzazione overlay"
+	},
+	"last_changed": "2022-06-22T19:36:02.620883+00:00",
+	"last_updated": "2022-06-22T19:36:02.620883+00:00",
+	"context": {
+		"id": "01G66EM7SWXM2KK1M9ZK7MHVVV",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "binary_sensor.climatizzazione_open_window",
+	"state": "off",
+	"attributes": {
+		"device_class": "window",
+		"friendly_name": "Climatizzazione open window"
+	},
+	"last_changed": "2022-06-07T10:15:32.329279+00:00",
+	"last_updated": "2022-06-07T10:15:32.329279+00:00",
+	"context": {
+		"id": "01G4YTK4Q94ZE9NS44ZE3PF3PK",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "sensor.izi_outdoor_temperature",
+	"state": "25.03",
+	"attributes": {
+		"state_class": "measurement",
+		"time": "2022-06-24T07:59:04.839Z",
+		"unit_of_measurement": "°C",
+		"device_class": "temperature",
+		"friendly_name": "IZI outdoor temperature"
+	},
+	"last_changed": "2022-06-24T07:16:03.512859+00:00",
+	"last_updated": "2022-06-24T08:01:03.061462+00:00",
+	"context": {
+		"id": "01G6ABN3JNK4W594NWKKZ5YX85",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "sensor.izi_solar_percentage",
+	"state": "46.6",
+	"attributes": {
+		"state_class": "measurement",
+		"time": "2022-06-24T07:59:04.839Z",
+		"unit_of_measurement": "%",
+		"friendly_name": "IZI solar percentage"
+	},
+	"last_changed": "2022-06-24T08:01:03.061772+00:00",
+	"last_updated": "2022-06-24T08:01:03.061772+00:00",
+	"context": {
+		"id": "01G6ABN3JND6EGRMBH4W9ZND5Q",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "sensor.izi_weather_condition",
+	"state": "partlycloudy",
+	"attributes": {
+		"time": "2022-06-24T07:59:04.839Z",
+		"friendly_name": "IZI weather condition"
+	},
+	"last_changed": "2022-06-24T03:46:03.360616+00:00",
+	"last_updated": "2022-06-24T08:01:03.061965+00:00",
+	"context": {
+		"id": "01G6ABN3JNKVV48GWV4XM5GVN6",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "sensor.climatizzazione_temperature",
+	"state": "25.31",
+	"attributes": {
+		"state_class": "measurement",
+		"time": "2022-06-22T20:45:00.510Z",
+		"setting": 0,
+		"unit_of_measurement": "°C",
+		"device_class": "temperature",
+		"friendly_name": "Climatizzazione temperature"
+	},
+	"last_changed": "2022-06-22T20:46:02.658622+00:00",
+	"last_updated": "2022-06-22T20:46:02.658622+00:00",
+	"context": {
+		"id": "01G66JMDD2PC77GGSYYJZPSHMD",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "sensor.climatizzazione_humidity",
+	"state": "65.1",
+	"attributes": {
+		"state_class": "measurement",
+		"time": "2022-06-22T20:45:00.510Z",
+		"unit_of_measurement": "%",
+		"device_class": "humidity",
+		"friendly_name": "Climatizzazione humidity"
+	},
+	"last_changed": "2022-06-22T20:46:02.658936+00:00",
+	"last_updated": "2022-06-22T20:46:02.658936+00:00",
+	"context": {
+		"id": "01G66JMDD2S9QRW70VRAA3SEKX",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "sensor.climatizzazione_ac",
+	"state": "OFF",
+	"attributes": {
+		"state_class": "measurement",
+		"time": "2022-01-25T15:33:52.746Z",
+		"friendly_name": "Climatizzazione ac"
+	},
+	"last_changed": "2022-06-22T19:36:02.621636+00:00",
+	"last_updated": "2022-06-22T19:36:02.621636+00:00",
+	"context": {
+		"id": "01G66EM7SXDNA4Y7PXVNCF9MFR",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "sensor.climatizzazione_tado_mode",
+	"state": "HOME",
+	"attributes": {
+		"friendly_name": "Climatizzazione tado mode"
+	},
+	"last_changed": "2022-06-07T10:15:32.338605+00:00",
+	"last_updated": "2022-06-07T10:15:32.338605+00:00",
+	"context": {
+		"id": "01G4YTK4QJCXWKTAZE9MKTDJ97",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "climate.climatizzazione",
+	"state": "unavailable",
+	"attributes": {
+		"hvac_modes": ["off", "auto", "heat", "cool", "heat_cool", "dry", "fan_only"],
+		"min_temp": 16.0,
+		"max_temp": 31.0,
+		"target_temp_step": 1.0,
+		"preset_modes": ["away", "home"],
+		"friendly_name": "Climatizzazione",
+		"supported_features": 17
+	},
+	"last_changed": "2022-06-22T21:16:02.629112+00:00",
+	"last_updated": "2022-06-22T21:16:02.629112+00:00",
+	"context": {
+		"id": "01G66MBB65B4Y3XV6R5JRCQCKH",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "sensor.hacs",
+	"state": "0",
+	"attributes": {
+		"repositories": [],
+		"unit_of_measurement": "pending update(s)",
+		"icon": "hacs:hacs",
+		"friendly_name": "hacs"
+	},
+	"last_changed": "2022-06-07T10:15:48.782455+00:00",
+	"last_updated": "2022-06-07T10:15:48.782455+00:00",
+	"context": {
+		"id": "01G4YTKMSE4TB1KY3CPHR6T4RV",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "sensor.netatmo_casa_indoor_temperature",
+	"state": "27.5",
+	"attributes": {
+		"state_class": "measurement",
+		"attribution": "Data provided by Netatmo",
+		"unit_of_measurement": "°C",
+		"device_class": "temperature",
+		"friendly_name": "Netatmo Casa (Indoor) Temperature"
+	},
+	"last_changed": "2022-06-24T07:48:24.494982+00:00",
+	"last_updated": "2022-06-24T07:48:24.494982+00:00",
+	"context": {
+		"id": "01G6AAXYSEQWQKRHSTV1PMCFB5",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "sensor.netatmo_casa_indoor_co2",
+	"state": "1107",
+	"attributes": {
+		"state_class": "measurement",
+		"attribution": "Data provided by Netatmo",
+		"unit_of_measurement": "ppm",
+		"device_class": "carbon_dioxide",
+		"friendly_name": "Netatmo Casa (Indoor) CO2"
+	},
+	"last_changed": "2022-06-24T08:08:24.527597+00:00",
+	"last_updated": "2022-06-24T08:08:24.527597+00:00",
+	"context": {
+		"id": "01G6AC2JPFS9HGCZEGPKN97M3G",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "sensor.netatmo_casa_indoor_pressure",
+	"state": "1013.5",
+	"attributes": {
+		"state_class": "measurement",
+		"attribution": "Data provided by Netatmo",
+		"unit_of_measurement": "mbar",
+		"device_class": "pressure",
+		"friendly_name": "Netatmo Casa (Indoor) Pressure"
+	},
+	"last_changed": "2022-06-24T08:08:24.527959+00:00",
+	"last_updated": "2022-06-24T08:08:24.527959+00:00",
+	"context": {
+		"id": "01G6AC2JPFTRW4P0AXF3CAHP7S",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "sensor.netatmo_casa_indoor_noise",
+	"state": "40",
+	"attributes": {
+		"state_class": "measurement",
+		"attribution": "Data provided by Netatmo",
+		"unit_of_measurement": "dB",
+		"icon": "mdi:volume-high",
+		"friendly_name": "Netatmo Casa (Indoor) Noise"
+	},
+	"last_changed": "2022-06-24T08:08:24.528147+00:00",
+	"last_updated": "2022-06-24T08:08:24.528147+00:00",
+	"context": {
+		"id": "01G6AC2JPGD4HP0325VJAVAVB5",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "sensor.netatmo_casa_indoor_humidity",
+	"state": "61",
+	"attributes": {
+		"state_class": "measurement",
+		"attribution": "Data provided by Netatmo",
+		"unit_of_measurement": "%",
+		"device_class": "humidity",
+		"friendly_name": "Netatmo Casa (Indoor) Humidity"
+	},
+	"last_changed": "2022-06-24T05:18:24.965832+00:00",
+	"last_updated": "2022-06-24T05:18:24.965832+00:00",
+	"context": {
+		"id": "01G6A2BA651KZ8M4S24WPQHZSK",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "sensor.netatmo_casa_indoor_esterno_temperature",
+	"state": "25.9",
+	"attributes": {
+		"state_class": "measurement",
+		"attribution": "Data provided by Netatmo",
+		"unit_of_measurement": "°C",
+		"device_class": "temperature",
+		"friendly_name": "Netatmo Casa (Indoor) Esterno Temperature"
+	},
+	"last_changed": "2022-06-24T08:08:24.528437+00:00",
+	"last_updated": "2022-06-24T08:08:24.528437+00:00",
+	"context": {
+		"id": "01G6AC2JPG72KV84DXVFV2ACSN",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "sensor.netatmo_casa_indoor_esterno_humidity",
+	"state": "67",
+	"attributes": {
+		"state_class": "measurement",
+		"attribution": "Data provided by Netatmo",
+		"unit_of_measurement": "%",
+		"device_class": "humidity",
+		"friendly_name": "Netatmo Casa (Indoor) Esterno Humidity"
+	},
+	"last_changed": "2022-06-24T08:08:24.528615+00:00",
+	"last_updated": "2022-06-24T08:08:24.528615+00:00",
+	"context": {
+		"id": "01G6AC2JPGNCS9X81J5C6QWK38",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "sensor.netatmo_casa_indoor_esterno_battery_percent",
+	"state": "84",
+	"attributes": {
+		"state_class": "measurement",
+		"attribution": "Data provided by Netatmo",
+		"unit_of_measurement": "%",
+		"device_class": "battery",
+		"friendly_name": "Netatmo Casa (Indoor) Esterno Battery Percent"
+	},
+	"last_changed": "2022-06-11T04:57:49.928894+00:00",
+	"last_updated": "2022-06-11T04:57:49.928894+00:00",
+	"context": {
+		"id": "01G58J09385AS6B08HK1VX66WW",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "sensor.solaredge_lifetime_energy",
+	"state": "unavailable",
+	"attributes": {
+		"state_class": "total",
+		"unit_of_measurement": "Wh",
+		"device_class": "energy",
+		"icon": "mdi:solar-power",
+		"friendly_name": "solaredge (Lifetime energy)"
+	},
+	"last_changed": "2022-06-07T10:15:33.521540+00:00",
+	"last_updated": "2022-06-07T10:15:33.521540+00:00",
+	"context": {
+		"id": "01G4YTK5WHA134QPVZSMDXS3TC",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "sensor.solaredge_energy_this_year",
+	"state": "unavailable",
+	"attributes": {
+		"unit_of_measurement": "Wh",
+		"device_class": "energy",
+		"icon": "mdi:solar-power",
+		"friendly_name": "solaredge (Energy this year)"
+	},
+	"last_changed": "2022-06-07T10:15:33.523789+00:00",
+	"last_updated": "2022-06-07T10:15:33.523789+00:00",
+	"context": {
+		"id": "01G4YTK5WK37RJBYD9DEDW9CWN",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "sensor.solaredge_energy_this_month",
+	"state": "unavailable",
+	"attributes": {
+		"unit_of_measurement": "Wh",
+		"device_class": "energy",
+		"icon": "mdi:solar-power",
+		"friendly_name": "solaredge (Energy this month)"
+	},
+	"last_changed": "2022-06-07T10:15:33.524402+00:00",
+	"last_updated": "2022-06-07T10:15:33.524402+00:00",
+	"context": {
+		"id": "01G4YTK5WMTXVKR4DMA1MGRE2S",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "sensor.solaredge_energy_today",
+	"state": "unavailable",
+	"attributes": {
+		"unit_of_measurement": "Wh",
+		"device_class": "energy",
+		"icon": "mdi:solar-power",
+		"friendly_name": "solaredge (Energy today)"
+	},
+	"last_changed": "2022-06-07T10:15:33.524991+00:00",
+	"last_updated": "2022-06-07T10:15:33.524991+00:00",
+	"context": {
+		"id": "01G4YTK5WM1QN5KWRX6M73CNCD",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "sensor.solaredge_current_power",
+	"state": "unavailable",
+	"attributes": {
+		"state_class": "measurement",
+		"unit_of_measurement": "W",
+		"device_class": "power",
+		"icon": "mdi:solar-power",
+		"friendly_name": "solaredge (Current Power)"
+	},
+	"last_changed": "2022-06-07T10:15:33.525585+00:00",
+	"last_updated": "2022-06-07T10:15:33.525585+00:00",
+	"context": {
+		"id": "01G4YTK5WN30HSV62HEQSQ87FE",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "sensor.solaredge_site_details",
+	"state": "Active",
+	"attributes": {
+		"name": "Giacomo Agostini",
+		"peak_power": 8.040000000000001,
+		"last_update_time": "2022-06-07",
+		"installation_date": "2021-09-30",
+		"type": "Optimizers & Inverters",
+		"manufacturer_name": "Peimar",
+		"model_name": "OH335M-BF",
+		"maximum_power": 335.0,
+		"temperature_coef": -0.28,
+		"friendly_name": "solaredge (Site details)"
+	},
+	"last_changed": "2022-06-07T10:15:33.526287+00:00",
+	"last_updated": "2022-06-07T10:15:33.526287+00:00",
+	"context": {
+		"id": "01G4YTK5WPJYTP4Z9SH6VFST0Y",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "sensor.solaredge_meters",
+	"state": "4",
+	"attributes": {
+		"meters": [{
+			"name": "Self Consumption",
+			"firmwareVersion": "",
+			"connectedTo": "Inverter 1",
+			"connectedSolaredgeDeviceSN": "7E045DEB-CA",
+			"type": "SelfConsumption",
+			"form": "virtual"
+		}, {
+			"name": "Export Meter",
+			"manufacturer": "SolarEdge",
+			"model": "SE-MTR-3Y-400V-A",
+			"firmwareVersion": "75",
+			"connectedTo": "Inverter 1",
+			"connectedSolaredgeDeviceSN": "7E045DEB-CA",
+			"type": "FeedIn",
+			"form": "physical",
+			"SN": "606602362"
+		}, {
+			"name": "Import Meter",
+			"manufacturer": "SolarEdge",
+			"model": "SE-MTR-3Y-400V-A",
+			"firmwareVersion": "75",
+			"connectedTo": "Inverter 1",
+			"connectedSolaredgeDeviceSN": "7E045DEB-CA",
+			"type": "Purchased",
+			"form": "physical",
+			"SN": "606602362"
+		}, {
+			"name": "Consumption Meter",
+			"firmwareVersion": "",
+			"connectedTo": "Inverter 1",
+			"connectedSolaredgeDeviceSN": "7E045DEB-CA",
+			"type": "Consumption",
+			"form": "virtual"
+		}],
+		"friendly_name": "solaredge (Meters)"
+	},
+	"last_changed": "2022-06-07T10:15:33.527022+00:00",
+	"last_updated": "2022-06-21T22:15:34.209964+00:00",
+	"context": {
+		"id": "01G645BM21TZ9F846RA5BY8R8R",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "sensor.solaredge_sensors",
+	"state": "0",
+	"attributes": {
+		"sensors": [],
+		"friendly_name": "solaredge (Sensors)"
+	},
+	"last_changed": "2022-06-07T10:15:33.527652+00:00",
+	"last_updated": "2022-06-07T10:15:33.527652+00:00",
+	"context": {
+		"id": "01G4YTK5WQSP708HQGGPGE4FJ1",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "sensor.solaredge_gateways",
+	"state": "0",
+	"attributes": {
+		"gateways": [],
+		"friendly_name": "solaredge (Gateways)"
+	},
+	"last_changed": "2022-06-07T10:15:33.528201+00:00",
+	"last_updated": "2022-06-07T10:15:33.528201+00:00",
+	"context": {
+		"id": "01G4YTK5WRETB2GFNXHMBV7GQF",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "sensor.solaredge_batteries",
+	"state": "1",
+	"attributes": {
+		"batteries": [{
+			"name": "Battery 1.1",
+			"manufacturer": "48V_LG",
+			"model": "LGC RESU 13",
+			"firmwareVersion": "48V DCDC 2.2.91 BMS 0.0.0",
+			"connectedTo": "Inverter 1",
+			"connectedInverterSn": "7E045DEB-CA",
+			"nameplateCapacity": 13100.0,
+			"SN": "7E045DEB"
+		}],
+		"friendly_name": "solaredge (Batteries)"
+	},
+	"last_changed": "2022-06-07T10:15:33.528785+00:00",
+	"last_updated": "2022-06-07T10:15:33.528785+00:00",
+	"context": {
+		"id": "01G4YTK5WR58PPHE041QT08XCX",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "sensor.solaredge_inverters",
+	"state": "1",
+	"attributes": {
+		"inverters": [{
+			"name": "Inverter 1",
+			"manufacturer": "SolarEdge",
+			"model": "SE8K-RWS48BNN4",
+			"communicationMethod": "ETHERNET",
+			"dsp1Version": "1.13.1938",
+			"dsp2Version": "2.19.1511",
+			"cpuVersion": "4.15.119",
+			"SN": "7E045DEB-CA",
+			"connectedOptimizers": 24
+		}],
+		"friendly_name": "solaredge (Inverters)"
+	},
+	"last_changed": "2022-06-07T10:15:33.529888+00:00",
+	"last_updated": "2022-06-21T22:15:34.210425+00:00",
+	"context": {
+		"id": "01G645BM22GHT1F8AASDABS9XT",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "sensor.solaredge_power_consumption",
+	"state": "2.92",
+	"attributes": {
+		"status": "Active",
+		"unit_of_measurement": "kW",
+		"device_class": "power",
+		"icon": "mdi:flash",
+		"friendly_name": "solaredge (Power Consumption)"
+	},
+	"last_changed": "2022-06-24T07:56:05.181482+00:00",
+	"last_updated": "2022-06-24T07:56:05.181482+00:00",
+	"context": {
+		"id": "01G6ABC0NXQBPNACYT0XB8JA9Z",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "sensor.solaredge_solar_power",
+	"state": "3.72",
+	"attributes": {
+		"status": "Active",
+		"unit_of_measurement": "kW",
+		"device_class": "power",
+		"icon": "mdi:solar-power",
+		"friendly_name": "solaredge (Solar Power)"
+	},
+	"last_changed": "2022-06-24T07:56:05.181763+00:00",
+	"last_updated": "2022-06-24T07:56:05.181763+00:00",
+	"context": {
+		"id": "01G6ABC0NXXCJG98J4W739WZBX",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "sensor.solaredge_grid_power",
+	"state": "-0.1",
+	"attributes": {
+		"status": "Active",
+		"flow": "export",
+		"unit_of_measurement": "kW",
+		"device_class": "power",
+		"icon": "mdi:power-plug",
+		"friendly_name": "solaredge (Grid Power)"
+	},
+	"last_changed": "2022-06-24T07:56:05.181930+00:00",
+	"last_updated": "2022-06-24T07:56:05.181930+00:00",
+	"context": {
+		"id": "01G6ABC0NX3ZTERCHV0X3P580G",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "sensor.solaredge_storage_power",
+	"state": "-0.7",
+	"attributes": {
+		"status": "Charging",
+		"flow": "charge",
+		"soc": 49,
+		"unit_of_measurement": "kW",
+		"device_class": "power",
+		"icon": "mdi:car-battery",
+		"friendly_name": "solaredge (Storage Power)"
+	},
+	"last_changed": "2022-06-24T07:56:05.182090+00:00",
+	"last_updated": "2022-06-24T07:56:05.182090+00:00",
+	"context": {
+		"id": "01G6ABC0NYPNXK7NCKM79DJ8T7",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "sensor.solaredge_imported_energy",
+	"state": "167.0",
+	"attributes": {
+		"state_class": "total_increasing",
+		"date": "2022-06-24 00:00:00",
+		"unit_of_measurement": "Wh",
+		"device_class": "energy",
+		"friendly_name": "solaredge (Imported Energy)"
+	},
+	"last_changed": "2022-06-24T07:57:08.321163+00:00",
+	"last_updated": "2022-06-24T07:57:08.321163+00:00",
+	"context": {
+		"id": "01G6ABDYB13AVJ3SKW3KJJ1H1J",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "sensor.solaredge_production_energy",
+	"state": "6239.0",
+	"attributes": {
+		"state_class": "total_increasing",
+		"date": "2022-06-24 00:00:00",
+		"unit_of_measurement": "Wh",
+		"device_class": "energy",
+		"friendly_name": "solaredge (Production Energy)"
+	},
+	"last_changed": "2022-06-24T07:57:08.321443+00:00",
+	"last_updated": "2022-06-24T07:57:08.321443+00:00",
+	"context": {
+		"id": "01G6ABDYB1DQ2ZJA3Y20ZH4G3H",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "sensor.solaredge_consumption_energy",
+	"state": "6340.0",
+	"attributes": {
+		"state_class": "total_increasing",
+		"date": "2022-06-24 00:00:00",
+		"unit_of_measurement": "Wh",
+		"device_class": "energy",
+		"friendly_name": "solaredge (Consumption Energy)"
+	},
+	"last_changed": "2022-06-24T07:57:08.321608+00:00",
+	"last_updated": "2022-06-24T07:57:08.321608+00:00",
+	"context": {
+		"id": "01G6ABDYB1ZWD780HMBBYENNGK",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "sensor.solaredge_selfconsumption_energy",
+	"state": "6173.0",
+	"attributes": {
+		"state_class": "total_increasing",
+		"date": "2022-06-24 00:00:00",
+		"unit_of_measurement": "Wh",
+		"device_class": "energy",
+		"friendly_name": "solaredge (SelfConsumption Energy)"
+	},
+	"last_changed": "2022-06-24T07:57:08.321770+00:00",
+	"last_updated": "2022-06-24T07:57:08.321770+00:00",
+	"context": {
+		"id": "01G6ABDYB1EGKSH9477HTTM3H8",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "sensor.solaredge_exported_energy",
+	"state": "66.0",
+	"attributes": {
+		"state_class": "total_increasing",
+		"date": "2022-06-24 00:00:00",
+		"unit_of_measurement": "Wh",
+		"device_class": "energy",
+		"friendly_name": "solaredge (Exported Energy)"
+	},
+	"last_changed": "2022-06-24T07:57:08.321930+00:00",
+	"last_updated": "2022-06-24T07:57:08.321930+00:00",
+	"context": {
+		"id": "01G6ABDYB1ZAZP3NGD2X3F52DC",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "sensor.solaredge_storage_level",
+	"state": "49",
+	"attributes": {
+		"state_class": "measurement",
+		"unit_of_measurement": "%",
+		"device_class": "battery",
+		"friendly_name": "solaredge (Storage Level)"
+	},
+	"last_changed": "2022-06-24T07:56:05.182275+00:00",
+	"last_updated": "2022-06-24T07:56:05.182275+00:00",
+	"context": {
+		"id": "01G6ABC0NYP1SXQWR69FFDJJAZ",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "update.homsai_engine_update",
+	"state": "off",
+	"attributes": {
+		"auto_update": false,
+		"installed_version": "0.0.1",
+		"in_progress": false,
+		"latest_version": "0.0.1",
+		"release_summary": null,
+		"release_url": null,
+		"skipped_version": null,
+		"title": "Homsai Engine",
+		"entity_picture": "/api/hassio/addons/local_homsai/icon",
+		"friendly_name": "Homsai Engine: Update",
+		"supported_features": 25
+	},
+	"last_changed": "2022-06-07T11:26:03.748199+00:00",
+	"last_updated": "2022-06-07T11:26:03.748199+00:00",
+	"context": {
+		"id": "01G4YYM8Z4X2TE1RNFXCBKGA9F",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "sensor.lampadina_smart_1_signal_level",
+	"state": "-29",
+	"attributes": {
+		"unit_of_measurement": "dBm",
+		"device_class": "signal_strength",
+		"friendly_name": "Lampadina Smart 1 signal level"
+	},
+	"last_changed": "2022-06-24T08:08:23.235312+00:00",
+	"last_updated": "2022-06-24T08:08:23.235312+00:00",
+	"context": {
+		"id": "01G6AC2HE3QM19X6X6JTCTR6H4",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "binary_sensor.lampadina_smart_1_overheat",
+	"state": "False",
+	"attributes": {
+		"device_class": "heat",
+		"friendly_name": "Lampadina Smart 1 overheat"
+	},
+	"last_changed": "2022-06-22T18:39:36.291486+00:00",
+	"last_updated": "2022-06-22T18:39:36.291486+00:00",
+	"context": {
+		"id": "01G66BCWV34WG2Z2PR5PQ5K5JW",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "light.lampadina_smart_1",
+	"state": "off",
+	"attributes": {
+		"min_mireds": 153,
+		"max_mireds": 400,
+		"supported_color_modes": ["color_temp", "hs"],
+		"friendly_name": "Lampadina Smart 1",
+		"supported_features": 19
+	},
+	"last_changed": "2022-06-22T18:39:36.291758+00:00",
+	"last_updated": "2022-06-22T18:39:36.291758+00:00",
+	"context": {
+		"id": "01G66BCWV36VAP3CCG7E12BHTX",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "sensor.lampadina_smart_2_signal_level",
+	"state": "-35",
+	"attributes": {
+		"unit_of_measurement": "dBm",
+		"device_class": "signal_strength",
+		"friendly_name": "Lampadina Smart 2 signal level"
+	},
+	"last_changed": "2022-06-24T08:09:33.252220+00:00",
+	"last_updated": "2022-06-24T08:09:33.252220+00:00",
+	"context": {
+		"id": "01G6AC4NT4MBJZD5N9RP2QFFG1",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "binary_sensor.lampadina_smart_2_overheat",
+	"state": "False",
+	"attributes": {
+		"device_class": "heat",
+		"friendly_name": "Lampadina Smart 2 overheat"
+	},
+	"last_changed": "2022-06-23T07:11:52.358421+00:00",
+	"last_updated": "2022-06-23T07:11:52.358421+00:00",
+	"context": {
+		"id": "01G67PEB16Z5EQGNY2VKXE7HNC",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "light.lampadina_smart_2",
+	"state": "off",
+	"attributes": {
+		"min_mireds": 153,
+		"max_mireds": 400,
+		"supported_color_modes": ["color_temp", "hs"],
+		"friendly_name": "Lampadina Smart 2",
+		"supported_features": 19
+	},
+	"last_changed": "2022-06-23T07:11:52.358656+00:00",
+	"last_updated": "2022-06-23T07:11:52.358656+00:00",
+	"context": {
+		"id": "01G67PEB16HT6RP6A6912HN2J7",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "sensor.lampadina_smart_3_signal_level",
+	"state": "-32",
+	"attributes": {
+		"unit_of_measurement": "dBm",
+		"device_class": "signal_strength",
+		"friendly_name": "Lampadina Smart 3 signal level"
+	},
+	"last_changed": "2022-06-24T08:08:24.336402+00:00",
+	"last_updated": "2022-06-24T08:08:24.336402+00:00",
+	"context": {
+		"id": "01G6AC2JGGBNFAXKNQQVTHHWZ3",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "binary_sensor.lampadina_smart_3_overheat",
+	"state": "False",
+	"attributes": {
+		"device_class": "heat",
+		"friendly_name": "Lampadina Smart 3 overheat"
+	},
+	"last_changed": "2022-06-15T10:44:09.268293+00:00",
+	"last_updated": "2022-06-15T10:44:09.268293+00:00",
+	"context": {
+		"id": "01G5KFD9DMRS403R7PXQRT3077",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "light.lampadina_smart_3",
+	"state": "off",
+	"attributes": {
+		"min_mireds": 153,
+		"max_mireds": 400,
+		"supported_color_modes": ["color_temp", "hs"],
+		"friendly_name": "Lampadina Smart 3",
+		"supported_features": 19
+	},
+	"last_changed": "2022-06-21T14:38:31.938545+00:00",
+	"last_updated": "2022-06-21T14:38:31.938545+00:00",
+	"context": {
+		"id": "01G63B6PRFZ5NZANZJW4ZSBYPW",
+		"parent_id": null,
+		"user_id": "d60616a71e884f858749f90a60093cc2"
+	}
+}, {
+	"entity_id": "sensor.lampadina_smart_4_signal_level",
+	"state": "-30",
+	"attributes": {
+		"unit_of_measurement": "dBm",
+		"device_class": "signal_strength",
+		"friendly_name": "Lampadina Smart 4 signal level"
+	},
+	"last_changed": "2022-06-24T08:06:21.254184+00:00",
+	"last_updated": "2022-06-24T08:06:21.254184+00:00",
+	"context": {
+		"id": "01G6ABYTA6EMG5NY7MF62ZDZ0A",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "binary_sensor.lampadina_smart_4_overheat",
+	"state": "False",
+	"attributes": {
+		"device_class": "heat",
+		"friendly_name": "Lampadina Smart 4 overheat"
+	},
+	"last_changed": "2022-06-23T19:03:23.264959+00:00",
+	"last_updated": "2022-06-23T19:03:23.264959+00:00",
+	"context": {
+		"id": "01G68Z55C09M9GEGC8W1Z9110X",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "light.lampadina_smart_4",
+	"state": "off",
+	"attributes": {
+		"min_mireds": 153,
+		"max_mireds": 400,
+		"supported_color_modes": ["color_temp", "hs"],
+		"friendly_name": "Lampadina Smart 4",
+		"supported_features": 19
+	},
+	"last_changed": "2022-06-23T19:03:23.265190+00:00",
+	"last_updated": "2022-06-23T19:03:23.265190+00:00",
+	"context": {
+		"id": "01G68Z55C1HPRN4684HWY6R4C7",
+		"parent_id": null,
+		"user_id": null
+	}
+}, {
+	"entity_id": "persistent_notification.http_login",
+	"state": "notifying",
+	"attributes": {
+		"message": "Login attempt or request with invalid authentication from 192.168.3.20 (192.168.3.20). See the log for details.",
+		"title": "Login attempt failed",
+		"friendly_name": "Login attempt failed"
+	},
+	"last_changed": "2022-06-13T09:53:15.830578+00:00",
+	"last_updated": "2022-06-15T10:22:49.190225+00:00",
+	"context": {
+		"id": "01G5KE67B6X0JHCNA3XK94K44F",
+		"parent_id": null,
+		"user_id": null
+	}
+}]

@@ -127,6 +127,8 @@ flutter:
     - assets/test/entities_no_friendly_name.json
     - assets/test/entities_mix_friendly_name.json
     - assets/test/optimized_chart.json
+    - assets/test/entities_no_area.json
+    - assets/test/device_related.json
     - .env
 
   fonts:
