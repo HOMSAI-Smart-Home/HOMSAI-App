@@ -15,7 +15,6 @@ part 'add_plant.event.dart';
 part 'add_plant.state.dart';
 
 class AddPlantBloc extends Bloc<AddPlantEvent, AddPlantState> {
-
   final AppPreferencesInterface appPreferencesInterface =
       getIt.get<AppPreferencesInterface>();
 
@@ -72,6 +71,7 @@ class AddPlantBloc extends Bloc<AddPlantEvent, AddPlantState> {
     emit(state.copyWith(
         plantName: plantName,
         initialPlantName: plantName.value,
+        status: _isFormValidate(plantName: plantName),
         coordinate: coordinate,
         configuration: event.configuration));
   }
@@ -82,6 +82,7 @@ class AddPlantBloc extends Bloc<AddPlantEvent, AddPlantState> {
     if (plant != null) {
       emit(state.copyWith(
           plantName: PlantName.dirty(plant.name),
+          status: _isFormValidate(plantName: PlantName.dirty(plant.name)),
           initialPlantName: plant.name,
           coordinate: Coordinate.dirty(
               "${plant.latitude.toStringAsFixed(5)};${plant.longitude.toStringAsFixed(5)}"),
@@ -95,7 +96,9 @@ class AddPlantBloc extends Bloc<AddPlantEvent, AddPlantState> {
   }
 
   void _onPlantNameChanged(
-      PlantNameChanged event, Emitter<AddPlantState> emit) {
+    PlantNameChanged event,
+    Emitter<AddPlantState> emit,
+  ) {
     final plantName = PlantName.dirty(event.plantName);
     emit(state.copyWith(
       plantName: plantName.valid ? plantName : PlantName.pure(event.plantName),
@@ -109,7 +112,7 @@ class AddPlantBloc extends Bloc<AddPlantEvent, AddPlantState> {
   ) {
     final plantName = PlantName.dirty(event.plantName);
     emit(state.copyWith(
-      plantName: plantName,
+      plantName: plantName.valid ? plantName : PlantName.pure(event.plantName),
       status: _isFormValidate(plantName: plantName),
     ));
   }
@@ -170,7 +173,6 @@ class AddPlantBloc extends Bloc<AddPlantEvent, AddPlantState> {
     PlantName? plantName,
     Coordinate? coordinate,
   }) {
-    return Formz.validate(
-        [plantName ?? state.plantName, coordinate ?? state.coordinate]);
+    return plantName?.valid ?? false ? FormzStatus.valid : FormzStatus.invalid;
   }
 }

@@ -7,6 +7,7 @@
 
     "emailAddress": "Indirizzo email",
     "invalidEmail": "Email non valida",
+    "invalidPlantName": "Nome casa non è valido",
     "emailEntryTitle": "Entra nella Closed BETA",
     "emailEntryDescription": "Homsai è in BETA. Inserisci il tuo indirizzo email per scoprire se hai accesso. Se ancora non puoi entrare, non preoccuparti! Lasciaci la mail e verrai aggiunto alla coda di utenti.",
     "emailPendingTitle": "Ancora un po’ di pazienza",

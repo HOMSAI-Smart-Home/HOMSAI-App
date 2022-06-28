@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:formz/formz.dart';
 import 'package:homsai/app.router.dart';
 import 'package:homsai/crossconcern/components/common/scaffold/homsai_bloc_scaffold.widget.dart';
 import 'package:homsai/crossconcern/helpers/blocs/websocket/websocket.bloc.dart';
@@ -135,6 +136,9 @@ class _AddPlantNameField extends StatelessWidget {
                   child: SvgPicture.asset(
                     "assets/icons/home.svg",
                   )),
+              errorText: state.status.isInvalid
+                  ? HomsaiLocalizations.of(context)!.invalidPlantName
+                  : null,
               labelText: HomsaiLocalizations.of(context)!.addPlantNameLabel,
             ),
             style: Theme.of(context).textTheme.bodyText1,
@@ -223,8 +227,10 @@ class _AddPlantSubmit extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AddPlantBloc, AddPlantState>(
+      buildWhen: (previous, current) => previous.status != current.status,
       builder: (context, state) => ElevatedButton(
-        onPressed: () => context.read<AddPlantBloc>().add(
+        onPressed: state.status.isValid
+            ? () => context.read<AddPlantBloc>().add(
                   OnSubmit(
                     () => wizard
                         ? context.router
@@ -234,7 +240,7 @@ class _AddPlantSubmit extends StatelessWidget {
                     remoteUrl ?? '',
                   ),
                 )
-            ,
+            : null,
         child: Text(HomsaiLocalizations.of(context)!.next),
       ),
     );

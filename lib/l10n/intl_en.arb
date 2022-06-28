@@ -7,6 +7,7 @@
 
     "emailAddress": "Email address",
     "invalidEmail": "invalid email",
+    "invalidPlantName": "Invalid plant name",
     "emailEntryTitle": "Enter the Closed BETA",
     "emailEntryDescription": "Homsai is in BETA. Enter your email address to find out if you have access. If you still can't enter, don't worry! Leave us the email and you will be added to the queue of users.",
     "emailPendingTitle": "A little more patience",

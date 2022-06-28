@@ -7,7 +7,7 @@ class PlantName extends FormzInput<String, PlantNameValidationError> {
   const PlantName.dirty([String value = '']) : super.dirty(value);
 
   @override
-  PlantNameValidationError? validator(String? value) {
-    return null;
+  PlantNameValidationError? validator(String? value) {        
+    return value?.isNotEmpty ?? false ? null : PlantNameValidationError.invalid;
   }
 }
