@@ -75,13 +75,14 @@ abstract class HomsaiDatabase extends FloorDatabase {
     return null;
   }
 
-  Future<T?> getEntity<T extends hass.Entity>(String entityId) async {
+  Future<T?> getEntity<T extends hass.Entity?>(String entityId) async {
     final plant = await getPlant();
     if (plant == null) return null;
 
     final homeAssistantEntity =
-        await homeAssitantDao.findEntityById(plant.id!, entityId);
-    return homeAssistantEntity?.entity as T;
+        await homeAssitantDao.findEntity(plant.id!, entityId);
+
+    return homeAssistantEntity != null ? homeAssistantEntity as T : null;
   }
 
   Future<void> logout({bool deleteUser = true}) async {

@@ -13,9 +13,8 @@ abstract class HomeAssistantDao extends BaseDao<HomeAssistantEntity> {
   Future<T?> findEntity<T extends hass.Entity>(
       int plantId, String entityId) async {
     final hassEntity = await findEntityById(plantId, entityId);
-    return hassEntity?.entity as T;
+    return hassEntity != null ? hassEntity.entity as T : null;
   }
-
   @Query(
       "SELECT * FROM Entity WHERE plant_id = :id AND entity_id LIKE :category || '.%'")
   Future<List<HomeAssistantEntity>> getEntitiesFromCategory(

@@ -45,15 +45,15 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
 
     if (plant.consumptionSensor != null) {
       consumptionSensor =
-          await _appDatabase.getEntity<SensorEntity>(plant.consumptionSensor!);
+          await _appDatabase.getEntity(plant.consumptionSensor!);
     }
     if (plant.productionSensor != null) {
       productionSensor =
-          await _appDatabase.getEntity<SensorEntity>(plant.productionSensor!);
+          await _appDatabase.getEntity(plant.productionSensor!);
     }
     if (plant.batterySensor != null) {
       batterySensor =
-          await _appDatabase.getEntity<SensorEntity>(plant.batterySensor!);
+          await _appDatabase.getEntity(plant.batterySensor!);
     }
 
     final user = await _appDatabase.getUser();

@@ -107,7 +107,7 @@ class MockHomsaiDatabase extends _i1.Mock implements _i8.HomsaiDatabase {
       (super.noSuchMethod(Invocation.method(#getPlant, []),
           returnValue: Future<_i12.Plant?>.value()) as _i6.Future<_i12.Plant?>);
   @override
-  _i6.Future<T?> getEntity<T extends _i10.Entity>(String? entityId) =>
+  _i6.Future<T?> getEntity<T extends _i10.Entity?>(String? entityId) =>
       (super.noSuchMethod(Invocation.method(#getEntity, [entityId]),
           returnValue: Future<T?>.value()) as _i6.Future<T?>);
   @override
