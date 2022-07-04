@@ -14,9 +14,9 @@ Future<void> main() async {
     () {
       setUp(() async {
         await MocksHassWebsocket.setUp();
-        MocksHomsaiDatabase.setUp();
-        MocksAppPreferences.setUp();
-        MocksLightRepository.setUp();
+        await MocksHomsaiDatabase.setUp();
+        await MocksAppPreferences.setUp();
+        await MocksLightRepository.setUp();
       });
 
       test(

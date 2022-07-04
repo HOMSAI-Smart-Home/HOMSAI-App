@@ -4,6 +4,7 @@ import 'package:homsai/datastore/DTOs/remote/ai_service/daily_plan/daily_plan.dt
 import 'package:homsai/datastore/DTOs/remote/ai_service/forecast/consumption_optimizations/consumption_optimizations_forecast.dto.dart';
 import 'package:homsai/datastore/DTOs/remote/ai_service/forecast/photovoltaic/photovoltaic.dto.dart';
 import 'package:homsai/main.dart';
+import 'package:intl/intl.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
@@ -44,15 +45,28 @@ class MocksAIService {
     when(mockAIServiceInterface.getPhotovoltaicForecast(any))
         .thenAnswer((invocation) async {
       final List<dynamic> data = await readJson(path);
+      if (data.isNotEmpty) {
+        final firstDate = data.first["date"];
+        for (var element in data) {
+          if (firstDate == element["date"]) {
+            element["date"] = DateFormat('yyyy-MM-dd').format(DateTime.now());
+          } else {
+            element["date"] = DateFormat('yyyy-MM-dd')
+                .format(DateTime.now().add(const Duration(days: 1)));
+          }
+        }
+      }
       return PhotovoltaicForecastDto.fromList(data);
     });
   }
 
   static getPhotovoltaicSelfConsumptionOptimizerForecast(String path) {
-    when(mockAIServiceInterface.getPhotovoltaicSelfConsumptionOptimizerForecast(any, any))
+    when(mockAIServiceInterface.getPhotovoltaicSelfConsumptionOptimizerForecast(
+            any, any))
         .thenAnswer((invocation) async {
       final data = await readJson(path);
-      return ConsumptionOptimizationsForecastDto.fromJson(data['consumptionForecast']);
+      return ConsumptionOptimizationsForecastDto.fromJson(
+          data['consumptionForecast']);
     });
   }
 }

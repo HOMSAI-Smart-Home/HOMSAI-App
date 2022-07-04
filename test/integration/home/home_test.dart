@@ -44,16 +44,15 @@ Future<void> main() async {
       'Check if daily plan is called once per day and orders correctly the entities',
       () {
     test.setUp(() async {
-      MocksHomsaiDatabase.setUp();
-      MocksAIService.setUp();
-      MocksHomeAssistant.setUp();
-      MocksAppPreferences.setUp();
-      MocksHassWebsocket.setUp();
-
+      getIt.registerLazySingleton<Location>(() => Location('Test', [], [], []));
       getIt.registerLazySingleton<NetworkManagerInterface>(
           () => NetworkManager());
 
-      getIt.registerLazySingleton<Location>(() => Location('Test', [], [], []));
+      await MocksHomsaiDatabase.setUp();
+      MocksAIService.setUp();
+      await MocksHomeAssistant.setUp();
+      await MocksAppPreferences.setUp();
+      await MocksHassWebsocket.setUp();
     });
 
     final mockWebSocketRepository = MockHomeAssistantWebSocketInterface();

@@ -5,6 +5,7 @@ import 'package:homsai/datastore/remote/network/network_manager.interface.dart';
 import 'package:homsai/main.dart';
 import 'package:homsai/ui/pages/dashboard/tabs/home/bloc/home.bloc.dart';
 import 'package:mockito/annotations.dart';
+import 'package:timezone/timezone.dart';
 
 import '../../util/ai_service/ai_service.dart';
 import '../../util/apppreferences/app_preferences.dart';
@@ -20,13 +21,14 @@ Future<void> main() async {
       'Check if daily plan is called once per day and orders correctly the entities',
       () {
     setUp(() async {
-      MocksHomsaiDatabase.setUp(
+      getIt.registerLazySingleton<Location>(() => Location('Test', [], [], []));
+      await MocksHomsaiDatabase.setUp(
         photovoltaicInstallationDate: DateTime.now(),
         photovoltaicNominalPower: 8.75,
       );
       MocksAIService.setUp();
-      MocksHomeAssistant.setUp();
-      MocksAppPreferences.setUp();
+      await MocksHomeAssistant.setUp();
+      await MocksAppPreferences.setUp();
       await MocksHassWebsocket.setUp();
 
       getIt.registerLazySingleton<NetworkManagerInterface>(
