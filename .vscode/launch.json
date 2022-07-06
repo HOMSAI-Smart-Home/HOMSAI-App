@@ -10,20 +10,28 @@
             "type": "dart",
             "args": [
                 "--flavor",
-                "staging" //development or staging or production
+                "staging" 
             ]
         },
         {
             "name": "homsai-frontend (profile mode)",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "profile"
+            "flutterMode": "profile",
+            "args": [
+                "--flavor",
+                "qa"
+            ]
         },
         {
             "name": "homsai-frontend (release mode)",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "release"
+            "flutterMode": "release",
+            "args": [
+                "--flavor",
+                "prod" 
+            ]
         }
     ]
 }
