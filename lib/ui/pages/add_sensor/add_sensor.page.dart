@@ -8,6 +8,7 @@ import 'package:homsai/crossconcern/components/common/scaffold/homsai_bloc_scaff
 import 'package:homsai/crossconcern/components/utils/bullet.widget.dart';
 import 'package:homsai/crossconcern/components/utils/month_year_field/bloc/month_year_field.bloc.dart';
 import 'package:homsai/crossconcern/components/utils/month_year_field/month_year_field.widget.dart';
+import 'package:homsai/crossconcern/components/utils/trimmed_text_form_field.widget.dart';
 import 'package:homsai/crossconcern/helpers/blocs/websocket/websocket.bloc.dart';
 import 'package:homsai/datastore/models/entity/sensors/mesurable/mesurable_sensor.entity.dart';
 import 'package:homsai/themes/colors.theme.dart';
@@ -169,7 +170,7 @@ class _PhotovoltaicNominalPower extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AddSensorBloc, AddSensorState>(
       builder: (context, state) {
-        return TextFormField(
+        return TrimmedTextFormField(
           initialValue: state.initialPhotovoltaicNominalPower,
           key: ValueKey(state.initialPhotovoltaicNominalPower),
           keyboardType: const TextInputType.numberWithOptions(

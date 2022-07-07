@@ -191,6 +191,8 @@ class AuthGuardBuilder {
       router,
       (success) async {
         final redirectRoute = await redirect(onResult);
+
+        if (router.navigatorKey.currentState != null) router.popUntilRoot();
         redirectRoute != null
             ? router.replace(redirectRoute)
             : onResult(success);

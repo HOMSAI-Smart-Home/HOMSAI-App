@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:homsai/crossconcern/components/utils/trimmed_text_form_field.widget.dart';
 import 'package:homsai/crossconcern/components/utils/url_text_field/bloc/url_text_field.bloc.dart';
 
 class UrlTextField<Bloc extends UrlTextFieldBloc> extends StatelessWidget {
@@ -59,7 +60,7 @@ class _UrlTextField<Bloc extends UrlTextFieldBloc> extends StatelessWidget {
         builder: (context, state) {
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: 8),
-            child: TextFormField(
+            child: TrimmedTextFormField(
               key: ValueKey(state.initialUrl),
               initialValue: state.initialUrl,
               focusNode: focusNode,

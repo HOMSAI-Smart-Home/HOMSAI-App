@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
 import 'package:homsai/crossconcern/components/utils/credentials_form/bloc/credentials_form.bloc.dart';
+import 'package:homsai/crossconcern/components/utils/trimmed_text_form_field.widget.dart';
 import 'package:rive/rive.dart';
 
 class EmailAddressTextField extends StatelessWidget {
@@ -16,7 +17,7 @@ class EmailAddressTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<CredentialsFormBloc, CredentialsFormState>(
         builder: (context, state) {
-      return TextFormField(
+      return TrimmedTextFormField(
         restorationId: 'emailaddress_text_field',
         focusNode: focusNode,
         keyboardType: TextInputType.emailAddress,
@@ -66,7 +67,7 @@ class _PasswordTextFieldState extends State<PasswordTextField> {
   Widget build(BuildContext context) {
     return BlocBuilder<CredentialsFormBloc, CredentialsFormState>(
         builder: (context, state) {
-      return TextFormField(
+      return TrimmedTextFormField(
         restorationId: 'password_text_field',
         initialValue: state.password.value,
         focusNode: widget.focusNode,

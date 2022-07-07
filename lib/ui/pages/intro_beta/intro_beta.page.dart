@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:formz/formz.dart';
 import 'package:homsai/crossconcern/components/common/scaffold/homsai_bloc_scaffold.widget.dart';
 import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
+import 'package:homsai/crossconcern/components/utils/trimmed_text_form_field.widget.dart';
 import 'package:homsai/ui/pages/intro_beta/bloc/intro_beta.bloc.dart';
 import 'package:super_rich_text/super_rich_text.dart';
 import 'package:rive/rive.dart' as rive;
@@ -269,7 +270,7 @@ class _EmailAddressTextField extends StatelessWidget {
             previous.email != current.email ||
             previous.initialEmail != current.initialEmail,
         builder: (context, state) {
-          return TextFormField(
+          return TrimmedTextFormField(
             key: ValueKey(
               state.initialEmail,
             ),

@@ -5,6 +5,7 @@ import 'package:homsai/business/ai_service/ai_service.repository.dart';
 import 'package:homsai/business/home_assistant/home_assistant.interface.dart';
 import 'package:homsai/business/home_assistant/home_assistant.repository.dart';
 import 'package:homsai/crossconcern/components/utils/double_url/bloc/double_url.bloc.dart';
+import 'package:homsai/crossconcern/components/utils/trimmed_text_form_field.widget.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.repository.dart';
 import 'package:homsai/main.dart';
@@ -80,7 +81,7 @@ testConinueButtonWithUrl(WidgetTester tester, String url, bool isValid) async {
     isFalse,
   );
 
-  await tester.enterText(find.byType(TextFormField).first, url);
+  await tester.enterText(find.byType(TrimmedTextFormField).first, url);
   await tester.pump(const Duration(milliseconds: 400));
 
   expect(tester.widget<ElevatedButton>(find.byType(ElevatedButton)).enabled,

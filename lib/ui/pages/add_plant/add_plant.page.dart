@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:formz/formz.dart';
 import 'package:homsai/app.router.dart';
 import 'package:homsai/crossconcern/components/common/scaffold/homsai_bloc_scaffold.widget.dart';
+import 'package:homsai/crossconcern/components/utils/trimmed_text_form_field.widget.dart';
 import 'package:homsai/crossconcern/helpers/blocs/websocket/websocket.bloc.dart';
 import 'package:homsai/themes/colors.theme.dart';
 import 'package:homsai/ui/pages/add_plant/bloc/add_plant.bloc.dart';
@@ -119,7 +120,7 @@ class _AddPlantNameField extends StatelessWidget {
             previous.plantName != current.plantName ||
             previous.initialPlantName != current.initialPlantName,
         builder: ((context, state) {
-          return TextFormField(
+          return TrimmedTextFormField(
             key: ValueKey(
               state.initialPlantName,
             ),
@@ -153,7 +154,7 @@ class _AddPlantLocationField extends StatelessWidget {
     return Column(
       children: [
         BlocBuilder<AddPlantBloc, AddPlantState>(builder: ((context, state) {
-          return TextFormField(
+          return TrimmedTextFormField(
             key: ValueKey(
               state.coordinate.value,
             ),

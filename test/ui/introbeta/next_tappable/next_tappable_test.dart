@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:formz/formz.dart';
 import 'package:homsai/business/ai_service/ai_service.interface.dart';
 import 'package:homsai/business/ai_service/ai_service.repository.dart';
+import 'package:homsai/crossconcern/components/utils/trimmed_text_form_field.widget.dart';
 import 'package:homsai/crossconcern/helpers/models/forms/credentials/email.model.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.repository.dart';
@@ -99,7 +100,7 @@ void main() {
     expect(tester.widget<ElevatedButton>(find.byType(ElevatedButton)).enabled,
         isFalse);
 
-    await tester.enterText(find.byType(TextFormField), "demo@demo.demo");
+    await tester.enterText(find.byType(TrimmedTextFormField), "demo@demo.demo");
     await tester.pump(const Duration(milliseconds: 400));
 
     expect(tester.widget<ElevatedButton>(find.byType(ElevatedButton)).enabled,

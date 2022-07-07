@@ -35,7 +35,7 @@ class UrlUpdatePage extends StatelessWidget {
         ),
       ],
       mainAxisAlignment: MainAxisAlignment.center,
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       children: <Widget>[
         _UrlUpdateTitle(),
         const SizedBox(
