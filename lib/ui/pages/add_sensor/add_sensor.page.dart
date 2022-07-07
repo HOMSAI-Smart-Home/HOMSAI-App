@@ -283,7 +283,10 @@ class _AddSensorSubmit extends StatelessWidget {
       HomsaiLocalizations.of(context)!.consumptionSensorLabel:
           state.selectedConsumptionSensor != null ? true : false,
       HomsaiLocalizations.of(context)!.photovoltaicNominalPowerLabel:
-          state.photovoltaicNominalPower == "" ? false : true,
+          state.photovoltaicNominalPower == "" ||
+                  state.photovoltaicNominalPower == null
+              ? false
+              : true,
       HomsaiLocalizations.of(context)!.photovoltaicInstallationDate:
           state.photovoltaicInstallationDate != null ? true : false,
     };
@@ -329,8 +332,10 @@ class _AddSensorSubmit extends StatelessWidget {
                       Expanded(
                         flex: 1,
                         child: InkWell(
-                          onTap: () =>
-                              {bloc.add(OnSubmit(() => onResult(true)))},
+                          onTap: () {
+                            bloc.add(OnSubmit(() => onResult(true)));
+                            if (!wizard) Navigator.pop(context);
+                          },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
