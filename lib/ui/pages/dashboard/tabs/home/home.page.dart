@@ -368,13 +368,11 @@ class DailyConsumptionBalanceInfo extends StatelessWidget {
             HomsaiLocalizations.of(context)!.homePagePurchasedEnergyLabel,
             amount: balance(state)?.boughtEnergyExpense,
             power: balance(state)?.boughtEnergy,
-            unit: state.consumptionSensor?.unitMesurement,
           ),
           DailyConsumptionBalanceItemInfo(
             HomsaiLocalizations.of(context)!.homePageEnergyInjectedLabel,
             amount: balance(state)?.soldEnergyEarning,
             power: balance(state)?.soldEnergy,
-            unit: state.productionSensor?.unitMesurement,
           ),
           DailyConsumptionBalanceItemInfo(
             HomsaiLocalizations.of(context)!.homePageBalanceLabel,
@@ -397,7 +395,7 @@ class DailyConsumptionBalanceItemInfo extends StatelessWidget {
     Key? key,
     this.amount,
     this.power,
-    this.unit,
+    this.unit = 'kW',
     this.colored = false,
     this.backgroundColor,
     this.textColor,
@@ -455,7 +453,7 @@ class DailyConsumptionBalanceItemInfo extends StatelessWidget {
                   if (power != null)
                     Text(
                       (power != null && unit != null)
-                          ? "${power!.toStringAsFixed(1)} $unit"
+                          ? "${power!.toStringAsFixed(1)} ${unit}h"
                           : "--",
                       style: Theme.of(context).textTheme.bodyText2?.copyWith(
                             fontWeight: FontWeight.w400,

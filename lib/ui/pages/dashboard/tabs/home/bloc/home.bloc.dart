@@ -31,7 +31,6 @@ import 'package:homsai/datastore/local/app.database.dart';
 import 'package:homsai/datastore/models/database/configuration.entity.dart';
 import 'package:homsai/datastore/models/database/plant.entity.dart';
 import 'package:homsai/datastore/models/entity/base/base.entity.dart';
-import 'package:homsai/datastore/models/entity/sensors/mesurable/mesurable_sensor.entity.dart';
 import 'package:homsai/datastore/remote/network/network.manager.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.dart';
 import 'package:homsai/datastore/models/entity/light/light.entity.dart';
@@ -382,17 +381,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           plant,
         );
 
-        final productionSensor =
-            await appDatabase.homeAssitantDao.findEntity<MesurableSensorEntity>(
-          plant.id!,
-          plant.productionSensor!,
-        );
-        final consumptionSensor =
-            await appDatabase.homeAssitantDao.findEntity<MesurableSensorEntity>(
-          plant.id!,
-          plant.consumptionSensor!,
-        );
-
         List<FlSpot> autoConsumption = [];
         List<FlSpot> charge = [];
         ConsumptionOptimizationsForecastDto? consumptionForecast;
@@ -412,9 +400,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
                 .getPhotovoltaicSelfConsumptionOptimizerForecast(
               ConsumptionOptimizationsForecastBodyDto(
                 consumptionInfo.history,
-                consumptionSensor!.unitMesurement,
                 productionInfo.history,
-                productionSensor!.unitMesurement,
                 batteryMeterData:
                     batteryInfo.history.isNotEmpty ? batteryInfo.history : null,
               ),
@@ -451,8 +437,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
         if (_active) {
           emit(state.copyWith(
-              consumptionSensor: consumptionSensor,
-              productionSensor: productionSensor,
               consumptionPlot: consumptionInfo.plot.isNotEmpty
                   ? consumptionInfo.plot
                   : DailyConsumptionChart.emptyPlot,
@@ -488,7 +472,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             isLoading: false,
           ));
         }
-      } catch (e) {
+      } on Exception catch (_) {
         emit(HomeState(
           lights: state.lights,
           isLoading: false,
@@ -636,7 +620,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         sensor,
         minimalResponse: true,
       ),
-      timeout: const Duration(seconds: 2),
+      timeout: const Duration(seconds: 10),
     );
 
     return history;
@@ -646,16 +630,38 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     PlotInfo info =
         PlotInfo(maxRange: Offset(Duration.minutesPerDay.toDouble(), 4));
 
-    final plot = _parsePlot(history);
+    final historyKW = _parseHistoryKW(history);
+
+    final plot = _parsePlot(historyKW);
 
     return info.copyWith(
       plot: plot,
       minRange: Offset(plot.first.x, max(0, plot.min.y)),
       maxRange: Offset(plot.last.x, plot.max.y),
-      history: history
+      history: historyKW
           .where((entity) => double.tryParse(entity.state) != null)
           .toList(),
     );
+  }
+
+  List<HistoryDto> _parseHistoryKW(List<HistoryDto> history) {
+    if (history.isNotEmpty &&
+        history[0].attributes != null &&
+        history[0].attributes!['unit_of_measurement'] != 'kW') {
+      history[0].attributes!['unit_of_measurement'] = 'kW';
+      return history
+          .map((historyDto) => HistoryDto(
+                historyDto.attributes,
+                historyDto.entityId,
+                historyDto.lastChanged,
+                historyDto.lastUpdated,
+                historyDto.state == '0.0' || historyDto.state == 'unavailable'
+                    ? historyDto.state
+                    : '${double.parse(historyDto.state) / 1000}',
+              ))
+          .toList();
+    }
+    return history;
   }
 
   List<FlSpot> _parsePlot(List<HistoryDto> results) {

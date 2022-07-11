@@ -12,8 +12,6 @@ HistoryBodyDto _$HistoryBodyDtoFromJson(Map<String, dynamic> json) =>
       endTime: json['end_time'] == null
           ? null
           : DateTime.parse(json['end_time'] as String),
-      noAttributes:
-          const QueryBoolConverter().fromJson(json['no_attributes'] as String),
       minimalResponse: const QueryBoolConverter()
           .fromJson(json['minimal_response'] as String),
       significantChangesOnly: const QueryBoolConverter()
@@ -32,8 +30,6 @@ Map<String, dynamic> _$HistoryBodyDtoToJson(HistoryBodyDto instance) {
     }
   }
 
-  writeNotNull('no_attributes',
-      const QueryBoolConverter().toJson(instance.noAttributes));
   writeNotNull('minimal_response',
       const QueryBoolConverter().toJson(instance.minimalResponse));
   writeNotNull('significant_changes_only',

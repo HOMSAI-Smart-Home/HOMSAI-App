@@ -3,8 +3,6 @@ part of 'home.bloc.dart';
 class HomeState extends Equatable {
   const HomeState({
     this.lights = const [],
-    this.consumptionSensor,
-    this.productionSensor,
     this.consumptionPlot,
     this.productionPlot,
     this.autoConsumption,
@@ -26,9 +24,6 @@ class HomeState extends Equatable {
   });
 
   final List<LightEntity> lights;
-
-  final MesurableSensorEntity? consumptionSensor;
-  final MesurableSensorEntity? productionSensor;
   final List<FlSpot>? consumptionPlot;
   final List<FlSpot>? productionPlot;
   final List<FlSpot>? batteryPlot;
@@ -50,8 +45,6 @@ class HomeState extends Equatable {
 
   HomeState copyWith({
     List<LightEntity>? lights,
-    MesurableSensorEntity? consumptionSensor,
-    MesurableSensorEntity? productionSensor,
     List<FlSpot>? consumptionPlot,
     List<FlSpot>? productionPlot,
     List<FlSpot>? batteryPlot,
@@ -73,8 +66,6 @@ class HomeState extends Equatable {
   }) {
     return HomeState(
       lights: lights ?? this.lights,
-      consumptionSensor: consumptionSensor ?? this.consumptionSensor,
-      productionSensor: productionSensor ?? this.productionSensor,
       consumptionPlot: consumptionPlot ?? this.consumptionPlot,
       productionPlot: productionPlot ?? this.productionPlot,
       batteryPlot: batteryPlot ?? this.batteryPlot,
@@ -100,8 +91,6 @@ class HomeState extends Equatable {
   @override
   List<Object?> get props => [
         lights,
-        consumptionSensor,
-        productionSensor,
         consumptionPlot,
         productionPlot,
         batteryPlot,

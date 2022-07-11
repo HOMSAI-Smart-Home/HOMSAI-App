@@ -316,6 +316,7 @@ class HomeAssistantRepository implements HomeAssistantInterface {
       baseUrl,
       headers: _getHeader(),
       fallbackUrl: fallback,
+      timeout: const Duration(seconds: 15),
     );
     return LogbookDto.fromJson(response);
   }

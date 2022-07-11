@@ -14,17 +14,9 @@ class ConsumptionOptimizationsForecastBodyDto {
   @JsonKey(name: "battery_meter_data")
   List<HistoryDto>? batteryMeterData;
 
-  @JsonKey(name: "general_power_meter_data_unit")
-  String generalPowerMeterDataUnit;
-
-  @JsonKey(name: "pv_production_meter_data_unit")
-  String pvProductionMeterDaraUnit;
-
   ConsumptionOptimizationsForecastBodyDto(
     this.generalPowerMeterHistoricalData,
-    this.generalPowerMeterDataUnit,
-    this.pvProductionPowerMeterHistoricalData,
-    this.pvProductionMeterDaraUnit, {
+    this.pvProductionPowerMeterHistoricalData,{
     this.batteryMeterData,
   });
 

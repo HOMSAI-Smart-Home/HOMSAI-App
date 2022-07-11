@@ -14,8 +14,6 @@ class HistoryBodyDto {
   String filterEntityId;
   @JsonKey(name: 'end_time')
   DateTime? endTime;
-  @JsonKey(name: 'no_attributes', includeIfNull: false)
-  bool? noAttributes;
   @JsonKey(name: 'minimal_response', includeIfNull: false)
   bool? minimalResponse;
   @JsonKey(
@@ -28,7 +26,6 @@ class HistoryBodyDto {
     this.filterEntityId, {
     this.start,
     this.endTime,
-    this.noAttributes,
     this.minimalResponse,
     this.significantChangesOnly,
   }) {

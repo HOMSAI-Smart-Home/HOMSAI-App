@@ -21,15 +21,15 @@ class DailyConsumptionChart extends StatelessWidget {
   final Offset? min;
   final Offset? max;
 
-  const DailyConsumptionChart(
-      {Key? key,
-      this.consumptionPlot,
-      this.productionPlot,
-      this.autoConsumptionPlot,
-      this.chargePlot,
-      required this.min,
-      required this.max})
-      : super(key: key);
+  const DailyConsumptionChart({
+    Key? key,
+    this.consumptionPlot,
+    this.productionPlot,
+    this.autoConsumptionPlot,
+    this.chargePlot,
+    required this.min,
+    required this.max,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
