@@ -208,7 +208,9 @@ class _PhotovoltaicNominalPowerFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(
       TextEditingValue oldValue, TextEditingValue newValue) {
-    final stringCheck = RegExp(r'^(\d+(,|\.){0,1}\d*){0,1}$');
+    final stringCheck = RegExp(
+        r'^(?:10{4}|(?:(?:\d{2,4}|[1-9])(?:(?:,|\.){1}\d{0,2})?)|(?:0(?:,|\.){1}\d{1,2})|\d{0})$');
+    // OLD REGEX: ^(\d+(,|\.){0,1}\d*){0,1}$
     return stringCheck.hasMatch(newValue.text) ? newValue : oldValue;
   }
 }
