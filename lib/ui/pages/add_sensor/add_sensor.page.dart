@@ -10,6 +10,8 @@ import 'package:homsai/crossconcern/components/utils/month_year_field/bloc/month
 import 'package:homsai/crossconcern/components/utils/month_year_field/month_year_field.widget.dart';
 import 'package:homsai/crossconcern/components/utils/trimmed_text_form_field.widget.dart';
 import 'package:homsai/crossconcern/helpers/blocs/websocket/websocket.bloc.dart';
+import 'package:homsai/crossconcern/helpers/factories/home_assistant_sensor.factory.dart';
+import 'package:homsai/datastore/models/entity/context/context.entity.dart';
 import 'package:homsai/datastore/models/entity/sensors/mesurable/mesurable_sensor.entity.dart';
 import 'package:homsai/themes/colors.theme.dart';
 import 'package:homsai/ui/pages/add_sensor/bloc/add_sensor.bloc.dart';
@@ -126,14 +128,7 @@ class _ProductionSensorsSelect extends StatelessWidget {
         label: HomsaiLocalizations.of(context)!.productionSensorLabel,
         hint: HomsaiLocalizations.of(context)!.productionSensorHint,
         value: state.selectedProductionSensor,
-        items: state.productionSensors
-            .map(
-              (sensor) => DropdownMenuItem<MesurableSensorEntity>(
-                value: sensor,
-                child: Text(sensor.name),
-              ),
-            )
-            .toList(),
+        items: _dropdownItems(context, state.productionSensors),
         onChanged: (sensor) =>
             context.read<AddSensorBloc>().add(ProductionSensorChanged(sensor)),
       );
@@ -150,14 +145,7 @@ class _ConsumptionSensorsSelect extends StatelessWidget {
         label: HomsaiLocalizations.of(context)!.consumptionSensorLabel,
         hint: HomsaiLocalizations.of(context)!.consumptionSensorHint,
         value: state.selectedConsumptionSensor,
-        items: state.consumptionSensors
-            .map(
-              (sensor) => DropdownMenuItem<MesurableSensorEntity>(
-                value: sensor,
-                child: Text(sensor.name),
-              ),
-            )
-            .toList(),
+        items: _dropdownItems(context, state.consumptionSensors),
         onChanged: (sensor) =>
             context.read<AddSensorBloc>().add(ConsumptionSensorChanged(sensor)),
       );
@@ -243,14 +231,7 @@ class _BatterySensorsSelect extends StatelessWidget {
         label: HomsaiLocalizations.of(context)!.batterySensorLabel,
         hint: HomsaiLocalizations.of(context)!.batterySensorHint,
         value: state.selectedBatterySensor,
-        items: state.batterySensors
-            .map(
-              (sensor) => DropdownMenuItem<MesurableSensorEntity>(
-                value: sensor,
-                child: Text(sensor.name),
-              ),
-            )
-            .toList(),
+        items: _dropdownItems(context, state.batterySensors),
         onChanged: (sensor) =>
             context.read<AddSensorBloc>().add(BatterySensorChanged(sensor)),
       );
@@ -281,16 +262,22 @@ class _AddSensorSubmit extends StatelessWidget {
     final bloc = context.read<AddSensorBloc>();
     Map<String, bool?> selectedSensor = {
       HomsaiLocalizations.of(context)!.productionSensorLabel:
-          state.selectedProductionSensor != null ? true : false,
+          state.selectedProductionSensor != null &&
+                  state.selectedProductionSensor?.entityId != "" &&
+                  state.selectedProductionSensor?.state != ""
+              ? true
+              : false,
       HomsaiLocalizations.of(context)!.consumptionSensorLabel:
-          state.selectedConsumptionSensor != null ? true : false,
+          state.selectedConsumptionSensor != null &&
+                  state.selectedConsumptionSensor?.entityId != "" &&
+                  state.selectedConsumptionSensor?.state != ""
+              ? true
+              : false,
       HomsaiLocalizations.of(context)!.photovoltaicNominalPowerLabel:
           state.photovoltaicNominalPower == "" ||
                   state.photovoltaicNominalPower == null
               ? false
               : true,
-      HomsaiLocalizations.of(context)!.photovoltaicInstallationDate:
-          state.photovoltaicInstallationDate != null ? true : false,
     };
     if (selectedSensor.containsValue(false)) {
       showDialog(
@@ -409,4 +396,28 @@ class _AddSensorSubmit extends StatelessWidget {
     }
     return incompleteFieldsTexts;
   }
+}
+
+List<DropdownMenuItem<MesurableSensorEntity>> _dropdownItems(
+    BuildContext context, List<MesurableSensorEntity> sensors) {
+  return [
+    DropdownMenuItem<MesurableSensorEntity>(
+      value: MesurableSensorEntity(
+          "",
+          "",
+          MesurableSensorAttributes("", "", DeviceClass.unknown, "", ""),
+          DateTime.now(),
+          DateTime.now(),
+          ContextEntity("", "", "")),
+      child: Text(HomsaiLocalizations.of(context)!.noSensorSelected),
+    ),
+    ...sensors
+        .map(
+          (sensor) => DropdownMenuItem<MesurableSensorEntity>(
+            value: sensor,
+            child: Text(sensor.name),
+          ),
+        )
+        .toList()
+  ];
 }

@@ -154,7 +154,7 @@ class AddSensorBloc extends Bloc<AddSensorEvent, AddSensorState> {
       consumptionSensor: state.selectedConsumptionSensor?.entityId,
       photovoltaicInstallationDate: state.photovoltaicInstallationDate,
       photovoltaicNominalPower: state.photovoltaicNominalPower != null &&
-              state.photovoltaicNominalPower != "" 
+              state.photovoltaicNominalPower != ""
           ? double.parse(state.photovoltaicNominalPower!.replaceAll(',', '.'))
           : null,
       batterySensor: state.selectedBatterySensor?.entityId,

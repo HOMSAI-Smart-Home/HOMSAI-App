@@ -63,13 +63,15 @@ class AccountsBloc extends Bloc<AccountsEvent, AccountsState> {
     final newState = state.copyWith(
       localUrl: plant.localUrl ?? '',
       remoteUrl: plant.remoteUrl ?? '',
-      consumptionSensor: consumptionSensor?.name,
-      productionSensor: productionSensor?.name,
-      batterySensor: batterySensor?.name,
+      consumptionSensor: consumptionSensor?.name ?? '-',
+      productionSensor: productionSensor?.name ?? '-',
+      batterySensor: batterySensor?.name ?? '-',
       photovoltaicNominalPower:
           plant.photovoltaicNominalPower?.toString() ?? '',
       photovoltaicInstallationDate:
-          '${plant.photovoltaicInstallationDate?.month ?? '-'}/${plant.photovoltaicInstallationDate?.year ?? '-'}',
+          plant.photovoltaicInstallationDate != null
+          ? '${plant.photovoltaicInstallationDate?.month ?? '-'}/${plant.photovoltaicInstallationDate?.year ?? '-'}'
+          : '-',
       plantName: plant.name,
       position:
           '${(plant.latitude).toStringAsFixed(5)}, ${(plant.longitude).toStringAsFixed(5)}',

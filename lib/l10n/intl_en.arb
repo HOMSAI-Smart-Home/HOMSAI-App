@@ -151,6 +151,7 @@
     "photovoltaicInstallationDateInvalid": "Invalid date",
     "photovoltaicInstallationDateToComplete": "Complete the date correctly",
     "yearLetter": "Y",
+    "noSensorSelected": "No sensor selected",
     "monthLetter": "M",
     "consumptionSensorHint": "Choose consumption sensor",
     

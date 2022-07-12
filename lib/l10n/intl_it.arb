@@ -155,6 +155,7 @@
     "consumptionSensorHint": "Scegli Sensore di consumo",
     "batterySensorLabel": "Batteria",
     "batterySensorHint": "Scegli batteria fotovoltaico",
+    "noSensorSelected": "Nessun sensore selezionato",
     "addSensorPopUpTitle": "Configurazione incompleta",
     "addSensorPopUpContent1": "Assicurati di aver compilato correttamente tutti i campi.\nPer visualizzare correttamente i consumi ottimizzati completa la configurazione dell’impianto.\nPotrai comunque completare la configurazione in un secondo momento dalla pagina Impostazioni.",
     "addSensorPopUpContent2": "Campi incompleti:",
