@@ -559,7 +559,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     String? sensor,
     Plant plant,
   ) async {
-    if (sensor == null) return PlotInfo();
+    if (sensor == null || sensor.isEmpty) return PlotInfo();
 
     List<HistoryDto> history = await _getHistoryFromSensor(
       appPreferencesInterface.getConsumptionInfo(),
@@ -575,7 +575,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     String? sensor,
     Plant plant,
   ) async {
-    if (sensor == null) return PlotInfo();
+    if (sensor == null || sensor.isEmpty) return PlotInfo();
 
     List<HistoryDto> history = await _getHistoryFromSensor(
       appPreferencesInterface.getProductionInfo(),
@@ -591,7 +591,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     String? sensor,
     Plant plant,
   ) async {
-    if (sensor == null) return PlotInfo();
+    if (sensor == null || sensor.isEmpty) return PlotInfo();
 
     List<HistoryDto> history = await _getHistoryFromSensor(
       appPreferencesInterface.getBatteryInfo(),
@@ -657,7 +657,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
                 historyDto.lastUpdated,
                 historyDto.state == '0.0' || historyDto.state == 'unavailable'
                     ? historyDto.state
-                    : '${double.parse(historyDto.state) / 1000}',
+                    : '${(double.tryParse(historyDto.state) ?? 0) / 1000}',
               ))
           .toList();
     }

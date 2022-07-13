@@ -83,14 +83,20 @@ class Plant extends BaseEntity {
         longitude ?? this.longitude,
         configurationId ?? this.configurationId,
         id: id,
-        productionSensor: productionSensor ?? this.productionSensor,
-        consumptionSensor: consumptionSensor ?? this.consumptionSensor,
+        productionSensor: parseSensor(productionSensor, this.productionSensor),
+        consumptionSensor:
+            parseSensor(consumptionSensor, this.consumptionSensor),
         photovoltaicInstallationDate:
             photovoltaicInstallationDate ?? this.photovoltaicInstallationDate,
         photovoltaicNominalPower:
             photovoltaicNominalPower ?? this.photovoltaicNominalPower,
-        batterySensor: batterySensor ?? this.batterySensor,
+        batterySensor: parseSensor(batterySensor, this.batterySensor),
       );
+
+  String? parseSensor(String? newSensor, String? defaultSensor) {
+    final sensor = newSensor ?? defaultSensor;
+    return sensor != null && sensor.isEmpty ? null : sensor;
+  }
 
   Uri getBaseUrl() {
     return localUrl != null ? Uri.parse(localUrl!) : Uri.parse(remoteUrl!);
