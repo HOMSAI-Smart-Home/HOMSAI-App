@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:homsai/crossconcern/components/common/checkbox/checkbox_event.widget.dart';
-import 'package:homsai/crossconcern/components/common/checkbox/checkbox_state.widget.dart';
+import 'package:homsai/ui/widget/common/checkbox/checkbox_event.widget.dart';
+import 'package:homsai/ui/widget/common/checkbox/checkbox_state.widget.dart';
 
 class CheckboxBloc extends Bloc<CheckboxEvent, CheckboxState> {
   bool initialValue;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:homsai/themes/colors.theme.dart';
-import 'package:homsai/crossconcern/components/utils/shadow.widget.dart';
+import 'package:homsai/ui/widget/utils/shadow.widget.dart';
 import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
 
 enum DeviceStatus { disabled, enabled, warning, error, group }

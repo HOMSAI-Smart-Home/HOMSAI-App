@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:homsai/crossconcern/components/utils/trimmed_text_form_field.widget.dart';
-import 'package:homsai/crossconcern/components/utils/url_text_field/bloc/url_text_field.bloc.dart';
+import 'package:homsai/ui/widget/utils/trimmed_text_form_field.widget.dart';
+import 'package:homsai/ui/widget/utils/url_text_field/bloc/url_text_field.bloc.dart';
 
 class UrlTextField<Bloc extends UrlTextFieldBloc> extends StatelessWidget {
   final FocusNode? focusNode;
@@ -79,8 +79,7 @@ class _UrlTextField<Bloc extends UrlTextFieldBloc> extends StatelessWidget {
                     : errorText ??
                         HomsaiLocalizations.of(context)!
                             .homeAssistantScanManualError,
-                labelText:
-                    labelText ?? '',
+                labelText: labelText ?? '',
               ),
               style: Theme.of(context).textTheme.bodyText1!.copyWith(
                     color: Theme.of(context).colorScheme.onBackground,

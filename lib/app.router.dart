@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:homsai/crossconcern/components/utils/double_url/bloc/double_url.bloc.dart';
+import 'package:homsai/ui/widget/utils/double_url/bloc/double_url.bloc.dart';
 import 'package:homsai/datastore/local/app.database.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.dart';
 import 'package:homsai/datastore/models/database/configuration.entity.dart';

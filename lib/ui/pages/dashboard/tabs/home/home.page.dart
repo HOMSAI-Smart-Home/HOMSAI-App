@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:homsai/crossconcern/components/charts/daily_consumption_chart.widget.dart';
-import 'package:homsai/crossconcern/components/charts/photovoltaic_forecast_chart.widget.dart';
-import 'package:homsai/crossconcern/components/utils/dialog.widget.dart';
-import 'package:homsai/crossconcern/components/utils/shadow.widget.dart';
-import 'package:homsai/crossconcern/components/utils/toggle_text.widget.dart';
+import 'package:homsai/ui/widget/charts/daily_consumption_chart.widget.dart';
+import 'package:homsai/ui/widget/charts/photovoltaic_forecast_chart.widget.dart';
+import 'package:homsai/ui/widget/utils/dialog.widget.dart';
+import 'package:homsai/ui/widget/utils/shadow.widget.dart';
+import 'package:homsai/ui/widget/utils/toggle_text.widget.dart';
 import 'package:homsai/crossconcern/helpers/blocs/websocket/websocket.bloc.dart';
 import 'package:homsai/crossconcern/utilities/properties/connection.properties.dart';
 import 'package:homsai/crossconcern/utilities/properties/constants.util.dart';

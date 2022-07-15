@@ -5,7 +5,7 @@ import 'package:homsai/business/home_assistant/home_assistant.interface.dart';
 import 'package:homsai/business/home_assistant/home_assistant.repository.dart';
 import 'package:homsai/business/home_assistant_scanner/home_assistant_scanner.interface.dart';
 import 'package:homsai/business/home_assistant_scanner/home_assistant_scanner.repository.dart';
-import 'package:homsai/crossconcern/components/utils/double_url/bloc/double_url.bloc.dart';
+import 'package:homsai/ui/widget/utils/double_url/bloc/double_url.bloc.dart';
 import 'package:homsai/crossconcern/helpers/models/forms/url.model.dart';
 import 'package:homsai/crossconcern/utilities/properties/api.proprties.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.dart';

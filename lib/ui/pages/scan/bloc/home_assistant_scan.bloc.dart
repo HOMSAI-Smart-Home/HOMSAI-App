@@ -5,7 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:formz/formz.dart';
 import 'package:homsai/business/home_assistant/home_assistant.interface.dart';
-import 'package:homsai/crossconcern/components/utils/double_url/bloc/double_url.bloc.dart';
+import 'package:homsai/ui/widget/utils/double_url/bloc/double_url.bloc.dart';
 import 'package:homsai/crossconcern/helpers/models/forms/url.model.dart';
 import 'package:homsai/datastore/local/apppreferences/app_preferences.interface.dart';
 import 'package:homsai/globalkeys.widget.dart';

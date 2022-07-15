@@ -4,8 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:formz/formz.dart';
 import 'package:homsai/app.router.dart';
-import 'package:homsai/crossconcern/components/common/scaffold/homsai_bloc_scaffold.widget.dart';
-import 'package:homsai/crossconcern/components/utils/trimmed_text_form_field.widget.dart';
+import 'package:homsai/ui/widget/common/scaffold/homsai_bloc_scaffold.widget.dart';
+import 'package:homsai/ui/widget/utils/trimmed_text_form_field.widget.dart';
 import 'package:homsai/crossconcern/helpers/blocs/websocket/websocket.bloc.dart';
 import 'package:homsai/themes/colors.theme.dart';
 import 'package:homsai/ui/pages/add_plant/bloc/add_plant.bloc.dart';
@@ -38,13 +38,13 @@ class _AddPlantPageState extends State<AddPlantPage> {
           create: (context) => AddPlantBloc(
             context.read<WebSocketBloc>(),
             widget.wizard
-            ? widget.localUrl!.isNotEmpty
-              ? widget.localUrl
-              : widget.remoteUrl
-            : null,
+                ? widget.localUrl!.isNotEmpty
+                    ? widget.localUrl
+                    : widget.remoteUrl
+                : null,
             (widget.wizard && widget.localUrl!.isNotEmpty)
-            ? widget.remoteUrl
-            : null,
+                ? widget.remoteUrl
+                : null,
             widget.wizard,
           ),
         ),

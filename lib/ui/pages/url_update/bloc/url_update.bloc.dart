@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:homsai/business/home_assistant/home_assistant.interface.dart';
-import 'package:homsai/crossconcern/components/utils/double_url/bloc/double_url.bloc.dart';
+import 'package:homsai/ui/widget/utils/double_url/bloc/double_url.bloc.dart';
 import 'package:homsai/datastore/local/app.database.dart';
 import 'package:homsai/datastore/models/database/plant.entity.dart';
 import 'package:homsai/main.dart';

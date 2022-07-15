@@ -4,15 +4,15 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:homsai/app.router.dart';
-import 'package:homsai/crossconcern/components/alerts/general_alert.widget.dart';
-import 'package:homsai/crossconcern/components/common/scaffold/homsai_bloc_scaffold.widget.dart';
+import 'package:homsai/ui/widget/alerts/general_alert.widget.dart';
+import 'package:homsai/ui/widget/common/scaffold/homsai_bloc_scaffold.widget.dart';
 import 'package:homsai/crossconcern/helpers/blocs/websocket/websocket.bloc.dart';
 import 'package:homsai/crossconcern/utilities/properties/connection.properties.dart';
 import 'package:homsai/themes/button.theme.dart';
 import 'package:homsai/themes/colors.theme.dart';
 import 'package:homsai/ui/pages/dashboard/bloc/dashboard.bloc.dart';
 import 'package:homsai/ui/pages/dashboard/tabs/home/bloc/home.bloc.dart';
-import 'package:homsai/crossconcern/components/utils/shadow.widget.dart';
+import 'package:homsai/ui/widget/utils/shadow.widget.dart';
 import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
 
 class DashboardPage extends StatefulWidget {

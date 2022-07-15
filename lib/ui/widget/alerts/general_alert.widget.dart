@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:homsai/crossconcern/components/alerts/alert.widget.dart';
+import 'package:homsai/ui/widget/alerts/alert.widget.dart';
 import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
 import 'package:homsai/themes/colors.theme.dart';
 import 'package:homsai/ui/pages/dashboard/tabs/home/bloc/home.bloc.dart';

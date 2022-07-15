@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 import 'package:homsai/app.router.dart';
-import 'package:homsai/crossconcern/components/common/scaffold/homsai_bloc_scaffold.widget.dart';
+import 'package:homsai/ui/widget/common/scaffold/homsai_bloc_scaffold.widget.dart';
 import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
-import 'package:homsai/crossconcern/components/utils/double_url/bloc/double_url.bloc.dart';
-import 'package:homsai/crossconcern/components/utils/double_url/double_url.widget.dart';
+import 'package:homsai/ui/widget/utils/double_url/bloc/double_url.bloc.dart';
+import 'package:homsai/ui/widget/utils/double_url/double_url.widget.dart';
 import 'package:homsai/ui/pages/url_update/bloc/url_update.bloc.dart';
 import 'package:super_rich_text/super_rich_text.dart';
 

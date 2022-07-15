@@ -3,7 +3,7 @@ import 'dart:math' as math;
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:homsai/crossconcern/components/utils/dialog.widget.dart';
+import 'package:homsai/ui/widget/utils/dialog.widget.dart';
 import 'package:homsai/crossconcern/utilities/util/plot.util.dart';
 import 'package:homsai/main.dart';
 import 'package:homsai/themes/colors.theme.dart';

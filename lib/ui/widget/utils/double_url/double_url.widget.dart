@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/homsai_localizations.dart';
-import 'package:homsai/crossconcern/components/utils/double_url/bloc/double_url.bloc.dart';
-import 'package:homsai/crossconcern/components/utils/url_text_field/bloc/url_text_field.bloc.dart';
-import 'package:homsai/crossconcern/components/utils/url_text_field/url_text_field.widget.dart';
+import 'package:homsai/ui/widget/utils/double_url/bloc/double_url.bloc.dart';
+import 'package:homsai/ui/widget/utils/url_text_field/bloc/url_text_field.bloc.dart';
+import 'package:homsai/ui/widget/utils/url_text_field/url_text_field.widget.dart';
 
 class DoubleUrl extends StatelessWidget {
   const DoubleUrl({Key? key}) : super(key: key);

@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
-import 'package:homsai/crossconcern/components/utils/url_text_field/bloc/url_text_field.bloc.dart';
+import 'package:homsai/ui/widget/utils/url_text_field/bloc/url_text_field.bloc.dart';
 
 part 'double_url.event.dart';
 part 'double_url.state.dart';
